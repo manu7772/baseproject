@@ -2,12 +2,12 @@
 
 namespace ensemble01\filemakerBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use filemakerBundle\Controller\filemakerController as fmController;
 
-class filemakerController extends Controller {
+class filemakerController extends fmController {
 
-    public function indexAction($name) {
-        return $this->render('ensemble01filemakerBundle:pages:homepage.html.twig', array('name' => $name));
-    }
+    // public function indexAction($name) {
+    //     return $this->render('ensemble01filemakerBundle:pages:homepage.html.twig', array('name' => $name));
+    // }
 
 }
