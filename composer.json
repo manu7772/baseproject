@@ -17,7 +17,13 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "doctrine/doctrine-fixtures-bundle" : "dev-master",
+        "doctrine/data-fixtures" : "@dev",
+        "stof/doctrine-extensions-bundle" : "1.1.0",
+        "stof/stampie-extra" : "0.1.0",
+        "friendsofsymfony/user-bundle" : "dev-master",
+        "leafo/lessphp": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
