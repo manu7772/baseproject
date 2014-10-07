@@ -1,0 +1,4 @@
+services:
+#    ensemble01filemaker.example:
+#        class: ensemble01\filemakerBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

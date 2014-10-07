@@ -23,7 +23,8 @@
         "stof/doctrine-extensions-bundle" : "1.1.0",
         "stof/stampie-extra" : "0.1.0",
         "friendsofsymfony/user-bundle" : "dev-master",
-        "leafo/lessphp": "*"
+        "leafo/lessphp": "*",
+        "twbs/bootstrap": "3.2.*@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
