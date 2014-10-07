@@ -1,5 +1,6 @@
 Symfony Standard Edition
 ========================
+Config de base pour Aequation-Webdesign 2014
 
 Welcome to the Symfony Standard Edition - a fully-functional Symfony2
 application that you can use as the skeleton for your new applications.
