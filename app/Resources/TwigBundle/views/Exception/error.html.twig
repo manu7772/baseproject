@@ -1,0 +1,7 @@
+{% extends(':public:pageRoot.html.twig') %}
+	{% block body %}
+		<div class="messageERR" title="Une erreur est apparue... (type {{ status_code }})">
+			<h2>Le serveur a renvoyé une erreur "{{ status_code }} {{ status_text|trans }}".</h2>
+			<p>Quelque chose ne fonctionne pas. Envoyez un message à [email] et nous prendrons connaissance du problème dans les meilleurs délais. Toutes nos excuses pour ce désagrément.</p>
+		</div>
+	{% endblock body %}
