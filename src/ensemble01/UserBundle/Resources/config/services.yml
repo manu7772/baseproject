@@ -1,0 +1,80 @@
+parameters:
+#    acme_user.example.class: ensemble01\UserBundle\Example
+
+services:
+    ensemble01_user.registration.form.type:
+        class: ensemble01\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: ensemble01_user_registration }
+
+    ensemble01_user.registrationPopup.form.type:
+        class: ensemble01\UserBundle\Form\Type\RegistrationFormPopupType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: ensemble01_user_registration_popup }
+
+    ensemble01.user.profile.form.type:
+        class: ensemble01\UserBundle\Form\Type\ProfileFormType
+        arguments: [@service_container]
+        tags:
+            - { name: form.type, alias: ensemble01_user_profile }
+
+    # ensemble01.registration_popup.form.factory:
+    #     class: FOS\UserBundle\Form\Factory\FormFactory
+    #     arguments: 
+    #      - { type: service, id: form.factory }
+    #      - [%fos_user.registration.form.name%]
+    #      - [%ensemble01.registration_popup.form.type%]
+    #      - [%fos_user.registration.form.validation_groups%]
+
+    # ensemble01.registration_popup.form.type:
+    #     class: FOS\UserBundle\Form\Type\RegistrationFormPopupType
+    #     arguments: [%fos_user.model.user.class%]
+    #     tags:
+    #         - { name: form.type, alias: fos_user_registration }
+
+    ###################################
+    ### ELEMENTS DE FORMULAIRES
+    ###################################
+
+    # Éléments de formulaires personnalisés
+    form.type.datepicker:
+        class: labo\Bundle\TestmanuBundle\Form\Type\DatepickerType
+        arguments:
+            - "%formatDate%"
+        tags:
+            - { name: form.type, alias: datepicker }
+
+    form.type.datepicker2:
+        class: labo\Bundle\TestmanuBundle\Form\Type\Datepicker2Type
+        arguments:
+            - "%formatDate%"
+        tags:
+            - { name: form.type, alias: datepicker2 }
+
+    form.type.datepicker2alldates:
+        class: labo\Bundle\TestmanuBundle\Form\Type\Datepicker2alldatesType
+        arguments:
+            - "%formatDate%"
+        tags:
+            - { name: form.type, alias: datepicker2alldates }
+
+    form.type.richtext:
+        class: labo\Bundle\TestmanuBundle\Form\Type\richtextType
+        tags:
+            - { name: form.type, alias: richtext }
+
+    form.type.gender:
+        class: labo\Bundle\TestmanuBundle\Form\Type\GenderType
+        tags:
+            - { name: form.type, alias: gender }
+
+    form.type.routes:
+        class: labo\Bundle\TestmanuBundle\Form\Type\RoutesType
+        arguments: [@service_container]
+        tags:
+            - { name: form.type, alias: routes }
+
+
+

@@ -1,0 +1,78 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<h4 class="well well-md">Créez votre compte<br /><small>Note : les libellés en rouge sont obligatoires</small></h4>
+{% if form_errors(form) != null %}
+<div class="alert alert-danger">
+	{{ form_errors(form) }}
+</div>
+{% endif %}
+<form action="{{ path('fos_user_registration_register_popup') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+	<div class="panel panel-default">
+		<div class="panel-heading">Informations de connexion</div>
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.email) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.email) }}</div>
+		</div>
+			{{ form_errors(form.email) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.username) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.username) }}</div>
+		</div>
+			{{ form_errors(form.username) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.plainPassword.first) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.plainPassword.first) }}</div>
+		</div>
+			{{ form_errors(form.plainPassword.first) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.plainPassword.second) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.plainPassword.second) }}</div>
+		</div>
+			{{ form_errors(form.plainPassword.second) }}
+
+		<hr style="margin:0px;">
+
+		<div class="panel-body"><h4>Sélectionnez votre boutique de référence</h4></div>
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.magasin) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.magasin) }}</div>
+		</div>
+			{{ form_errors(form.magasin) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.livraison) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.livraison) }}</div>
+		</div>
+			{{ form_errors(form.livraison) }}
+
+		<hr style="margin:0px;">
+
+		<div class="panel-body"><h4>Vous possédez une machine à coudre ?</h4></div>
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.mactype) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.mactype) }}</div>
+		</div>
+			{{ form_errors(form.mactype) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.marque) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.marque) }}</div>
+		</div>
+			{{ form_errors(form.marque) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.macnoserie) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.macnoserie) }}</div>
+		</div>
+			{{ form_errors(form.macnoserie) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.macdateachat) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.macdateachat) }}</div>
+		</div>
+			{{ form_errors(form.macdateachat) }}
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<input type="submit" value="Créer mon compte" class="btn btn-warning" title="{{ 'registration.submit'|trans }}" />
+		</div>
+	</div>
+
+	{{ form_rest(form) }}
+</form>

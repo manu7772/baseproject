@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "61f77e692b8044b74fb67a3d37eacd51",
+    "hash": "85c5a8d3436ee4677fffb338ba62ec5c",
     "packages": [
         {
             "name": "aew/filemaker-bundle",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/manu7772/filemakerBundle.git",
-                "reference": "2e05e1be241b8d2c73f0819be2f59dacfea19a4e"
+                "reference": "700a718d5db38ae444cc3d7e7da2edefc1c65ee2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/manu7772/filemakerBundle/zipball/2e05e1be241b8d2c73f0819be2f59dacfea19a4e",
-                "reference": "2e05e1be241b8d2c73f0819be2f59dacfea19a4e",
+                "url": "https://api.github.com/repos/manu7772/filemakerBundle/zipball/700a718d5db38ae444cc3d7e7da2edefc1c65ee2",
+                "reference": "700a718d5db38ae444cc3d7e7da2edefc1c65ee2",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             "keywords": [
                 "filemaker application"
             ],
-            "time": "2014-10-07 15:32:02"
+            "time": "2014-10-08 07:51:36"
         },
         {
             "name": "doctrine/annotations",
@@ -1952,57 +1952,6 @@
             "time": "2014-09-28 17:33:53"
         },
         {
-            "name": "twbs/bootstrap",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "61705d35fa314a16579169fb7379e5101716e715"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/61705d35fa314a16579169fb7379e5101716e715",
-                "reference": "61705d35fa314a16579169fb7379e5101716e715",
-                "shasum": ""
-            },
-            "replace": {
-                "twitter/bootstrap": "self.version"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jacob Thornton",
-                    "email": "jacobthornton@gmail.com"
-                },
-                {
-                    "name": "Mark Otto",
-                    "email": "markdotto@gmail.com"
-                }
-            ],
-            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "http://getbootstrap.com",
-            "keywords": [
-                "JS",
-                "css",
-                "framework",
-                "front-end",
-                "less",
-                "mobile-first",
-                "responsive",
-                "web"
-            ],
-            "time": "2014-10-07 04:57:46"
-        },
-        {
             "name": "twig/extensions",
             "version": "v1.1.0",
             "source": {
@@ -2164,7 +2113,6 @@
         "doctrine/doctrine-fixtures-bundle": 20,
         "doctrine/data-fixtures": 20,
         "friendsofsymfony/user-bundle": 20,
-        "twbs/bootstrap": 20,
         "aew/filemaker-bundle": 20
     },
     "prefer-stable": false,

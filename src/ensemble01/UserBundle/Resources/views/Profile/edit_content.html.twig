@@ -1,0 +1,104 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<h4 class="well well-md">Modifiez votre compte<br /><small>Note : les libellés en rouge sont obligatoires</small></h4>
+{% if form_errors(form) != null %}
+<div class="alert alert-danger">
+	{{ form_errors(form) }}
+</div>
+{% endif %}
+<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+	<div class="panel panel-default">
+		<div class="panel-heading">Informations de connexion</div>
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.email) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.email) }}</div>
+		</div>
+			{{ form_errors(form.email) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.username) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.username) }}</div>
+		</div>
+			{{ form_errors(form.username) }}
+		<hr />
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.magasin) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.magasin) }}</div>
+		</div>
+			{{ form_errors(form.magasin) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.livraison) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.livraison) }}</div>
+		</div>
+			{{ form_errors(form.livraison) }}
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Votre adresse postale</div>
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.nom) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.nom) }}</div>
+		</div>
+			{{ form_errors(form.nom) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.prenom) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.prenom) }}</div>
+		</div>
+			{{ form_errors(form.prenom) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.tel) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.tel) }}</div>
+		</div>
+			{{ form_errors(form.tel) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.adresse) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.adresse) }}</div>
+		</div>
+			{{ form_errors(form.adresse) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.cp) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.cp) }}</div>
+		</div>
+			{{ form_errors(form.cp) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.ville) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.ville) }}</div>
+		</div>
+			{{ form_errors(form.ville) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.commentaire) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.commentaire) }}</div>
+		</div>
+			{{ form_errors(form.commentaire) }}
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">Vous possédez une machine à coudre ?</div>
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.mactype) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.mactype) }}</div>
+		</div>
+			{{ form_errors(form.mactype) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.marque) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.marque) }}</div>
+		</div>
+			{{ form_errors(form.marque) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.macnoserie) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.macnoserie) }}</div>
+		</div>
+			{{ form_errors(form.macnoserie) }}
+		<div class="panel-body">
+			<div class="col-xs-4">{{ form_label(form.macdateachat) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.macdateachat) }}</div>
+		</div>
+			{{ form_errors(form.macdateachat) }}
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<input type="submit" value="Enregistrer les modifications" class="btn btn-warning" />
+		</div>
+	</div>
+
+	{{ form_rest(form) }}
+</form>

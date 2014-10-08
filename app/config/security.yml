@@ -1,12 +1,36 @@
 security:
+    encoders:
+        ensemble01\UserBundle\Entity\User: sha512
+
+    role_hierarchy:
+        ROLE_EDITOR:       [ROLE_USER]
+        ROLE_ADMIN:        [ROLE_USER, ROLE_EDITOR]
+        ROLE_SUPER_ADMIN:  [ROLE_USER, ROLE_EDITOR, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     providers:
-        in_memory:
-            memory: ~
+        main:
+            id: fos_user.user_provider.username
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        login:
+            pattern: ^/(login)$
+            anonymous: true
+        main:
+            pattern: ^/
+            anonymous: true
+            provider: main
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+            logout:
+                path: fos_user_security_logout
+                target: /
+                invalidate_session: false
+            remember_me:
+                key:  %secret%
 
-        default:
-            anonymous: ~
+    access_control:
+        - { path: ^/fm, roles: ROLE_EDITOR }

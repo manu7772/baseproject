@@ -1,0 +1,4 @@
+services:
+#    ensemble01site.example:
+#        class: ensemble01\siteBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

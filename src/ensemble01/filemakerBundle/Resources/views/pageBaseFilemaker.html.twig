@@ -1,4 +1,6 @@
 {% extends(':public:pageRoot.html.twig') %}
 {% block navbar %}
-	{{ include('filemakerBundle:filemaker:navbar') }}
+	{{ render(controller('ensemble01filemakerBundle:filemaker:navbar')) }}
 {% endblock navbar %}
+{% block body %}
+{% endblock body %}

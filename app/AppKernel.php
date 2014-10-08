@@ -16,9 +16,17 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            // site bundle
+            new ensemble01\siteBundle\ensemble01siteBundle(),
+            // filemaker bundle
             new filemakerBundle\filemakerBundle(),
             new ensemble01\filemakerBundle\ensemble01filemakerBundle(),
-        );
+            // user bundle
+            new FOS\UserBundle\FOSUserBundle(),
+            new ensemble01\UserBundle\ensemble01UserBundle(),
+            // stof extensions
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+       );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
