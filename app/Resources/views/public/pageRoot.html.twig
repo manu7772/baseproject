@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        {% block metatitles %}
+        {% endblock metatitles %}
+        {% stylesheets filter='cssrewrite, lessphp, ?yui_css'
+         %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% endstylesheets %}
+    </head>
+    <body>
+        {% block navbar %}
+        {% endblock navbar %}
+        {% block body %}
+            <!-- CONTENU DE LA PAGE -->
+        {% endblock body %}
+        {% javascripts filter='?yui_js'
+         %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    </body>
+</html>

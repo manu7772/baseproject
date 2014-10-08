@@ -1,1 +1,4 @@
-filemaker controller {{ name }}!
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% block body %}
+	{{ include('filemakerbundle::pageBaseFilemaker.html.twig') }}
+{% endblock body %}
