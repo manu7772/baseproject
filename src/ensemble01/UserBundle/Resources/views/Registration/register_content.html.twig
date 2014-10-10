@@ -7,6 +7,7 @@
 {% endif %}
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
 	<div class="panel panel-default">
+
 		<div class="panel-heading">Informations de connexion</div>
 		<div class="panel-body">
 			<div class="col-xs-4">{{ form_label(form.email) }}</div>
@@ -28,75 +29,20 @@
 			<div class="col-xs-6">{{ form_widget(form.plainPassword.second) }}</div>
 		</div>
 			{{ form_errors(form.plainPassword.second) }}
-		<hr />
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.magasin) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.magasin) }}</div>
-		</div>
-			{{ form_errors(form.magasin) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.livraison) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.livraison) }}</div>
-		</div>
-			{{ form_errors(form.livraison) }}
 	</div>
 
 	<div class="panel panel-default">
-		<div class="panel-heading">Votre adresse postale</div>
+		<div class="panel-heading">Connexion Filemaker</div>
 		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.nom) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.nom) }}</div>
+			<div class="col-xs-4">{{ form_label(form.fmlogin) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.fmlogin) }}</div>
 		</div>
-			{{ form_errors(form.nom) }}
+			{{ form_errors(form.fmlogin) }}
 		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.prenom) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.prenom) }}</div>
+			<div class="col-xs-4">{{ form_label(form.fmpass) }}</div>
+			<div class="col-xs-6">{{ form_widget(form.fmpass) }}</div>
 		</div>
-			{{ form_errors(form.prenom) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.tel) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.tel) }}</div>
-		</div>
-			{{ form_errors(form.tel) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.adresse) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.adresse) }}</div>
-		</div>
-			{{ form_errors(form.adresse) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.cp) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.cp) }}</div>
-		</div>
-			{{ form_errors(form.cp) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.ville) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.ville) }}</div>
-		</div>
-			{{ form_errors(form.ville) }}
-	</div>
-
-	<div class="panel panel-default">
-		<div class="panel-heading">Vous possédez une machine à coudre ?</div>
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.mactype) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.mactype) }}</div>
-		</div>
-			{{ form_errors(form.mactype) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.marque) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.marque) }}</div>
-		</div>
-			{{ form_errors(form.marque) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.macnoserie) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.macnoserie) }}</div>
-		</div>
-			{{ form_errors(form.macnoserie) }}
-		<div class="panel-body">
-			<div class="col-xs-4">{{ form_label(form.macdateachat) }}</div>
-			<div class="col-xs-6">{{ form_widget(form.macdateachat) }}</div>
-		</div>
-			{{ form_errors(form.macdateachat) }}
+			{{ form_errors(form.fmpass) }}
 	</div>
 
 	<div class="panel panel-default">

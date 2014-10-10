@@ -31,20 +31,8 @@ class UserType extends AbstractType
             ->add('roles')
             ->add('credentialsExpired')
             ->add('credentialsExpireAt')
-            ->add('preferences')
-            ->add('nom')
-            ->add('prenom')
-            ->add('adresse')
-            ->add('cp')
-            ->add('ville')
-            ->add('commentaire')
-            ->add('annotation')
-            ->add('adressIp')
-            ->add('autresMails')
-            ->add('tel')
-            ->add('idxFactures')
-            ->add('avatar')
-            ->add('versions')
+            ->add('fmlogin', 'text')
+            ->add('fmpass', 'text')
         ;
     }
     

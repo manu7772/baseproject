@@ -6,33 +6,13 @@ services:
         class: ensemble01\UserBundle\Form\Type\RegistrationFormType
         arguments: [%fos_user.model.user.class%]
         tags:
-            - { name: form.type, alias: ensemble01_user_registration }
-
-    ensemble01_user.registrationPopup.form.type:
-        class: ensemble01\UserBundle\Form\Type\RegistrationFormPopupType
-        arguments: [%fos_user.model.user.class%]
-        tags:
-            - { name: form.type, alias: ensemble01_user_registration_popup }
+            - { name: form.type, alias: fos_user_registration }
 
     ensemble01.user.profile.form.type:
         class: ensemble01\UserBundle\Form\Type\ProfileFormType
         arguments: [@service_container]
         tags:
-            - { name: form.type, alias: ensemble01_user_profile }
-
-    # ensemble01.registration_popup.form.factory:
-    #     class: FOS\UserBundle\Form\Factory\FormFactory
-    #     arguments: 
-    #      - { type: service, id: form.factory }
-    #      - [%fos_user.registration.form.name%]
-    #      - [%ensemble01.registration_popup.form.type%]
-    #      - [%fos_user.registration.form.validation_groups%]
-
-    # ensemble01.registration_popup.form.type:
-    #     class: FOS\UserBundle\Form\Type\RegistrationFormPopupType
-    #     arguments: [%fos_user.model.user.class%]
-    #     tags:
-    #         - { name: form.type, alias: fos_user_registration }
+            - { name: form.type, alias: fos_user_profile }
 
     ###################################
     ### ELEMENTS DE FORMULAIRES

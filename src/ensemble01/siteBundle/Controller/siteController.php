@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class siteController extends Controller
 {
-    public function indexAction($name) {
+    public function indexAction() {
     	$data = array();
-    	$data['name'] = $name;
+    	$data['name'] = "anonyme";
         return $this->render('ensemble01siteBundle:pages:homepage.html.twig', $data);
     }
 

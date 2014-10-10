@@ -1,7 +1,7 @@
 {% trans_default_domain 'FOSUserBundle' %}
-<h4 class="well well-md">Informations de votre compte Singer
+<h4 class="well well-md">Informations du compte
 	<a href="{{ path('fos_user_profile_edit') }}">
-		<button type="button" class="btn btn-warning btn-xs pull-right" title="Modifier mon compte">Modifier mon compte</button>
+		<button type="button" class="btn btn-warning btn-xs pull-right" title="Modifier mon compte">Modifier le compte</button>
 	</a>
 </h4>
 
@@ -30,58 +30,10 @@
 		</div>
 	</div>
 	<div class="panel panel-default">
-		<div class="panel-heading">Informations de commerce et e-commerce</div>
+		<div class="panel-heading">Éléments Filemaker</div>
 		<div class="panel-body">
-			{% if user.magasin is not null %}
-    		<p class="formRight col-xs-3">Boutique préférée :</p><p class="formLeft col-xs-7">{{ user.magasin.nommagasin }}</p>
-    		{% else %}
-			<a href="{{ path('fos_user_profile_edit') }}">
-				<button type="button" class="btn btn-danger btn-xs pull-right" title="Choisir ma boutique préférée">Choisir ma boutique préférée</button>
-			</a>
-    		{% endif %}
-  			<p class="formRight col-xs-3">Mode de livraison :</p><p class="formLeft col-xs-7">{{ user.livraisonTxt }}</p>
+			<p class="formRight col-xs-3">Login :</p><p class="formLeft col-xs-7">{{ user.fmlogin }}</p>
+			<p class="formRight col-xs-3">Pass :</p><p class="formLeft col-xs-7">{{ user.fmlpass }}</p>
 		</div>
 	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">Adresse postale</div>
-		<div class="panel-body">
-			{% if user.isAdresseNulle != true %}
-			<p class="formRight col-xs-3">Nom :</p><p class="formLeft col-xs-7">{{ user.nom }}</p>
-			<p class="formRight col-xs-3">Prénom :</p><p class="formLeft col-xs-7">{{ user.prenom }}</p>
-			<p class="formRight col-xs-3">Adresse :</p><p class="formLeft col-xs-7">{{ user.adresse }}</p>
-			<p class="formRight col-xs-3"></p><p class="formLeft col-xs-7">{{ user.cp }} {{user.ville}}</p>
-			<p class="formRight col-xs-3">Complément :</p><p class="formLeft col-xs-7">{{ user.commentaire }}</p>
-			<p class="formRight col-xs-3">Téléphone :</p><p class="formLeft col-xs-7">{{ user.tel }}</p>
-			{% else %}
-			<p class="formCenter red">Aucune information</p>
-			{% endif %}
-		</div>
-	</div>
-	{% if user.isAdresseNotComplete == true %}
-	<div class="alert alert-danger alert-dismissable">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		<p>Votre adresse postale est incomplète. Si vous souhaitez commander dans la e-boutique, n'oubliez pas de renseigner toutes les informations nécessaires à l'envoi postal.</p>
-	</div>
-	{% endif %}
-	{% if user.isMachinePartielle == true %}
-	<div class="panel panel-default">
-		<div class="panel-heading">Votre machine</div>
-		<div class="panel-body">
-    		<p class="formRight col-xs-3">Type :</p><p class="formLeft col-xs-7">{{ user.mactype }}</p>
-    		<p class="formRight col-xs-3">Marque :</p>
-    		<p class="formLeft col-xs-7">
-    			{% if user.marque is not null %}
-    				<strong>{{ user.marque.nom }}</strong>
-    			{% else %}
-    				<i>aucune</i>
-    			{% endif %}
-    			{% if is_granted("ROLE_SUPER_ADMIN") %}
-    				<span style="color:red;"><i>({{ user.macmarque }})</i></span>
-    			{% endif %}
-    		</p>
-    		<p class="formRight col-xs-3">Numéro de série :</p><p class="formLeft col-xs-7">{{ user.macnoserie }}</p>
-    		<p class="formRight col-xs-3">Date d'achat :</p><p class="formLeft col-xs-7">{{ user.macdateachat|date("d/m/Y", "Europe/Paris") }}</p>
-		</div>
-	</div>
-	{% endif %}
 </div>

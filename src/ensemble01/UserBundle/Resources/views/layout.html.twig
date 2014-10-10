@@ -1,8 +1,12 @@
 {% extends "ensemble01siteBundle::pageBaseSite.html.twig" %}
-{% block body %}
-{{ render(controller('ensemble01siteBundle:site:menu')) }}
 
-{% if form is defined %}{% form_theme form ':Form:formuser-override.html.twig' %}{% endif %}
+{% block mainmenu %}
+<div>main menu from log/user :</div>
+{{ parent() }}
+{% endblock mainmenu %}
+
+{% block body %}
+{% if form is defined %}{% form_theme form ':Form:bootstrap-override.html.twig' %}{% endif %}
 <!-- Corps complet sous bandeau-TOP -->
 <div id="container_site">  
 

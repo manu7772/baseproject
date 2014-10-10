@@ -39,38 +39,22 @@ class AdressFormType extends AbstractType
 
         // $this->buildUserForm($builder, $options);
 
-        $builder
+        // $builder
             // ->add('current_password', 'password', array(
             //     'label' => 'form.current_password',
             //     'translation_domain' => 'FOSUserBundle',
             //     'mapped' => false,
             //     'constraints' => $constraint,
             //     ))
-            ->add('nom', 'text', array(
-                'label'     => 'Nom : ',
-                'required'  => false,
-                ))
-            ->add('prenom', 'text', array(  
-                'label'     => 'Prénom : ',
-                'required'  => false,
-                ))
-            ->add('tel', 'text', array(
-                'label'     => 'Téléphone : ',
-                'required'  => false,
-                ))
-            ->add('adresse', 'textarea', array(
-                "required"  => false,
-                "label"     => 'Adresse : '
-                ))
-            ->add('cp', 'text', array(
-                "required"  => false,
-                "label"     => 'Code Postal : '
-                ))
-            ->add('ville', 'text', array(
-                "required"  => false,
-                "label"     => 'Ville : '
-                ))
-        ;
+            // ->add('fmlogin', 'text', array(  
+            //     'label'     => 'Login FM : ',
+            //     'required'  => false,
+            //     ))
+            // ->add('fmpass', 'text', array(
+            //     'label'     => 'Pass FM : ',
+            //     'required'  => false,
+            //     ))
+        // ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
@@ -82,7 +66,7 @@ class AdressFormType extends AbstractType
 
     public function getName()
     {
-        return 'ensemble01_user_adress';
+        return 'fos_user_adress';
     }
 
 }

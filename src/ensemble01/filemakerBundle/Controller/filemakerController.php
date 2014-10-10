@@ -10,4 +10,12 @@ class filemakerController extends fmController {
         return $this->render('ensemble01filemakerBundle:pages:homepage.html.twig', array('name' => $name));
     }
 
+	/**
+	 * Affichage de la barre de navigation
+	 */
+	public function navbarAction() {
+		$data = array();
+		return $this->render('ensemble01filemakerBundle:menus:navbar.html.twig', $data);
+	}
+
 }

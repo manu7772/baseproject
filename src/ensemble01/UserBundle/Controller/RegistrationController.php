@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 
-use FOS\UserBundle\Controller\RegistrationController as BaseController;
+use FOS\UserBundle\Controller\RegistrationController as BaseRegistrationController;
 
 /**
  * Controller managing the registration
@@ -31,7 +31,7 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
  * @author Thibault Duplessis <thibault.duplessis@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class RegistrationController extends BaseController {
+class RegistrationController extends BaseRegistrationController {
 
     // public function registerAction(Request $request) {
 

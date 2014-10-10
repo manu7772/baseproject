@@ -26,18 +26,6 @@ class User extends BaseUser {
 	protected $id;
 
 	/**
-	* @ORM\Column(name="preferences", type="array", nullable=true)
-	*/
-	private $preferences;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="nom", type="string", length=100, nullable=true, unique=false)
-	 */
-	private $nom;
-
-	/**
 	 * @var string
 	 *
 	 * @ORM\Column(name="fmlogin", type="string", length=100, nullable=true, unique=false)
@@ -47,9 +35,9 @@ class User extends BaseUser {
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="fmlpass", type="string", length=100, nullable=true, unique=false)
+	 * @ORM\Column(name="fmpass", type="string", length=100, nullable=true, unique=false)
 	 */
-	private $fmlpass;
+	private $fmpass;
 
 
 	public function __construct() {
@@ -65,27 +53,6 @@ class User extends BaseUser {
 	 */
 	public function getId() {
 		return $this->id;
-	}
-
-	/**
-	 * Set nom
-	 *
-	 * @param string $nom
-	 * @return User
-	 */
-	public function setNom($nom) {
-		$this->nom = $nom;
-	
-		return $this;
-	}
-
-	/**
-	 * Get nom
-	 *
-	 * @return string
-	 */
-	public function getSom() {
-		return $this->nom;
 	}
 
 	/**
@@ -110,24 +77,24 @@ class User extends BaseUser {
 	}
 
 	/**
-	 * Set fmlpass
+	 * Set fmpass
 	 *
-	 * @param string $fmlpass
+	 * @param string $fmpass
 	 * @return User
 	 */
-	public function setFmlpass($fmlpass) {
-		$this->fmlpass = $fmlpass;
+	public function setFmpass($fmpass) {
+		$this->fmpass = $fmpass;
 	
 		return $this;
 	}
 
 	/**
-	 * Get fmlpass
+	 * Get fmpass
 	 *
 	 * @return string 
 	 */
-	public function getfmlpass() {
-		return $this->fmlpass;
+	public function getFmpass() {
+		return $this->fmpass;
 	}
 
 
