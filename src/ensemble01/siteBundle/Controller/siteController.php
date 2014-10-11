@@ -12,8 +12,10 @@ class siteController extends Controller
         return $this->render('ensemble01siteBundle:pages:homepage.html.twig', $data);
     }
 
-    public function menuAction() {
+    public function menuAction($route, $routeparams) {
     	$data = array();
+    	$data['route'] = $route;
+    	$data['routeparams'] = urldecode($routeparams);
         return $this->render('ensemble01siteBundle:menus:menuprincipal.html.twig', $data);
     }
 

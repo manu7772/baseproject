@@ -1,3 +1,8 @@
 <div>MENU PRINCIPAL
+	<br />
+	{% if route != 'ensemble01site_homepage' %}
 	<a href="{{ url('ensemble01site_homepage') }}">Accueil</a>
+	{% else %}
+	<span>Accueil</span>
+	{% endif %}
 </DIV>

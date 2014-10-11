@@ -1,6 +1,7 @@
 {% extends(':public:pageRoot.html.twig') %}
 {% block mainmenu %}
-	{% render(controller('ensemble01siteBundle:site:menu')) %}
+	{% render(controller('ensemble01siteBundle:site:menu', {route: app.request.attributes.get('_route'), routeparams: app.request.attributes.get('_route_params')|url_encode} )) %}
+	{# path(app.request.attributes.get('_route'), my_router_params()|merge({'additional': 'value'}) #}
 {% endblock mainmenu %}
 {% block body %}
 {% endblock body %}
