@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/manu7772/filemakerBundle.git",
-                "reference": "700a718d5db38ae444cc3d7e7da2edefc1c65ee2"
+                "reference": "2a3b738fbb4e3fec5d67018e2608b8e9a75d06e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/manu7772/filemakerBundle/zipball/700a718d5db38ae444cc3d7e7da2edefc1c65ee2",
-                "reference": "700a718d5db38ae444cc3d7e7da2edefc1c65ee2",
+                "url": "https://api.github.com/repos/manu7772/filemakerBundle/zipball/2a3b738fbb4e3fec5d67018e2608b8e9a75d06e6",
+                "reference": "2a3b738fbb4e3fec5d67018e2608b8e9a75d06e6",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             "keywords": [
                 "filemaker application"
             ],
-            "time": "2014-10-08 07:51:36"
+            "time": "2014-10-10 14:34:42"
         },
         {
             "name": "doctrine/annotations",
@@ -777,12 +777,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "3be6e7b86a397be785efee5490a7fc19aeae0381"
+                "reference": "cac56e025c1d2d1fe5acb644e4cafe0830f17150"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/3be6e7b86a397be785efee5490a7fc19aeae0381",
-                "reference": "3be6e7b86a397be785efee5490a7fc19aeae0381",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/cac56e025c1d2d1fe5acb644e4cafe0830f17150",
+                "reference": "cac56e025c1d2d1fe5acb644e4cafe0830f17150",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +836,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2014-10-04 17:10:16"
+            "time": "2014-10-10 08:00:05"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -2001,16 +2001,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.16.0",
+            "version": "v1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "8ce37115802e257a984a82d38254884085060024"
+                "reference": "7c4c01dcf578523cfcddf383641a4f12790270ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
-                "reference": "8ce37115802e257a984a82d38254884085060024",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/7c4c01dcf578523cfcddf383641a4f12790270ec",
+                "reference": "7c4c01dcf578523cfcddf383641a4f12790270ec",
                 "shasum": ""
             },
             "require": {
@@ -2054,7 +2054,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-07-05 12:19:05"
+            "time": "2014-10-10 14:09:53"
         }
     ],
     "packages-dev": [
