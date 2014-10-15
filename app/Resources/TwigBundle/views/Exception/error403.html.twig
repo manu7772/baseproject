@@ -1,0 +1,11 @@
+{% extends('ensemble01siteBundle::pageBaseSite.html.twig') %}
+{% block body %}
+<div class="container messageERR">
+	<div class="messageERR well well-lg col-md-8">
+		<h2>Accès non autorisé</h2>
+		<p>Erreur {{ status_code }} : Vous ne possédez pas les droits pour accéder à cette page.</p>
+		<br />
+		<a class="btn btn-sm btn-danger" href="{{ url('ensemble01site_homepage') }}">Retour à l'accueil</a>
+	</div>
+</div>
+{% endblock body %}
