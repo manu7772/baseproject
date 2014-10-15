@@ -9,6 +9,7 @@ class filemakerController extends fmController {
     public function indexAction($name) {
 		$data = array();
 		$data['fm'] = $this->get('filemaker.database');
+		$data['lieux'] = $data['fm']->getLieux();
         return $this->render('ensemble01filemakerBundle:pages:homepage.html.twig', $data);
     }
 

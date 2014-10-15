@@ -2,7 +2,7 @@
 {% block body %}
 	<div class="container">
 		{% if app.user is not null %}
-		<h3>Bonjour {{ app.user.username }} !</h3>
+		<h3>Bienvenue {{ app.user.username }} !</h3>
 		{% else %}
 		<p>Connectez-vous pour accéder aux fonctionnalités de l'application GEODIAG.</p>
 		{% endif %}
