@@ -1,5 +1,4 @@
 <?php
-
 namespace ensemble01\siteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
