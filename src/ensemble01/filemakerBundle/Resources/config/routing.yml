@@ -1,3 +1,7 @@
 ensemble01filemaker_homepage:
     path:     /{name}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:index, name: "anon." }
+
+ensemble01filemaker_pageweb:
+    path:     /page-web/{page}/{dossier}
+    defaults: { _controller: ensemble01siteBundle:filemaker:pageweb, page: 'homepage', dossier: null }

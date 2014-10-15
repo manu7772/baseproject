@@ -1,3 +1,7 @@
 ensemble01site_homepage:
     path:     /
     defaults: { _controller: ensemble01siteBundle:site:index }
+
+ensemble01site_pageweb:
+    path:     /page-web/{page}/{dossier}
+    defaults: { _controller: ensemble01siteBundle:site:pageweb, page: 'homepage', dossier: null }

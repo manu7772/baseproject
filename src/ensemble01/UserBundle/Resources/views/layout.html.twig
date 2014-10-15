@@ -1,18 +1,13 @@
 {% extends "ensemble01siteBundle::pageBaseSite.html.twig" %}
 
-{% block mainmenu %}
-<div>main menu from log/user :</div>
-{{ parent() }}
-{% endblock mainmenu %}
-
 {% block body %}
 {% if form is defined %}{% form_theme form ':Form:bootstrap-override.html.twig' %}{% endif %}
 <!-- Corps complet sous bandeau-TOP -->
-<div id="container_site">  
+<div id="container_site" class="container">
 
 	<!-- page accueil-->
-	<div class="container_principal_accueil">
-		<div class="ecart"></div>
+	<div class="container_principal_accueil col-md-8">
+		<div class="ecart ecart-12"></div>
 		<div class="FOSutilities">
 			{% block fos_user_content %}
 			{% endblock fos_user_content %}

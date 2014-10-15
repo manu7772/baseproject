@@ -1,14 +1,10 @@
 {% extends('ensemble01siteBundle::pageBaseSite.html.twig') %}
 {% block body %}
-	{% if app.user is not null %}{% set name = "Username" %}{% endif %}
-	Hello {{ name }}!
-	<br />
-	<a href="{{ url('ensemble01filemaker_homepage') }}">Pages statistiques</a>
-	{% if app.user is not null %}
-	<br />
-	<a href="{{ url('fos_user_security_logout') }}">Quitter ma session</a>
-	{% else %}
-	<br />
-	<a href="{{ url('fos_user_security_login') }}">Ouvrir ma session</a>
-	{% endif %}
+	<div class="container">
+		{% if app.user is not null %}
+		<h3>Bonjour {{ app.user.username }} !</h3>
+		{% else %}
+		<p>Connectez-vous pour accéder aux fonctionnalités de l'application GEODIAG.</p>
+		{% endif %}
+	</div>
 {% endblock body %}

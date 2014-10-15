@@ -1,9 +1,8 @@
-{% extends(':public:pageRoot.html.twig') %}
-	{% block body %}
-		<div class="messageERR" title="Page inexistante">
-			<h2>Cette page n'existe pas.</h2>
-			<p>Si cette erreur apparaît alors que vous avez cliqué sur un lien du site, vous pouvez contacter l'administrateur pour l'en informer. Il s'occupera votre problème dans les meilleurs délais.</p>
-			<p></p>
-			<p style="font-size:0.8em;font-style:italic;margin-top:10px;color:#999;">Erreur {{ status_code }} {{ status_text|trans }}</p>
-		</div>
-	{% endblock body %}
+{% extends('ensemble01siteBundle::pageBaseSite.html.twig') %}
+{% block mainmenu %}
+<div style="height:48px;display:block;clear:both;"></div>
+{% endblock mainmenu %}
+
+{% block body %}
+{{ include('TwigBundle:Exception:message404.html.twig') }}
+{% endblock body %}

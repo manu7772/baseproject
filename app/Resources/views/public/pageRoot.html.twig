@@ -6,6 +6,9 @@
         {% block metatitles %}
         {% endblock metatitles %}
         {% stylesheets filter='cssrewrite, lessphp, ?yui_css'
+        '../app/Resources/jquery-ui/jquery-ui.min.css'
+        '../app/Resources/css/bootstrap.min.css'
+        '../app/Resources/css/base-styles.css.less'
          %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
         {% endstylesheets %}
@@ -17,6 +20,10 @@
             <!-- CONTENU DE LA PAGE -->
         {% endblock body %}
         {% javascripts filter='?yui_js'
+        '../app/Resources/js/jquery-2.1.1.min.js'
+        '../app/Resources/jquery-ui/jquery-ui.min.js'
+        '../app/Resources/js/bootstrap.min.js'
+        '../app/Resources/js/base-scripts.js'
          %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}

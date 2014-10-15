@@ -1,7 +1,15 @@
-{% extends(':public:pageRoot.html.twig') %}
-	{% block body %}
-		<div class="messageERR" title="Une erreur est apparue... (type {{ status_code }})">
-			<h2>Le serveur a renvoyé une erreur "{{ status_code }} {{ status_text|trans }}".</h2>
-			<p>Quelque chose ne fonctionne pas. Envoyez un message à [email] et nous prendrons connaissance du problème dans les meilleurs délais. Toutes nos excuses pour ce désagrément.</p>
-		</div>
-	{% endblock body %}
+{% extends('ensemble01siteBundle::pageBaseSite.html.twig') %}
+{% block mainmenu %}
+<div style="height:48px;display:block;clear:both;"></div>
+{% endblock mainmenu %}
+
+{% block body %}
+<div class="container messageERR">
+	<div class="messageERR well well-lg col-md-8">
+		<h2>Le serveur a renvoyé une erreur "{{ status_code }} {{ status_text|trans }}".</h2>
+		<p>Quelque chose ne fonctionne pas. Envoyez un message à l'administrateur et nous prendrons connaissance du problème dans lesmeilleurs délais. Toutes nos excuses pour ce désagrément.</p>
+		<br />
+		<a class="btn btn-sm btn-danger" href="{{ url('ensemble01site_homepage') }}">Retour à l'accueil</a>
+	</div>
+</div>
+{% endblock body %}

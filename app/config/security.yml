@@ -33,4 +33,4 @@ security:
                 key:  %secret%
 
     access_control:
-        - { path: ^/fm, roles: ROLE_EDITOR }
+        - { path: ^/fm, roles: ROLE_USER }

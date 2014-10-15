@@ -1,0 +1,13 @@
+<div class="container messageERR">
+	<div class="messageERR well well-lg col-md-8">
+		<h2>Cette page n'existe pas.</h2>
+		<p>Si cette erreur apparaît alors que vous avez cliqué sur un lien du site, vous pouvez contacter l'administrateur pour l'en informer. Il s'occupera votre 	problème dans les meilleurs délais.</p>
+		{% if (status_code is defined) and (status_text is defined) %}
+		<p style="font-size:0.8em;font-style:italic;margin-top:10px;color:#999;">Erreur {{ status_code }} {{ status_text|trans}}</p>
+		{% else %}
+		<p style="font-size:0.8em;font-style:italic;margin-top:10px;color:#999;">Erreur 404 / Page inexistante</p>
+		{% endif %}
+		<br />
+		<a class="btn btn-sm btn-danger" href="{{ url('ensemble01site_homepage') }}">Retour à l'accueil</a>
+	</div>
+</div>
