@@ -35,6 +35,7 @@ class siteController extends Controller {
 		if(!$this->get('templating')->exists("ensemble01siteBundle:".$dossier.":".$page.".html.twig")) {
 			// si la page n'existe pas, on prend le template de la version par défaut
 			$page = 'error404';
+			$dossier = 'errors';
 		}
 		return "ensemble01siteBundle:".$dossier.":".$page.".html.twig";
 	}

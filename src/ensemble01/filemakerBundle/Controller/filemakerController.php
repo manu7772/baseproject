@@ -7,7 +7,9 @@ use filemakerBundle\Controller\filemakerController as fmController;
 class filemakerController extends fmController {
 
     public function indexAction($name) {
-        return $this->render('ensemble01filemakerBundle:pages:homepage.html.twig', array('name' => $name));
+		$data = array();
+		$data['fm'] = $this->get('filemaker.database');
+        return $this->render('ensemble01filemakerBundle:pages:homepage.html.twig', $data);
     }
 
 	public function pagewebAction($page = null, $dossier = null) {
@@ -34,6 +36,7 @@ class filemakerController extends fmController {
 		if(!$this->get('templating')->exists("ensemble01filemakerBundle:".$dossier.":".$page.".html.twig")) {
 			// si la page n'existe pas, on prend le template de la version par défaut
 			$page = 'error404';
+			$dossier = 'errors';
 		}
 		return "ensemble01filemakerBundle:".$dossier.":".$page.".html.twig";
 	}

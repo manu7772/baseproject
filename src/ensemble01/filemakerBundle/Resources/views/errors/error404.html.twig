@@ -1,6 +1,6 @@
 {% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
 {% block body %}
 	<div class="container">
-		<div class="well">Service : {{ fm.name }}</div>
+		{{ include('TwigBundle:Exception:message404.html.twig') }}
 	</div>
 {% endblock body %}

@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/manu7772/filemakerBundle.git",
-                "reference": "2a3b738fbb4e3fec5d67018e2608b8e9a75d06e6"
+                "reference": "dc582fcf78ffbe6893033f54a963ef2ac06d7c8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/manu7772/filemakerBundle/zipball/2a3b738fbb4e3fec5d67018e2608b8e9a75d06e6",
-                "reference": "2a3b738fbb4e3fec5d67018e2608b8e9a75d06e6",
+                "url": "https://api.github.com/repos/manu7772/filemakerBundle/zipball/dc582fcf78ffbe6893033f54a963ef2ac06d7c8b",
+                "reference": "dc582fcf78ffbe6893033f54a963ef2ac06d7c8b",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             "keywords": [
                 "filemaker application"
             ],
-            "time": "2014-10-10 14:34:42"
+            "time": "2014-10-15 10:53:58"
         },
         {
             "name": "doctrine/annotations",
