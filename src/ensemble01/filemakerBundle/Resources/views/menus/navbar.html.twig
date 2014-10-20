@@ -1,32 +1,37 @@
 {% extends('filemakerBundle:menus:navbar.html.twig') %}
-{% block navbar-brand %}GEODIAG WEB{% endblock navbar-brand %}
+{% block navbarbrand %}
+<a class="navbar-brand" href="{{ url('ensemble01filemaker_homepage') }}">GEODIAG WEB</a>
+{% endblock navbarbrand %}
 
-{% block navbar-menu %}
-<li class="dropdown">
-	<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Rapports <span class="caret"></span></a>
-	<ul class="dropdown-menu" role="menu">
-		<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-generes'}) }}">Générés</a></li>
-		<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-a-traiter'}) }}">À traiter</a></li>
-	</ul>
-</li>
-{% endblock navbar-menu %}
+{% block navbarmenu %}
+	<li>
+		<a href="{{ url('ensemble01site_homepage') }}">Accueil</a>
+	</li>
+	<li class="dropdown">
+		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Rapports <span class="caret"></span></a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-generes'}) }}">Générés</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-a-traiter'}) }}">À traiter</a></li>
+		</ul>
+	</li>
+{% endblock navbarmenu %}
 
-{% block navbar-login-account %}
+{% block navbarloginaccount %}
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-<div class="btn-group navbar-btn navbar-right">
-	<a href="{{ url('fos_user_profile_show') }}" type="button" class="btn btn-danger">{{ app.user.username }}</a>
-	<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-		<span class="caret"></span>
-		<span class="sr-only">{{ app.user.username }}</span>
-	</button>
-	<ul class="dropdown-menu" role="menu">
-		<li><a href="{{ url('fos_user_profile_show') }}">Informations</a></li>
-		<li><a href="{{ url('fos_user_profile_edit') }}">Modifier</a></li>
-		<li class="divider"></li>
-		<li><a href="{{ url('fos_user_security_logout') }}">Quitter</a></li>
-	</ul>
-</div>
-{% else %}
-<a type="button" class="btn btn-primary navbar-btn navbar-right" href="{{ url('fos_user_security_login') }}">Connexion</a>
+	<div class="btn-group navbar-btn navbar-right">
+		<a href="{{ url('fos_user_profile_show') }}" type="button" class="btn btn-danger">{{ app.user.username }}</a>
+		<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+			<span class="caret"></span>
+			<span class="sr-only">{{ app.user.username }}</span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('fos_user_profile_show') }}">Informations</a></li>
+			<li><a href="{{ url('fos_user_profile_edit') }}">Modifier</a></li>
+			<li class="divider"></li>
+			<li><a href="{{ url('fos_user_security_logout') }}">Quitter</a></li>
+		</ul>
+	</div>
+	{% else %}
+	<a type="button" class="btn btn-primary navbar-btn navbar-right" href="{{ url('fos_user_security_login') }}">Connexion</a>
 {% endif %}
-{% endblock navbar-login-account %}
+{% endblock navbarloginaccount %}
