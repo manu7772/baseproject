@@ -17,7 +17,28 @@ class filemakerController extends fmController {
 
 	public function pagewebAction($page = null, $dossier = null) {
 		$data = array();
+		$data["User"] = $this->get('security.context')->getToken()->getUser();
 		$data['page'] = $page;
+		$data['fm'] = $this->get('filemaker.database');
+		$data['fm']->log_user($data["User"]);
+		switch ($page) {
+			case 'liste-lieux':
+				# code...
+				break;
+			case 'liste-locaux':
+				# code...
+				break;
+			case 'liste-layouts':
+				# code...
+				break;
+			case 'liste-databases':
+				# code...
+				break;
+			
+			default:
+				# code...
+				break;
+		}
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
