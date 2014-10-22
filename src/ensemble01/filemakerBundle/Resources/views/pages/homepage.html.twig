@@ -1,9 +1,8 @@
 {% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
 {% block body %}
 	<div class="container">
-		<div class="well">Service : {{ fm.name }}</div>
-	</div>
-	<div class="container">
+		{% if fm.lieux is iterable %}
+		<h3 class="well well-xs">Liste des lieux<br /><small>{{ fm.lieux|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Clé lieu</th>
@@ -24,5 +23,9 @@
 			</tr>
 			{%- endfor %}
 		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des lieux<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ fm.lieux|raw }}</div>
+		{% endif %}
 	</div>
 {% endblock body %}
