@@ -1,8 +1,8 @@
 {% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
 {% block body %}
 	<div class="container">
-		{% if fm.lieux is iterable %}
-		<h3 class="well well-xs">Liste des lieux<br /><small>{{ fm.lieux|length }} résultat(s)</small></h3>
+		{% if lieux is iterable %}
+		<h3 class="well well-xs">Liste des lieux<br /><small>{{ lieux|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Clé lieu</th>
@@ -12,7 +12,7 @@
 				<th>Loc. en serv.</th>
 				<th>Loc. réel</th>
 			</tr>
-			{% for lieu in fm.lieux %}
+			{% for lieu in lieux %}
 			<tr>
 				<td>{{ lieu.getField("cle") }}</td>
 				<td>{{ lieu.getField("NOM_IMMEUBLE")|raw }}</td>
@@ -25,7 +25,7 @@
 		</table>
 		{% else %}
 		<h3 class="well well-xs">Liste des lieux<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ fm.lieux|raw }}</div>
+		<div class="alert alert-danger" role="alert">{{ lieux|raw }}</div>
 		{% endif %}
 	</div>
 {% endblock body %}

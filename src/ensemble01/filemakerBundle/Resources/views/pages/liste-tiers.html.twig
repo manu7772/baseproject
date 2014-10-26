@@ -1,0 +1,30 @@
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% block body %}
+	<div class="container">
+		{% if tiers is iterable %}
+		<h3 class="well well-xs">Liste des tiers<br /><small>{{ tiers|length }} résultat(s)</small></h3>
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Ref</th>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<!-- <th>Ville</th> -->
+				<th>Type</th>
+				<th>Id</th>
+			</tr>
+			{% for tier in tiers %}
+			<tr>
+				<td>{{ tier.getField("ref")|raw }}</td>
+				<td>{{ tier.getField("nom")|raw }}</td>
+				<td>{{ tier.getField("prenom")|raw }}</td>
+				<td>{{ tier.getField("type_tiers")|raw }}</td>
+				<td>{{ tier.getField("id_tiers")|raw }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des tiers<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ tiers|raw }}</div>
+		{% endif %}
+	</div>
+{% endblock body %}

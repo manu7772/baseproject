@@ -1,13 +1,13 @@
 {% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
 {% block body %}
 	<div class="container">
-		{% if fm.layouts is iterable %}
-		<h3 class="well well-xs">Liste des bases de données<br /><small>{{ fm.layouts|length }} résultat(s)</small></h3>
+		{% if layouts is iterable %}
+		<h3 class="well well-xs">Liste des bases de données<br /><small>{{ layouts|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Nom de la base</th>
 			</tr>
-			{% for layout in fm.layouts %}
+			{% for layout in layouts if layout != null %}
 			<tr>
 				<td>{{ layout|raw }}</td>
 			</tr>
@@ -15,7 +15,7 @@
 		</table>
 		{% else %}
 		<h3 class="well well-xs">Liste des bases de données<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ fm.layouts|raw }}</div>
+		<div class="alert alert-danger" role="alert">{{ layouts|raw }}</div>
 		{% endif %}
 	</div>
 {% endblock body %}

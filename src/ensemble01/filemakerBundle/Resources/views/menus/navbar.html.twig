@@ -10,22 +10,25 @@
 	<li class="dropdown">
 		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Lieux/locaux <span class="caret"></span></a>
 		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-affaires'}) }}">Liste des affaires</a></li>
 			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-lieux'}) }}">Liste des lieux</a></li>
 			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-locaux'}) }}">Liste des locaux</a></li>
-		</ul>
-	</li>
-	<li class="dropdown">
-		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Databases <span class="caret"></span></a>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-databases'}) }}">Liste des bases</a></li>
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-layouts'}) }}">Liste des modèles</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers'}) }}">Liste des tiers</a></li>
 		</ul>
 	</li>
 	<li class="dropdown">
 		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Rapports <span class="caret"></span></a>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-generes'}) }}">Générés</a></li>
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-a-traiter'}) }}">À traiter</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete'}) }}">Liste complète</a></li>
+			<!-- <li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'rapports-a-traiter'}) }}">À traiter</a></li> -->
+		</ul>
+	</li>
+	<li class="dropdown">
+		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Data <span class="caret"></span></a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-databases'}) }}">Liste des bases</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-layouts'}) }}">Liste des modèles</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-scripts'}) }}">Liste des scripts</a></li>
 		</ul>
 	</li>
 {% endblock navbarmenu %}

@@ -1,0 +1,29 @@
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% block body %}
+	<div class="container">
+		{% if affaires is iterable %}
+		<h3 class="well well-xs">Liste des affaires<br /><small>{{ affaires|length }} résultat(s)</small></h3>
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Date</th>
+				<th>Intitulé</th>
+				<th>Client</th>
+				<th>En charge</th>
+				<th>Statut</th>
+			</tr>
+			{% for affaire in affaires %}
+			<tr>
+				<td>{{ affaire.getField("date_projet")|raw }}</td>
+				<td>{{ affaire.getField("intitule")|raw }}</td>
+				<td>{{ affaire.getField("client")|raw }}</td>
+				<td>{{ affaire.getField("Fk_Id_ChargeAffaire")|raw }}</td>
+				<td>{{ affaire.getField("Etat")|raw }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des affaires<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ affaires|raw }}</div>
+		{% endif %}
+	</div>
+{% endblock body %}

@@ -2,6 +2,9 @@
 namespace ensemble01\siteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use labo\Bundle\TestmanuBundle\services\aetools\aeReponse;
 
 class siteController extends Controller {
 

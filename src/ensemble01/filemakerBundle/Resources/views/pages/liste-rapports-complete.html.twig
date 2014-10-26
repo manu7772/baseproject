@@ -1,0 +1,25 @@
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% block body %}
+	<div class="container">
+		{% if rapportsall is iterable %}
+		<h3 class="well well-xs">Liste complète des rapports<br /><small>{{ rapportsall|length }} résultat(s)</small></h3>
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Actions</th>
+				<th>Id</th>
+				<th>Référence</th>
+			</tr>
+			{% for key,rapp in rapportsall %}
+			<tr>
+				<td><a href="{{ url('ensemble01filemaker_PDFgenerateRapport', {type: 'DAPP', id: rapp.id}) }}" class="btn btn-xs btn-alert">Générer DAPP {{ rapp.ref }}</a></td>
+				<td>{{ rapp.id }}</td>
+				<td>{{ rapp.ref }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des rapports<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ rapportsall|raw }}</div>
+		{% endif %}
+	</div>
+{% endblock body %}

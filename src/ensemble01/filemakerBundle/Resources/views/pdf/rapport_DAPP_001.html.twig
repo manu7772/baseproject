@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<style type="text/css">
+	@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,700);
+	* {
+		font-family: 'Ubuntu';
+		color: #000;
+	}
+	body {
+		margin: 0px;
+		padding: 0px;
+	}
+	.ital {
+		font-style: italic;
+	}
+	.center {
+		text-align: center;
+	}
+	.left {
+		text-align: left;
+	}
+	.right {
+		text-align: right;
+	}
+	div.container {
+		width: 100%;
+		margin: 0px;
+		padding: 0px;
+	}
+	h1 {
+		font-size: 24px;
+		font-weight: 700;
+		text-align: center;
+		width: 100%;
+		margin: 8px auto;
+	}
+	div.bloc1 {
+		width: 100%;
+		border: 1px solid #333;
+		border-radius: 3px;
+		padding: 8px 0px;
+		margin: 12px auto;
+	}
+	div.bloc1 p {
+		width: 100%;
+		font-size: 12px;
+		line-height: 12px;
+		letter-spacing: -1px;
+		color: #000;
+		text-align: center;
+		margin: 8px auto;
+	}
+	table.type1 {
+		display: block;
+		width: 100%;
+		margin: 12px auto;
+		border-collapse: collapse;
+		border-radius: 3px;
+	}
+	table.type1, table.type1 th, table.type1 td {
+		border: 1px solid #333;
+	}
+	table.type1 tr {
+		width: 100%;
+	}
+	table.type1 td {
+		color: #333;
+		font-size: 11px;
+		text-align: left;
+		vertical-align: top;
+		padding: 4px;
+		width: 50%;
+	}
+	table.type1 th, .thead td {
+		background-color: #545592;
+		color: #FFF;
+		text-align: center;
+		vertical-align: middle;
+		padding: 4px;
+		font-size: 14px;
+		font-weight: bolder;
+		width: 50%;
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="bloc1">
+			<h1>DOSSIER AMIANTE – PARTIES PRIVATIVES</h1>
+			<p>Conformément au décret n°2011-629 du 3 juin 2011 et aux articles R.1334-16,<br />R.1334-29-4 et R.1337-3 du Code de la santé publique</p>
+			<p>Référence rapport : {{ ref }}</p>
+		</div>
+
+		<table class="type1">
+			<tr>
+				<th colspan="2">Immeuble visité</th>
+			</tr>
+			<tr>
+				<td>Adresse</td>
+				<td>Immeuble d’habitations « GAUGUIN »<br />65 rue du Roumois<br />27310 BOURG ACHARD</td>
+			</tr>
+			<tr>
+				<td>Type de logement</td>
+				<td>Appartements</td>
+			</tr>
+			<tr>
+				<td>Année de construction</td>
+				<td>1987</td>
+			</tr>
+			<tr>
+				<td>Locaux visés par le rapport de repérage des matériaux et produits de la liste A</td>
+				<td>Appartements N° 1 à 15</td>
+			</tr>
+		</table>
+
+		<table class="type1">
+			<tr>
+				<th>Commanditaire</th>
+				<th>Société de contrôle</th>
+			</tr>
+			<tr>
+				<td>SILOGE<br />6bis Boulevard Chambaudoin<br />27009 EVREUX<br />Tél : 02 32 38 88 88</td>
+				<td>GEODEM - Agence Normandie<br />137, route d’Elbeuf<br />27520 BOURGTHEROULDE<br />Tél : 02 32 82 37 20</td>
+			</tr>
+			<tr class="thead">
+				<td>Représentant</td>
+				<td>Représentant</td>
+			</tr>
+			<tr>
+				<td class="center">Monsieur DU TRANOY<br /><i>Ingénieur Travaux</i></td>
+				<td class="center">Nicolas LEGENDRE<br /><i>Directeur Opérationnel</i></td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>

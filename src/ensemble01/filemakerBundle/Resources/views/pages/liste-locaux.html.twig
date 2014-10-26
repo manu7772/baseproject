@@ -1,8 +1,8 @@
 {% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
 {% block body %}
 	<div class="container">
-		{% if fm.locauxByLieux is iterable %}
-		<h3 class="well well-xs">Liste des Lieux<br /><small>{{ fm.locauxByLieux|length }} résultat(s)</small></h3>
+		{% if locauxByLieux is iterable %}
+		<h3 class="well well-xs">Liste des locaux<br /><small>{{ locauxByLieux|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Clé local</th>
@@ -10,18 +10,18 @@
 				<th>Porte</th>
 				<th>Nb pièces</th>
 			</tr>
-			{% for lieu in fm.locauxByLieux %}
+			{% for local in locauxByLieux %}
 			<tr>
-				<td>{{ lieu.getField("ref_local")|raw }}</td>
-				<td>{{ lieu.getField("etage")|raw }}</td>
-				<td>{{ lieu.getField("num_porte")|raw }}</td>
-				<td>{{ lieu.getField("nb_pieces")|raw }}</td>
+				<td>{{ local.getField("ref_local")|raw }}</td>
+				<td>{{ local.getField("etage")|raw }}</td>
+				<td>{{ local.getField("num_porte")|raw }}</td>
+				<td>{{ local.getField("nb_pieces")|raw }}</td>
 			</tr>
 			{%- endfor %}
 		</table>
 		{% else %}
 		<h3 class="well well-xs">Liste des locaux<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ fm.locauxByLieux|raw }}</div>
+		<div class="alert alert-danger" role="alert">{{ locauxByLieux|raw }}</div>
 		{% endif %}
 	</div>
 {% endblock body %}
