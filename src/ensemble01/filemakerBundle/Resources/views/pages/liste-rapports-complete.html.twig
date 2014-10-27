@@ -11,7 +11,7 @@
 			</tr>
 			{% for key,rapp in rapportsall %}
 			<tr>
-				<td><a href="{{ url('ensemble01filemaker_PDFgenerateRapport', {type: 'DAPP', id: rapp.id}) }}" class="btn btn-xs btn-alert">Générer DAPP {{ rapp.ref }}</a></td>
+				<td><a href="{{ url('ensemble01filemaker_PDFgenerateRapport', {type: 'DAPP', id: rapp.id}) }}" class="btn btn-xs btn-alert URLext">Générer DAPP {{ rapp.ref }}</a></td>
 				<td>{{ rapp.id }}</td>
 				<td>{{ rapp.ref }}</td>
 			</tr>
