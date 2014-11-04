@@ -1,3 +1,5 @@
+jQuery(document).ready(function($) {
+
 	/* **************************************************** */
 	/* Liens externes -> dans une nouvelle fenêtre
 	/* **************************************************** */
@@ -28,3 +30,41 @@
 	// 	event.preventDefault();
 	// 	return false;
 	// });
+
+	/* **************************************************** */
+	/* GESTION DES MESSAGES EN POP-IN / MODALES
+	/* **************************************************** */
+	if($(".messages >p").length) {
+		$(".messages").dialog({
+			autoOpen: true,
+			width: 380,
+			height: "auto",
+			minHeight: 120,
+			maxHeight: 500,
+			minWidth: 400,
+			maxWidth: 600,
+			modal: true,
+			closeText: 'Fermer',
+			draggable: true,
+			resizable: false,
+			// dialogClass: "testss",
+			// position: ["center", 250],
+			// dialogClass: "RedTitleStuff",
+			buttons: {
+				"Fermer": function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+		setTimeout(function() { $(".messages").dialog('close'); }, 6000);
+		$(".messages").bind('clickoutside', function(e) {
+			$target = $(e.target);
+			if (!$target.filter('.hint').length && !$target.filter('.hintclickicon').length) {
+				$(this).dialog('close');
+			}
+		});
+	}
+
+});
+
+
