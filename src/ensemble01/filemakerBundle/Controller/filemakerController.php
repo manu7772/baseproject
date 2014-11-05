@@ -58,25 +58,27 @@ class filemakerController extends fmController {
 				$data['scripts'][$actual_niv] = array();
 				$data['nb_scripts'] = 0;
 				$list = $_fm->getScripts();
-				foreach($list as $nom) {
-					if(substr($nom, 0, strlen($end)) === $end) {
-						// fin sous-catégorie
-						// $nomm = substr($nom, 3);
-						$actual_niv = $default_niv;
-					} else if(substr($nom, 0, strlen($beg)) === $beg) {
-						// début sous-catégorie
-						$nomm = substr($nom, strlen($beg));
-						$actual_niv = $nomm;
-						$data['scripts'][$actual_niv] = array();
-					} else if($nom !== null) {
-						// $sup = " (".ord($nom[0])."|".ord($nom[1])."|".ord($nom[2])." + ".ord($nom[3])."|".ord($nom[4]).")";
-						$data['scripts'][$actual_niv][] = $nom;
-						$data['nb_scripts']++;
+				if(!is_string($list)) {
+					foreach($list as $nom) {
+						if(substr($nom, 0, strlen($end)) === $end) {
+							// fin sous-catégorie
+							// $nomm = substr($nom, 3);
+							$actual_niv = $default_niv;
+						} else if(substr($nom, 0, strlen($beg)) === $beg) {
+							// début sous-catégorie
+							$nomm = substr($nom, strlen($beg));
+							$actual_niv = $nomm;
+							$data['scripts'][$actual_niv] = array();
+						} else if($nom !== null) {
+							// $sup = " (".ord($nom[0])."|".ord($nom[1])."|".ord($nom[2])." + ".ord($nom[3])."|".ord($nom[4]).")";
+							$data['scripts'][$actual_niv][] = $nom;
+							$data['nb_scripts']++;
+						}
 					}
-				}
-				if(count($data['scripts'][$default_niv]) < 1) {
-					$data['scripts'][$default_niv] = null;
-					unset($data['scripts'][$default_niv]);
+					if(count($data['scripts'][$default_niv]) < 1) {
+						$data['scripts'][$default_niv] = null;
+						unset($data['scripts'][$default_niv]);
+					}
 				}
 				break;
 			case 'liste-databases':
