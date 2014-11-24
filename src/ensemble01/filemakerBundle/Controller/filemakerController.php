@@ -102,19 +102,47 @@ class filemakerController extends fmController {
 	}
 
 
-	public function PDF_generate_rapportAction($id = null) {
+	public function generate_rapportAction($id, $type, $mode, $format) {
 		$data = array();
 		$data["id"] = $id;
-		$data["ref"] = $id."-1855-DAPP";
-		$filePDF = __DIR__.'/../../../../app/Resources/tools/html2pdf/html2pdf.class.php';
-		if(!file_exists($filePDF)) die('Service HTML2PDF non trouvé !');
-		require_once($filePDF);
-		$html2pdf = new \HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 8, 10, 10));
-		$html2pdf->pdf->SetDisplayMode('fullpage');
-		$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $data);
-		$html2pdf->writeHTML($html, false);
-		$html2pdf->Output('test'.'.pdf');
-		return new Response();
+		$data["ref_rapport"] = $id."-1855-".$type;
+		$data["nom_logo_geodem"] = 'LogoGeodem.png';
+		$data["local"]["adresse"] = "11 rue des hérissons";
+		$data["local"]["cp"] = "27000";
+		$data["local"]["ville"] = "EVREUX";
+		$data["type_logement"] = "T4";
+		$data["annee_construction"] = "≤ 1998";
+		$data["commanditaire"]["nom"] = "SILOGE";
+		$data["commanditaire"]["adresse"] = "6bis Boulevard Chambaudoin";
+		$data["commanditaire"]["cp"] = "27009";
+		$data["commanditaire"]["ville"] = "EVREUX";
+		$data["commanditaire"]["telephone"] = "02 32 38 88 88";
+		$data["commanditaire"]["representant"]["civilite"] = "Monsieur";
+		$data["commanditaire"]["representant"]["nom"] = "DU TRANOY";
+		$data["commanditaire"]["representant"]["prenom"] = "";
+		$data["commanditaire"]["representant"]["fonction"] = "Ingénieur Travaux";
+		$data["societe"]["representant"]["civilite"] = "Monsieur";
+		$data["societe"]["representant"]["nom"] = "LEGENDRE";
+		$data["societe"]["representant"]["prenom"] = "Nicolas";
+		$data["societe"]["representant"]["fonction"] = "Directeur Opérationnel";
+		 
+		switch(strtolower($format)) {
+			case 'html':
+				return $this->render("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
+				break;
+			default:
+				$filePDF = __DIR__.'/../../../../app/Resources/tools/html2pdf/html2pdf.class.php';
+				if(!file_exists($filePDF)) die('Service HTML2PDF non trouvé !');
+				require_once($filePDF);
+				$html2pdf = new \HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 8, 10, 10));
+				$html2pdf->pdf->SetDisplayMode('fullpage');
+				// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $data);
+				$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
+				$html2pdf->writeHTML($html, false);
+				$html2pdf->Output($data["ref_rapport"].'.pdf');
+				return new Response();
+				break;
+		}
 
 		// return new Response($content, 200, array(
 		// 	'Content-Type' => 'application/force-download',
@@ -122,6 +150,7 @@ class filemakerController extends fmController {
 		// 	)
 		// );
 	}
+
 
 
 	//////////////////////////
