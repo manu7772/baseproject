@@ -11,7 +11,24 @@
 			</tr>
 			{% for key,rapp in rapportsall %}
 			<tr>
-				<td><a href="{{ url('ensemble01filemaker_PDFgenerateRapport', {type: 'DAPP', id: rapp.id}) }}" class="btn btn-xs btn-alert URLext">Générer DAPP {{ rapp.ref }}</a></td>
+				<td>
+					{% for rapport in ['RDM-DAPP', 'DAPP'] %}
+					<div class="btn-group">
+						<a href="{{ url('ensemble01filemaker_generateRapport', {id: rapp.id}) }}" type="button" class="btn btn-default btn-xs URLext">Générer {{ rapport }}</a>
+						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<span class="caret"></span>
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'pdf', type: rapport, id: rapp.id}) }}">Export PDF</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'pdf', type: rapport, id: rapp.id}) }}">Visualiser PDF</a></li>
+							<li class="divider"></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'html', type: rapport, id: rapp.id}) }}">Export HTML</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'html', type: rapport, id: rapp.id}) }}">Visualiser HTML</a></li>
+						</ul>
+					</div>
+					{% endfor %}
+				</td>
 				<td>{{ rapp.id }}</td>
 				<td>{{ rapp.ref }}</td>
 			</tr>

@@ -6,6 +6,6 @@ ensemble01filemaker_pageweb:
     path:     /page-web/{page}/{dossier}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:pageweb, page: 'homepage', dossier: null }
 
-ensemble01filemaker_PDFgenerateRapport:
-    path:     /pdf/rapport/{type}-{id}/test.pdf
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:PDF_generate_rapport}
+ensemble01filemaker_generateRapport:
+    path:     /rapport/{id}/{type}/{mode}-{format}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "view", format: "pdf", type: "RDM-DAPP"}
