@@ -5,17 +5,13 @@
 		<h3 class="well well-xs">Liste des locaux<br /><small>{{ locauxByLieux|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
-				<th>Clé local</th>
-				<th>Étage</th>
-				<th>Porte</th>
-				<th>Nb pièces</th>
+				<th>Fk_Id_Local</th>
+				<th>Fk_Id_Lieu</th>
 			</tr>
 			{% for local in locauxByLieux %}
 			<tr>
-				<td>{{ local.getField("ref_local")|raw }}</td>
-				<td>{{ local.getField("etage")|raw }}</td>
-				<td>{{ local.getField("num_porte")|raw }}</td>
-				<td>{{ local.getField("nb_pieces")|raw }}</td>
+				<td>{{ local.getField("Fk_Id_Local")|raw }}</td>
+				<td>{{ local.getField("Fk_Id_Lieu")|raw }}</td>
 			</tr>
 			{%- endfor %}
 		</table>

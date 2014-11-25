@@ -35,7 +35,7 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-locaux':
 				// liste des locaux
-				$data['locauxByLieux'] = $_fm->getLocauxByLieux();
+				$data['locauxByLieux'] = $_fm->getRapports();
 				break;
 			case 'liste-layouts':
 				// liste des modèles
