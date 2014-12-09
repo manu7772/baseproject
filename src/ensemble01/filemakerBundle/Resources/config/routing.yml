@@ -1,3 +1,5 @@
+### PAGES ###
+
 ensemble01filemaker_homepage:
     path:     /
     defaults: { _controller: ensemble01filemakerBundle:filemaker:index }
@@ -6,6 +8,24 @@ ensemble01filemaker_pageweb:
     path:     /page-web/{page}/{dossier}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:pageweb, page: 'homepage', dossier: null }
 
+
+### MANIPULATION DES DONNÉES FM ###
+
+ensemble01filemaker_changeserver:
+    path:     /change-fm-server/{servernom}/{page}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:changeserver, page: 'homepage' }
+
+ensemble01filemaker_changebase:
+    path:     /change-fm-base/{basenom}/{page}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:changebase, page: 'homepage' }
+
+
+### GÉNÉRATION DES RAPPORTS ###
+
 ensemble01filemaker_generateRapport:
     path:     /rapport/{id}/{type}/{mode}-{format}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "view", format: "pdf", type: "RDM-DAPP"}
+
+ensemble01filemaker_traiteRapports:
+    path:     /traitement-rapports
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:traitement_rapports }

@@ -1,0 +1,59 @@
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% block body %}
+	<div class="container">
+		{% if locauxByLieux is iterable %}
+		<h3 class="well well-xs">Traitemement des rapports<br /><small>{{ locauxByLieux|length }} rapports à traiter…</small></h3>
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Id Rapport</th>
+				<td style='text-align:center;'>
+					<strong style='color:#111;'>Resultat</strong>
+				</th>
+				<th>Adresse logement</th>
+				<th>Client</th>
+			</tr>
+			{% for local in locauxByLieux %}
+			<tr>
+				<td>{{ local.getField("id")|raw }}</td>
+				<td style='text-align:center;'>
+					<button type="button" class="btn btn-default btn-xs">
+						{% if result[local.getField("id")] == true %}
+						<span style="color:green;">O</span>
+						{% else %}
+						<span style="color:red;">X</span>
+						{% endif %}
+					</button>
+				</td>
+				<td>{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}</td>
+				<td>{{ local.getField("client")|raw }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des rapports<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ locauxByLieux|raw }}</div>
+		{% endif %}
+
+		{% if LieuxInRapport is iterable %}
+		<h3 class="well well-xs">Nombre de lieux : {{ LieuxInRapport|length }}</h3>
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Cle lieu</th>
+				<th>Nom immeuble</th>
+			</tr>
+			{% for lieu in LieuxInRapport %}
+			<tr>
+				<td>{{ lieu.getField("Lieu_Copie::cle")|raw }}</td>
+				<!-- <td>{{ lieu.getField("nom_immeuble")|raw }}</td> -->
+				<td>{{ lieu.getField("Lieu_Copie::cle")|raw }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des Lieux<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ LieuxInRapport|raw }}</div>
+		{% endif %}
+
+	</div>
+{% endblock body %}
+

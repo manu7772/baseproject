@@ -1,42 +1,51 @@
 {% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
 {% block body %}
 	<div class="container">
-		{% if rapportsall is iterable %}
-		<h3 class="well well-xs">Liste complète des rapports<br /><small>{{ rapportsall|length }} résultat(s)</small></h3>
+		{% if locauxByLieux is iterable %}
+		<h3 class="well well-xs">Liste complète des rapports<br /><small>{{ locauxByLieux|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Actions</th>
-				<th>Id</th>
-				<th>Référence</th>
+				<!-- <th>Id Local</th> -->
+				<!-- <th>Id Lieu</th> -->
+				<th>Adresse logement</th>
+				<th>Id Rapport</th>
+				<th>Client</th>
 			</tr>
-			{% for key,rapp in rapportsall %}
+			{% for local in locauxByLieux %}
 			<tr>
 				<td>
-					{% for rapport in ['RDM-DAPP', 'DAPP'] %}
+					{% if local.getField('a_traiter') == "0" %}
+					{% for rapport in ['RDM-DAPP'] %}
+					{% set idrapport = local.getField('id') %}
 					<div class="btn-group">
-						<a href="{{ url('ensemble01filemaker_generateRapport', {id: rapp.id}) }}" type="button" class="btn btn-default btn-xs URLext">Générer {{ rapport }}</a>
+						<a href="{{ url('ensemble01filemaker_generateRapport', {id: idrapport}) }}" type="button" class="btn btn-default btn-xs URLext">Générer {{ local.getField("id")|raw }}</a>
 						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							<span class="caret"></span>
 							<span class="sr-only">Toggle Dropdown</span>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'pdf', type: rapport, id: rapp.id}) }}">Export PDF</a></li>
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'pdf', type: rapport, id: rapp.id}) }}">Visualiser PDF</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'pdf', type: rapport, id: idrapport}) }}">Export PDF</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'pdf', type: rapport, id: idrapport}) }}">Visualiser PDF</a></li>
 							<li class="divider"></li>
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'html', type: rapport, id: rapp.id}) }}">Export HTML</a></li>
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'html', type: rapport, id: rapp.id}) }}">Visualiser HTML</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'html', type: rapport, id: idrapport}) }}">Export HTML</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'html', type: rapport, id: idrapport}) }}">Visualiser HTML</a></li>
 						</ul>
 					</div>
 					{% endfor %}
+					{% endif%}
 				</td>
-				<td>{{ rapp.id }}</td>
-				<td>{{ rapp.ref }}</td>
+				<!-- <td>{{ local.getField("Fk_Id_Local")|raw }}</td> -->
+				<!-- <td>{{ local.getField("Fk_Id_Lieu")|raw }}</td> -->
+				<td>{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}</td>
+				<td>{{ local.getField("id")|raw }}</td>
+				<td>{{ local.getField("client")|raw }}</td>
 			</tr>
 			{%- endfor %}
 		</table>
 		{% else %}
 		<h3 class="well well-xs">Liste des rapports<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ rapportsall|raw }}</div>
+		<div class="alert alert-danger" role="alert">{{ locauxByLieux|raw }}</div>
 		{% endif %}
 	</div>
 {% endblock body %}
