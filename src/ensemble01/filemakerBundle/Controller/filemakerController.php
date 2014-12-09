@@ -73,6 +73,8 @@ class filemakerController extends fmController {
 						$data['scripts'][$default_niv] = null;
 						unset($data['scripts'][$default_niv]);
 					}
+				} else {
+					$data['scripts'] = $list;
 				}
 				break;
 			case 'liste-databases':
