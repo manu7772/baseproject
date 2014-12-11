@@ -9,39 +9,75 @@ use labo\Bundle\TestmanuBundle\services\aetools\aeReponse;
 
 class filemakerController extends fmController {
 
-    public function indexAction() {
-    	return $this->pagewebAction('homepage');
-    }
+	protected $_fm;	// service filemakerservice
 
-	public function pagewebAction($page = null, $dossier = null) {
+	public function indexAction() {
+		return $this->pagewebAction('homepage');
+	}
+
+	protected function initFM($datt = null) {
+		if(is_string($datt)) $datt = array($datt);
 		$data = array();
+		foreach($datt as $nom => $val) $data[$nom] = $val;
+		// init User
 		$data["User"] = $this->get('security.context')->getToken()->getUser();
-		$data["page"] = $page;
-		$_fm = $this->get('filemaker.database');
-		// $_fm->log_user($data["User"]);
+		$this->_fm = $this->get('ensemble01services.geodiag');
+		$this->_fm->log_user($data["User"]);
+		return $data;
+	}
+
+	protected function actionsRequest() {
+		$request = $this->getRequest();
+		// Reload fm data
+		if($request->query->get('fmreload') === "reload") $this->_fm->reinitService();
+		// Change server
+		if(is_string($request->query->get('serverchange'))) $this->_fm->setCurrentSERVER($request->query->get('serverchange'));
+		// Change base
+		if(is_string($request->query->get('basechange'))) $this->_fm->setCurrentBASE(null, $request->query->get('basechange'));
+	}
+
+	public function pagewebAction($page = null, $pagedata = null) {
+		$pagedata = $this->compileData($pagedata);
+		$data = $this->initFM(array("page" => $page));
+		// actions GET
+		$this->actionsRequest();
+		// actions en fonction de données $pagedata
+		if(is_array($pagedata)) {
+			foreach($pagedata as $nom => $val) {
+				switch ($nom) {
+					case 'fmreload':
+						if($val === "reload") $this->_fm->reinitService();
+						break;
+					default:
+						# code...
+						break;
+				}
+			}
+		}
+		// données en fonction de la page
 		switch ($page) {
 			case 'liste-rapports-complete':
-				$data['locauxByLieux'] = $_fm->getRapports($dossier);
+				$data['locauxByLieux'] = $this->_fm->getRapports($dossier);
 				break;
 			case 'liste-lieux':
 				// liste des lieux
-				$data['lieux'] = $_fm->getLieux();
+				$data['lieux'] = $this->_fm->getLieux();
 				break;
 			case 'liste-locaux':
 				// liste des locaux
-				$data['locauxByLieux'] = $_fm->getRapports();
+				$data['locauxByLieux'] = $this->_fm->getRapports();
 				break;
 			case 'liste-layouts':
 				// liste des modèles
-				$data['layouts'] = $_fm->getLayouts();
+				$data['layouts'] = $this->_fm->getLayouts();
 				break;
 			case 'liste-affaires':
 				// liste des affaires
-				$data['affaires'] = $_fm->getAffaires();
+				$data['affaires'] = $this->_fm->getAffaires();
 				break;
 			case 'liste-tiers':
 				// liste des tiers
-				$data['tiers'] = $_fm->getTiers();
+				$data['tiers'] = $this->_fm->getTiers();
 				break;
 			case 'liste-scripts':
 				// liste des scripts - regroupés par dossiers
@@ -51,7 +87,7 @@ class filemakerController extends fmController {
 				$actual_niv = $default_niv;
 				$data['scripts'][$actual_niv] = array();
 				$data['nb_scripts'] = 0;
-				$list = $_fm->getScripts();
+				$list = $this->_fm->getScripts();
 				if(!is_string($list)) {
 					foreach($list as $nom) {
 						if(substr($nom, 0, strlen($end)) === $end) {
@@ -79,11 +115,11 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-databases':
 				// liste des bases de données FM
-				$data['databases'] = $_fm->getDatabases();
+				$data['databases'] = $this->_fm->getDatabases();
 				break;
 			case 'liste-servers':
 				// liste des bases de données FM
-				$data['servers'] = $_fm->getListOfServersNames();
+				$data['servers'] = $this->_fm->getListOfServersNames();
 				break;
 			
 			default: // homepage, ou null
@@ -101,10 +137,8 @@ class filemakerController extends fmController {
 	 * @return Response
 	 */
 	public function changeserverAction($servernom, $page = "homepage") {
-		$data = array();
-		$data["User"] = $this->get('security.context')->getToken()->getUser();
-		$data["page"] = $page;
-		$_fm = $this->get('filemaker.database')->setCurrentSERVER($servernom);
+		$data = $this->initFM(array("page" => $page));
+		$this->_fm->setCurrentSERVER($servernom);
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
@@ -115,10 +149,8 @@ class filemakerController extends fmController {
 	 * @return Response
 	 */
 	public function changebaseAction($basenom, $page = "homepage") {
-		$data = array();
-		$data["User"] = $this->get('security.context')->getToken()->getUser();
-		$data["page"] = $page;
-		$_fm = $this->get('filemaker.database')->setCurrentBASE(null, $basenom);
+		$data = $this->initFM(array("page" => $page));
+		$this->_fm->setCurrentBASE(null, $basenom);
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
@@ -127,14 +159,10 @@ class filemakerController extends fmController {
 	 * Traite tous les rapports en BDD FM
 	 */
 	public function traitement_rapportsAction() {
-		$data = array();
-		$data["User"] = $this->get('security.context')->getToken()->getUser();
-		$data["page"] = $page;
-		$_fm = $this->get('filemaker.database');
-		$_fm->log_user($data["User"]);
+		$data = $this->initFM(array("page" => 'result-rapports'));
 
-		$data['locauxByLieux'] = $_fm->getRapports(0);
-		$data['LieuxInRapport'] = $_fm->getRapportsLieux();
+		$data['locauxByLieux'] = $this->_fm->getRapports(0);
+		$data['LieuxInRapport'] = $this->_fm->getRapportsLieux();
 
 		$data['result'] = array();
 		foreach ($data['locauxByLieux'] as $key => $rapport) {
@@ -145,7 +173,7 @@ class filemakerController extends fmController {
 				else $data['result'][$id] = true;
 		}
 
-		return $this->render('ensemble01filemakerBundle:pages:result-rapports.html.twig', $data);
+		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
 	/**
@@ -252,6 +280,17 @@ class filemakerController extends fmController {
 	//////////////////////////
 	// Autres fonctions
 	//////////////////////////
+
+	/**
+	 * compile les données $pagedata passées dans pageweb (ou pagemodale)
+	 * @param string $pagedata
+	 * @return string/array selon le type de données
+	 */
+	private function compileData($pagedata) {
+		$pd = json_decode($pagedata, true);
+		if($pd !== null) $pagedata = $pd;
+		return $pagedata;
+	}
 
 	private function verifVersionPage($page, $dossier = "pages") {
 		if(!$this->get('templating')->exists("ensemble01filemakerBundle:".$dossier.":".$page.".html.twig")) {

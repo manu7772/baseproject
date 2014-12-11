@@ -3,7 +3,7 @@
 {% block body %}
 	<div class="container">
 		{% if scripts is iterable %}
-		<h3 class="well well-xs">Liste des scripts de la base {{ fmdev['Base courante'] }}<br /><small>{{ nb_scripts }} résultat(s)</small></h3>
+		<h3 class="well well-xs">Liste des scripts de la base {{ fmdev['Base courante'] }} <small>de {{ fmdev['Serveur courant'] }}</small><br /><small>{{ nb_scripts }} résultat(s)</small></h3>
 		{% for key,groups in scripts %}
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">

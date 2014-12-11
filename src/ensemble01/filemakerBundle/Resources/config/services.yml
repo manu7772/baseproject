@@ -2,3 +2,7 @@ services:
 #    ensemble01filemaker.example:
 #        class: ensemble01\filemakerBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    ensemble01services.geodiag:
+        class: ensemble01\services\geodiag
+        arguments: [@service_container]

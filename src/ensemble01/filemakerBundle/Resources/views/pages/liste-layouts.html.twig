@@ -3,7 +3,7 @@
 {% block body %}
 	<div class="container">
 		{% if layouts is iterable %}
-		<h3 class="well well-xs">Liste des modèles de la base {{ fmdev['Base courante'] }}<br /><small>{{ layouts|length }} résultat(s)</small></h3>
+		<h3 class="well well-xs">Liste des modèles de la base {{ fmdev['Base courante'] }} <small>de {{ fmdev['Serveur courant'] }}</small><br /><small>{{ layouts|length }} résultat(s)</small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Base <strong>{{ fmdev['Base courante'] }}</strong></th>
