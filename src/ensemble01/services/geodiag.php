@@ -13,24 +13,6 @@ class geodiag extends fms {
 	// *************************
 
 	/**
-	 * Renvoie la liste des données demandées dans le modèle $model
-	 * @param string $model - nom du modèle
-	 * @return array ou string si erreur
-	 */
-	public function getData($model, $BASEnom = null, $SERVnom = null) {
-		if($BASEnom === null) $BASEnom = $this->getCurrentBASE();
-		if($SERVnom === null) $SERVnom = $this->getCurrentSERVER();
-		if($this->setCurrentSERVER($SERVnom) === false) return 'Serveur '.$SERVnom." absent. Impossible d'accéder aux données";
-		if($this->setCurrentBASE($BASEnom) === false) return 'Base '.$BASEnom." absente. Impossible d'accéder aux données";
-		if(!$this->layoutExists($model)) return "Modèle \"".$model."\" absent. Impossible d'accéder aux données.";
-		if(!$this->isUserLogged() === true) return "Utilisateur non connecté.";
-		if(!is_object($this->FMbaseUser)) return "Objet FileMaker non initialisé.";
-		// Create FileMaker_Command_Find on layout to search
-		$this->FMfind =& $this->FMbaseUser->newFindAllCommand($model);
-		return $this->getRecords($this->FMfind->execute());
-	}
-
-	/**
 	 * Renvoie la liste des lieux
 	 * @return array
 	 */
