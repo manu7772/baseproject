@@ -5,8 +5,8 @@ ensemble01filemaker_homepage:
     defaults: { _controller: ensemble01filemakerBundle:filemaker:index }
 
 ensemble01filemaker_pageweb:
-    path:     /page-web/{page}/{dossier}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:pageweb, page: 'homepage', dossier: null }
+    path:     /page-web/{page}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:pageweb, page: 'homepage', pagedata: null }
 
 
 ### MANIPULATION DES DONNÉES FM ###

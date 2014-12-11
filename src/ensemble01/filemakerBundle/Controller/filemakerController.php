@@ -33,11 +33,12 @@ class filemakerController extends fmController {
 		// Change server
 		if(is_string($request->query->get('serverchange'))) $this->_fm->setCurrentSERVER($request->query->get('serverchange'));
 		// Change base
-		if(is_string($request->query->get('basechange'))) $this->_fm->setCurrentBASE(null, $request->query->get('basechange'));
+		if(is_string($request->query->get('basechange'))) $this->_fm->setCurrentBASE($request->query->get('basechange'), null);
 	}
 
 	public function pagewebAction($page = null, $pagedata = null) {
 		$pagedata = $this->compileData($pagedata);
+		// var_dump($pagedata);
 		$data = $this->initFM(array("page" => $page));
 		// actions GET
 		$this->actionsRequest();
@@ -57,7 +58,7 @@ class filemakerController extends fmController {
 		// données en fonction de la page
 		switch ($page) {
 			case 'liste-rapports-complete':
-				$data['locauxByLieux'] = $this->_fm->getRapports($dossier);
+				$data['locauxByLieux'] = $this->_fm->getRapports($pagedata);
 				break;
 			case 'liste-lieux':
 				// liste des lieux
@@ -73,7 +74,10 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-affaires':
 				// liste des affaires
-				$data['affaires'] = $this->_fm->getAffaires();
+				$BASEnom = 'GEODIAG_SERVEUR';
+				if($this->_fm->setCurrentBASE($BASEnom) !== false) {
+					$data['affaires'] = $this->_fm->getAffaires();
+				} else $data['affaires'] = 'Base '.$BASEnom.' absente. Accès aux données impossible';
 				break;
 			case 'liste-tiers':
 				// liste des tiers
