@@ -1,0 +1,215 @@
+parameters:
+# acme_group_site.example.class: ensemble01\SiteBundle\Example
+
+services:
+
+    ###################################
+    ### OUTILS GÉNÉRIQUES
+    ###################################
+
+    # Fonctions textes utiles et pratiques pour utilisation dans TWIG
+    ensemble01.textutilities:
+        class: labo\Bundle\TestmanuBundle\services\aetools\twigAetools
+        arguments: [@service_container]
+        tags:
+            - { name: twig.extension }
+
+    # Fonctionnalités sur les textes (notamment l'entité richtext)
+    ensemble01.texttools:
+        class: labo\Bundle\TestmanuBundle\services\aetools\richtextsAetools
+        arguments: [@service_container]
+
+    # Fonctionnalités de requêtes et dossiers/fichiers
+    ensemble01.aetools:
+        class: labo\Bundle\TestmanuBundle\services\aetools\aetools
+        arguments: [@service_container]
+
+    # Fonctionnalités de parametres du site
+    ensemble01.parametre:
+        class: labo\Bundle\TestmanuBundle\services\aetools\parametre
+        arguments: [@service_container]
+
+    # Fonctionnalités de manipulations d'images
+    ensemble01.imagetools:
+        class: labo\Bundle\TestmanuBundle\services\aetools\imageAetools
+        arguments: [@service_container]
+
+    # Fonctionnalités de parsage XML
+    ensemble01.XMLparser:
+        class: labo\Bundle\TestmanuBundle\services\aetools\XMLparser
+        arguments: []
+
+    ###################################
+    ### HTML2PDF
+    ###################################
+
+    # ensemble01.html2pdf:
+    #     class: labo\Bundle\TestmanuBundle\services\aetools\html2pdf
+    #     arguments: [@service_container, %locale%, @templating]
+
+
+    ###################################
+    ### OUTILS ENTITÉS
+    ###################################
+
+    # Fonctionnalités de base pour les entités
+    ensemble01.entities:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\entitiesGeneric
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion des versions (sociétés)
+    ensemble01.version:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\version
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion des membres
+    ensemble01.membre:
+        class: ensemble01\services\entitiesServices\membre
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion des pages web
+    ensemble01.pageweb:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\pageweb
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion des collections
+    ensemble01.collection:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\collection
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion des votes
+    ensemble01.votes:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\votes
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion des visites sur le site
+    ensemble01.visite:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\visite
+        arguments: [@service_container]
+
+    # Fonctionnalités de categorie
+    ensemble01.categorie:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\categorie
+        arguments: [@service_container]
+
+    # Fonctionnalités pour articles
+    ensemble01.article:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\article
+        arguments: [@service_container]
+
+    # Atelier créatif et fiches
+    ensemble01.atelierCreatif:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\atelierCreatif
+        arguments: [@service_container]
+
+    # magasins
+    ensemble01.magasin:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\magasin
+        arguments: [@service_container]
+
+    # videos
+    ensemble01.video:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\video
+        arguments: [@service_container]
+
+    # évènements
+    ensemble01.events:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\evenement
+        arguments: [@service_container]
+
+    # factures
+    ensemble01.facture:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\facture
+        arguments: [@service_container]
+
+    # aelogs
+    ensemble01.aelog:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\aelog
+        arguments: [@service_container]
+
+    # Fonctionnalités de gestion du panier d'achat
+    # -> synthèses, ajouts, suppressions, etc. de produits dans le panier
+    ensemble01.panier:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\panier
+        arguments: [@service_container]
+        # scope: request
+
+    ensemble01.directeditor:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\directeditor
+        arguments: [@service_container]
+        tags:
+            - { name: twig.extension }
+
+    ###################################
+    ### EVENT LISTENER AU DÉMARRAGE DE REQUETE PRINCIPALE
+    ###################################
+
+    # EventListerner sur paramètres généraux du site
+    ensemble01.site_listener:
+        class: ensemble01\eventListeners\siteListener\siteListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: load_session_items }
+
+
+    ###################################
+    ### EVENT LISTENER SUR DOCTRINE ENTITIES
+    ###################################
+
+    # Utilitaire de gestion sur les entités
+    ensemble01.entityUtils:
+        class: labo\Bundle\TestmanuBundle\services\entitiesServices\entityListener
+        arguments: [@service_container]
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postRemove }
+
+
+    ###################################
+    ### ELEMENTS DE FORMULAIRES
+    ###################################
+
+    # Éléments de formulaires personnalisés
+    form.type.datepicker:
+        class: labo\Bundle\TestmanuBundle\Form\Type\DatepickerType
+        arguments:
+            - "%formatDate%"
+        tags:
+            - { name: form.type, alias: datepicker }
+
+    form.type.datepicker2:
+        class: labo\Bundle\TestmanuBundle\Form\Type\Datepicker2Type
+        arguments:
+            - "%formatDate%"
+        tags:
+            - { name: form.type, alias: datepicker2 }
+
+    form.type.datepicker2alldates:
+        class: labo\Bundle\TestmanuBundle\Form\Type\Datepicker2alldatesType
+        arguments:
+            - "%formatDate%"
+        tags:
+            - { name: form.type, alias: datepicker2alldates }
+
+    form.type.richtext:
+        class: labo\Bundle\TestmanuBundle\Form\Type\richtextType
+        tags:
+            - { name: form.type, alias: richtext }
+
+    form.type.gender:
+        class: labo\Bundle\TestmanuBundle\Form\Type\GenderType
+        tags:
+            - { name: form.type, alias: gender }
+
+    form.type.routes:
+        class: labo\Bundle\TestmanuBundle\Form\Type\RoutesType
+        arguments: [@service_container]
+        tags:
+            - { name: form.type, alias: routes }
+
+

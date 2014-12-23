@@ -2,7 +2,7 @@
 {% block body %}
 	<div class="container">
 		{% if servers is iterable %}
-		<h3 class="well well-xs">Liste des Serveurs<br /><small>{{ servers|length }} résultat(s)</small></h3>
+		<h3 class="well well-xs">Liste des Serveurs<br /><small>{{ servers|length }} résultat(s) <span class="caret"></span></small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Nom du serveur</th>

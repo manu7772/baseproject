@@ -33,9 +33,11 @@ security:
                 key:  %secret%
 
     access_control:
+        - { path: ^/labo, roles: ROLE_USER }
         - { path: ^/fm, roles: ROLE_USER }
         - { path: ^/fm-admin, roles: ROLE_USER }
         - { path: ^/fm-sadmin, roles: ROLE_USER }
+        # - { path: ^/labo, roles: ROLE_EDITOR }
         # - { path: ^/fm, roles: ROLE_EDITOR }
         # - { path: ^/fm-admin, roles: ROLE_ADMIN }
         # - { path: ^/fm-sadmin, roles: ROLE_SUPER_ADMIN }

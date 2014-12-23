@@ -9,18 +9,22 @@ use labo\Bundle\TestmanuBundle\services\aetools\aeReponse;
 
 class filemakerController extends fmController {
 
-	protected $_fm;	// service filemakerservice
+	protected $_fm;			// service filemakerservice
+
 
 	public function indexAction() {
 		return $this->pagewebAction('homepage');
 	}
 
-	protected function initFM($datt = null) {
+	protected function initFMdata($datt = null) {
 		if(is_string($datt)) $datt = array($datt);
 		$data = array();
 		foreach($datt as $nom => $val) $data[$nom] = $val;
 		// init User
 		$data["User"] = $this->get('security.context')->getToken()->getUser();
+		// sélection, tri (GET)
+		$data["select"] = $this->compileSelection();
+		// objet FM
 		$this->_fm = $this->get('ensemble01services.geodiag');
 		$this->_fm->log_user($data["User"]);
 		return $data;
@@ -39,7 +43,7 @@ class filemakerController extends fmController {
 	public function pagewebAction($page = null, $pagedata = null) {
 		$pagedata = $this->compileData($pagedata);
 		// var_dump($pagedata);
-		$data = $this->initFM(array("page" => $page));
+		$data = $this->initFMdata(array("page" => $page));
 		// actions GET
 		$this->actionsRequest();
 		// actions en fonction de données $pagedata
@@ -56,32 +60,43 @@ class filemakerController extends fmController {
 			}
 		}
 		// données en fonction de la page
-		switch ($page) {
+		switch ($data["page"]) {
 			case 'liste-rapports-complete':
 				$data['locauxByLieux'] = $this->_fm->getRapports($pagedata);
 				break;
 			case 'liste-lieux':
 				// liste des lieux
-				$data['lieux'] = $this->_fm->getLieux();
+				$data['lieux'] = $this->_fm->getLieux(array(
+					'search'	=> array('cle' => 'SILOG0000001472'),
+					'sort'		=> array('cle' => 'DESC'),
+					));
 				break;
 			case 'liste-locaux':
 				// liste des locaux
-				$data['locauxByLieux'] = $this->_fm->getRapports();
+				$data['locauxByLieux'] = $this->_fm->getLocaux(array(
+					'search'	=> array('id_local' => 'loc0000011620'),
+					'sort'		=> array('cle_lieux' => 'DESC'),
+					));
+				break;
+			case 'liste-affaires':
+				// liste des affaires
+				$data['affaires'] = $this->_fm->getAffaires($data);
 				break;
 			case 'liste-layouts':
 				// liste des modèles
 				$data['layouts'] = $this->_fm->getLayouts();
 				break;
-			case 'liste-affaires':
-				// liste des affaires
-				$BASEnom = 'GEODIAG_SERVEUR';
-				if($this->_fm->setCurrentBASE($BASEnom) !== false) {
-					$data['affaires'] = $this->_fm->getAffaires();
-				} else $data['affaires'] = 'Base '.$BASEnom.' absente. Accès aux données impossible';
-				break;
 			case 'liste-tiers':
 				// liste des tiers
 				$data['tiers'] = $this->_fm->getTiers();
+				break;
+			case 'liste-tier-personnel':
+				// liste du personnel
+				$data['tiers'] = $this->_fm->getTiers(array('type_tiers' => '02-Personnel'));
+				break;
+			case 'liste-tiers-client':
+				// liste des clients
+				$data['tiers'] = $this->_fm->getTiers(array('type_tiers' => '01-Client'));
 				break;
 			case 'liste-scripts':
 				// liste des scripts - regroupés par dossiers
@@ -141,7 +156,7 @@ class filemakerController extends fmController {
 	 * @return Response
 	 */
 	public function changeserverAction($servernom, $page = "homepage") {
-		$data = $this->initFM(array("page" => $page));
+		$data = $this->initFMdata(array("page" => $page));
 		$this->_fm->setCurrentSERVER($servernom);
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
@@ -153,7 +168,7 @@ class filemakerController extends fmController {
 	 * @return Response
 	 */
 	public function changebaseAction($basenom, $page = "homepage") {
-		$data = $this->initFM(array("page" => $page));
+		$data = $this->initFMdata(array("page" => $page));
 		$this->_fm->setCurrentBASE(null, $basenom);
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
@@ -163,7 +178,7 @@ class filemakerController extends fmController {
 	 * Traite tous les rapports en BDD FM
 	 */
 	public function traitement_rapportsAction() {
-		$data = $this->initFM(array("page" => 'result-rapports'));
+		$data = $this->initFMdata(array("page" => 'result-rapports'));
 
 		$data['locauxByLieux'] = $this->_fm->getRapports(0);
 		$data['LieuxInRapport'] = $this->_fm->getRapportsLieux();
@@ -280,6 +295,39 @@ class filemakerController extends fmController {
 	}
 
 
+	//////////////////////////
+	// Sélection, tri
+	//////////////////////////
+	// avec GET :
+	// ?server=nom_du_serveur
+	// ?base=nom_de_la_base
+	// ?modele=nom_du_modele
+	// ?column=nom_de_la_rubrique
+	// ?value=valeur_de_recherche
+	// ?order=ordre_de_tri ("ASC" ou "DESC")
+
+	/**
+	 * Renvoie un tableau avec les valeurs de sélection pour la base FM
+	 * @param array $select
+	 * @return array
+	 */
+	private function compileSelection() {
+		$values = array(
+			"server",
+			"base",
+			"modele",
+			"column",
+			"value",
+			"order",
+			);
+		$GETparams = $this->getRequest()->query->all();
+		// $POSTparams = $this->getRequest()->request->all();
+		$r = array();
+		foreach($GETparams as $nom => $val) {
+			if(in_array($nom, $values)) $r[$nom] = $val;
+		}
+		return $r;
+	}
 
 	//////////////////////////
 	// Autres fonctions

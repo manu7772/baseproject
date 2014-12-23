@@ -6,9 +6,9 @@
         {% block metatitles %}
         {% endblock metatitles %}
         {% stylesheets filter='cssrewrite, lessphp, ?yui_css'
-        '../app/Resources/jquery-ui/jquery-ui.min.css'
-        '../app/Resources/css/bootstrap.min.css'
-        '../app/Resources/css/base-styles.css.less'
+        'Bundles/ensemble01filemaker/jquery-ui/jquery-ui.min.css'
+        'Bundles/ensemble01filemaker/css/bootstrap.min.css'
+        'Bundles/ensemble01filemaker/css/base-styles.css.less'
          %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
         {% endstylesheets %}
@@ -21,10 +21,10 @@
         {% endblock body %}
         {% include ":common:hiddenstuffs.html.twig" %}
         {% javascripts filter='?yui_js'
-        '../app/Resources/js/jquery-2.1.1.min.js'
-        '../app/Resources/jquery-ui/jquery-ui.min.js'
-        '../app/Resources/js/bootstrap.min.js'
-        '../app/Resources/js/base-scripts.js'
+        'Bundles/ensemble01filemaker/js/jquery-2.1.1.min.js'
+        'Bundles/ensemble01filemaker/jquery-ui/jquery-ui.min.js'
+        'Bundles/ensemble01filemaker/js/bootstrap.min.js'
+        'Bundles/ensemble01filemaker/js/base-scripts.js'
          %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}

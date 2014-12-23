@@ -8,25 +8,40 @@
 		<a href="{{ url('ensemble01site_homepage') }}">Accueil</a>
 	</li>
 	<li class="dropdown">
-		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Lieux/locaux <span class="caret"></span></a>
+		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Tiers <span class="caret"></span></a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers-personnel'}) }}">Personnel</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers-client'}) }}">Clients</a></li>
+			<li class="divider"></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers'}) }}">Tous les tiers</a></li>
+		</ul>
+	</li>
+	<li class="dropdown">
+		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Affaires <span class="caret"></span></a>
 		<ul class="dropdown-menu" role="menu">
 			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-affaires'}) }}">Liste des affaires</a></li>
 			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-lieux'}) }}">Liste des lieux</a></li>
 			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-locaux'}) }}">Liste des locaux</a></li>
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers'}) }}">Liste des tiers</a></li>
 		</ul>
 	</li>
 	<li class="dropdown">
 		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">Rapports <span class="caret"></span></a>
 		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '0'}) }}">Rapports à générer</a></li>
+			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '1'}) }}">Rapports générés</a></li>
+			<li class="divider"></li>
 			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete'}) }}">Liste complète</a></li>
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '1'}) }}">Liste traités</a></li>
-			<li><a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '0'}) }}">Liste non traités</a></li>
 			<li class="divider"></li>
 			<li><a href="{{ url('ensemble01filemaker_traiteRapports') }}">Traiter les rapports</a></li>
 		</ul>
 	</li>
 	{% block SADMIN %}
+	<li class="dropdown">
+		<a href="{{ url('labo_home_home') }}" class="dropdown-toggle" data-toggle="dropdown">Labo <span class="caret"></span></a>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="{{ url('labo_home_home') }}">Accéder au Labo</a></li>
+		</ul>
+	</li>
 	{{ parent() }}
 	{% endblock SADMIN %}
 {% endblock navbarmenu %}

@@ -18,6 +18,9 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             // site bundle
             new ensemble01\siteBundle\ensemble01siteBundle(),
+            // labo bundle
+            new labo\Bundle\TestmanuBundle\LaboTestmanuBundle(),
+            new ensemble01\LaboBundle\ensemble01LaboBundle(),
             // filemaker bundle
             new filemakerBundle\filemakerBundle(),
             new ensemble01\filemakerBundle\ensemble01filemakerBundle(),

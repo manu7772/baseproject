@@ -24,6 +24,7 @@
         "stof/stampie-extra" : "0.1.0",
         "friendsofsymfony/user-bundle" : "dev-master",
         "leafo/lessphp": "*",
+        "labo/testmanu-bundle": "dev-master",
         "aew/filemaker-bundle": "dev-master"
     },
     "require-dev": {
