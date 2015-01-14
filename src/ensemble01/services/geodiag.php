@@ -161,6 +161,23 @@ class geodiag extends fms {
 	}
 
 	/**
+	 * Renvoie un rapport $id
+	 * @param string $id - id du rapport
+	 * @return FileMaker
+	 */
+	public function getOneRapport($id) {
+		$model = $this->setCurrentModel('Rapports_Local_Web', 'GEODIAG_Rapports', "Géodem mac-mini");
+		// erreur ?
+		if(is_string($model)) return $model;
+		// Create FileMaker_Command_Find on layout to search
+		$this->FMfind = $this->FMbaseUser->newFindCommand($model['nom']);
+		$this->FMfind->addFindCriterion('id', $id."");
+		$result = $this->getRecords($this->FMfind->execute());
+		if(count($result) < 1) return "Aucun logement ".$id." trouvé.";
+		return $result;
+	}
+
+	/**
 	 * Informations sur un local, nécessaires à la génération d'un rapport
 	 * @param string $idlocal - id du local
 	 * @return array

@@ -24,7 +24,7 @@ ensemble01filemaker_changebase:
 
 ensemble01filemaker_generateRapport:
     path:     /rapport/{id}/{type}/{mode}-{format}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "view", format: "pdf", type: "RDM-DAPP"}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "file", format: "pdf", type: "RDM-DAPP"}
 
 ensemble01filemaker_traiteRapports:
     path:     /traitement-rapports

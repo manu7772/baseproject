@@ -26,7 +26,7 @@ class filemakerController extends fmController {
 		$data["select"] = $this->compileSelection();
 		// objet FM
 		$this->_fm = $this->get('ensemble01services.geodiag');
-		$this->_fm->log_user($data["User"]);
+		$this->_fm->log_user($data["User"], null, true);
 		return $data;
 	}
 
@@ -245,30 +245,20 @@ class filemakerController extends fmController {
 		return $result;
 	}
 
-	public function generate_rapportAction($id, $type, $mode, $format) {
-		$data = array();
-		$data["id"] = $id;
-		$data["ref_rapport"] = $id."-1855-".$type;
-		$data["nom_logo_geodem"] = 'LogoGeodem.png';
-		$data["local"]["adresse"] = "11 rue des hérissons";
-		$data["local"]["cp"] = "27000";
-		$data["local"]["ville"] = "EVREUX";
-		$data["type_logement"] = "T4";
-		$data["annee_construction"] = "≤ 1998";
-		$data["commanditaire"]["nom"] = "SILOGE";
-		$data["commanditaire"]["adresse"] = "6bis Boulevard Chambaudoin";
-		$data["commanditaire"]["cp"] = "27009";
-		$data["commanditaire"]["ville"] = "EVREUX";
-		$data["commanditaire"]["telephone"] = "02 32 38 88 88";
-		$data["commanditaire"]["representant"]["civilite"] = "Monsieur";
-		$data["commanditaire"]["representant"]["nom"] = "DU TRANOY";
-		$data["commanditaire"]["representant"]["prenom"] = "";
-		$data["commanditaire"]["representant"]["fonction"] = "Ingénieur Travaux";
-		$data["societe"]["representant"]["civilite"] = "Monsieur";
-		$data["societe"]["representant"]["nom"] = "LEGENDRE";
-		$data["societe"]["representant"]["prenom"] = "Nicolas";
-		$data["societe"]["representant"]["fonction"] = "Directeur Opérationnel";
-		 
+	/**
+	 * Génère un rapport d'id $id
+	 * @param string $id - champ "id" de fm
+	 * @param string $type - type de rapport -> "RDM-DAPP", etc.
+	 * @param string $mode - type d'enregistrement -> "file" ou "load" ou "screen"
+	 * @param string $format - type de document -> "pdf" ou "html"
+	 */
+	public function generate_rapportAction($id, $type = "RDM-DAPP", $mode = "file", $format = "pdf") {
+		$path = $this->container->getParameter('pathrapports');
+		$data = $this->initFMdata(array("test" => "test"));
+		$data["ref_rapport"] = $id."-".$type;
+		$data["rapport"] = $this->_fm->getOneRapport($id);
+		if(is_string($data["rapport"])) return new Response($data["rapport"]);
+
 		switch(strtolower($format)) {
 			case 'html':
 				return $this->render("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
@@ -282,18 +272,26 @@ class filemakerController extends fmController {
 				// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $data);
 				$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
 				$html2pdf->writeHTML($html, false);
-				$html2pdf->Output($data["ref_rapport"].'.pdf');
-				return new Response();
+				// $html2pdf->Output($data["ref_rapport"].'.pdf');
 				break;
 		}
-
-		// return new Response($content, 200, array(
-		// 	'Content-Type' => 'application/force-download',
-		// 	'Content-Disposition' => 'attachment; filename=test.pdf'
-		// 	)
-		// );
+		switch ($mode) {
+			case 'screen':
+				$html2pdf->Output($data["ref_rapport"].'.'.$format);
+				break;
+			case 'load':
+				return new Response('Loading…');
+				break;
+			default: // file (sur disque dur)
+				$html2pdf->Output($path.$data["ref_rapport"].'.'.$format, "F");
+				return $this->pagewebAction('homepage');
+				break;
+		}
 	}
 
+	public function generate_rapport2Action($id, $type = "RDM-DAPP", $mode = "file", $format = "pdf") {
+		return new Response('TATA = '.$id);
+	}
 
 	//////////////////////////
 	// Sélection, tri

@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: fmparameters.yml }
 
 parameters:
     formatDate: "dd-MM-yyyy"

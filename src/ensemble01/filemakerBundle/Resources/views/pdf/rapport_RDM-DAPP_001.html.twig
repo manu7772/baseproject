@@ -8,9 +8,9 @@
 	<div class="container">
 		<div class="bloc1">
 			<h1>RAPPORT DE&nbsp;REPÉRAGE DES&nbsp;MATÉRIAUX ET&nbsp;PRODUITS DE&nbsp;LA&nbsp;LISTE A CONTENANT DE&nbsp;L’AMIANTE</h1>
-			<div class="logoentete"><img src="bundles/ensemble01site/images/{{ nom_logo_geodem }}" width="200" /></div>
+			{# <div class="logoentete"><img src="bundles/ensemble01site/images/{{ nom_logo_geodem }}" width="200" /></div> #}
 			<p class="mini">Conformément aux dispositions du Code de la santé publique et à son annexe 13-9, aux articles L.271-4 à L.271-6 du Code de la construction et de l’habitation,<br />aux arrêtés du 12 décembre 2012, du 21 décembre 2012 et du 26 juin 2013, et au décret n°2011-629 du 03 juin 2011</p>
-			<p class="bolder">Référence rapport : {{ ref_rapport }}</p>
+			<p class="bolder">Référence rapport : {{ rapport[0].getField('id')|raw }}</p>
 		</div>
 
 		<table class="type1">
@@ -19,35 +19,19 @@
 			</tr>
 			<tr>
 				<td>Adresse</td>
-				<td>{{ local.adresse }}<br />{{ local.cp }} {{ local.ville }}</td>
+				<td>{{ rapport[0].getField('local_adresse')|raw }}<br />{{ rapport[0].getField('local_cp')|raw }} {{ rapport[0].getField('local_ville')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de bâtiment</td>
-				<td>{{ type_logement }}</td>
+				<td>{{ rapport[0].getField('local_type_logement')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{{ annee_construction }}</td>
+				<td>{{ rapport[0].getField('annee_construction')|raw }}</td>
 			</tr>
 			<tr>
 				<th>Commanditaire</th>
 				<th>Société de contrôle</th>
-			</tr>
-			<tr>
-				<td>{{ commanditaire.nom }}<br />
-					{{ commanditaire.adresse }}<br />
-					{{ commanditaire.cp }} {{ commanditaire.ville }}<br />
-					Tél. : {{ commanditaire.telephone }}
-				</td>
-				<td>GEODEM - Agence Normandie<br />137, route d’Elbeuf<br />27520 BOURGTHEROULDE<br />Tél : 02 32 82 37 20</td>
-			</tr>
-			<tr class="thead">
-				<td>Représentant</td>
-				<td>Représentant</td>
-			</tr>
-			<tr>
-				<td class="center">{{ commanditaire.representant.civilite }} {{ commanditaire.representant.prenom }} {{ commanditaire.representant.nom }}<br /><i>{{ commanditaire.representant.fonction }}</i></td>
-				<td class="center">{{ societe.representant.civilite }} {{ societe.representant.prenom }} {{ societe.representant.nom }}<br /><i>{{ societe.representant.fonction }}</i></td>
 			</tr>
 		</table>
 	</div>

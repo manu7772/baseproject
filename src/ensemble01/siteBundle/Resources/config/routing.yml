@@ -5,3 +5,10 @@ ensemble01site_homepage:
 ensemble01site_pageweb:
     path:     /page-web/{page}/{dossier}
     defaults: { _controller: ensemble01siteBundle:site:pageweb, page: 'homepage', dossier: null }
+
+
+# GÉNÉRATION DES RAPPORTS PAR URL PUBLIQUE
+
+ensemble01site_rapportfm:
+    path:     /rapportfm/{id}/{type}/{mode}.{format}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "file", format: "pdf", type: "RDM-DAPP"}

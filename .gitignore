@@ -3,6 +3,7 @@
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters*.*
+/app/config/fmparameters.yml
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
