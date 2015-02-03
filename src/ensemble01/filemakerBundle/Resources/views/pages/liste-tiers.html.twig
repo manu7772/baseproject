@@ -9,6 +9,7 @@
 		</h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
+				{% block tablehead %}
 				<th>Ref</th>
 				<th>Nom</th>
 				<th>Prénom</th>
@@ -16,7 +17,9 @@
 				<th>CP</th>
 				<th>ville</th>
 				<th>Id</th>
+				{% endblock tablehead %}
 			</tr>
+			{% block tablelines %}
 			{% for tier in tiers %}
 			<tr>
 				<td>{{ tier.getField("ref")|raw }}</td>
@@ -28,6 +31,7 @@
 				<td>{{ tier.getField("id_tiers")|raw }}</td>
 			</tr>
 			{%- endfor %}
+			{% endblock tablelines %}
 		</table>
 		{% else %}
 		<h3 class="well well-xs">
