@@ -60,23 +60,34 @@ class filemakerController extends fmController {
 			}
 		}
 		// données en fonction de la page
+		$crit = array();
 		switch ($data["page"]) {
 			case 'liste-rapports-complete':
 				$data['locauxByLieux'] = $this->_fm->getRapports($pagedata);
 				break;
 			case 'liste-lieux':
 				// liste des lieux
-				$data['lieux'] = $this->_fm->getLieux(array(
-					'search'	=> array('cle' => 'SILOG0000001472'),
-					'sort'		=> array('cle' => 'DESC'),
-					));
+				// $crit['search'][0] = array(
+				// 		'column' 	=> 'cle',
+				// 		'value' 	=> 'SILOG0000001472'
+				// 	);
+				$crit['sort'][1] = array(
+						'column' 	=> 'cle',
+						'way' 		=> 'ASC'
+					);
+				$data['lieux'] = $this->_fm->getLieux($crit);
 				break;
 			case 'liste-locaux':
 				// liste des locaux
-				$data['locauxByLieux'] = $this->_fm->getLocaux(array(
-					'search'	=> array('id_local' => 'loc0000011620'),
-					'sort'		=> array('cle_lieux' => 'DESC'),
-					));
+				$crit['search'][0] = array(
+						'column' 	=> 'id_local',
+						'value' 	=> 'loc0000011620'
+					);
+				$crit['sort'][1] = array(
+						'column' 	=> 'cle_lieux',
+						'way' 		=> 'ASC'
+					);
+				$data['locauxByLieux'] = $this->_fm->getLocaux($crit);
 				break;
 			case 'liste-affaires':
 				// liste des affaires
@@ -88,15 +99,54 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-tiers':
 				// liste des tiers
-				$data['tiers'] = $this->_fm->getTiers();
+				$crit['sort'][1] = array(
+						'column' 	=> 'type_tiers',
+						'way' 		=> 'ASC'
+					);
+				$crit['sort'][2] = array(
+						'column' 	=> 'nom',
+						'way' 		=> 'ASC'
+					);
+				$crit['sort'][3] = array(
+						'column' 	=> 'prenom',
+						'way' 		=> 'ASC'
+					);
+				$data['titre'] = "Liste des tiers (tous tiers)";
+				$data['tiers'] = $this->_fm->getTiers($crit);
 				break;
-			case 'liste-tier-personnel':
+			case 'liste-tiers-personnel':
 				// liste du personnel
-				$data['tiers'] = $this->_fm->getTiers(array('type_tiers' => '02-Personnel'));
+				$crit['search'][0] = array(
+						'column' 	=> 'type_tiers',
+						'value' 	=> '02-Personnel'
+					);
+				$crit['sort'][1] = array(
+						'column' 	=> 'nom',
+						'way' 		=> 'ASC'
+					);
+				$crit['sort'][2] = array(
+						'column' 	=> 'prenom',
+						'way' 		=> 'ASC'
+					);
+				$data['titre'] = "Liste des tiers \"Personnel\"";
+				$data['tiers'] = $this->_fm->getTiers($crit);
 				break;
 			case 'liste-tiers-client':
 				// liste des clients
-				$data['tiers'] = $this->_fm->getTiers(array('type_tiers' => '01-Client'));
+				$crit['search'][0] = array(
+						'column' 	=> 'type_tiers',
+						'value' 	=> '01-Client'
+					);
+				$crit['sort'][1] = array(
+						'column' 	=> 'nom',
+						'way' 		=> 'ASC'
+					);
+				$crit['sort'][2] = array(
+						'column' 	=> 'prenom',
+						'way' 		=> 'ASC'
+					);
+				$data['titre'] = "Liste des tiers \"Client\"";
+				$data['tiers'] = $this->_fm->getTiers($crit);
 				break;
 			case 'liste-scripts':
 				// liste des scripts - regroupés par dossiers
@@ -145,6 +195,7 @@ class filemakerController extends fmController {
 				# code...
 				break;
 		}
+		$data['image_logo_geodem'] = "logos/logoGeodem.png";
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
@@ -204,94 +255,81 @@ class filemakerController extends fmController {
 	}
 
 	/**
-	 * génère un rapport et l'enregistre sur disque
-	 * @param FileMaker_Record $rapport - objet rapport issu de FM
-	 * @return boolean (true si succès)
-	 */
-	protected function generate_rapports(FileMaker_Record $rapport) {
-		$data = array();
-		$data["id"] = $id;
-		$data["ref_rapport"] = $id."-1855-".$type;
-		$data["nom_logo_geodem"] = 'LogoGeodem.png';
-		$data["local"]["adresse"] = "11 rue des hérissons";
-		$data["local"]["cp"] = "27000";
-		$data["local"]["ville"] = "EVREUX";
-		$data["type_logement"] = "T4";
-		$data["annee_construction"] = "≤ 1998";
-		$data["commanditaire"]["nom"] = "SILOGE";
-		$data["commanditaire"]["adresse"] = "6bis Boulevard Chambaudoin";
-		$data["commanditaire"]["cp"] = "27009";
-		$data["commanditaire"]["ville"] = "EVREUX";
-		$data["commanditaire"]["telephone"] = "02 32 38 88 88";
-		$data["commanditaire"]["representant"]["civilite"] = "Monsieur";
-		$data["commanditaire"]["representant"]["nom"] = "DU TRANOY";
-		$data["commanditaire"]["representant"]["prenom"] = "";
-		$data["commanditaire"]["representant"]["fonction"] = "Ingénieur Travaux";
-		$data["societe"]["representant"]["civilite"] = "Monsieur";
-		$data["societe"]["representant"]["nom"] = "LEGENDRE";
-		$data["societe"]["representant"]["prenom"] = "Nicolas";
-		$data["societe"]["representant"]["fonction"] = "Directeur Opérationnel";
-
-		$filePDF = __DIR__.'/../../../../app/Resources/tools/html2pdf/html2pdf.class.php';
-		if(!file_exists($filePDF)) die('Service HTML2PDF non trouvé !');
-		require_once($filePDF);
-		$html2pdf = new \HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 8, 10, 10));
-		$html2pdf->pdf->SetDisplayMode('fullpage');
-		// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $data);
-		$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
-		$html2pdf->writeHTML($html, false);
-		$result = $html2pdf->Output($data["ref_rapport"].'.pdf');
-
-		return $result;
-	}
-
-	/**
 	 * Génère un rapport d'id $id
 	 * @param string $id - champ "id" de fm
 	 * @param string $type - type de rapport -> "RDM-DAPP", etc.
 	 * @param string $mode - type d'enregistrement -> "file" ou "load" ou "screen"
 	 * @param string $format - type de document -> "pdf" ou "html"
 	 */
-	public function generate_rapportAction($id, $type = "RDM-DAPP", $mode = "file", $format = "pdf") {
+	public function generate_rapportAction($id = null, $type = "RDM-DAPP", $mode = "file", $format = "pdf") {
+
 		$path = $this->container->getParameter('pathrapports');
 		$data = $this->initFMdata(array("test" => "test"));
-		$data["ref_rapport"] = $id."-".$type;
-		$data["rapport"] = $this->_fm->getOneRapport($id);
+
+		if($id === null) {
+			// récupération de la liste des rapports à générer en base FM
+			$mode = 'file';
+			$format = 'pdf';
+			$data["rapport"] = $this->_fm->getRapports("0");
+		} else {
+			$data["rapport"] = $this->_fm->getOneRapport($id);
+		}
+		// var_dump($data["rapport"]);
+		// Si erreur
 		if(is_string($data["rapport"])) return new Response($data["rapport"]);
-
-		switch(strtolower($format)) {
-			case 'html':
-				return $this->render("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
-				break;
-			default:
-				$filePDF = __DIR__.'/../../../../app/Resources/tools/html2pdf/html2pdf.class.php';
-				if(!file_exists($filePDF)) die('Service HTML2PDF non trouvé !');
-				require_once($filePDF);
-				$html2pdf = new \HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', array(10, 8, 10, 10));
-				$html2pdf->pdf->SetDisplayMode('fullpage');
-				// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $data);
-				$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $data);
-				$html2pdf->writeHTML($html, false);
-				// $html2pdf->Output($data["ref_rapport"].'.pdf');
-				break;
+		// sinon 
+		foreach($data["rapport"] as $rapport) {
+			$RAPP = array();
+			$RAPP['format'] = $format;
+			$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
+			$RAPP["rapport"] = $rapport;
+			$RAPP["ref_rapport"] = $rapport->getField('id')."-".$type;
+			switch(strtolower($format)) {
+				case 'html':
+					$RAPP['imgpath'] = 'bundles/ensemble01labo/images/';
+					return $this->render("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
+					break;
+				default:
+				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01labo/images/logos/logoGeodem.png
+				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01labo/images/logos/logoGeodem.png
+					// <img src="/Applications/MAMP/htdocs/GitHub/baseproject/src/ensemble01/filemakerBundle/Controller/GitHub/baseproject/web/bundles/ensemble01labo/images/logos/logoGeodem.png" style="width:200px;">
+					$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01labo/images/';
+					// $html2pdf->pdf->SetDisplayMode('fullpage');
+					// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $RAPP);
+					$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
+					// $html = "<html><body><p>Page de test</p></body></html>"; // TEST
+					try {
+						$html2pdf = $this->get('html2pdf_factory')->create();
+						$html2pdf->writeHTML($html, false);
+					} catch (HTML2PDF_exception $e){
+						return new Response('Erreur génération PDF : '.$e);
+					}
+					// $html2pdf->Output($RAPP["ref_rapport"].'.pdf');
+					break;
+			}
+			switch ($mode) {
+				case 'screen':
+					try {
+						$html2pdf->Output($RAPP["ref_rapport"].'.'.$format);
+					} catch (HTML2PDF_exception $e){
+						return new Response('Erreur génération PDF : '.$e);
+					}
+					break;
+				case 'load':
+					return new Response('Loading…');
+					break;
+				default: // file (sur disque dur)
+					try {
+						$html2pdf->Output($path.$RAPP["ref_rapport"].'.'.$format, "F");
+					} catch (HTML2PDF_exception $e){
+						return new Response('Erreur génération PDF : '.$e);
+					}
+					break;
+			}
 		}
-		switch ($mode) {
-			case 'screen':
-				$html2pdf->Output($data["ref_rapport"].'.'.$format);
-				break;
-			case 'load':
-				return new Response('Loading…');
-				break;
-			default: // file (sur disque dur)
-				$html2pdf->Output($path.$data["ref_rapport"].'.'.$format, "F");
-				return $this->pagewebAction('homepage');
-				break;
-		}
+		return $this->pagewebAction('homepage');
 	}
 
-	public function generate_rapport2Action($id, $type = "RDM-DAPP", $mode = "file", $format = "pdf") {
-		return new Response('TATA = '.$id);
-	}
 
 	//////////////////////////
 	// Sélection, tri

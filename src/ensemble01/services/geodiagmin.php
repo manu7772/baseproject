@@ -1,12 +1,12 @@
 <?php
-// ensemble01/services/geodiag.php
+// ensemble01/services/geodiagmin.php
 
 namespace ensemble01\services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use filemakerBundle\services\filemakerservice as fms;
+use filemakerBundle\services\filemakerservicemin as fmsmin;
 
-class geodiag extends fms {
+class geodiagmin extends fmsmin {
 
 	// *************************
 	// METHODES GÉODEM

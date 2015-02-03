@@ -43,8 +43,10 @@ assetic:
         cssrewrite: ~
         yui_css:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7/build/yuicompressor-2.4.7.jar"
+            timeout: 600
         yui_js:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7/build/yuicompressor-2.4.7.jar"
+            timeout: 600
         # LESS
         lessphp:
             file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
@@ -114,4 +116,13 @@ stof_doctrine_extensions:
             timestampable: false
             translatable: false
             tree: true
+
+# html2pdf
+ensepar_html2pdf:
+    orientation: P
+    format: A4
+    lang: fr
+    unicode: true
+    encoding: UTF-8
+    margin: [10,8,10,10]
 

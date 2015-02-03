@@ -25,7 +25,10 @@
         "friendsofsymfony/user-bundle" : "dev-master",
         "leafo/lessphp": "*",
         "labo/testmanu-bundle": "dev-master",
-        "aew/filemaker-bundle": "dev-master"
+        "aew/filemaker-bundle": "dev-master",
+        "ensepar/tcpdf": "5.0.003",
+        "ensepar/html2pdf": "1.0.1",
+        "ensepar/html2pdf-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

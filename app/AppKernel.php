@@ -29,6 +29,8 @@ class AppKernel extends Kernel
             new ensemble01\UserBundle\ensemble01UserBundle(),
             // stof extensions
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            // html2pdf
+            new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
        );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

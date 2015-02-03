@@ -8,9 +8,13 @@
 	<div class="container">
 		<div class="bloc1">
 			<h1>RAPPORT DE&nbsp;REPÉRAGE DES&nbsp;MATÉRIAUX ET&nbsp;PRODUITS DE&nbsp;LA&nbsp;LISTE A CONTENANT DE&nbsp;L’AMIANTE</h1>
-			{# <div class="logoentete"><img src="bundles/ensemble01site/images/{{ nom_logo_geodem }}" width="200" /></div> #}
+			{% if format == 'html' %}
+			<div class="logoentete"><img src="{{ asset(imgpath ~ image_logo_geodem) }}" style="width:200px;"></div>
+			{% elseif format == 'pdf' %}
+			<div class="logoentete"><img src="{{ imgpath }}{{ image_logo_geodem }}" style="width:200px;"></div>
+			{% endif %}
 			<p class="mini">Conformément aux dispositions du Code de la santé publique et à son annexe 13-9, aux articles L.271-4 à L.271-6 du Code de la construction et de l’habitation,<br />aux arrêtés du 12 décembre 2012, du 21 décembre 2012 et du 26 juin 2013, et au décret n°2011-629 du 03 juin 2011</p>
-			<p class="bolder">Référence rapport : {{ rapport[0].getField('id')|raw }}</p>
+			<p class="bolder">Référence rapport : {{ rapport.getField('id')|raw }}</p>
 		</div>
 
 		<table class="type1">
@@ -19,15 +23,19 @@
 			</tr>
 			<tr>
 				<td>Adresse</td>
-				<td>{{ rapport[0].getField('local_adresse')|raw }}<br />{{ rapport[0].getField('local_cp')|raw }} {{ rapport[0].getField('local_ville')|raw }}</td>
+				<td>{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de bâtiment</td>
-				<td>{{ rapport[0].getField('local_type_logement')|raw }}</td>
+				<td>{{ rapport.getField('local_type_logement')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{{ rapport[0].getField('annee_construction')|raw }}</td>
+				<td>{{ rapport.getField('annee_construction')|raw }}</td>
+			</tr>
+			<tr>
+				<td>Locaux visés par le rapport de repérage des matériaux et produits de la liste A</td>
+				<td>Appartement n°{{ rapport.getField('num_porte')|raw }}</td>
 			</tr>
 			<tr>
 				<th>Commanditaire</th>

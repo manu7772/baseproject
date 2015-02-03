@@ -6,3 +6,19 @@ services:
     ensemble01services.geodiag:
         class: ensemble01\services\geodiag
         arguments: [@service_container]
+
+    # ensemble01services.geodiagmin:
+    #     class: ensemble01\services\geodiagmin
+    #     arguments: [@service_container]
+
+    ###################################
+    ### EVENT LISTENER AU DÉMARRAGE DE REQUETE PRINCIPALE
+    ###################################
+
+    # EventListerner sur paramètres généraux du site
+    ensemble01.site_listener:
+        class: ensemble01\services\geodiag
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: load_fmservice }
+

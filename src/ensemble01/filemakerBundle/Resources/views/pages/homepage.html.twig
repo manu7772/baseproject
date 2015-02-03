@@ -3,13 +3,31 @@
 {{ parent() }}
 <div class="container-fluid">
 	<div class="well well-lg">
+		<h3>Documentation Filemaker PHP</h3>
 		<a class="btn btn-sm btn-primary URLext" href="https://fmhelp.filemaker.com/docs/13/fr/fms13_cwp_php.pdf">Documentation</a><span> FileMaker Server 13 API</span>
 		<br /><br />
 		<a class="btn btn-sm btn-primary URLext" href="http://lexikon.ling.su.se/">Documentation</a><span> FileMaker API Tutorial</span>
 		<hr>
+		<h3>Git repositories</h3>
 		<a class="btn btn-sm btn-primary URLext" href="https://github.com/manu7772/filemakerBundle">GitHub Repository</a><span> FileMaker Bundle / Symfony2 (E.Dujardin - AEW 2014)</span>
 		<br /><br />
 		<a class="btn btn-sm btn-primary URLext" href="https://github.com/manu7772/baseproject">GitHub Repository</a><span> AppliWeb Géodiag / Symfony2 (E.Dujardin - AEW 2014)</span>
+		{% if is_granted("ROLE_SUPER_ADMIN") %}
+		<hr>
+		<h3>Documentation &amp; données Géodem</h3>
+		<a class="btn btn-sm btn-primary URLext" href="https://docs.google.com/document/d/1lOiUk9oxpx_M3yTdhPwDbO4fwgwURq3f6Rf_rHrcMvA/edit">Paramètres divers</a><span> Paramètres super Admin</span>
+		<br /><br />
+		<a class="btn btn-sm btn-primary URLext" href="https://docs.google.com/document/d/1FBK2_IUt6cEmiiljW-FWpqRC4phXA9l1Uyb_s_BktUI/edit#heading=h.k4sus242u1h0">Suivi projets</a><span> Données et modes opératoires Géodem</span>
+		{% endif %}
+		<hr>
+		<h3>Tests…</h3>
+		<a class="btn btn-sm btn-danger" href="{{ url('ensemble01site_rapportfm') }}">Test rapports</a><span> Test de génération de TOUS les rapports à faire (file)</span>
+		<br /><br />
+		<a class="btn btn-sm btn-warning" href="{{ url('ensemble01site_rapportfm', {id: '0000011950', type: 'RDM-DAPP', mode: 'file', format: 'pdf'}) }}">Test rapport</a><span> Test de génération d'un rapport PDF (file)</span>
+		<br /><br />
+		<a class="btn btn-sm btn-warning URLext" href="{{ url('ensemble01site_rapportfm', {id: '0000011950', type: 'RDM-DAPP', mode: 'screen', format: 'pdf'}) }}">Test rapport</a><span> Test de génération d'un rapport PDF (rendu écran)</span>
+		<br /><br />
+		<a class="btn btn-sm btn-warning URLext" href="{{ url('ensemble01site_rapportfm', {id: '0000011950', type: 'RDM-DAPP', mode: 'screen', format: 'html'}) }}">Test rapport</a><span> Test de génération d'un rapport HTML (rendu écran)</span>
 	</div>
 </div>
 {% endblock body %}

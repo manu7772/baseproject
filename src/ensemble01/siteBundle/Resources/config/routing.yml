@@ -11,4 +11,4 @@ ensemble01site_pageweb:
 
 ensemble01site_rapportfm:
     path:     /rapportfm/{id}/{type}/{mode}.{format}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "file", format: "pdf", type: "RDM-DAPP"}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, id: null, type: "RDM-DAPP", mode: "file", format: "pdf"}

@@ -19,17 +19,16 @@
 					{% for rapport in ['RDM-DAPP'] %}
 					{% set idrapport = local.getField('id') %}
 					<div class="btn-group">
-						<a href="{{ url('ensemble01filemaker_generateRapport', {id: idrapport}) }}" type="button" class="btn btn-default btn-xs URLext">Générer {{ local.getField("id")|raw }}</a>
+						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-default btn-xs URLext">Générer {{ local.getField("id")|raw }}</a>
 						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							<span class="caret"></span>
 							<span class="sr-only">Toggle Dropdown</span>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'pdf', type: rapport, id: idrapport}) }}">Export PDF</a></li>
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'pdf', type: rapport, id: idrapport}) }}">Visualiser PDF</a></li>
+							<li><a href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'load', format: 'pdf'}) }}">Export PDF</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'screen', format: 'pdf'}) }}">Visualiser PDF</a></li>
 							<li class="divider"></li>
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'export', format: 'html', type: rapport, id: idrapport}) }}">Export HTML</a></li>
-							<li><a class="URLext" href="{{ url('ensemble01filemaker_generateRapport', {mode: 'view', format: 'html', type: rapport, id: idrapport}) }}">Visualiser HTML</a></li>
+							<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'screen', format: 'html'}) }}">Visualiser HTML</a></li>
 						</ul>
 					</div>
 					{% endfor %}

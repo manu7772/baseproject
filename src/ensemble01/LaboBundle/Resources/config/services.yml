@@ -145,11 +145,11 @@ services:
     ###################################
 
     # EventListerner sur paramètres généraux du site
-    ensemble01.site_listener:
-        class: ensemble01\eventListeners\siteListener\siteListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: load_session_items }
+    # ensemble01.site_listener:
+    #     class: ensemble01\eventListeners\siteListener\siteListener
+    #     arguments: [@service_container]
+    #     tags:
+    #         - { name: kernel.event_listener, event: kernel.controller, method: load_session_items }
 
 
     ###################################

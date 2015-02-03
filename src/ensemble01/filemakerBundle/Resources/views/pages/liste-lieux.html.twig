@@ -5,12 +5,12 @@
 		<h3 class="well well-xs">Liste des lieux<br /><small>{{ lieux|length }} résultat(s) <span class="caret"></span></small></h3>
 		<table class="table table-bordered table-hover table-condensed">
 			<tr class="active">
-				<th>Clé lieu</th>
-				<th>Nom immeuble</th>
-				<th>Adresse</th>
-				<th>Loc. traités</th>
-				<th>Loc. en serv.</th>
-				<th>Loc. réel</th>
+				<th title='cle'>Clé lieu</th>
+				<th title='NOM_IMMEUBLE'>Nom immeuble</th>
+				<th title='rue_immeuble'>Adresse</th>
+				<th title='nb_locaux_diagnostique'>Loc. traités</th>
+				<th title='nb_locaux_en_service'>Loc. en serv.</th>
+				<th title='nb_locaux_calcule'>Loc. réel</th>
 			</tr>
 			{% for lieu in lieux %}
 			<tr>

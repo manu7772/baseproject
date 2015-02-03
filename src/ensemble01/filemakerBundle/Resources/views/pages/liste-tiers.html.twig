@@ -3,7 +3,7 @@
 	<div class="container">
 		{% if tiers is iterable %}
 		<h3 class="well well-xs">
-			{% block titretpl %}Liste des tiers{% endblock titretpl %}
+			{% block titretpl %}{{ titre }}{% endblock titretpl %}
 			<br />
 			<small>{{ tiers|length }} résultat(s) <span class="caret"></span></small>
 		</h3>
@@ -31,7 +31,7 @@
 		</table>
 		{% else %}
 		<h3 class="well well-xs">
-			{% block titretplerr %}Liste des tiers{% endblock titretplerr %}
+			{% block titretplerr %}{{ titre }}{% endblock titretplerr %}
 			<br />
 			<small>Erreur</small>
 		</h3>
