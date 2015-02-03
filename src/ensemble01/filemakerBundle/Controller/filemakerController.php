@@ -286,14 +286,14 @@ class filemakerController extends fmController {
 			$RAPP["ref_rapport"] = $rapport->getField('id')."-".$type;
 			switch(strtolower($format)) {
 				case 'html':
-					$RAPP['imgpath'] = 'bundles/ensemble01labo/images/';
+					$RAPP['imgpath'] = 'bundles/ensemble01filemaker/images/';
 					return $this->render("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
 					break;
 				default:
-				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01labo/images/logos/logoGeodem.png
-				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01labo/images/logos/logoGeodem.png
-					// <img src="/Applications/MAMP/htdocs/GitHub/baseproject/src/ensemble01/filemakerBundle/Controller/GitHub/baseproject/web/bundles/ensemble01labo/images/logos/logoGeodem.png" style="width:200px;">
-					$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01labo/images/';
+				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01filemaker/images/logos/logoGeodem.png
+				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01filemaker/images/logos/logoGeodem.png
+					// <img src="/Applications/MAMP/htdocs/GitHub/baseproject/src/ensemble01/filemakerBundle/Controller/GitHub/baseproject/web/bundles/ensemble01filemaker/images/logos/logoGeodem.png" style="width:200px;">
+					$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
 					// $html2pdf->pdf->SetDisplayMode('fullpage');
 					// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $RAPP);
 					$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
