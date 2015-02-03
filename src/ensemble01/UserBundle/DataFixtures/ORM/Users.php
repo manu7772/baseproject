@@ -40,7 +40,9 @@ class Users extends AbstractFixture implements OrderedFixtureInterface, Containe
 				'setEnabled'	=> true,
 				'setRoles'		=> array("ROLE_USER"),
 				'getSalt'		=> md5(uniqid()),
-				'setPassword'	=> "azetyu123"
+				'setPassword'	=> "azetyu123",
+				'setFmlogin'	=> "sadmin",
+				'setFmpass'		=> "symfony76",
 				),
 			array(
 				'setUsername'	=> "admin7772",
@@ -48,7 +50,9 @@ class Users extends AbstractFixture implements OrderedFixtureInterface, Containe
 				'setEnabled'	=> true,
 				'setRoles'		=> array("ROLE_EDITOR"),
 				'getSalt'		=> md5(uniqid()),
-				'setPassword'	=> "admin"
+				'setPassword'	=> "admin",
+				'setFmlogin'	=> "sadmin",
+				'setFmpass'		=> "symfony76",
 				),
 			array(
 				'setUsername'	=> "sadmin",
@@ -56,47 +60,39 @@ class Users extends AbstractFixture implements OrderedFixtureInterface, Containe
 				'setEnabled'	=> true,
 				'setRoles'		=> array("ROLE_SUPER_ADMIN"),
 				'getSalt'		=> md5(uniqid()),
-				'setPassword'	=> "sadmin"
+				'setPassword'	=> "sadmin",
+				'setFmlogin'	=> "sadmin",
+				'setFmpass'		=> "symfony76",
 				),
-			// array(
-			// 	'setUsername'	=> "andré",
-			// 	'setEmail'		=> "amastroiannakis@gmail.com",
-			// 	'setEnabled'	=> false,
-			// 	'setRoles'		=> array("ROLE_USER"),
-			// 	'getSalt'		=> md5(uniqid()),
-			// 	'setPassword'	=> "andré"
-			// 	),
-			// array(
-			// 	'setUsername'	=> "am-admin",
-			// 	'setEmail'		=> "andre.mastroiannakis@gmail.com",
-			// 	'setEnabled'	=> false,
-			// 	'setRoles'		=> array("ROLE_ADMIN"),
-			// 	'getSalt'		=> md5(uniqid()),
-			// 	'setPassword'	=> "admin"
-			// 	),
 			array(
-				'setUsername'	=> "charlotte",
-				'setEmail'		=> "charlottetetau@gmail.com",
+				'setUsername'	=> "sebastien",
+				'setEmail'		=> "s.lecerf@softdev-methodology.fr",
+				'setEnabled'	=> true,
+				'setRoles'		=> array("ROLE_SUPER_ADMIN"),
+				'getSalt'		=> md5(uniqid()),
+				'setPassword'	=> "lecerf",
+				'setFmlogin'	=> "sadmin",
+				'setFmpass'		=> "symfony76",
+				),
+			array(
+				'setUsername'	=> "legendre",
+				'setEmail'		=> "n.legendre@geodem.com",
 				'setEnabled'	=> true,
 				'setRoles'		=> array("ROLE_ADMIN"),
 				'getSalt'		=> md5(uniqid()),
-				'setPassword'	=> "tetau"
+				'setPassword'	=> "nicolas",
+				'setFmlogin'	=> "sadmin",
+				'setFmpass'		=> "symfony76",
 				),
 			array(
-				'setUsername'	=> "philippe",
-				'setEmail'		=> "philippe.leruth@singer-distrib.com",
+				'setUsername'	=> "reliquet",
+				'setEmail'		=> "n.reliquet@geodem.com",
 				'setEnabled'	=> true,
 				'setRoles'		=> array("ROLE_ADMIN"),
 				'getSalt'		=> md5(uniqid()),
-				'setPassword'	=> "leruth"
-				),
-			array(
-				'setUsername'	=> "florent",
-				'setEmail'		=> "florent2108@hotmail.fr",
-				'setEnabled'	=> true,
-				'setRoles'		=> array("ROLE_USER"),
-				'getSalt'		=> md5(uniqid()),
-				'setPassword'	=> "duj"
+				'setPassword'	=> "nicolas",
+				'setFmlogin'	=> "sadmin",
+				'setFmpass'		=> "symfony76",
 				),
 		);
 

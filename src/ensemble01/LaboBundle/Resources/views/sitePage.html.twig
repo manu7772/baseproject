@@ -1,6 +1,0 @@
-{% extends(':public:pageRoot.html.twig') %}
-{% block mainmenu %}
-	{% render(controller('ensemble01LaboBundle:menu:navbar', {route: app.request.attributes.get('_route'), routeparams: app.request.attributes.get('_route_params')|url_encode} )) %}
-{% endblock mainmenu %}
-{% block body %}
-{% endblock body %}

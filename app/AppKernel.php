@@ -18,9 +18,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             // site bundle
             new ensemble01\siteBundle\ensemble01siteBundle(),
-            // labo bundle
-            new labo\Bundle\TestmanuBundle\LaboTestmanuBundle(),
-            new ensemble01\LaboBundle\ensemble01LaboBundle(),
             // filemaker bundle
             new filemakerBundle\filemakerBundle(),
             new ensemble01\filemakerBundle\ensemble01filemakerBundle(),
@@ -37,6 +34,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
         return $bundles;

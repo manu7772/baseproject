@@ -7,11 +7,6 @@ ensemble01filemaker:
     resource: "@ensemble01filemakerBundle/Resources/config/routing.yml"
     prefix:   /fm
 
-# PAGES LABO
-groupepm_labo:
-    resource: "@ensemble01LaboBundle/Resources/config/routing.yml"
-    prefix:   /labo
-
 # USER ROUTING
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
