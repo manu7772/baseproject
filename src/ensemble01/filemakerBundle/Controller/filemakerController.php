@@ -17,6 +17,7 @@ class filemakerController extends fmController {
 	}
 
 	protected function initFMdata($datt = null) {
+		if($datt === null) $datt = array();
 		if(is_string($datt)) $datt = array($datt);
 		$data = array();
 		foreach($datt as $nom => $val) $data[$nom] = $val;
@@ -263,8 +264,18 @@ class filemakerController extends fmController {
 	 */
 	public function generate_rapportAction($id = null, $type = "RDM-DAPP", $mode = "file", $format = "pdf") {
 
-		$path = $this->container->getParameter('pathrapports');
-		$data = $this->initFMdata(array("test" => "test"));
+		$data = $this->initFMdata();
+		$message = array();
+		$messageERR = array();
+
+		$rootpath = $this->container->getParameter('pathrapports');
+		$path = $rootpath.$type.'/';
+		$aetools = $this->get('ensemble01services.aetools');
+		// vérifie la présence du dossier pathrapports et pointe dessus
+		$aetools->verifDossierAndCreate($rootpath);
+		$aetools->setWebPath($rootpath);
+		// vérifie la présence du dossier $type
+		$aetools->verifDossierAndCreate($type);
 
 		if($id === null) {
 			// récupération de la liste des rapports à générer en base FM
@@ -276,58 +287,82 @@ class filemakerController extends fmController {
 		}
 		// var_dump($data["rapport"]);
 		// Si erreur
-		if(is_string($data["rapport"])) return new Response($data["rapport"]);
-		// sinon 
-		foreach($data["rapport"] as $rapport) {
+		if(is_string($data["rapport"])) $messageERR[] = $data["rapport"];
+		// sinon
+		if(count($messageERR) < 1) foreach($data["rapport"] as $rapport) {
 			$RAPP = array();
 			$RAPP['format'] = $format;
 			$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
 			$RAPP["rapport"] = $rapport;
 			$RAPP["ref_rapport"] = $rapport->getField('id')."-".$type;
-			switch(strtolower($format)) {
+			if(count($messageERR) < 1) switch(strtolower($format)) {
 				case 'html':
 					$RAPP['imgpath'] = 'bundles/ensemble01filemaker/images/';
-					return $this->render("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
+					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
+					if(!$this->get('templating')->exists($templt)) {
+						// template non trouvé…
+						$messageERR[] = 'Template de rapport non trouvé : '.$type;
+					} else return $this->render($templt, $RAPP);
 					break;
 				default:
-				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01filemaker/images/logos/logoGeodem.png
-				// http://localhost:8888/Applications/MAMP/htdocs/GitHub/baseproject/web/bundles/ensemble01filemaker/images/logos/logoGeodem.png
-					// <img src="/Applications/MAMP/htdocs/GitHub/baseproject/src/ensemble01/filemakerBundle/Controller/GitHub/baseproject/web/bundles/ensemble01filemaker/images/logos/logoGeodem.png" style="width:200px;">
 					$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
 					// $html2pdf->pdf->SetDisplayMode('fullpage');
 					// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $RAPP);
-					$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
-					// $html = "<html><body><p>Page de test</p></body></html>"; // TEST
-					try {
-						$html2pdf = $this->get('html2pdf_factory')->create();
-						$html2pdf->writeHTML($html, false);
-					} catch (HTML2PDF_exception $e){
-						return new Response('Erreur génération PDF : '.$e);
+					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
+					if(!$this->get('templating')->exists($templt)) {
+						// template non trouvé…
+						$messageERR[] = 'Template de rapport non trouvé : '.$type;
+					} else {
+						$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
+						// $html = "<html><body><p>Page de test</p></body></html>"; // TEST
+						try {
+							$html2pdf = $this->get('html2pdf_factory')->create();
+							$html2pdf->writeHTML($html, false);
+						} catch (HTML2PDF_exception $e){
+							$messageERR[] = 'Erreur génération PDF : '.$e;
+						}
+						// $html2pdf->Output($RAPP["ref_rapport"].'.pdf');
 					}
-					// $html2pdf->Output($RAPP["ref_rapport"].'.pdf');
 					break;
 			}
-			switch ($mode) {
+			if(count($messageERR) < 1) switch ($mode) {
 				case 'screen':
 					try {
 						$html2pdf->Output($RAPP["ref_rapport"].'.'.$format);
+						$message[] = "Le rapport ".$type." réf.".$RAPP["ref_rapport"]." a été généré.";
 					} catch (HTML2PDF_exception $e){
-						return new Response('Erreur génération PDF : '.$e);
+						$messageERR[] = 'Erreur génération PDF : '.$e;
 					}
 					break;
 				case 'load':
-					return new Response('Loading…');
+					$message[] = 'Loading…';
 					break;
 				default: // file (sur disque dur)
 					try {
 						$html2pdf->Output($path.$RAPP["ref_rapport"].'.'.$format, "F");
+						$message[] = "Le rapport ".$type." réf.".$RAPP["ref_rapport"]." a été généré.";
 					} catch (HTML2PDF_exception $e){
-						return new Response('Erreur génération PDF : '.$e);
+						$messageERR[] = 'Erreur génération PDF : '.$e;
 					}
 					break;
 			}
 		}
-		return $this->pagewebAction('homepage');
+		foreach ($message as $mess) {
+			$this->get('session')->getFlashBag()->add('info', $mess);
+		}
+		foreach ($messageERR as $mess) {
+			$this->get('session')->getFlashBag()->add('error', $mess);
+		}
+		return $this->redirect($this->generateUrl("ensemble01filemaker_pageweb", array("page"=>'liste-rapports-complete', "pagedata" => '0')));
+		// return $this->pagewebAction('liste-rapports-complete', '0');
+	}
+
+	/**
+	 *
+	 *
+	 */
+	public function visuRapportsAction($type = null) {
+		$aetools = $this->get('ensemble01services.aetools');
 	}
 
 

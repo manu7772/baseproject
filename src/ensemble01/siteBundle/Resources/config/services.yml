@@ -3,3 +3,7 @@ services:
 #        class: ensemble01\siteBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
 
+    # Fonctionnalités de requêtes et dossiers/fichiers
+    ensemble01services.aetools:
+        class: ensemble01\services\aetools
+        arguments: [@service_container]

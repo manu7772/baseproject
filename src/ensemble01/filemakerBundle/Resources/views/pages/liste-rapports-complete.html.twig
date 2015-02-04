@@ -19,7 +19,7 @@
 					{% for rapport in ['RDM-DAPP'] %}
 					{% set idrapport = local.getField('id') %}
 					<div class="btn-group">
-						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-default btn-xs URLext">Générer {{ local.getField("id")|raw }}</a>
+						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-default btn-xs">Générer {{ local.getField("id")|raw }}</a>
 						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							<span class="caret"></span>
 							<span class="sr-only">Toggle Dropdown</span>

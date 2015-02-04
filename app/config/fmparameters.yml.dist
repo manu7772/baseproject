@@ -1,2 +1,3 @@
 parameters:
-    pathrapports: "/Users/minimacgeodem/Documents/Rapports/DAPP/"
+    # pathrapports: "/Users/minimacgeodem/Documents/Rapports/DAPP/"
+    pathrapports: "/Users/Shared/Rapports/DAPP/"
