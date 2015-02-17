@@ -1,0 +1,22 @@
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% set fmdev = app.session.get('filemaker_DEV') %}
+{% block body %}
+	<div class="container">
+		{% if scripts.group is iterable %}
+		<h3 class="well well-xs">Liste des scripts de la base {{ fmdev['Base courante'] }} <small>({{ fmdev['Serveur courant'] }})</small><br />
+			<small>
+				{{ scripts.liste|length }} résultat(s) <span class="caret"></span>
+				{% if forceload == true %}
+				<span style='font-size:0.7em;color:#999;'>&nbsp;Données rechargées</span>
+				{% else %}
+				<span style='font-size:0.7em;color:#999;'>&nbsp;Données en cache</span>
+				{% endif %}
+			</small>
+		</h3>
+		{% include 'ensemble01filemakerBundle:blocs:recursive-liste.html.twig' with {liste: scripts.group, titre: 'Scripts filemaker'} %}
+		{% else %}
+		<h3 class="well well-xs">Liste des scripts<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ scripts.group|raw }}</div>
+		{% endif %}
+	</div>
+{% endblock body %}
