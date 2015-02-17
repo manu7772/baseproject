@@ -63,9 +63,12 @@ class filemakerController extends fmController {
 	}
 
 	protected function initFmData($user = null) {
-		if($user === null) $user = $this->get('security.context')->getToken()->getUser();
-		$this->_fm = $this->get('ensemble01services.geodiag');
-		$this->_fm->log_user($user, null, true);
+		if(!is_object($this->_fm)) {
+			if($user === null) $user = $this->get('security.context')->getToken()->getUser();
+			$this->_fm = $this->get('ensemble01services.geodiag');
+			$this->_fm->log_user($user, null, true);
+		}
+		return $this->_fm;
 	}
 
 	/**
@@ -536,7 +539,26 @@ class filemakerController extends fmController {
 		return $this->pagewebAction($pagedata['redirect'], $pagedata);
 		// return $this->redirect($this->generateUrl("ensemble01filemaker_pageweb", array("page"=>'liste-rapports-complete', "pagedata" => '0')));
 	}
+	// http://localhost:8888/GitHub/baseproject/web/app_dev.php/fm/s-admin/retablir-rapportfm-by-lot/Proj0000004000000151417-02-2015-17-09-31/%7B%22redirect%22:%22liste-rapports-complete%22%7D
+	// %7B%22redirect%22:%22liste-rapports-complete%22%7D
 
+	/**
+	 * Génère les rapports selon un numéro de lot (ensemble de rapports)
+	 * --> VIA COMMANDE FILEMAKER
+	 * @param string $numlot - numéro du lot
+	 */
+	public function generate_by_lot_rapport_fmAction($numlot) {
+		$this->generate_by_lot_rapportAction($numlot);
+		return $this->listeRapportsLotsAction($numlot);
+	}
+
+	public function public_listeRapportsLotsAction($numlot = null) {
+		$data = array();
+		$numlot === null ? $all = true : $all = false;
+		$data["rapports"] = $this->initFmData()->getRapportsByLot($numlot, $all);
+		$data["numlot"] = $numlot;
+		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
+	}
 
 	/**
 	 * Rétablit les rapports selon un numéro de lot (ensemble de rapports)

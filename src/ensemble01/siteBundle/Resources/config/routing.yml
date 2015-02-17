@@ -17,3 +17,10 @@ ensemble01filemaker_generateByLotRapport:
     path:     /rapportfm-by-lot/{numlot}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport, pagedata: null}
 
+ensemble01filemaker_generateByLotRapport:
+    path:     /rapportfm-by-lot/action-fm/{numlot}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport_fm}
+
+ensemble01filemaker_listeRapportsLots:
+    path:     /liste-rapports-lot/{numlot}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:public_listeRapportsLots, numlot: null}
