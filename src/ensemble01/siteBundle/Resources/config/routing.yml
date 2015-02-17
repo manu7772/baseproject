@@ -10,5 +10,10 @@ ensemble01site_pageweb:
 # GÉNÉRATION DES RAPPORTS PAR URL PUBLIQUE
 
 ensemble01site_rapportfm:
-    path:     /rapportfm/{id}/{type}/{mode}.{format}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, id: null, type: "RDM-DAPP", mode: "file", format: "pdf"}
+    path:     /rapportfm/{id}/{mode}.{format}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, id: null, mode: "file", format: "pdf", pagedata: null}
+
+ensemble01filemaker_generateByLotRapport:
+    path:     /rapportfm-by-lot/{numlot}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport, pagedata: null}
+

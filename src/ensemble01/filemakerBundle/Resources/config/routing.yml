@@ -23,9 +23,16 @@ ensemble01filemaker_changebase:
 ### GÉNÉRATION DES RAPPORTS ###
 
 ensemble01filemaker_generateRapport:
-    path:     /rapport/{id}/{type}/{mode}-{format}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "file", format: "pdf", type: "RDM-DAPP"}
+    path:     /rapport/{id}/{mode}.{format}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, mode: "file", format: "pdf", pagedata: null}
 
 ensemble01filemaker_traiteRapports:
     path:     /traitement-rapports
     defaults: { _controller: ensemble01filemakerBundle:filemaker:traitement_rapports }
+
+
+### FONCTIONNALITÉS DEV / SADMIN
+
+ensemble01filemaker_retablirByLotRapport:
+    path:     /s-admin/retablir-rapportfm-by-lot/{numlot}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:retablir_by_lot_rapport, pagedata: null}

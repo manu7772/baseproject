@@ -1,31 +1,38 @@
-{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
+{% block h1 %}
+	<h1 class="page-header">{{ h1 }}</h1>
+	<small>{{ lieux|length }} résultat(s) <span class="caret"></span></small>
+{% endblock h1 %}
 {% block body %}
-	<div class="container">
+	<div class="col-lg-12">
 		{% if lieux is iterable %}
-		<h3 class="well well-xs">Liste des lieux<br /><small>{{ lieux|length }} résultat(s) <span class="caret"></span></small></h3>
 		<table class="table table-bordered table-hover table-condensed">
-			<tr class="active">
-				<th title='cle'>Clé lieu</th>
-				<th title='NOM_IMMEUBLE'>Nom immeuble</th>
-				<th title='rue_immeuble'>Adresse</th>
-				<th title='nb_locaux_diagnostique'>Loc. traités</th>
-				<th title='nb_locaux_en_service'>Loc. en serv.</th>
-				<th title='nb_locaux_calcule'>Loc. réel</th>
-			</tr>
-			{% for lieu in lieux %}
-			<tr>
-				<td>{{ lieu.getField("cle") }}</td>
-				<td>{{ lieu.getField("NOM_IMMEUBLE")|raw }}</td>
-				<td>{{ lieu.getField("rue_immeuble")|raw }}</td>
-				<td>{{ lieu.getField("nb_locaux_diagnostique") }}</td>
-				<td>{{ lieu.getField("nb_locaux_en_service") }}</td>
-				<td>{{ lieu.getField("nb_locaux_calcule") }}</td>
-			</tr>
-			{%- endfor %}
+			<thead>
+				<tr class="active">
+					<th title='cle'>Clé lieu</th>
+					<th title='NOM_IMMEUBLE'>Nom immeuble</th>
+					<th title='rue_immeuble'>Adresse</th>
+					<th title='nb_locaux_diagnostique'>Loc. traités</th>
+					<th title='nb_locaux_en_service'>Loc. en serv.</th>
+					<th title='nb_locaux_calcule'>Loc. réel</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for lieu in lieux %}
+				<tr>
+					<td>{{ lieu.getField("cle") }}</td>
+					<td>{{ lieu.getField("NOM_IMMEUBLE")|raw }}</td>
+					<td>{{ lieu.getField("rue_immeuble")|raw }}</td>
+					<td>{{ lieu.getField("nb_locaux_diagnostique") }}</td>
+					<td>{{ lieu.getField("nb_locaux_en_service") }}</td>
+					<td>{{ lieu.getField("nb_locaux_calcule") }}</td>
+				</tr>
+				{%- endfor %}
+			</tbody>
 		</table>
 		{% else %}
-		<h3 class="well well-xs">Liste des lieux<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ lieux|raw }}</div>
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: lieux} %}
 		{% endif %}
 	</div>
 {% endblock body %}

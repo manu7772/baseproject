@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<meta name="description" content="">
+    	<meta name="author" content="">
+		<title>{% block title %}Interface Web Filemaker{% endblock %}</title>
+		{% block metatitles %}
+		{% endblock metatitles %}
+		{% stylesheets filter='cssrewrite, lessphp, ?yui_css'
+		'Bundles/ensemble01filemaker/jquery-ui/jquery-ui.css'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/css/bootstrap.css'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.css'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/datatables-responsive/css/dataTables.responsive.css'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/dist/css/sb-admin-2.css'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/font-awesome/css/font-awesome.css'
+		 %}
+		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+		{% endstylesheets %}
+    	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    	<!--[if lt IE 9]>
+    	    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    	    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.js"></script>
+    	<![endif]-->
+	</head>
+	<body>
+		<div id="wrapper">
+			<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			{% block navbar %}
+			{% endblock navbar %}
+			{% block sidebar %}
+			{% endblock sidebar %}
+			</nav>
+			<!-- /.navbar-static-top -->
+			<div id="page-wrapper">
+				<div class="row">
+					<div class="col-lg-12">
+					{% block h1 %}
+						<h1 class="page-header">Titre de la page</h1>
+					{% endblock h1 %}
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>
+				<!-- /.row -->
+				<div class="row">
+				{% block body %}
+				<!-- CONTENU DE LA PAGE -->
+				{% endblock body %}
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /#page-wrapper -->
+		</div>
+		{% include ":common:hiddenstuffs.html.twig" %}
+		{% javascripts filter='?yui_js'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.js'
+		'Bundles/ensemble01filemaker/jquery-ui/jquery-ui.js'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.js'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.js'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/datatables/media/js/jquery.dataTables.js'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js'
+		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js'
+		'Bundles/ensemble01filemaker/js/base-scripts.js'
+		 %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+	</body>
+</html>
+
+
+
+
+
+{#
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+
+
+		'Bundles/ensemble01filemaker/DataTables-1.10.5/media/css/jquery.dataTables.css'
+		'Bundles/ensemble01filemaker/DataTables-1.10.5/media/js/jquery.dataTables.js'
+#}

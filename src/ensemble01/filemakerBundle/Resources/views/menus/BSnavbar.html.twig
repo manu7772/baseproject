@@ -1,0 +1,114 @@
+{% set fmservice = app.session.get('filemakerservice') %}
+{% set fmdev = app.session.get('filemaker_DEV') %}
+{% set currentserver = "" %}
+{% set currentbase = "" %}
+{% set active = "" %}
+{% set arrow = "" %}
+{% set defarrow = '<i class="fa fa-play fa-fw"></i>' %}
+
+<div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+	<a class="navbar-brand" href="{{ url('ensemble01site_homepage') }}" title="Retour à l'accueil du site">
+		GEODIAG WEB 1.0
+	</a>
+</div>
+<!-- /.navbar-header -->
+
+<ul class="nav navbar-top-links navbar-left">
+	{% if is_granted("ROLE_SUPER_ADMIN") %}
+	<!-- /.dropdown -->
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="{{ url('ensemble01filemaker_pageweb') }}" title="{{ app.user.username }}">
+			<i class="fa fa-gear fa-fw"></i><span class="hidden-xs"> Super Admin </span><i class="fa fa-caret-down"></i>
+		</a>
+		<ul class="dropdown-menu dropdown-user">
+			<li>
+				<a href="?fmreload=reload"><i class="fa fa-refresh fa-fw"></i> Recharger</a>
+			</li>
+			<li class="divider"></li>
+			<li role="presentation" class="dropdown-header">Serveur actif</li>
+			{% for server, data in fmservice %}
+			{% if data.statut == true %}
+			{% if data.current == true %}
+				{% set active = " class='disabled'" %}
+				{% set arrow = defarrow %}
+				{% set currentserver = data.nom %}
+			{% else %}
+				{% set active = "" %}
+				{% set arrow = "" %}
+			{% endif %}
+			<li{{ active|raw }}>
+				<a href="?serverchange={{ data.nom }}" title="{{ data.ip }}">{{ arrow|raw }} {{ data.nom }}</a>
+			</li>
+			{% endif %}
+			{% endfor %}
+			<li class="divider"></li>
+			<li role="presentation" class="dropdown-header">Base active</li>
+			{% for base, data in fmservice[currentserver].databases.valids %}
+			{% if data.current == true %}
+				{% set active = " class='disabled'" %}
+				{% set arrow = defarrow %}
+				{% set currentbase = data.nom %}
+			{% else %}
+				{% set active = "" %}
+				{% set arrow = "" %}
+			{% endif %}
+			<li{{ active|raw }}>
+				<a href="?basechange={{ data.nom }}"{% if data.descriptif is defined %} title = "Changer de base pour {{ data.descriptif }}"{% endif %}>{{ arrow|raw }}{{ data.nom }}</a>
+			</li>
+			{% endfor %}
+			<li class="divider"></li>
+			<li role="presentation" class="dropdown-header">Base {{ currentbase }}</li>
+			<li>
+				<a href="{ url('ensemble01filemaker_pageweb', {page: 'liste-layouts'}) }}"><i class="fa fa-file-text fa-fw"></i> Voir modèles</a>
+			</li>
+			<li>
+				<a href="{ url('ensemble01filemaker_pageweb', {page: 'liste-scripts'}) }}"><i class="fa fa-cogs fa-fw"></i> Voir scripts</a>
+			</li>
+		</ul>
+		<!-- /.dropdown-user -->
+	</li>
+	<!-- /.dropdown -->
+	{% if fmdev|length > 0 %}
+	<li class="dropdown">
+		<a href="{{ url('ensemble01filemaker_pageweb') }}" class="dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-tasks fa-fw"></i><span class="hidden-xs"> DEV info </span><i class="fa fa-caret-down"></i>
+		</a>
+		<ul class="dropdown-menu dropdown-user">
+			{% for nom, dat in fmdev %}
+			{% if not loop.first %}
+			<li class="divider"></li>
+			{% endif %}
+			<li role="presentation" class="dropdown-header">{{ nom }}</li>
+			<li role="presentation" class="dropdown-header">{{ dat }}</li>
+			{% endfor %}
+		</ul>
+	</li>
+	{% endif %}
+	{% endif %}
+	<!-- /.dropdown -->
+</ul>
+<ul class="nav navbar-top-links navbar-right">
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ app.user.username }}">
+			<i class="fa fa-user fa-fw"></i><span class="hidden-xs"> {{ app.user.username }} </span><i class="fa fa-caret-down"></i>
+		</a>
+		<ul class="dropdown-menu dropdown-user">
+			<li><a href="{{ url('fos_user_profile_show') }}"><i class="fa fa-user fa-fw"></i> Consulter profil</a>
+			</li>
+			<li><a href="{{ url('fos_user_profile_edit') }}"><i class="fa fa-gear fa-fw"></i> Modifier profil</a>
+			</li>
+			<li class="divider"></li>
+			<li><a href="{{ url('fos_user_security_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Quitter</a>
+			</li>
+		</ul>
+		<!-- /.dropdown-user -->
+	</li>
+	<!-- /.dropdown -->
+</ul>
+<!-- /.navbar-top-links -->

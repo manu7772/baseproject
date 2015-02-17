@@ -1,25 +1,23 @@
 {% extends('ensemble01filemakerBundle:pages:liste-tiers.html.twig') %}
-{% block titretpl %}{{ titre }}{% endblock titretpl %}
-{% block titretplerr %}{{ titre }}{% endblock titretplerr %}
 {% block tablehead %}
-			<tr>
-				<th>Ref</th>
-				<th>Nom</th>
-				<th>Type</th>
-				<th>CP</th>
-				<th>ville</th>
-				<th>Id</th>
-			</tr>
+	<tr class="active">
+		<th>Ref</th>
+		<th>Nom</th>
+		<!-- <th>Type</th> -->
+		<th>CP</th>
+		<th>ville</th>
+		<!-- <th>Id</th> -->
+	</tr>
 {% endblock tablehead %}
 {% block tablelines %}
-			{% for tier in tiers %}
-			<tr>
-				<td>{{ tier.getField("ref")|raw }}</td>
-				<td>{{ tier.getField("nom")|raw }}</td>
-				<td>{{ tier.getField("type_tiers")|raw }}</td>
-				<td>{{ tier.getField("cp")|raw }}</td>
-				<td>{{ tier.getField("ville")|raw }}</td>
-				<td>{{ tier.getField("id_tiers")|raw }}</td>
-			</tr>
-			{%- endfor %}
+	{% for tier in tiers %}
+	<tr>
+		<td>{{ tier.getField("ref")|raw }}</td>
+		<td>{{ tier.getField("nom")|raw }}</td>
+		<!-- <td>{{ tier.getField("type_tiers")|raw }}</td> -->
+		<td>{{ tier.getField("cp")|raw }}</td>
+		<td>{{ tier.getField("ville")|raw }}</td>
+		<!-- <td>{{ tier.getField("id_tiers")|raw }}</td> -->
+	</tr>
+	{%- endfor %}
 {% endblock tablelines %}

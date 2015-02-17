@@ -1,0 +1,84 @@
+<div class="navbar-default sidebar" role="navigation">
+	<div class="sidebar-nav navbar-collapse">
+		<ul class="nav" id="side-menu">
+			{# <!-- <li class="sidebar-search">
+				<div class="input-group custom-search-form">
+					<input type="text" class="form-control" placeholder="Search...">
+					<span class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+				</div>
+			</li> --> #}
+			<li>
+				<a href="{{ url('ensemble01filemaker_homepage') }}">
+					<i class="fa fa-desktop fa-fw visible-lg" style="float:left;padding-top:4px;"></i>
+					<i class="fa fa-laptop fa-fw visible-md" style="float:left;padding-top:4px;"></i>
+					<i class="fa fa-tablet fa-fw visible-sm" style="float:left;padding-top:4px;"></i>
+					<i class="fa fa-mobile-phone fa-fw visible-xs" style="float:left;padding-top:4px;"></i>
+					&nbsp;{{ title }}
+				</a>
+			</li>
+			<li>
+				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-user fa-fw"></i> Tiers<span class="fa arrow"></span></a>
+				<ul class="nav nav-second-level">
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers-personnel'}) }}">Personnel</a>
+					</li>
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers-client'}) }}">Clients</a>
+					</li>
+					{% if is_granted("ROLE_SUPER_ADMIN") %}
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-tiers'}) }}">Tous tiers</a>
+					</li>
+					{% endif %}
+				</ul>
+				<!-- /.nav-second-level -->
+			</li>
+			{% if affaires|length > 0 %}
+			<li>
+				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-list-alt fa-fw"></i> Affaires {% if affaires is iterable %}({{ affaires|length }}) <span class="fa arrow"></span>{% else %}(aucune){% endif %}</a>
+				{% if affaires is iterable %}
+				<ul class="nav nav-second-level">
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-affaires'}) }}">Liste des affaires</a>
+					</li>
+					<li>
+						<a href="#">Lieux <i><small>(par affaire)</small></i><span class="fa arrow"></span></a>
+						<ul class="nav nav-third-level">
+							{% for affaire in affaires %}
+							<li>
+								<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-lieux'}) }}">{{ affaire.getField("intitule")|raw }} - {{ affaire.getField("client")|raw }}</a>
+							</li>
+							{% endfor %}
+						</ul>
+						<!-- /.nav-third-level -->
+					</li>
+				</ul>
+				{% endif %}
+				<!-- /.nav-second-level -->
+			</li>
+			{% endif %}
+			<li>
+				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-file fa-fw"></i> Rapports<span class="fa arrow"></span></a>
+				<ul class="nav nav-second-level">
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-lots', pagedata: '0'}) }}">Par lots</a>
+					</li>
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '1'}) }}">Générés</a>
+					</li>
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '0'}) }}">En attente</a>
+					</li>
+				</ul>
+				<!-- /.nav-second-level -->
+			</li>
+		</ul>
+		<!-- /#side-menu -->
+	</div>
+	<!-- /.sidebar-collapse -->
+</div>
+<!-- /.navbar-static-side -->

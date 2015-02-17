@@ -10,6 +10,7 @@ use ensemble01\services\aeReponse;
 define("ALL_FILES",	"^.+$");
 
 class aetools {
+	protected $container;
 	protected $currentAeReponse = null;	// Réponse de la dernière opération
 	protected $currentPath;
 	protected $slash;

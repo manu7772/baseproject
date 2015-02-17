@@ -1,0 +1,8 @@
+{% extends ('ensemble01filemakerBundle:blocs:module_BASE.html.twig') %}
+
+{% block icon %}{{ module.icon|raw }}{% endblock icon %}
+{% block title %}{{ error|raw }}{% endblock title %}
+{% block actions_button %}{{ parent() }}{% endblock actions_button %}
+{% block body %}
+	<p>Aucune information</p>
+{% endblock body %}

@@ -1,0 +1,34 @@
+{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% set fmdev = app.session.get('filemaker_DEV') %}
+{% block body %}
+	<div class="container">
+		{% if fields is iterable %}
+		<h3 class="well well-xs">Liste des champs du modèle {{ layout }} <small>de {{ base }} (Serveur {{ fmdev['Serveur courant'] }})</small></h3>
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Liste des champs : <strong>{{ layout }}</strong> <small>{{ fields|length }} résultat(s)</small></th>
+			</tr>
+			{% for key,field in fields if fields != null %}
+			<tr>
+				<td>{{ key|raw }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<h3 class="well well-xs">Liste des champs<br /><small>Erreur</small></h3>
+		<div class="alert alert-danger" role="alert">{{ fields|raw }}</div>
+		{% endif %}
+		{% if rel_fields is defined %}
+		<table class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Liste des champs reliés : <strong>{{ layout }}</strong> <small>{{ rel_fields|length }} résultat(s)</small></th>
+			</tr>
+			{% for field in rel_fields if rel_fields != null %}
+			<tr>
+				<td>{{ field|raw }}</td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% endif %}
+	</div>
+{% endblock body %}

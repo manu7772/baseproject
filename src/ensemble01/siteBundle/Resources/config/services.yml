@@ -1,3 +1,7 @@
+parameters:
+    ensemble01.aetools.class: ensemble01\services\aetools
+    ensemble01.success_handler.class: ensemble01\services\SuccessHandler
+
 services:
 #    ensemble01site.example:
 #        class: ensemble01\siteBundle\Example
@@ -5,5 +9,10 @@ services:
 
     # Fonctionnalités de requêtes et dossiers/fichiers
     ensemble01services.aetools:
-        class: ensemble01\services\aetools
+        class: %ensemble01.aetools.class%
         arguments: [@service_container]
+
+    baseproject.success_handler:
+        class: %ensemble01.success_handler.class%
+        public: false
+        arguments: [@router, @service_container]

@@ -1,0 +1,47 @@
+{#
+Paramètres :
+------------
+action_menus : array
+	[title]
+		[0]
+			['nom'] = nom de l'item
+			['href'] = lien path/url
+			['type_link'] = (url|route) -> précise le type du href fourni
+		[1]
+			['nom'] = null (non utilisé)
+			['href'] = '%divider%' -> séparateur
+		[2]
+			['nom'] = nom de l'item
+			['href'] = '%dropdown-header%' -> texte simple
+#}
+
+{% if action_menus is defined %}
+{% if action_menus is iterable %}
+<div class="pull-right">
+	{% for titre,action_menu in action_menus %}
+	<div class="btn-group">
+		<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+			{{ titre }}&nbsp;
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu pull-right" role="menu">
+			{% for item in action_menu %}
+			{% if item.href == '%dropdown-header%' %}
+			<li role="presentation" class="dropdown-header">{{ item.nom }}</li>
+			{% elseif item.href == '%divider%' %}
+			<li class="divider"></li>
+			{% else %}
+				{% if item.type_link is defined %}
+					{% if item.type_link == 'route' %}{% set href = url(item.href) %}{% else %}{% set href = item.href %}{% endif %}
+				{% else %}
+					{% set href = item.href %}
+				{% endif %}
+			<li><a href="{{ href }}">{{ item.nom }}</a></li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</div>&nbsp;
+	{% endfor %}
+</div>
+{% endif %}
+{% endif %}

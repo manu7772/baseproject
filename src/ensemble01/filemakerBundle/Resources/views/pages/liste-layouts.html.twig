@@ -10,7 +10,10 @@
 			</tr>
 			{% for layout in layouts if layout != null %}
 			<tr>
-				<td>{{ layout|raw }}</td>
+				<td>
+					<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-fields', pagedata: {layout: layout}|json_encode() }) }}" title="liste des champs du modèle {{ layout|raw }}">
+						<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					</a> {{ layout|raw }}</td>
 			</tr>
 			{%- endfor %}
 		</table>

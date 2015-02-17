@@ -1,0 +1,9 @@
+{% extends ('ensemble01filemakerBundle:blocs:module_BASE.html.twig') %}
+
+{% block icon %}{{ module.icon|raw }}{% endblock icon %}
+{% block title %}{{ module.title|raw }}{% endblock title %}
+{% block actions_button %}{{ parent() }}{% endblock actions_button %}
+{% block body %}
+		<div id="morris-donut-chart"></div>
+		<a href="#" class="btn btn-default btn-block">View Details</a>
+{% endblock body %}

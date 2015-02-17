@@ -1,29 +1,40 @@
-{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
+{% block h1 %}
+	<h1 class="page-header">{{ h1 }}</h1>
+	{% if affaires is iterable %}
+	<small>{{ affaires|length }} résultat(s) <span class="caret"></span></small>
+	{% else %}
+	<small>Données nulles <span class="caret"></span></small>
+	{% endif %}
+{% endblock h1 %}
 {% block body %}
-	<div class="container">
+	<div class="col-lg-12">
 		{% if affaires is iterable %}
-		<h3 class="well well-xs">Liste des affaires<br /><small>{{ affaires|length }} résultat(s) <span class="caret"></span></small></h3>
-		<table class="table table-bordered table-hover table-condensed">
-			<tr class="active">
-				<th>Date</th>
-				<th>Intitulé</th>
-				<th>Client</th>
-				<th>En charge</th>
-				<th>Statut</th>
-			</tr>
-			{% for affaire in affaires %}
-			<tr>
-				<td>{{ affaire.getField("date_projet")|raw }}</td>
-				<td>{{ affaire.getField("intitule")|raw }}</td>
-				<td>{{ affaire.getField("client")|raw }}</td>
-				<td>{{ affaire.getField("Fk_Id_ChargeAffaire")|raw }}</td>
-				<td>{{ affaire.getField("Etat")|raw }}</td>
-			</tr>
-			{%- endfor %}
+		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-affaires-liste">
+			<thead>
+				<tr class="active">
+					<th>Date</th>
+					<th>Intitulé</th>
+					<th>Client</th>
+					<th>En charge</th>
+					<th>Statut</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for affaire in affaires %}
+				<tr>
+					<td>{{ affaire.getField("date_projet")|raw }}</td>
+					<td>{{ affaire.getField("intitule")|raw }}</td>
+					<td>{{ affaire.getField("client")|raw }}</td>
+					<td>{{ affaire.getField("Fk_Id_ChargeAffaire")|raw }}</td>
+					<td>{{ affaire.getField("Etat")|raw }}</td>
+				</tr>
+				{%- endfor %}
+			</tbody>
 		</table>
 		{% else %}
-		<h3 class="well well-xs">Liste des affaires<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ affaires|raw }}</div>
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: affaires} only %}
 		{% endif %}
 	</div>
 {% endblock body %}

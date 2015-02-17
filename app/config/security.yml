@@ -1,8 +1,16 @@
+parameters:
+    roles_redirect:
+        ROLE_USER:          ensemble01site_homepage
+        ROLE_EDITOR:        ensemble01filemaker_homepage
+        ROLE_ADMIN:         ensemble01filemaker_homepage
+        ROLE_SUPER_ADMIN:   ensemble01filemaker_homepage
+
 security:
     encoders:
         ensemble01\UserBundle\Entity\User: sha512
 
     role_hierarchy:
+        ROLE_USER:         [ROLE_USER]
         ROLE_EDITOR:       [ROLE_USER]
         ROLE_ADMIN:        [ROLE_USER, ROLE_EDITOR]
         ROLE_SUPER_ADMIN:  [ROLE_USER, ROLE_EDITOR, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
@@ -25,6 +33,7 @@ security:
             form_login:
                 login_path: fos_user_security_login
                 check_path: fos_user_security_check
+                success_handler: baseproject.success_handler
             logout:
                 path: fos_user_security_logout
                 target: /
@@ -34,9 +43,9 @@ security:
 
     access_control:
         - { path: ^/labo, roles: ROLE_USER }
-        - { path: ^/fm, roles: ROLE_USER }
-        - { path: ^/fm-admin, roles: ROLE_ADMIN }
-        - { path: ^/fm-sadmin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/fm, roles: ROLE_EDITOR }
+        - { path: ^(/fm)?/admin, roles: ROLE_ADMIN }
+        - { path: ^(/fm)?/s-admin, roles: ROLE_SUPER_ADMIN }
         # - { path: ^/labo, roles: ROLE_EDITOR }
         # - { path: ^/fm, roles: ROLE_EDITOR }
         # - { path: ^/fm-admin, roles: ROLE_ADMIN }

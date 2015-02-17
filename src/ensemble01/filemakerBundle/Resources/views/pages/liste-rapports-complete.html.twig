@@ -1,50 +1,63 @@
-{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
+{% block h1 %}
+	<h1 class="page-header">{{ h1 }}</h1>
+	{% if rapports is iterable %}
+	<small>{{ rapports|length }} résultat(s) <span class="caret"></span></small>
+	{% else %}
+	<small>Données nulles <span class="caret"></span></small>
+	{% endif %}
+{% endblock h1 %}
 {% block body %}
-	<div class="container">
-		{% if locauxByLieux is iterable %}
-		<h3 class="well well-xs">Liste complète des rapports<br /><small>{{ locauxByLieux|length }} résultat(s) <span class="caret"></span></small></h3>
-		<table class="table table-bordered table-hover table-condensed">
-			<tr class="active">
-				<th>Actions</th>
-				<!-- <th>Id Local</th> -->
-				<!-- <th>Id Lieu</th> -->
-				<th>Adresse logement</th>
-				<th>Id Rapport</th>
-				<th>Client</th>
-			</tr>
-			{% for local in locauxByLieux %}
-			<tr>
-				<td>
-					{% if local.getField('a_traiter') == "0" %}
-					{% for rapport in ['RDM-DAPP'] %}
-					{% set idrapport = local.getField('id') %}
-					<div class="btn-group">
-						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-default btn-xs">Générer {{ local.getField("id")|raw }}</a>
-						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							<span class="caret"></span>
-							<span class="sr-only">Toggle Dropdown</span>
-						</button>
-						<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
-							<li><a href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'load', format: 'pdf'}) }}">Export PDF</a></li>
-							<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'screen', format: 'pdf'}) }}">Visualiser PDF</a></li>
-							<li class="divider"></li>
-							<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, type: 'RDM-DAPP', mode: 'screen', format: 'html'}) }}">Visualiser HTML</a></li>
-						</ul>
-					</div>
-					{% endfor %}
-					{% endif%}
-				</td>
-				<!-- <td>{{ local.getField("Fk_Id_Local")|raw }}</td> -->
-				<!-- <td>{{ local.getField("Fk_Id_Lieu")|raw }}</td> -->
-				<td>{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}</td>
-				<td>{{ local.getField("id")|raw }}</td>
-				<td>{{ local.getField("client")|raw }}</td>
-			</tr>
-			{%- endfor %}
+	<div class="col-lg-12">
+		{% if rapports is iterable %}
+		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
+			<thead>
+				<tr class="active">
+					<th>Id rapport</th>
+					<th>Type / Actions</th>
+					<th>Numéro lot</th>
+					<th>Description</th>
+					<th>Adresse logement</th>
+					<!-- <th>Client</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				{% for local in rapports %}
+				<tr>
+					<td>{{ local.getField("id")|raw }}</td>
+					<td>
+						{% if local.getField('a_traiter') == "0" %}
+						{% set idrapport = local.getField('id') %}
+						{% set typerapport = local.getField("type_rapport") %}
+						<div class="btn-group">
+							<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-default btn-xs">{{ typerapport }}</a>
+							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="caret"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
+								<li><a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'load', format: 'pdf'}) }}">Télécharger PDF</a></li>
+								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}">Visualiser PDF</a></li>
+								<li class="divider"></li>
+								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}">Visualiser HTML</a></li>
+							</ul>
+						</div>
+						{% endif%}
+						{% if is_granted("ROLE_SUPER_ADMIN") and local.getField('a_traiter') != "0" %}
+						<a href="{{ url('ensemble01filemaker_retablirByLotRapport', {numlot: local.getField('num_lot'), pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-danger btn-xs">Rétablir lot</a>
+						{% endif%}
+					</td>
+					<td>{{ local.getField("num_lot")|raw }}</td>
+					<td>{{ local.getField("Rapport::description")|raw }}</td>
+					<td>{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}</td>
+					<!-- <td>{{ local.getField("client")|raw }}</td> -->
+				</tr>
+				{%- endfor %}
+			</tbody>
 		</table>
 		{% else %}
-		<h3 class="well well-xs">Liste des rapports<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ locauxByLieux|raw }}</div>
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: rapports} %}
 		{% endif %}
 	</div>
 {% endblock body %}

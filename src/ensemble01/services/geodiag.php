@@ -13,6 +13,10 @@ class geodiag extends fms {
 	// *************************
 
 
+	public function getRapportFileName($rapport) {
+		return $rapport->getField('id')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+	}
+
 	/**
 	 * Renvoie la liste des lieux
 	 * @return array
@@ -44,7 +48,7 @@ class geodiag extends fms {
 	 * @param array $data - données de recherche et autres données
 	 * @return array
 	 */
-	public function getAffaires($data = null) {
+	public function getAffaires__SAVE($data = null) {
 		if($data === null || !is_array($data)) $data = array();
 		// force les données relatives au modèle
 		$data['server'] 		= $this->getCurrentSERVER();
@@ -58,6 +62,28 @@ class geodiag extends fms {
 		$data['sort'][1]['column'] 			= 'date_projet';
 		$data['sort'][1]['way'] 			= 'DESC';
 		return $this->getData($data);
+	}
+
+	/**
+	 * Renvoie la liste des affaires
+	 * @param array $data - données de recherche et autres données
+	 * @return array
+	 */
+	public function getAffaires($data = null) {
+		if($data === null || !is_array($data)) $data = array();
+		// force les données relatives au modèle
+		$data2 = $data['recherche'];
+		$data2['server'] 		= $this->getCurrentSERVER();
+		$data2['base'] 			= $data['groupes'][1];
+		$data2['modele'] 		= $data['groupes'][2];
+		// autres données, par défaut :
+		// if(!isset($data['column'])) {
+		// 	$data['search'][0]['column'] 	= 'intitule';
+		// 	$data['search'][0]['value']		= 'Marché Evreux';
+		// }
+		// $data['sort'][1]['column'] 			= 'date_projet';
+		// $data['sort'][1]['way'] 			= 'DESC';
+		return $this->getData($data2);
 	}
 
 	/**
@@ -78,26 +104,83 @@ class geodiag extends fms {
 	 * @param array $data - données de recherche et autres données
 	 * @return array
 	 */
-	public function getRapports($etat = 'all') {
-		$data = array();
-		$vals = array(0 => "0", 1 => "1");
+	public function getRapports($data) {
+		$data2 = $data['recherche'];
+		$data2['server'] 		= $data['groupes'][0];
+		$data2['base'] 			= $data['groupes'][1];
+		$data2['modele'] 		= $data['groupes'][2];
+		return $this->getData($data2);
+	}
+
+	/**
+	 * Renvoie la liste des différents lots et la quatité de rapports qu'il contient
+	 * array [nom du lot] = nombre de rapports
+	 * @param boolean $all - false par défaut : uniquement les 'a_traiter' à 0 / true = tous
+	 * @return array
+	 */
+	public function getListeRapportsByLot($data) {
 		// force les données relatives au modèle
-		// $data['server'] 		= $this->getCurrentSERVER();
-		$data['server'] 		= "Géodem mac-mini";
-		// $data['base'] 		= 'GEODIAG_SERVEUR';
-		$data['base'] 			= 'GEODIAG_Rapports';
-		$data['modele'] 		= 'Rapports_Local_Web';
-		// autres données, par défaut :
-		if(in_array($etat, $vals)) {
-			$data['search'][0]['column'] 	= 'a_traiter';
-			$data['search'][0]['value']		= intval($etat);
+		$data2 = $data['recherche'];
+		$data2['server'] 		= $data['groupes'][0];
+		$data2['base'] 			= $data['groupes'][1];
+		$data2['modele'] 		= $data['groupes'][2];
+		// // $data['server'] 					= $this->getCurrentSERVER();
+		// $data['server'] 					= "Géodem mac-mini";
+		// // $data['base'] 					= 'GEODIAG_SERVEUR';
+		// $data['base'] 						= 'GEODIAG_Rapports';
+		// $data['modele'] 					= 'Rapports_Local_Web';
+		// $data['search'][0]['column'] 		= 'num_lot';
+		// $data['search'][0]['value']			= $numlot;
+		// if($all !== true) {
+		// 	$data['search'][1]['column'] 	= 'a_traiter';
+		// 	$data['search'][1]['value']		= 0;
+		// }
+		// $data['sort'][1]['column'] 			= 'id';
+		// $data['sort'][1]['way'] 			= 'ASC';
+		$result = $this->getData($data2);
+		// opération de tri
+		$mem = array();
+		$r2 = array();
+		if(is_array($result)) {
+			foreach($result as $rapport) {
+				$numlot = $rapport->getField('num_lot');
+				if(in_array($numlot, $mem)) {
+					// lot déjà trouvé
+					$r2[$numlot]['nb']++;
+				} else {
+					// nouveau lot
+					$mem[] = $numlot;
+					$r2[$numlot]['nb'] = 1;
+				}
+			}
+		} else $r2 = $result;
+		unset($result);
+		return $r2;
+	}
+
+	/**
+	 * Renvoie la liste des rapports d'un lot
+	 * @param string $numlot - référence du lot
+	 * @param boolean $all - false par défaut : uniquement les 'a_traiter' à 0 / true = tous
+	 * @return array
+	 */
+	public function getRapportsByLot($numlot, $all = false) {
+		// force les données relatives au modèle
+		// $data['server'] 					= $this->getCurrentSERVER();
+		$data['server'] 					= "Géodem mac-mini";
+		// $data['base'] 					= 'GEODIAG_SERVEUR';
+		$data['base'] 						= 'GEODIAG_Rapports';
+		$data['modele'] 					= 'Rapports_Local_Web';
+		$data['search'][0]['column'] 		= 'num_lot';
+		$data['search'][0]['value']			= "==".$numlot;
+		if($all !== true) {
+			$data['search'][1]['column'] 	= 'a_traiter';
+			$data['search'][1]['value']		= 0;
 		}
 		$data['sort'][1]['column'] 			= 'id';
 		$data['sort'][1]['way'] 			= 'ASC';
-
 		return $this->getData($data);
 	}
-
 
 	/**
 	 * Renvoie un rapport $id
@@ -203,6 +286,18 @@ class geodiag extends fms {
 		}
 	}
 
+
+	public function Cloture_Rapport_Apres_Serveur($num_lot) {
+		$this->setCurrentBASE('GEODIAG_Rapports');
+		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Cloture_Rapport_Apres_Serveur(num_lot)', $num_lot);
+		return $this->getRecords($newPerformScript->execute());
+	}
+
+	public function Retablir_Rapport_Apres_Serveur($num_lot) {
+		$this->setCurrentBASE('GEODIAG_Rapports');
+		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Retablir_Rapport_Apres_Serveur(num_lot)', $num_lot);
+		return $this->getRecords($newPerformScript->execute());
+	}
 
 
 /////////////////

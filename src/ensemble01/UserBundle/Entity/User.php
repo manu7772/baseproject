@@ -39,10 +39,25 @@ class User extends BaseUser {
 	 */
 	private $fmpass;
 
+	/**
+	 * @var string
+	 * 
+	 * @ORM\Column(name="fmselection", type="text", nullable=true, unique=false)
+	 */
+	private $fmselection;
+
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="dateMaj", type="datetime", nullable=true)
+	 */
+	private $dateModifSelection;
+
 
 	public function __construct() {
 		parent::__construct();
-
+		$this->fmselection = null;
+		$this->dateModifSelection = new \Datetime();
 	}
 
 
@@ -63,7 +78,6 @@ class User extends BaseUser {
 	 */
 	public function setFmlogin($fmlogin) {
 		$this->fmlogin = $fmlogin;
-	
 		return $this;
 	}
 
@@ -84,7 +98,6 @@ class User extends BaseUser {
 	 */
 	public function setFmpass($fmpass) {
 		$this->fmpass = $fmpass;
-	
 		return $this;
 	}
 
@@ -95,6 +108,51 @@ class User extends BaseUser {
 	 */
 	public function getFmpass() {
 		return $this->fmpass;
+	}
+
+	/**
+	 * Set fmselection
+	 *
+	 * @param array $fmselection
+	 * @return User
+	 */
+	public function setFmselection($fmselection = null) {
+		if(is_array($fmselection)) {
+			$this->fmselection = serialize($fmselection);
+			$this->setDateModifSelection();
+		} else {
+			$this->fmselection = $fmselection;
+		}
+		return $this;
+	}
+
+	/**
+	 * Get fmselection
+	 *
+	 * @return array
+	 */
+	public function getFmselection() {
+		if($this->fmselection === null) return null;
+		return unserialize($this->fmselection);
+	}
+
+	/**
+	 * Set dateModifSelection
+	 *
+	 * @return User
+	 */
+	public function setDateModifSelection() {
+		$this->dateModifSelection = new \Datetime();
+		return $this;
+	}
+
+	/**
+	 * Get dateModifSelection
+	 *
+	 * @return Datetime 
+	 */
+	public function getDateModifSelection() {
+		return $this->dateModifSelection;
 	}
 
 

@@ -12,6 +12,10 @@ services:
         class: ensemble01\services\geodiag
         arguments: [@service_container]
 
+    ensemble01services.selection:
+        class: ensemble01\services\aeSelect
+        arguments: [@service_container]
+
     # ensemble01services.geodiagmin:
     #     class: ensemble01\services\geodiagmin
     #     arguments: [@service_container]

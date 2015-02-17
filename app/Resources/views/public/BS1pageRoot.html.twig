@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>{% block title %}Interface Web Filemaker{% endblock %}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		{% block metatitles %}
+		{% endblock metatitles %}
+		{% stylesheets filter='cssrewrite, lessphp, ?yui_css'
+		'Bundles/ensemble01filemaker/bootstrap/css/bootstrap.min.css'
+		'Bundles/ensemble01filemaker/bootstrap/font-awesome/css/font-awesome.css'
+		'Bundles/ensemble01filemaker/bootstrap/css/plugins/morris/morris-0.4.3.min.css'
+		'Bundles/ensemble01filemaker/bootstrap/css/plugins/timeline/timeline.css'
+		'Bundles/ensemble01filemaker/bootstrap/css/plugins/dataTables/dataTables.bootstrap.css'
+		'Bundles/ensemble01filemaker/bootstrap/css/sb-admin.css'
+		 %}
+		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+		{% endstylesheets %}
+	</head>
+	<body>
+		<div id="wrapper">
+		{% block navbar %}
+		{% endblock navbar %}
+		{% block sidebar %}
+		{% endblock sidebar %}
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+				{% block h1 %}
+					<h1 class="page-header">Titre de la page</h1>
+				{% endblock h1 %}
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+			<div class="row">
+			{% block body %}
+			<!-- CONTENU DE LA PAGE -->
+			{% endblock body %}
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /#page-wrapper -->
+		</div>
+		{% include ":common:hiddenstuffs.html.twig" %}
+		{% javascripts filter='?yui_js'
+		'Bundles/ensemble01filemaker/bootstrap/js/jquery-1.10.2.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/bootstrap.min.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/plugins/metisMenu/jquery.metisMenu.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/plugins/morris/raphael-2.1.0.min.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/plugins/morris/morris.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/plugins/dataTables/dataTables.bootstrap.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/plugins/dataTables/jquery.dataTables.js'
+		'Bundles/ensemble01filemaker/bootstrap/js/sb-admin.js'
+		'Bundles/ensemble01filemaker/js/base-scripts.js'
+		 %}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+	</body>
+</html>
+
+{#
+		'Bundles/ensemble01filemaker/DataTables-1.10.5/media/css/jquery.dataTables.css'
+		'Bundles/ensemble01filemaker/DataTables-1.10.5/media/js/jquery.dataTables.js'
+#}
