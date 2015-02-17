@@ -549,7 +549,7 @@ class filemakerController extends fmController {
 	 */
 	public function generate_by_lot_rapport_fmAction($numlot) {
 		$this->generate_by_lot_rapportAction($numlot);
-		return $this->listeRapportsLotsAction($numlot);
+		return $this->public_listeRapportsLotsAction($numlot);
 	}
 
 	public function public_listeRapportsLotsAction($numlot = null) {
@@ -634,7 +634,7 @@ class filemakerController extends fmController {
 	 */
 	public function BSsidebarAction($title = 'Tableau de bord', $icon = 'fa-dashboard', $template = 'BSsidebar') {
 		$data = array();
-		$data = $this->initFmData();
+		$this->initFmData();
 		// sélection
 		$this->selectService = $this->get('ensemble01services.selection');
 		$this->selectService->setSelectName('BSsideBar');
