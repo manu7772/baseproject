@@ -14,7 +14,7 @@
 {% endfor %}
 {% else %}
 <h4>Aucun rapport</h4>
-<p>{{ rapports }}</p>
+<p>{{ rapports }} <a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: rapport.getField('id'), mode: 'screen', format: 'pdf'}) }}">Voir PDF</a></p>
 {% endif %}
 
 {% endblock body  %}
