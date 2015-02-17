@@ -14,7 +14,7 @@ class geodiag extends fms {
 
 
 	public function getRapportFileName($rapport) {
-		return $rapport->getField('id')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+		return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('Fk_Id_Local')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
 	}
 
 	/**
