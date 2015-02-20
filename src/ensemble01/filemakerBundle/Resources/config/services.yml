@@ -1,3 +1,8 @@
+parameters:
+    ensemble01.aetools.class: ensemble01\services\aetools
+    ensemble01.success_handler.class: ensemble01\services\SuccessHandler
+    ensemble01.textutilities.class: ensemble01\services\twigAetools
+
 services:
 #    ensemble01filemaker.example:
 #        class: ensemble01\filemakerBundle\Example
@@ -5,20 +10,29 @@ services:
 
     # Fonctionnalités de requêtes et dossiers/fichiers
     ensemble01services.aetools:
-        class: ensemble01\services\aetools
+        class: %ensemble01.aetools.class%
         arguments: [@service_container]
 
     ensemble01services.geodiag:
         class: ensemble01\services\geodiag
         arguments: [@service_container]
 
+    ensemble01services.aeReponse:
+        class: ensemble01\services\aeReponse
+        arguments: [@service_container]
+
     ensemble01services.selection:
         class: ensemble01\services\aeSelect
         arguments: [@service_container]
 
-    # ensemble01services.geodiagmin:
-    #     class: ensemble01\services\geodiagmin
-    #     arguments: [@service_container]
+    # Fonctions textes utiles et pratiques pour utilisation dans TWIG
+    ensemble01services.textutilities:
+        class: %ensemble01.textutilities.class%
+        arguments: [@service_container]
+        tags:
+            - { name: twig.extension }
+
+
 
     ###################################
     ### EVENT LISTENER AU DÉMARRAGE DE REQUETE PRINCIPALE
@@ -30,4 +44,9 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: load_fmservice }
+
+    baseproject.success_handler:
+        class: %ensemble01.success_handler.class%
+        public: false
+        arguments: [@router, @service_container]
 

@@ -5,7 +5,6 @@ namespace ensemble01\filemakerBundle\Controller;
 use filemakerBundle\Controller\filemakerController as fmController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use labo\Bundle\TestmanuBundle\services\aetools\aeReponse;
 
 class filemakerController extends fmController {
 
@@ -14,9 +13,14 @@ class filemakerController extends fmController {
 	protected $_fm;				// service filemakerservice
 	protected $selectService;	// service aeSelect
 	protected $DEV = true;		// mode DEV
+	protected $DEVdata = array();
 	protected $recurs = 0;
 	protected $recursMAX = 6;
 	protected $aetools;
+
+	function __destruct() {
+		$this->affAllDev();
+	}
 
 	public function indexAction() {
 		$data['title'] = "Tableau de bord";
@@ -144,7 +148,6 @@ class filemakerController extends fmController {
 	}
 
 	public function pagewebAction($page = null, $pagedata = null) {
-		$ctrlData = array();
 		// ctrlData > pagedata :
 		// 	=> redirect : change de page (n'utilise pas $page, du coup)
 		// 	=> …
@@ -169,21 +172,28 @@ class filemakerController extends fmController {
 		// récupération des données et de l'bjet FM $this->_fm
 		$ctrlData = $this->initGlobalData(array(
 			'page'			=> $page,
-			'pagedata'		=> $this->unCompileData($pagedata),
+			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
 			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
-			'errors'		=> array(),
 		));
 
 		// données en fonction de la page
+		$this->vardumpDev($ctrlData, "ctrlData : ");
 		switch ($ctrlData['template']) {
 			case 'liste-rapports-lots':
-				$ctrlData['h1'] = "Rapports par lots";
+				switch (strval($ctrlData['pagedata']["from_url"])) {
+					case '1': $ctrlData['h1'] = "Lots générés"; break;
+					case '0': $ctrlData['h1'] = "Lots en attente ou incomplets"; break;
+					case 'all': $ctrlData['h1'] = "Lots liste complète"; break;
+					default: $ctrlData['h1'] = "Lots liste complète";$ctrlData['pagedata']["from_url"] = 'all'; break;
+				}
 				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web'));
-				// $this->selectService->setRecherche('intitule', 'Marché Evreux');
-				$this->selectService
-					// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
-					->setRecherche('a_traiter', intval($ctrlData['pagedata']))
-					;
+				// $this->selectService->setRecherche('intitule', '*');
+				if($ctrlData['pagedata']["from_url"] !== 'all') {
+					$this->selectService
+						// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
+						->setRecherche('a_traiter', $ctrlData['pagedata']["from_url"])
+						;
+				}
 				// $this->selectService->emptyRecherche();
 				// $this->selectService->setSort('date_projet', 'DESC');
 
@@ -192,21 +202,20 @@ class filemakerController extends fmController {
 				$ctrlData['rapports'] = $this->_fm->getListeRapportsByLot($ctrlData["new_select"]);
 				break;
 			case 'liste-rapports-complete':
-				if(intval($ctrlData['pagedata']) === 1) {
-					$a_traiter = 1;
-					$ctrlData['h1'] = "Rapports générés";
-				} else if(intval($ctrlData['pagedata']) === 0) {
-					$a_traiter = 0;
-					$ctrlData['h1'] = "Rapports en attente";
-				} else {
-					$a_traiter = 0;
-					$ctrlData['h1'] = "Rapports en attente";
+				$selecValues = array('0','1');
+				switch (strval($ctrlData['pagedata']["from_url"])) {
+					case '1': $ctrlData['h1'] = "Rapports générés"; break;
+					case '0': $ctrlData['h1'] = "Rapports en attente"; break;
+					case 'all': $ctrlData['h1'] = "Rapports liste complète"; break;
+					default: $ctrlData['h1'] = "Rapports liste complète";$ctrlData['pagedata']["from_url"] = 'all'; break;
 				}
 				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web'));
-				$this->selectService
-					// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
-					->setRecherche('a_traiter', $a_traiter)
-					;
+				if(in_array(strval($ctrlData['pagedata']["from_url"]), $selecValues)) {
+					$this->selectService
+						// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
+						->setRecherche('a_traiter', $ctrlData['pagedata']["from_url"])
+						;
+				}
 				$ctrlData["new_select"] = $this->selectService->getCurrentSelect(self::FORCE_SELECT);
 				$ctrlData['rapports'] = $this->_fm->getRapports($ctrlData["new_select"]);
 				break;
@@ -346,12 +355,11 @@ class filemakerController extends fmController {
 	public function traitement_rapportsAction() {
 		$data = $this->initGlobalData(array("page" => 'result-rapports'));
 
-		$data['locauxByLieux'] = $this->_fm->getRapports(0);
+		$data['locauxByLieux'] = $this->_fm->getRapports('0');
 		$data['LieuxInRapport'] = $this->_fm->getRapportsLieux();
 
 		$data['result'] = array();
 		foreach ($data['locauxByLieux'] as $key => $rapport) {
-			// echo('Class : '.get_class($rapport)."<br />");
 			$id = $rapport->getField('id');
 			// $data['result'][$id] = $this->generate_rapports($rapport);
 			if(rand(0,1000) > 800) $data['result'][$id] = false;
@@ -361,105 +369,179 @@ class filemakerController extends fmController {
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
+
 	/**
-	 * Génère un rapport d'id $id
+	 * Génère un rapport d'id $id ou objet
+	 * @param mixed $id - id du rapport ou objet rapport
+	 * @param string $format - type de retour -> "pdf" ou "html"
+	 * @return aeReponse
+	 */
+	public function generate_un_rapport($id_rapport = null, $format = "pdf", $aeReponse = null) {
+		// renvoie un objet aeReponse
+		// data[id] => array()
+		// 		['pdf'] => objet HTML2PDF
+		// 		['html'] => code HTML du rapport à générer
+		// 		["rapport"] => array()
+		// 			['rapport'] => objet rapport
+		// 			['format'] => format (pdf|html)
+		// 			['type'] => type de rapport
+		// 			['template'] => nom du template
+
+		if($aeReponse === null) $aeReponse = $this->get('ensemble01services.aeReponse');
+		if($aeReponse->isValid()) {
+			// transforme l'ID en objet
+			if(!is_object($id_rapport)) {
+				$this->initFmData();
+				$id_rapport = $this->_fm->getOneRapport(strval($id_rapport));
+				// Rapport non trouvé…
+				if(is_string($id_rapport)) return $aeReponse->addErrorMessage($id_rapport);
+			}
+			// données globales
+			$RAPP["rapport"] = $id_rapport;
+			$RAPP["format"] = $format;
+			$RAPP["type"] = $id_rapport->getField('type_rapport');
+			$RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_001.html.twig";
+			if(!$this->get('templating')->exists($RAPP["template"])) {
+				$aeReponse->addErrorMessage('Modèle de rapport introuvable : '.$RAPP["template"], true);
+			}
+			// nom du fichier du rapport
+			$RAPP["ref_rapport"] = $this->_fm->getRapportFileName($RAPP["rapport"]);
+			// données images
+			$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
+			// données spécifiques au format
+			if($aeReponse->isValid()) {
+				switch(strtolower($format)) {
+					case 'html':
+						$RAPP['imgpath'] = 'bundles/ensemble01filemaker/images/';
+						// template trouvé…
+						try {
+							$html = $this->render($RAPP["template"], $RAPP);
+							$aeReponse->addMessage('Le rapport '.$RAPP["format"].' '.$RAPP["rapport"]->getField('id').' a été généré.');
+							$aeReponse->addData(array('html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
+						} catch (\Exception $e) {
+							$aeReponse->addErrorMessage('Erreur génération html : '.$e->getMessage());
+						}
+						break;
+					default: // PDF ou autre
+						$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
+						try {
+							$html = $this->renderView($RAPP["template"], $RAPP);
+						} catch (\Exception $e){
+							$aeReponse->addErrorMessage('Erreur génération template : '.$e->getMessage());
+						}
+						try {
+							$html2pdf = $this->get('html2pdf_factory')->create();
+							$html2pdf->writeHTML($html, false);
+							$aeReponse->addData(array('html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
+							$aeReponse->addData(array('pdf' => $html2pdf, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
+						} catch (HTML2PDF_exception $e){
+							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
+						}
+						break;
+				}
+			}
+		} else {
+			$aeReponse->addErrorMessage("l'objet aeReponse est invalide (Erreurs présentes).");
+		}
+		return $aeReponse;
+	}
+
+
+	/**
+	 * Génère un rapport d'id $id - ou tous les rapports à générer si pas d'id précisé
 	 * @param string $id - champ "id" de fm
 	 * @param string $type - type de rapport -> "RDM-DAPP", etc.
 	 * @param string $mode - type d'enregistrement -> "file" ou "load" ou "screen"
 	 * @param string $format - type de document -> "pdf" ou "html"
 	 */
 	public function generate_rapportAction($id = null, $mode = "file", $format = "pdf", $pagedata = null) {
-		$pagedata['pagedata'] = $pagedata;
-		$pagedata = array_merge($pagedata, $this->unCompileData($pagedata));
-
-		$data = array_merge($data, $this->initGlobalData());
-		$message = array();
-		$messageERR = array();
+		$ctrlData = $this->initGlobalData(array(
+			// 'page'			=> $page,
+			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
+			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
+		));
+		$aeReponse = $this->get('ensemble01services.aeReponse');
 
 		if($id === null) {
 			// récupération de la liste des rapports à générer en base FM
 			$mode = 'file';
 			$format = 'pdf';
-			$data["rapport"] = $this->_fm->getRapports("0");
+			$rapports = $this->_fm->getRapports("0");
 		} else {
-			$data["rapport"] = $this->_fm->getOneRapport($id);
+			$rapports = array();
+			$rapports[] = $this->_fm->getOneRapport($id);
 		}
-		// var_dump($data["rapport"]);
+		// var_dump($rapports);
 		// Si erreur
-		if(is_string($data["rapport"])) $messageERR[] = $data["rapport"];
+		if(is_string($rapports)) {
+			$aeReponse->addErrorMessage($rapports);
 		// sinon
-		if(count($messageERR) < 1) foreach($data["rapport"] as $rapport) {
-			$type = $rapport->getField('type_rapport');
-			// vérifie la présence du dossier $type
-			$path = $this->verifAndGoDossier($type);
-
-
-			$RAPP = array();
-			$RAPP['format'] = $format;
-			$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
-			$RAPP["rapport"] = $rapport;
-			$RAPP["ref_rapport"] = $this->_fm->getRapportFileName($rapport);
-			if(count($messageERR) < 1) switch(strtolower($format)) {
-				case 'html':
-					$RAPP['imgpath'] = 'bundles/ensemble01filemaker/images/';
-					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
-					if(!$this->get('templating')->exists($templt)) {
-						// template non trouvé…
-						$messageERR[] = 'Template de rapport non trouvé : '.$type;
-					} else return $this->render($templt, $RAPP);
-					break;
-				default:
-					$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
-					// $html2pdf->pdf->SetDisplayMode('fullpage');
-					// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $RAPP);
-					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
-					if(!$this->get('templating')->exists($templt)) {
-						// template non trouvé…
-						$messageERR[] = 'Template de rapport non trouvé : '.$type;
-					} else {
-						$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
-						// $html = "<html><body><p>Page de test</p></body></html>"; // TEST
-						try {
-							$html2pdf = $this->get('html2pdf_factory')->create();
-							$html2pdf->writeHTML($html, false);
-						} catch (HTML2PDF_exception $e){
-							$messageERR[] = 'Erreur génération PDF : '.$e;
+		} else foreach($rapports as $rapport) {
+			// $this->vardumpDev($aeReponse->getData(), "aeReponse avant génération :");
+			$aeReponse = $this->generate_un_rapport($rapport, $format, $aeReponse);
+		}
+		// $this->vardumpDev($aeReponse->getData(), "Data après génération");
+		// $this->vardumpDev($aeReponse->getDataKeys(), "Keys après génération");
+		if($aeReponse->isValid()) {
+			foreach ($aeReponse->getData() as $key => $oneRapport) {
+				switch ($mode) {
+					case 'screen':
+						if($format === "html") {
+							return $oneRapport['html'];
+						} else if ($format === "pdf") {
+							try {
+								$oneRapport['pdf']->Output($oneRapport['rapport']["ref_rapport"].'.'.$format);
+								$aeReponse->addMessage("Le rapport ".$oneRapport['rapport']["type"]." réf.".$oneRapport['rapport']["ref_rapport"]." a été généré.");
+							} catch (HTML2PDF_exception $e) {
+								$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
+							}
 						}
-						// $html2pdf->Output($RAPP["ref_rapport"].'.pdf');
-					}
-					break;
+						break 2;
+					case 'load':
+						if ($format === "pdf") {
+							$path = $this->verifAndGoDossier("TEMP");
+							try {
+								$tempfile = $oneRapport['rapport']["ref_rapport"].'.'.$format;
+								$oneRapport['pdf']->Output($path.$tempfile, "F");
+								return new Response(file_get_contents($path.$tempfile), 200, array(
+									'Content-Type' => 'application/force-download',
+									'Content-Disposition' => 'attachment; filename='.$tempfile
+									));
+							} catch (HTML2PDF_exception $e) {
+								$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
+							}
+							// $aeReponse->addMessage('Téléchargement…');
+						} else {
+							$aeReponse->addErrorMessage('Le format demandé n\'est pas du PDF : '.$format);
+						}
+						$aeReponse->putErrorMessagesInFlashbag();
+						break 2;
+					default: // file (sur disque dur)
+						$path = $this->verifAndGoDossier($oneRapport['rapport']["type"]);
+						try {
+							$oneRapport['pdf']->Output($path.$oneRapport['rapport']["ref_rapport"].'.'.$format, "F");
+							$aeReponse->addMessage("Le rapport ".$oneRapport['rapport']["type"]." réf.".$oneRapport['rapport']["ref_rapport"]." a été généré.");
+						} catch (HTML2PDF_exception $e) {
+							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
+						}
+						if($aeReponse->isValid()) {
+							$idr = $oneRapport['rapport']["rapport"]->getField('id');
+							$r = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
+							if(is_string($r)) {
+								$aeReponse->addErrorMessage('Le rapport '.$path.$oneRapport['rapport']["ref_rapport"].'('.$idr.') n\'a pu être traité en BDD FM');
+							}
+						}
+						$aeReponse->putAllMessagesInFlashbag();
+						break;
+				}
 			}
-			if(count($messageERR) < 1) switch ($mode) {
-				case 'screen':
-					try {
-						$html2pdf->Output($RAPP["ref_rapport"].'.'.$format);
-						$message[] = "Le rapport ".$type." réf.".$RAPP["ref_rapport"]." a été généré.";
-					} catch (HTML2PDF_exception $e){
-						$messageERR[] = 'Erreur génération PDF : '.$e;
-					}
-					break;
-				case 'load':
-					$message[] = 'Téléchargement…';
-					break;
-				default: // file (sur disque dur)
-					try {
-						$html2pdf->Output($path.$RAPP["ref_rapport"].'.'.$format, "F");
-						$message[] = "Le rapport ".$type." réf.".$RAPP["ref_rapport"]." a été généré.";
-					} catch (HTML2PDF_exception $e){
-						$messageERR[] = 'Erreur génération PDF : '.$e;
-					}
-					break;
-			}
-		}
-		if(count($messageERR) < 1) foreach ($message as $mess) {
-			$this->get('session')->getFlashBag()->add('info', $mess);
-		}
-		foreach ($messageERR as $mess) {
-			$this->get('session')->getFlashBag()->add('error', $mess);
+		} else {
+			$aeReponse->addErrorMessage('Opération de génération de rapports échouée');
+			$aeReponse->putErrorMessagesInFlashbag();
 		}
 		// page à afficher
-		if(!isset($pagedata['redirect'])) $pagedata['redirect'] = 'liste-rapports-complete';
-		return $this->pagewebAction($pagedata['redirect'], $pagedata);
+		if(!isset($ctrlData['redirect'])) $ctrlData['redirect'] = 'liste-rapports-complete';
+		return $this->pagewebAction($ctrlData['redirect'], $ctrlData['pagedata_raw']);
 		// return $this->redirect($this->generateUrl("ensemble01filemaker_pageweb", array("page"=>'liste-rapports-complete', "pagedata" => '0')));
 	}
 
@@ -471,72 +553,76 @@ class filemakerController extends fmController {
 	 * @param string $pagedata - Données diverses
 	 */
 	public function generate_by_lot_rapportAction($numlot, $pagedata = null) {
-		$pagedata_raw = $pagedata;
-		$pagedata = $this->unCompileData($pagedata);
-		$pagedata['pagedata'] = $pagedata_raw;
+		$ctrlData = $this->initGlobalData(array(
+			// 'page'			=> $page,
+			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
+			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
+		));
+		$aeReponse = $this->get('ensemble01services.aeReponse');
 
-		$this->initFmData($pagedata);
-		$message = array();
-		$messageERR = array();
-		$format = 'pdf';
-
-		$data["rapport"] = $this->_fm->Cloture_Rapport_Apres_Serveur($numlot);
-		// $this->vardumpDev($action, "Résultat de Cloture_Rapport_Apres_Serveur");
-		// $data["rapport"] = $this->_fm->getRapportsByLot($numlot);
-		// $this->vardumpDev($data["rapport"], 'Rapports de lot '.$numlot);
-		// die('end');
-
-		// var_dump($data["rapport"]);
-		// Si erreur
-		if(is_string($data["rapport"])) $messageERR[] = $data["rapport"];
-		// sinon
-		if(count($messageERR) < 1) {
-			$RAPP = array();
-			foreach($data["rapport"] as $key => $rapport) {
-				$RAPP['format'] = $format;
-				$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
-				$RAPP["rapport"] = $rapport;
-				$RAPP["ref_rapport"] = $this->_fm->getRapportFileName($rapport);
-				$type = $rapport->getField('type_rapport');
-				$path = $this->verifAndGoDossier($type);
-	
-				$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
-				// $html2pdf->pdf->SetDisplayMode('fullpage');
-				// $html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_DAPP_001.html.twig", $RAPP);
-				$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
-				if($this->get('templating')->exists($templt)) {
-					$html = $this->renderView("ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig", $RAPP);
-					// $html = "<html><body><p>Page de test</p></body></html>"; // TEST
-					try {
-						$html2pdf = $this->get('html2pdf_factory')->create();
-						$html2pdf->writeHTML($html, false);
-					} catch (HTML2PDF_exception $e){
-						$messageERR[] = 'Erreur génération PDF : '.$e;
-					}
-					// $html2pdf->Output($RAPP["ref_rapport"].'.pdf');
-				} else {
-					// template non trouvé…
-					$messageERR[] = 'Template de rapport non trouvé : '.$type;
-				}
-				if(count($messageERR) < 1) {
-					try {
-						$html2pdf->Output($path.$RAPP["ref_rapport"].'.'.$format, "F");
-						$message[] = "Le rapport ".$type." réf.".$RAPP["ref_rapport"]." a été généré.";
-					} catch (HTML2PDF_exception $e){
-						$messageERR[] = 'Erreur génération PDF : '.$e;
-					}
-				}
+		// rapports passés en "généré"
+		$resltRapports = array();
+		$test = $this->_fm->Cloture_LOT_Rapport_Apres_Serveur($numlot);
+		foreach ($test as $rapport) {
+			if(is_object($rapport)) {
+				$resltRapports[$rapport->getField('id')] = $rapport;
+			} else {
+				$aeReponse->addErrorMessage($rapport);
 			}
 		}
-		if(count($messageERR) < 1) foreach ($message as $mess) {
-			$this->get('session')->getFlashBag()->add('info', $mess);
+		// // liste des rapports à vérifier
+		// $verifRapports = array();
+		// $test = $this->_fm->getRapportsByLot($numlot, true);
+		// foreach ($test as $rapport) {
+		// 	if(is_object($rapport)) {
+		// 		$verifRapports[$rapport->getField('id')] = $rapport;
+		// 	}
+		// }
+		// unset($test);
+		// // comparaison
+		// if(count($resltRapports) === count($verifRapports))
+		
+		if($aeReponse->isValid()) {
+			foreach ($resltRapports as $id_rapport => $oneRapport) {
+				$format = 'pdf';
+				$aeReponse = $this->generate_un_rapport($oneRapport, $format, $aeReponse);
+				$one2Rapport = $aeReponse->getData($id_rapport);
+				// $one2Rapport = $one2Rapport["rapport"];
+				if(is_array($one2Rapport)) {
+					$type = $one2Rapport["rapport"]["type"];
+					$path = $this->verifAndGoDossier($type);
+					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
+					$nomRapport = $one2Rapport["rapport"]["ref_rapport"].'.'.$format;
+					// nom du fichier du rapport
+					$one2Rapport["rapport"]["ref_rapport"] = $this->_fm->getRapportFileName($one2Rapport["rapport"]["rapport"]);
+					$one2Rapport["rapport"]['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
+					// données images
+					$one2Rapport["rapport"]['image_logo_geodem'] = "logos/logoGeodem.png";
+
+					// if($this->get('templating')->exists($templt)) {
+					// 	$html = $this->renderView($templt, $one2Rapport["rapport"]);
+					try {
+						$one2Rapport['pdf']->Output($path.$nomRapport, "F");
+						$aeReponse->addMessage("Le rapport ".$one2Rapport["rapport"]["type"]." réf.".$one2Rapport["rapport"]["ref_rapport"]." a été généré.");
+					} catch (HTML2PDF_exception $e) {
+						$aeReponse->addErrorMessage('Erreur génération PDF rapport '.$id_rapport.' : '.$e->getMessage());
+					}
+					// } else {
+					// 	$aeReponse->addErrorMessage('Modèle de rapport introuvable : '.$one2Rapport["rapport"]["template"], true);
+					// }
+				} else {
+					echo('Rapport non récupéré :( !!!<br>');
+				}
+			}
+		} else {
+			// Au moins une erreur sur le passage en mode "généré" : on rétablit tout
+			$action = $this->_fm->Retablir_LOT_Rapport_Apres_Serveur($numlot);
+			if(is_string($action)) $aeReponse->addErrorMessage('Rétablissement rapports : '.$action);
 		}
-		foreach ($messageERR as $mess) {
-			$this->get('session')->getFlashBag()->add('FMerror', $mess);
-		}
+		$aeReponse->putAllMessagesInFlashbag();
 		// page à afficher
-		if(!isset($pagedata['redirect'])) $pagedata['redirect'] = 'liste-rapports-complete';
-		return $this->pagewebAction($pagedata['redirect'], $pagedata);
+		if(!isset($ctrlData['redirect'])) $ctrlData['redirect'] = 'liste-rapports-lots';
+		return $this->pagewebAction($ctrlData['redirect'], 'all');
 		// return $this->redirect($this->generateUrl("ensemble01filemaker_pageweb", array("page"=>'liste-rapports-complete', "pagedata" => '0')));
 	}
 	// http://localhost:8888/GitHub/baseproject/web/app_dev.php/fm/s-admin/retablir-rapportfm-by-lot/Proj0000004000000151417-02-2015-17-09-31/%7B%22redirect%22:%22liste-rapports-complete%22%7D
@@ -546,12 +632,19 @@ class filemakerController extends fmController {
 	 * Génère les rapports selon un numéro de lot (ensemble de rapports)
 	 * --> VIA COMMANDE FILEMAKER
 	 * @param string $numlot - numéro du lot
+	 * @return Response
 	 */
 	public function generate_by_lot_rapport_fmAction($numlot) {
 		$this->generate_by_lot_rapportAction($numlot);
 		return $this->public_listeRapportsLotsAction($numlot);
 	}
 
+	/**
+	 * Affiche la liste des rapports d'un lot, présents sur le disque
+	 * 
+	 * @param string $numlot - référence du lot
+	 * @return Response
+	 */
 	public function public_listeRapportsLotsAction($numlot = null) {
 		$data = array();
 		$numlot === null ? $all = true : $all = false;
@@ -560,37 +653,62 @@ class filemakerController extends fmController {
 		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
 	}
 
+	public function retablir_un_rapportAction($id, $pagedata = null) {
+		$ctrlData = $this->initGlobalData(array(
+			// 'page'			=> $page,
+			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
+			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
+		));
+		$aeReponse = $this->get('ensemble01services.aeReponse');
+
+		$action = $this->_fm->Retablir_UN_Rapport_Apres_Serveur($id);
+		// $action = 'test';
+		// Si erreur
+		if(is_string($action)) {
+			$aeReponse->addErrorMessage($action);
+		} else {
+			foreach ($action as $key => $rapport) {
+				if($this->_fm->effaceRapportFile($rapport) === true) $addRep = ' Fichier effacé.';
+					else $addRep = ' Fichier introuvable.';
+				$aeReponse->addMessage("Rapport rétabli : ".$rapport->getField('id')." (version ".$rapport->getField('version').")".$addRep);
+			}
+		}
+
+		$aeReponse->putAllMessagesInFlashbag();
+		// page à afficher
+		if(!isset($ctrlData['redirect'])) $ctrlData['redirect'] = 'liste-rapports-lots';
+		return $this->pagewebAction($ctrlData['redirect'], 'all');
+	}
+
 	/**
 	 * Rétablit les rapports selon un numéro de lot (ensemble de rapports)
 	 * @param string $numlot - numéro du lot
 	 * @param string $pagedata - Données diverses
 	 */
 	public function retablir_by_lot_rapportAction($numlot, $pagedata = null) {
-		$pagedata_raw = $pagedata;
-		$pagedata = $this->unCompileData($pagedata);
-		$pagedata['pagedata'] = $pagedata_raw;
+		$ctrlData = $this->initGlobalData(array(
+			// 'page'			=> $page,
+			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
+			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
+		));
+		$aeReponse = $this->get('ensemble01services.aeReponse');
 
-		$this->initFmData($pagedata);
-		$message = array();
-		$messageERR = array();
-
-		$action = $this->_fm->Retablir_Rapport_Apres_Serveur($numlot);
-		if(is_string($action)) $messageERR[] = $action;
-		else {
+		$action = $this->_fm->Retablir_LOT_Rapport_Apres_Serveur($numlot);
+		// $action = 'test';
+		// Si erreur
+		if(is_string($action)) {
+			$aeReponse->addErrorMessage($action);
+		} else {
 			foreach ($action as $key => $rapport) {
-				$message[] = "Rapport rétabli : ".$rapport->getField('id')." (version ".$rapport->getField('version').")";
+				if($this->_fm->effaceRapportFile($rapport) === true) $addRep = ' Fichier effacé.';
+					else $addRep = ' Fichier introuvable.';
+				$aeReponse->addMessage("Rapport rétabli : ".$rapport->getField('id')." (version ".$rapport->getField('version').")".$addRep);
 			}
 		}
-
-		if(count($messageERR) < 1) foreach ($message as $mess) {
-			$this->get('session')->getFlashBag()->add('info', $mess);
-		}
-		foreach ($messageERR as $mess) {
-			$this->get('session')->getFlashBag()->add('FMerror', $mess);
-		}
+		$aeReponse->putAllMessagesInFlashbag();
 		// page à afficher
-		if(!isset($pagedata['redirect'])) $pagedata['redirect'] = 'liste-rapports-complete';
-		return $this->pagewebAction($pagedata['redirect'], $pagedata);
+		if(!isset($ctrlData['redirect'])) $ctrlData['redirect'] = 'liste-rapports-lots';
+		return $this->pagewebAction($ctrlData['redirect'], 'all');
 	}
 
 	/**
@@ -661,7 +779,6 @@ class filemakerController extends fmController {
 	public function moduleAdminAction($template, $blocdata = null) {
 		$def_template = 'inconnu';
 		$blocdata = $this->unCompileData($blocdata);
-		$blocdata['error'] = null;
 		$template_path = "ensemble01filemakerBundle:blocs:module_".$template.".html.twig";
 		if(!$this->get('templating')->exists($template_path)) {
 			$template_path = "ensemble01filemakerBundle:blocs:module_".$def_template.".html.twig";
@@ -770,8 +887,10 @@ class filemakerController extends fmController {
 	 * @return string/array selon le type de données
 	 */
 	private function unCompileData($pagedata) {
-		$pd = @json_decode($pagedata, true);
-		if($pd !== null) $pagedata = $pd;
+		if(is_string($pagedata)) {
+			$pd = @json_decode($pagedata, true);
+			if($pd !== null) $pagedata = $pd;
+		}
 		return $pagedata;
 	}
 
@@ -795,6 +914,7 @@ class filemakerController extends fmController {
 	 * @param mixed $data
 	 */
 	protected function affPreData($data, $nom = null) {
+		$texte = "";
 		$this->recurs++;
 		if($this->recurs <= $this->recursMAX) {
 			$style = " style='margin:4px 0px 8px 20px;padding-left:4px;border-left:1px solid #666;'";
@@ -804,15 +924,15 @@ class filemakerController extends fmController {
 			} else if(is_int($nom)) {
 				$affNom = "[".$nom."] ";
 			} else {
-				$affNom = "[?]";
+				$affNom = "[type ".gettype($data)."] ";
 				$nom = null;
 			}
 			switch (strtolower(gettype($data))) {
 				case 'array':
-					echo("<div".$style.">");
-					echo($affNom."<i".$istyle.">".gettype($data)."</i> (".count($data).")");
-					foreach($data as $nom2 => $dat2) $this->affPreData($dat2, $nom2);
-					echo("</div>");
+					$texte .= ("<div".$style.">");
+					$texte .= ($affNom."<i".$istyle.">".gettype($data)."</i> (".count($data).")");
+					foreach($data as $nom2 => $dat2) $texte .= $this->affPreData($dat2, $nom2);
+					$texte .= ("</div>");
 					break;
 				case 'object':
 					$tests = array('id', 'nom', 'dateCreation');
@@ -827,37 +947,38 @@ class filemakerController extends fmController {
 					}
 					if($data instanceOf \DateTime) $affdata = $data->format("Y-m-d H:i:s");
 						else $affdata = '';
-					echo("<div".$style.">");
-					echo($affNom." <i".$istyle.">".gettype($data)." > ".get_class($data)."</i> ".$affdata); // [ ".implode(" ; ", $tab)." ]
+					$texte .= ("<div".$style.">");
+					$texte .= ($affNom." <i".$istyle.">".gettype($data)." > ".get_class($data)."</i> ".$affdata); // [ ".implode(" ; ", $tab)." ]
 					foreach($tab as $nom2 => $dat2) $this->affPreData($dat2, $nom2);
-					echo("</div>");
+					$texte .= ("</div>");
 					break;
 				case 'string':
 				case 'integer':
-					echo("<div".$style.">");
-					echo($affNom." <i".$istyle.">".gettype($data)."</i> \"".$data."\"");
-					echo("</div>");
+					$texte .= ("<div".$style.">");
+					$texte .= ($affNom." <i".$istyle.">".gettype($data)."</i> \"".$data."\"");
+					$texte .= ("</div>");
 					break;
 				case 'boolean':
-					echo("<div".$style.">");
+					$texte .= ("<div".$style.">");
 					if($data === true) $databis = 'true';
 						else $databis = 'false';
-					echo($affNom." <i".$istyle.">".gettype($data)."</i> ".$databis);
-					echo("</div>");
+					$texte .= ($affNom." <i".$istyle.">".gettype($data)."</i> ".$databis);
+					$texte .= ("</div>");
 					break;
 				case 'null':
-					echo("<div".$style.">");
-					echo($affNom." <i".$istyle.">type ".strtolower(gettype($data))."</i> ".gettype($data));
-					echo("</div>");
+					$texte .= ("<div".$style.">");
+					$texte .= ($affNom." <i".$istyle.">type ".strtolower(gettype($data))."</i> ".gettype($data));
+					$texte .= ("</div>");
 					break;
 				default:
-					echo("<div".$style.">");
-					echo($affNom." <i".$istyle.">".gettype($data)."</i> ");
-					echo("</div>");
+					$texte .= ("<div".$style.">");
+					$texte .= ($affNom." <i".$istyle.">".gettype($data)."</i> ");
+					$texte .= ("</div>");
 					break;
 			}
 		}
 		$this->recurs--;
+		return $texte;
 	}
 
 
@@ -867,13 +988,28 @@ class filemakerController extends fmController {
 	 * @param string $titre = null
 	 */
 	protected function vardumpDev($data, $titre = null) {
+		$texte = "";
 		if($this->DEV === true) {
-			echo("<div style='border:1px dotted #666;padding:4px 8px;margin:8px 24px;'>");
+			$texte .= ("<div style='border:1px dotted #666;padding:4px 8px;margin:8px 24px;'>");
 			if($titre !== null && is_string($titre) && strlen($titre) > 0) {
-				echo('<h3 style="margin-top:0px;padding-top:0px;border-bottom:1px dotted #999;margin-bottom:4px;">'.$titre.'</h3>');
+				$texte .= ('<h3 style="margin-top:0px;padding-top:0px;border-bottom:1px dotted #999;margin-bottom:4px;">'.$titre.'</h3>');
 			}
-			$this->affPreData($data);
-			echo("</div>");
+			$texte .= $this->affPreData($data);
+			$texte .= ("</div>");
+		}
+		$this->DEVdata[] = $texte;
+	}
+
+	protected function affAllDev() {
+		$env = $this->get('kernel')->getEnvironment();
+		if($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN') && ($env == 'dev')) {
+			if(count($this->DEVdata) > 0) {
+				echo("<h2>Données DEV : </h2>");
+				foreach ($this->DEVdata as $key => $value) {
+					echo($value);
+				}
+				echo("<br><br><br><br>");
+			}
 		}
 	}
 

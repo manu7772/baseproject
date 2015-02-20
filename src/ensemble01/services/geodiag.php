@@ -8,13 +8,67 @@ use filemakerBundle\services\filemakerservice as fms;
 
 class geodiag extends fms {
 
+	protected $aetools;
+	protected $rootpath;
+
+	public function __construct(ContainerInterface $container) {
+		parent::__construct($container);
+		$this->aetools = $this->container->get('ensemble01services.aetools');
+		$this->verifAndGoDossier();
+	}
+
 	// *************************
 	// METHODES GÉODEM
 	// *************************
-
-
+	
+	/**
+	 * Renvoie le nom de fichier d'un rapport
+	 * @param mixed $rapport - id ou objet rapport
+	 * @return array
+	 */
 	public function getRapportFileName($rapport) {
-		return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('Fk_Id_Local')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
+		// echo("Rapport ".$rapport->getField('id')." = ".get_class($rapport)."<br>");
+		return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('id')."-".$rapport->getField('num_porte')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+	}
+
+	/**
+	 * Initialise le gestionnaire de fichiers
+	 * Si type est précisé, crée le dossier (si inexistant) et le met en chemin courant
+	 * Renvoie le chemin courant
+	 * @param string $type - type de rapport
+	 * @return string - chemin courant
+	 */
+	protected function verifAndGoDossier($type = null) {
+		$this->rootpath = $this->container->getParameter('pathrapports');
+		// vérifie la présence du dossier pathrapports et pointe dessus
+		$this->aetools->setWebPath();
+		$this->aetools->verifDossierAndCreate($this->rootpath);
+		$this->aetools->setWebPath($this->rootpath);
+		if(is_string($type)) {
+			$path = $this->rootpath.$type.'/';
+			$this->aetools->verifDossierAndCreate($type);
+			return $path;
+		}
+		return $this->rootpath;
+	}
+
+	/**
+	 * Renvoie le nom de fichier d'un rapport
+	 * @param mixed $rapport - id ou objet rapport
+	 * @return array
+	 */
+	public function effaceRapportFile($rapport) {
+		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
+		// dossiers etc.
+		$dossier = $rapport->getField('type_rapport');
+		$path = $this->verifAndGoDossier($dossier);
+		$file = $path.$this->getRapportFileName($rapport);
+		if(file_exists($file)) {
+			@unlink($file);
+			$result = true;
+		} else $result = false;
+		return $result;
 	}
 
 	/**
@@ -105,10 +159,18 @@ class geodiag extends fms {
 	 * @return array
 	 */
 	public function getRapports($data) {
-		$data2 = $data['recherche'];
-		$data2['server'] 		= $data['groupes'][0];
-		$data2['base'] 			= $data['groupes'][1];
-		$data2['modele'] 		= $data['groupes'][2];
+		if(is_array($data)) {
+			$data2 = $data['recherche'];
+			$data2['server'] 		= $data['groupes'][0];
+			$data2['base'] 			= $data['groupes'][1];
+			$data2['modele'] 		= $data['groupes'][2];
+		} else {
+			$data2['server'] 					= $this->getCurrentSERVER();
+			$data2['base'] 						= 'GEODIAG_Rapports';
+			$data2['modele'] 					= 'Rapports_Local_Web';
+			$data2['search'][1]['column'] 		= 'a_traiter';
+			$data2['search'][1]['value']		= $data;
+		}
 		return $this->getData($data2);
 	}
 
@@ -124,6 +186,7 @@ class geodiag extends fms {
 		$data2['server'] 		= $data['groupes'][0];
 		$data2['base'] 			= $data['groupes'][1];
 		$data2['modele'] 		= $data['groupes'][2];
+		$result = $this->getData($data2);
 		// // $data['server'] 					= $this->getCurrentSERVER();
 		// $data['server'] 					= "Géodem mac-mini";
 		// // $data['base'] 					= 'GEODIAG_SERVEUR';
@@ -137,21 +200,36 @@ class geodiag extends fms {
 		// }
 		// $data['sort'][1]['column'] 			= 'id';
 		// $data['sort'][1]['way'] 			= 'ASC';
-		$result = $this->getData($data2);
 		// opération de tri
 		$mem = array();
 		$r2 = array();
 		if(is_array($result)) {
 			foreach($result as $rapport) {
+				// tri par lots
 				$numlot = $rapport->getField('num_lot');
 				if(in_array($numlot, $mem)) {
 					// lot déjà trouvé
-					$r2[$numlot]['nb']++;
+					if($rapport->getField('a_traiter') == 0) {
+						$r2[$numlot]['nb0']++;
+					} else {
+						$r2[$numlot]['nb1']++;
+					}
 				} else {
 					// nouveau lot
 					$mem[] = $numlot;
-					$r2[$numlot]['nb'] = 1;
+					if($rapport->getField('a_traiter') == 0) {
+						$r2[$numlot]['nb0'] = 1;
+						$r2[$numlot]['nb1'] = 0;
+					} else {
+						$r2[$numlot]['nb0'] = 0;
+						$r2[$numlot]['nb1'] = 1;
+					}
 				}
+			}
+			foreach ($r2 as $numlot => $rapport) {
+				if($rapport['nb0'] < 1) $r2[$numlot]['statut'] = 'complet';
+				if($rapport['nb1'] < 1) $r2[$numlot]['statut'] = 'à traiter';
+				if($rapport['nb0'] > 0 && $rapport['nb1'] > 0) $r2[$numlot]['statut'] = 'partiel';
 			}
 		} else $r2 = $result;
 		unset($result);
@@ -190,16 +268,19 @@ class geodiag extends fms {
 	public function getOneRapport($id) {
 		$data = array();
 		// force les données relatives au modèle
-		// $data['server'] 		= $this->getCurrentSERVER();
-		$data['server'] 		= "Géodem mac-mini";
-		// $data['base'] 		= 'GEODIAG_SERVEUR';
+		$data['server'] 		= $this->getCurrentSERVER();
+		// $data['server'] 		= "Géodem mac-mini";
 		$data['base'] 			= 'GEODIAG_Rapports';
 		$data['modele'] 		= 'Rapports_Local_Web';
 		// autres données, par défaut :
 		$data['search'][0]['column'] 	= 'id';
 		$data['search'][0]['value']		= $id."";
-
-		return $this->getData($data);
+		$result = $this->getData($data);
+		if(is_array($result)) {
+			reset($result);
+			$result = current($result);
+		}
+		return $result;
 	}
 
 	/**
@@ -286,14 +367,25 @@ class geodiag extends fms {
 		}
 	}
 
+	public function Cloture_UN_Rapport_Apres_Serveur($num_rapport) {
+		$this->setCurrentBASE('GEODIAG_Rapports');
+		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Cloture_Rapport_Apres_Serveur(num_rapport)', $num_rapport);
+		return $this->getRecords($newPerformScript->execute());
+	}
 
-	public function Cloture_Rapport_Apres_Serveur($num_lot) {
+	public function Retablir_UN_Rapport_Apres_Serveur($num_rapport) {
+		$this->setCurrentBASE('GEODIAG_Rapports');
+		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Retablir_Rapport_Apres_Serveur(num_rapport)', $num_rapport);
+		return $this->getRecords($newPerformScript->execute());
+	}
+
+	public function Cloture_LOT_Rapport_Apres_Serveur($num_lot) {
 		$this->setCurrentBASE('GEODIAG_Rapports');
 		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Cloture_Rapport_Apres_Serveur(num_lot)', $num_lot);
 		return $this->getRecords($newPerformScript->execute());
 	}
 
-	public function Retablir_Rapport_Apres_Serveur($num_lot) {
+	public function Retablir_LOT_Rapport_Apres_Serveur($num_lot) {
 		$this->setCurrentBASE('GEODIAG_Rapports');
 		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Retablir_Rapport_Apres_Serveur(num_lot)', $num_lot);
 		return $this->getRecords($newPerformScript->execute());

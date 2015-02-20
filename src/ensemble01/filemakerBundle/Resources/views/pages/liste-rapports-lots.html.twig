@@ -10,20 +10,38 @@
 {% block body %}
 	<div class="col-lg-12">
 		{% if rapports is iterable %}
-		<table class="table table-bordered table-hover table-condensed">
+		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
 			<thead>
 				<tr class="active">
 					<th>Réf. lot</th>
 					<th>Type / Actions</th>
-					<th>Nombre de rapports</th>
+					<th>À traiter</th>
+					<th>Généré</th>
+					<th>Statut lot</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for numlot,data in rapports %}
-				<tr>
+				{% if data.statut == "complet" %}
+					{% set statut = ' class="success"' %}
+				{% elseif data.statut == "partiel" %}
+					{% set statut = ' class="warning"' %}
+				{% else %}
+					{% set statut = '' %}
+				{% endif %}
+				<tr{{ statut|raw }}>
 					<td>{{ numlot }}</td>
-					<td><a href="{{ url('ensemble01filemaker_generateByLotRapport', {numlot: numlot, pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-default btn-xs">Traiter rapports</a></td>
-					<td>{{ data.nb }}</td>
+					<td>
+						{% if is_granted("ROLE_SUPER_ADMIN") and (data.statut == "complet" or data.statut == "partiel") %}
+						<a href="{{ url('ensemble01filemaker_retablirByLotRapport', {numlot: numlot, pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-success btn-xs">Rétablir lot</a>
+						{% endif %}
+						{% if data.statut == "à traiter" or data.statut == "partiel" %}
+						<a href="{{ url('ensemble01filemaker_generateByLotRapport', {numlot: numlot, pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-warning btn-xs">Traiter rapports</a>
+						{% endif %}
+					</td>
+					<td>{{ data.nb0 }}</td>
+					<td>{{ data.nb1 }}</td>
+					<td>{{ data.statut }}</td>
 				</tr>
 				{%- endfor %}
 			</tbody>

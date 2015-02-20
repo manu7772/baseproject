@@ -33,6 +33,11 @@ ensemble01filemaker_traiteRapports:
 
 ### FONCTIONNALITÉS DEV / SADMIN
 
+ensemble01filemaker_retablirUnRapport:
+    path:     /s-admin/retablir-un-rapportfm/{id}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:retablir_un_rapport, pagedata: null}
+
 ensemble01filemaker_retablirByLotRapport:
     path:     /s-admin/retablir-rapportfm-by-lot/{numlot}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:retablir_by_lot_rapport, pagedata: null}
+

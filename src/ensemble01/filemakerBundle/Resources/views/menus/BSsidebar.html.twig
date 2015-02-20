@@ -62,16 +62,31 @@
 			</li>
 			{% endif %}
 			<li>
-				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-file fa-fw"></i> Rapports<span class="fa arrow"></span></a>
+				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-file fa-fw"></i> Rapports lots<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-lots', pagedata: '0'}) }}">Par lots</a>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-lots', pagedata: '0'}) }}">Lots en attente</a>
+					</li>
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-lots', pagedata: '1'}) }}">Lots générés</a>
+					</li>
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-lots', pagedata: 'all'}) }}">Tous les lots</a>
+					</li>
+				</ul>
+				<!-- /.nav-second-level -->
+			</li>
+			<li>
+				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-file fa-fw"></i> Rapports unité<span class="fa arrow"></span></a>
+				<ul class="nav nav-second-level">
+					<li>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '0'}) }}">En attente</a>
 					</li>
 					<li>
 						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '1'}) }}">Générés</a>
 					</li>
 					<li>
-						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: '0'}) }}">En attente</a>
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-complete', pagedata: 'all'}) }}">Tous les rapports</a>
 					</li>
 				</ul>
 				<!-- /.nav-second-level -->
