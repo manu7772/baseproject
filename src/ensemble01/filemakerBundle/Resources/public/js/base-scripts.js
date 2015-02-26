@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
 
 	var dataTable_language_fr = {
-			decimal: 				",",
+				decimal:				",",
 			processing:				"Traitement en cours...",
 			search:					"Rechercher&nbsp;:",
 			lengthMenu:				"Afficher _MENU_ &eacute;l&eacute;ments",
@@ -26,8 +26,9 @@ jQuery(document).ready(function($) {
 
 	if($('.dataTable').length) {
 		$('.dataTable').DataTable({
-			responsive: true,
-			language: dataTable_language_fr
+			stateSave:		true,
+			responsive:		true,
+			language:		dataTable_language_fr
 		});
 	}
 

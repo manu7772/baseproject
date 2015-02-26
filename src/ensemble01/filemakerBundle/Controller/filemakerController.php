@@ -274,7 +274,7 @@ class filemakerController extends fmController {
 				// $this->vardumpDev($ctrlData);
 				// die($pagedata['layout']." => ".$ctrlData['layout']);
 				break;
-			case 'liste-tiers':
+			case 'liste-tiers-all':
 				// liste des tiers
 				$ctrlData['h1'] = "Liste de tous les tiers";
 				$pagedata['recherche']['sort'][1] = array(
@@ -441,7 +441,12 @@ class filemakerController extends fmController {
 						}
 						try {
 							$html2pdf = $this->get('html2pdf_factory')->create();
-							$html2pdf->setDefaultFont('Helvetica');
+							$html2pdf->pdf->setFont('Helvetica', 'BI', 12, '', 'false');
+							// $html2pdf->pdf->addFont('ZapfDingbats', '', 12, '', 'false');
+							// $fonts = array('Arial Black.ttf');
+							// foreach ($fonts as $font) {
+							// 	$html2pdf->pdf->addTTFfont(__DIR__.'../../../../../web/bundles/ensemble01filemaker/images/'.$font, 'TrueTypeUnicode', '', 32);
+							// }
 							$html2pdf->setTestIsImage(false);
 							// $html2pdf->pdf->SetProtection(array('modify'), $this->container->getParameter('pdf_protect_passwrd'));
 							$html2pdf->pdf->SetAuthor('Société GÉODEM - Agence Normandie');
@@ -453,6 +458,7 @@ class filemakerController extends fmController {
 						} catch (HTML2PDF_exception $e){
 							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 						}
+						unset($html2pdf);
 						break;
 				}
 			}
@@ -499,7 +505,7 @@ class filemakerController extends fmController {
 		// $this->vardumpDev($aeReponse->getData(), "Data après génération");
 		// $this->vardumpDev($aeReponse->getDataKeys(), "Keys après génération");
 		if($aeReponse->isValid()) {
-			foreach ($aeReponse->getData() as $key => $oneRapport) {
+			foreach ($aeReponse->getDataAndSupp() as $key => $oneRapport) {
 				switch ($mode) {
 					case 'screen':
 						if($format === "html") {
@@ -570,6 +576,7 @@ class filemakerController extends fmController {
 	 * @param string $pagedata - Données diverses
 	 */
 	public function generate_by_lot_rapportAction($numlot, $pagedata = null) {
+		set_time_limit(3600); // délai pour le script : 1h !!!
 		$ctrlData = $this->initGlobalData(array(
 			// 'page'			=> $page,
 			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
@@ -603,7 +610,7 @@ class filemakerController extends fmController {
 			foreach ($resltRapports as $id_rapport => $oneRapport) {
 				$format = 'pdf';
 				$aeReponse = $this->generate_un_rapport($oneRapport, $format, $aeReponse);
-				$one2Rapport = $aeReponse->getData($id_rapport);
+				$one2Rapport = $aeReponse->getDataAndSupp($id_rapport);
 				// $one2Rapport = $one2Rapport["rapport"];
 				if(is_array($one2Rapport)) {
 					$type = $one2Rapport["rapport"]["type"];
@@ -630,6 +637,8 @@ class filemakerController extends fmController {
 				} else {
 					echo('Rapport non récupéré :( !!!<br>');
 				}
+				$one2Rapport = array();
+				unset($one2Rapport);
 			}
 		} else {
 			// Au moins une erreur sur le passage en mode "généré" : on rétablit tout
