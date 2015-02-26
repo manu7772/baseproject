@@ -19,6 +19,7 @@ class filemakerController extends fmController {
 	protected $aetools;
 
 	function __destruct() {
+		// parent::__destruct();
 		$this->affAllDev();
 	}
 
@@ -181,31 +182,32 @@ class filemakerController extends fmController {
 		switch ($ctrlData['template']) {
 			case 'liste-rapports-lots':
 				switch (strval($ctrlData['pagedata']["from_url"])) {
-					case '1': $ctrlData['h1'] = "Lots générés"; break;
-					case '0': $ctrlData['h1'] = "Lots en attente ou incomplets"; break;
+					case '0': $ctrlData['h1'] = "Lots en attente"; break;
+					case '1': $ctrlData['h1'] = "Lots incomplets"; break;
+					case '2': $ctrlData['h1'] = "Lots générés"; break;
 					case 'all': $ctrlData['h1'] = "Lots liste complète"; break;
 					default: $ctrlData['h1'] = "Lots liste complète";$ctrlData['pagedata']["from_url"] = 'all'; break;
 				}
 				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web'));
 				// $this->selectService->setRecherche('intitule', '*');
-				if($ctrlData['pagedata']["from_url"] !== 'all') {
-					$this->selectService
-						// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
-						->setRecherche('a_traiter', $ctrlData['pagedata']["from_url"])
-						;
-				}
+				// if($ctrlData['pagedata']["from_url"] !== 'all') {
+				// 	$this->selectService
+				// 		// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
+				// 		->setRecherche('a_traiter', $ctrlData['pagedata']["from_url"])
+				// 		;
+				// }
 				// $this->selectService->emptyRecherche();
 				// $this->selectService->setSort('date_projet', 'DESC');
 
 				$ctrlData["new_select"] = $this->selectService->getCurrentSelect(self::FORCE_SELECT);
 				// $this->vardumpDev($ctrlData["new_select"], "New select : ".$this->selectService->getGroupeName());
-				$ctrlData['rapports'] = $this->_fm->getListeRapportsByLot($ctrlData["new_select"]);
+				$ctrlData['rapports'] = $this->_fm->getListeRapportsByLot($ctrlData["new_select"], $ctrlData['pagedata']['from_url']);
 				break;
 			case 'liste-rapports-complete':
 				$selecValues = array('0','1');
 				switch (strval($ctrlData['pagedata']["from_url"])) {
-					case '1': $ctrlData['h1'] = "Rapports générés"; break;
 					case '0': $ctrlData['h1'] = "Rapports en attente"; break;
+					case '1': $ctrlData['h1'] = "Rapports générés"; break;
 					case 'all': $ctrlData['h1'] = "Rapports liste complète"; break;
 					default: $ctrlData['h1'] = "Rapports liste complète";$ctrlData['pagedata']["from_url"] = 'all'; break;
 				}
@@ -218,6 +220,11 @@ class filemakerController extends fmController {
 				}
 				$ctrlData["new_select"] = $this->selectService->getCurrentSelect(self::FORCE_SELECT);
 				$ctrlData['rapports'] = $this->_fm->getRapports($ctrlData["new_select"]);
+				// ajout présence fichiers PDF
+				foreach($ctrlData['rapports'] as $rapport) {
+					if($this->_fm->verifRapportFile($rapport) === true) $ctrlData['pdf_file'][$rapport->getField('id')] = true;
+						else $ctrlData['pdf_file'][$rapport->getField('id')] = false;
+				}
 				break;
 			case 'liste-lieux':
 				$ctrlData['h1'] = "Lieux";
@@ -397,6 +404,7 @@ class filemakerController extends fmController {
 				if(is_string($id_rapport)) return $aeReponse->addErrorMessage($id_rapport);
 			}
 			// données globales
+			$RAPP["date"] = new \DateTime;
 			$RAPP["rapport"] = $id_rapport;
 			$RAPP["format"] = $format;
 			$RAPP["type"] = $id_rapport->getField('type_rapport');
@@ -406,6 +414,8 @@ class filemakerController extends fmController {
 			}
 			// nom du fichier du rapport
 			$RAPP["ref_rapport"] = $this->_fm->getRapportFileName($RAPP["rapport"]);
+			// documents annexes
+			$RAPP["documents"] = $this->getCertificats();
 			// données images
 			$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
 			// données spécifiques au format
@@ -431,7 +441,13 @@ class filemakerController extends fmController {
 						}
 						try {
 							$html2pdf = $this->get('html2pdf_factory')->create();
+							$html2pdf->setDefaultFont('Helvetica');
+							$html2pdf->setTestIsImage(false);
+							// $html2pdf->pdf->SetProtection(array('modify'), $this->container->getParameter('pdf_protect_passwrd'));
+							$html2pdf->pdf->SetAuthor('Société GÉODEM - Agence Normandie');
+							$html2pdf->pdf->SetTitle('Rapport réf.'.$RAPP['rapport']->getField('type_rapport').' '.$RAPP['rapport']->getField('id').' du '.$RAPP["date"]->format($this->container->getParameter('formatDateTwig')));
 							$html2pdf->writeHTML($html, false);
+							$html2pdf->createIndex("Sommaire", 25, 12, false, true, 2);
 							$aeReponse->addData(array('html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
 							$aeReponse->addData(array('pdf' => $html2pdf, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
 						} catch (HTML2PDF_exception $e){
@@ -499,14 +515,15 @@ class filemakerController extends fmController {
 						break 2;
 					case 'load':
 						if ($format === "pdf") {
-							$path = $this->verifAndGoDossier("TEMP");
+							$path = $this->_fm->verifAndGoDossier("TEMP");
 							try {
 								$tempfile = $oneRapport['rapport']["ref_rapport"].'.'.$format;
-								$oneRapport['pdf']->Output($path.$tempfile, "F");
-								return new Response(file_get_contents($path.$tempfile), 200, array(
-									'Content-Type' => 'application/force-download',
-									'Content-Disposition' => 'attachment; filename='.$tempfile
-									));
+								// $oneRapport['pdf']->Output($path.$tempfile, "F");
+								// return new Response(file_get_contents($path.$tempfile), 200, array(
+								// 	'Content-Type' => 'application/force-download',
+								// 	'Content-Disposition' => 'attachment; filename='.$tempfile
+								// 	));
+								$oneRapport['pdf']->Output($tempfile, "D");
 							} catch (HTML2PDF_exception $e) {
 								$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 							}
@@ -517,7 +534,7 @@ class filemakerController extends fmController {
 						$aeReponse->putErrorMessagesInFlashbag();
 						break 2;
 					default: // file (sur disque dur)
-						$path = $this->verifAndGoDossier($oneRapport['rapport']["type"]);
+						$path = $this->_fm->verifAndGoDossier($oneRapport['rapport']["type"]);
 						try {
 							$oneRapport['pdf']->Output($path.$oneRapport['rapport']["ref_rapport"].'.'.$format, "F");
 							$aeReponse->addMessage("Le rapport ".$oneRapport['rapport']["type"]." réf.".$oneRapport['rapport']["ref_rapport"]." a été généré.");
@@ -590,7 +607,7 @@ class filemakerController extends fmController {
 				// $one2Rapport = $one2Rapport["rapport"];
 				if(is_array($one2Rapport)) {
 					$type = $one2Rapport["rapport"]["type"];
-					$path = $this->verifAndGoDossier($type);
+					$path = $this->_fm->verifAndGoDossier($type);
 					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
 					$nomRapport = $one2Rapport["rapport"]["ref_rapport"].'.'.$format;
 					// nom du fichier du rapport
@@ -836,16 +853,16 @@ class filemakerController extends fmController {
 	// 	$aetools = $this->get('ensemble01services.aetools');
 	// }
 
-	protected function verifAndGoDossier($type) {
-		$rootpath = $this->container->getParameter('pathrapports');
-		$path = $rootpath.$type.'/';
-		$this->aetools = $this->get('ensemble01services.aetools');
-		// vérifie la présence du dossier pathrapports et pointe dessus
-		$this->aetools->verifDossierAndCreate($rootpath);
-		$this->aetools->setWebPath($rootpath);
-		$this->aetools->verifDossierAndCreate($type);
-		return $path;
-	}
+	// protected function verifAndGoDossier($type) {
+	// 	$rootpath = $this->container->getParameter('pathrapports');
+	// 	$path = $rootpath.$type.'/';
+	// 	$this->aetools = $this->get('ensemble01services.aetools');
+	// 	// vérifie la présence du dossier pathrapports et pointe dessus
+	// 	$this->aetools->verifDossierAndCreate($rootpath);
+	// 	$this->aetools->setWebPath($rootpath);
+	// 	$this->aetools->verifDossierAndCreate($type);
+	// 	return $path;
+	// }
 
 	//////////////////////////
 	// Sélection, tri
@@ -1012,5 +1029,14 @@ class filemakerController extends fmController {
 			}
 		}
 	}
+
+	protected function getCertificats() {
+		return array(
+			'cartificats' => array(
+				//
+				),
+			);
+	}
+
 
 }

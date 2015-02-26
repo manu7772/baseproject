@@ -8,6 +8,11 @@ use filemakerBundle\services\filemakerservice as fms;
 
 class geodiag extends fms {
 
+	const STATUT_COMPLET = 'complet';
+	const STATUT_TRAITER = 'à traiter';
+	const STATUT_PARTIEL = 'partiel';
+	const STATUT_INCONNU = 'inconnu';
+
 	protected $aetools;
 	protected $rootpath;
 
@@ -39,7 +44,7 @@ class geodiag extends fms {
 	 * @param string $type - type de rapport
 	 * @return string - chemin courant
 	 */
-	protected function verifAndGoDossier($type = null) {
+	public function verifAndGoDossier($type = null) {
 		$this->rootpath = $this->container->getParameter('pathrapports');
 		// vérifie la présence du dossier pathrapports et pointe dessus
 		$this->aetools->setWebPath();
@@ -48,27 +53,55 @@ class geodiag extends fms {
 		if(is_string($type)) {
 			$path = $this->rootpath.$type.'/';
 			$this->aetools->verifDossierAndCreate($type);
+			$this->aetools->setWebPath($path);
+			// echo('Current path : '.$this->aetools->getCurrentPath().'<br>');
 			return $path;
 		}
 		return $this->rootpath;
 	}
 
 	/**
-	 * Renvoie le nom de fichier d'un rapport
+	 * Vérifie si le fichier pdf d'un rapport existe
 	 * @param mixed $rapport - id ou objet rapport
-	 * @return array
+	 * @param string $ext - (optionnel - 'pdf' par défaut) extension du nom du fichier
+	 * @return boolean
 	 */
-	public function effaceRapportFile($rapport) {
+	public function verifRapportFile($rapport, $ext = 'pdf') {
 		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
 		// dossiers etc.
-		$dossier = $rapport->getField('type_rapport');
-		$path = $this->verifAndGoDossier($dossier);
-		$file = $path.$this->getRapportFileName($rapport);
-		if(file_exists($file)) {
-			@unlink($file);
-			$result = true;
-		} else $result = false;
-		return $result;
+		if(is_object($rapport)) {
+			$dossier = $rapport->getField('type_rapport');
+			$this->verifAndGoDossier($dossier);
+			if(@file_exists($this->aetools->getCurrentPath().$this->getRapportFileName($rapport).'.'.$ext)) {
+				$r = true;
+			} else {
+				$r = false;
+			}
+		} else $r = false;
+		return $r;
+	}
+
+	/**
+	 * Renvoie le nom de fichier d'un rapport
+	 * @param mixed $rapport - id ou objet rapport
+	 * @param string $ext - (optionnel - 'pdf' par défaut) extension du nom du fichier
+	 * @return boolean
+	 */
+	public function effaceRapportFile($rapport, $ext = 'pdf') {
+		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
+		// dossiers etc.
+		if(is_object($rapport)) {
+			$dossier = $rapport->getField('type_rapport');
+			$this->verifAndGoDossier($dossier);
+			$r = $this->aetools->deleteFile($this->aetools->getCurrentPath().$this->getRapportFileName($rapport).'.'.$ext);
+			if(is_string($r)) {
+				// echo('fichier effacé : '.$r.'('.$this->getRapportFileName($rapport).')<br>');
+				$r = true;
+			} else {
+				// echo('Fichier à effacer non trouvé : '.$this->getRapportFileName($rapport));
+			}
+		} else $r = false;
+		return $r;
 	}
 
 	/**
@@ -180,7 +213,7 @@ class geodiag extends fms {
 	 * @param boolean $all - false par défaut : uniquement les 'a_traiter' à 0 / true = tous
 	 * @return array
 	 */
-	public function getListeRapportsByLot($data) {
+	public function getListeRapportsByLot($data, $selectStatut = null) {
 		// force les données relatives au modèle
 		$data2 = $data['recherche'];
 		$data2['server'] 		= $data['groupes'][0];
@@ -226,14 +259,32 @@ class geodiag extends fms {
 					}
 				}
 			}
+			unset($result);
+			// définit le statut du lot
 			foreach ($r2 as $numlot => $rapport) {
-				if($rapport['nb0'] < 1) $r2[$numlot]['statut'] = 'complet';
-				if($rapport['nb1'] < 1) $r2[$numlot]['statut'] = 'à traiter';
-				if($rapport['nb0'] > 0 && $rapport['nb1'] > 0) $r2[$numlot]['statut'] = 'partiel';
+				$r2[$numlot]['statut'] = self::STATUT_INCONNU;
+				if($rapport['nb0'] < 1) $r2[$numlot]['statut'] = self::STATUT_COMPLET;
+				if($rapport['nb1'] < 1) $r2[$numlot]['statut'] = self::STATUT_TRAITER;
+				if($rapport['nb0'] > 0 && $rapport['nb1'] > 0) $r2[$numlot]['statut'] = self::STATUT_PARTIEL;
 			}
-		} else $r2 = $result;
-		unset($result);
-		return $r2;
+			$r3 = array();
+			$vals = array("0", "1", "2");
+			// insère uniquement les lots dont le statut correspond à ce qui est demandé
+			if(in_array(strval($selectStatut), $vals)) {
+				$st = strval($selectStatut);
+				foreach ($r2 as $numlot => $rapport) {
+					switch ($rapport['statut']) {
+						case self::STATUT_TRAITER: if($st === "0") $r3[$numlot] = $rapport;break;
+						case self::STATUT_PARTIEL: if($st === "1") $r3[$numlot] = $rapport;break;
+						case self::STATUT_COMPLET: if($st === "2") $r3[$numlot] = $rapport;break;
+					}
+				}
+			} else $r3 = $r2;
+			if(count($r3) < 1) $r3 = 'No records match the request';
+		} else $r3 = $result;
+		unset($r2);
+		unset($mem);
+		return $r3;
 	}
 
 	/**

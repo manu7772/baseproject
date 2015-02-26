@@ -43,6 +43,8 @@ class twigAetools extends \Twig_Extension {
 			'annee'				=> new \Twig_Function_Method($this, 'annee'),
 			'URIperform'		=> new \Twig_Function_Method($this, 'URIperform'),
 			'fillOfChars'		=> new \Twig_Function_Method($this, 'fillOfChars'),
+			'transFMdate'		=> new \Twig_Function_Method($this, 'transFMdate'),
+			'CSSclass'			=> new \Twig_Function_Method($this, 'CSSclass'),
 			);
 	}
 
@@ -624,6 +626,29 @@ class twigAetools extends \Twig_Extension {
 			}
 		}
 		return $string;
+	}
+
+
+	/**
+	 * Transforme le texte date en provenance de FM 
+	 * mm/dd/YY -> dd/mm/YY
+	 * @param string $date
+	 * @return string
+	 */
+	public function transFMdate($date) {
+		$d = explode('/', $date);
+		return $d[1].'/'.$d[0].'/'.$d[2];
+	}
+
+	/**
+	 * wrap un texte html avec une classe CSS
+	 * @param string $texte
+	 * @param string $classe
+	 * @param string $balise ('span' par défaut)
+	 * @return string
+	 */
+	public function CSSclass($texte, $classe, $balise = 'span') {
+		return '<'.$balise.' class="'.$classe.'">'.$texte.'</'.$balise.'>';
 	}
 
 }

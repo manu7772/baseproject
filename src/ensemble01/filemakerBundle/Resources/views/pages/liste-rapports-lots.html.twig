@@ -26,8 +26,10 @@
 					{% set statut = ' class="success"' %}
 				{% elseif data.statut == "partiel" %}
 					{% set statut = ' class="warning"' %}
+				{% elseif data.statut == "inconnu" %}
+					{% set statut = ' class="danger"' %}
 				{% else %}
-					{% set statut = '' %}
+					{% set statut = ' class="primary"' %}
 				{% endif %}
 				<tr{{ statut|raw }}>
 					<td>{{ numlot }}</td>
@@ -44,6 +46,24 @@
 					<td>{{ data.statut }}</td>
 				</tr>
 				{%- endfor %}
+			</tbody>
+		</table>
+		{% elseif rapports == 'No records match the request' %}
+		<!-- Aucun résultat -->
+		<table class="table table-striped table-bordered table-hover table-striped no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
+			<thead>
+				<tr class="active">
+					<th>Réf. lot</th>
+					<th>Type / Actions</th>
+					<th>À traiter</th>
+					<th>Généré</th>
+					<th>Statut lot</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="danger">
+					<td colspan='100%'>Aucun résultat trouvé</td>
+				</tr>
 			</tbody>
 		</table>
 		{% else %}

@@ -5,6 +5,9 @@ imports:
 
 parameters:
     formatDate: "dd-MM-yyyy"
+    formatDateTwig: "d/m/Y"
+    timezone: "Europe/Paris"
+    pdf_protect_passwrd: 'geodem76'
 
 framework:
     #esi:             ~
@@ -32,6 +35,9 @@ twig:
     form:
         resources:
             - ':Form:fields.html.twig'
+    globals:
+        formatDateTwig: %formatDateTwig%
+        timezoneTwig: %timezone%
 
 # Assetic Configuration
 assetic:
@@ -124,5 +130,5 @@ ensepar_html2pdf:
     lang: fr
     unicode: true
     encoding: UTF-8
-    margin: [10,8,10,10]
+    margin: [10,10,10,10] # gauche / haut / droit / bas ( en mm )
 
