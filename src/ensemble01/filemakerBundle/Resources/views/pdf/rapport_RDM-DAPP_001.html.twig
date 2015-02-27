@@ -375,9 +375,10 @@
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
 
-			<bookmark title="5.3.1 Repérages et diagnostics amiante sur le patrimoine {# rapport.getField('client_nom') #}SECOMILE" level="2" ></bookmark>
-			<h4>5.3.1 Repérages et diagnostics amiante sur le patrimoine {# rapport.getField('client_nom') #}SECOMILE</h4>
-			<p>{{ rapport.getField('Rapport::description') }}</p>
+			<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
+			<h4>5.3.1 Intitulé de la mission</h4>
+			<!-- <p>{{ rapport.getField('Rapport::description') }}</p> -->
+			<p>Repérages et diagnostics amiante sur le patrimoine {# rapport.getField('client_nom') #}SECOMILE</p>
 			<br>
 
 			<bookmark title="5.3.2 Cadre réglementaire de la mission" level="2" ></bookmark>
@@ -667,33 +668,10 @@
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.2 Croquis" level="1" ></bookmark>
 	<h3 class="stronger center">8.2 Croquis</h3>
-</div>
 
-{% if format == "pdf" %}
-</page>
-<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="L">
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-012-01</p>
-	</page_footer>
-{% else %}
-<hr>
-{% endif %}
+	<br><br><br>
 
-<div class='text-content'>
-	<p>{{ neant }}</p>
+	<p class='center'>{{ neant }}</p>
 	<!-- <img src="{{ imgpath }}exemple_plan.png"> -->
 </div>
 
@@ -827,29 +805,15 @@
 		<h4>• Flocages</h4>
 		<p>{{ neant }}</p>
 		<!-- <img src="{{ imgpath }}certificats/grille_eval_flocage.png" style='width:100%;'> -->
-</div>
 
-{% if format == "pdf" %}
-</page>
-<page pageset="old">
-{% else %}
-<hr>
-{% endif %}
+		<br><br><br>
 
-<div class='text-content'>
 		<h4>• Calorifugeages</h4>
 		<p>{{ neant }}</p>
 		<!-- <img src="{{ imgpath }}certificats/grille_eval_calorifugeage.png" style='width:100%;'> -->
-</div>
 
-{% if format == "pdf" %}
-</page>
-<page pageset="old">
-{% else %}
-<hr>
-{% endif %}
+		<br><br><br>
 
-<div class='text-content'>
 		<h4>• Faux plafonds</h4>
 		<p>{{ neant }}</p>
 		<!-- <img src="{{ imgpath }}certificats/grille_eval_fauxPlafonds.png" style='width:100%;'> -->
@@ -964,17 +928,10 @@
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
 	<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
-</div>
 
-{% if format == "pdf" %}
-</page>
-<page pageset="old">
-{% else %}
-<hr>
-{% endif %}
+	<br><br><br>
 
-<div class='text-content'>
-	<p>{{ neant }}</p>
+	<p class='center'>{{ neant }}</p>
 		<!-- <img src="{{ imgpath }}certificats/proces_verbaux_danalyse1.png" style='width:100%;'> -->
 </div>
 
