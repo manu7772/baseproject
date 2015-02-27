@@ -46,7 +46,7 @@
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{{ rapport.getField('annee_construction')|raw }}</td>
+				<td>{# rapport.getField('annee_construction')|raw #}&lt;= 1997</td>
 			</tr>
 			<tr>
 				<td>Locaux visés par le rapport de repérage<br>des matériaux et produits de la liste A</td>
@@ -158,11 +158,39 @@
 			<table class="type2">
 				<thead>
 					<tr>
-						<th class='grisC one arrow-r-right'>Résultat</th>
-						<th rowspan='2'>Matériau ou produit repéré contenant de l’amiante<br><span class="mini8">(Mesure à prendre)</span></th>
+						<th class='grisC barre-oblique'>
+							<p style="text-align:right;padding:1mm;margin:0pt;">Résultat</p>
+							<br><br>
+							<p style="text-align:left;padding:1mm;margin:0pt;">Critère ayant<br>permis de conclure</p>
+						</th>
+						<th class='grisC'>Matériau ou produit repéré contenant de l’amiante<br><span class="mini8">(Mesure à prendre)</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class='grisC one'>Marquage du matériau</td>
+						<td class='two'>{{ neant }}</td>
 					</tr>
 					<tr>
-						<th class='grisC one arrow-l-down left'>Critère ayant<br>permis de conclure</th>
+						<td class='grisC one'>Document consulté</td>
+						<td class='two'>{{ neant }}</td>
+					</tr>
+					<tr>
+						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
+						<td class='two'>{{ neant }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h4>
+			<table class="type2">
+				<thead>
+					<tr>
+						<th class='grisC barre-oblique'>
+							<p style="text-align:right;padding:1mm;margin:0pt;">Résultat</p>
+							<br><br>
+							<p style="text-align:left;padding:1mm;margin:0pt;">Critère ayant<br>permis de conclure</p>
+						</th>
+						<th class='grisC'>Matériau ou produit repéré ne contenant pas d’amiante</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -182,24 +210,9 @@
 						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
 						<td class='two'>{{ neant }}</td>
 					</tr>
-					<tr>
-						<td class='grisC one'>Matériau ou produit qui par nature ne contient pas d’amiante</td>
-						<td class='two'>{{ neant }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Marquage du matériau</td>
-						<td class='two'>{{ neant }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Document consulté</td>
-						<td class='two'>{{ neant }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
-						<td class='two'>{{ neant }}</td>
-					</tr>
 				</tbody>
 			</table>
+			<br>
 			<p><span class='underline'>Remarque&nbsp;:</span> La liste présentée dans le point ci-dessus peut ne pas être complète. La liste exhaustive des produits et matériaux est présentée dans le tableau "Résultats détaillés du repérage".</p>
 
 	<bookmark title="2. PRÉCONISATIONS D’ORDRE GÉNÉRAL" level="0" ></bookmark>
@@ -328,8 +341,8 @@
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
 
-			<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
-			<h4>5.3.1 Intitulé de la mission</h4>
+			<bookmark title="5.3.1 Repérages et diagnostics amiante sur le patrimoine {# rapport.getField('client_nom') #}SECOMILE" level="2" ></bookmark>
+			<h4>5.3.1 Repérages et diagnostics amiante sur le patrimoine {# rapport.getField('client_nom') #}SECOMILE</h4>
 			<p>{{ rapport.getField('Rapport::description') }}</p>
 			<br>
 
@@ -377,8 +390,8 @@
 			<h4>5.3.5 Laboratoire accrédité</h4>
 			<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
 			<p class="center strong">{{ rapport.getField('Laboratoire') }}</p>
-			<p class="center strong">{{ rapport.getField('Laboratoire_adresse') }}</p>
-			<p class="center">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
+			<p class="center strong">{# rapport.getField('Laboratoire_adresse') #}Zone d'activité de la Baudrière - Route du Neubourg</p>
+			<p class="center">{# rapport.getField('Laboratoire_cp') #} {# rapport.getField('Laboratoire_ville') #}27520 Bourgtheroulde-Infreville</p>
 			<br>
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
@@ -646,7 +659,8 @@
 {% endif %}
 
 <div class='text-content'>
-	<img src="{{ imgpath }}exemple_plan.png">
+	<p>{{ neant }}</p>
+	<!-- <img src="{{ imgpath }}exemple_plan.png"> -->
 </div>
 
 {% if format == "pdf" %}
@@ -777,7 +791,8 @@
 <div class='text-content'>
 	<h3>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h3>
 		<h4>• Flocages</h4>
-		<img src="{{ imgpath }}certificats/grille_eval_flocage.png" style='width:100%;'>
+		<p>{{ neant }}</p>
+		<!-- <img src="{{ imgpath }}certificats/grille_eval_flocage.png" style='width:100%;'> -->
 </div>
 
 {% if format == "pdf" %}
@@ -789,7 +804,8 @@
 
 <div class='text-content'>
 		<h4>• Calorifugeages</h4>
-		<img src="{{ imgpath }}certificats/grille_eval_calorifugeage.png" style='width:100%;'>
+		<p>{{ neant }}</p>
+		<!-- <img src="{{ imgpath }}certificats/grille_eval_calorifugeage.png" style='width:100%;'> -->
 </div>
 
 {% if format == "pdf" %}
@@ -801,7 +817,8 @@
 
 <div class='text-content'>
 		<h4>• Faux plafonds</h4>
-		<img src="{{ imgpath }}certificats/grille_eval_fauxPlafonds.png" style='width:100%;'>
+		<p>{{ neant }}</p>
+		<!-- <img src="{{ imgpath }}certificats/grille_eval_fauxPlafonds.png" style='width:100%;'> -->
 </div>
 
 {% if format == "pdf" %}
@@ -819,14 +836,14 @@
 
 <div class='text-content'>
 	<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
-	<p><span class='strong'>Article R1334-27&nbsp;:</span> En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en oeuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
-	<p><span class='strong'>Score 1</span>&nbsp;-&nbsp;L’évaluation périodique de l'état de conservation de ces matériaux et produits de la liste A contenant de l’amiante est effectué dans un délai maximal de trois ans à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation, ou à l'occasion de toute modification substantielle de l'ouvrage et de son usage.<br>La personne ayant réalisé cette évaluation en remet les résultats au propriétaire contre accusé de réception.</p>
-	<p><span class='strong'>Score 2</span>&nbsp;-&nbsp;La mesure d’empoussièrement dans l’air est effectuée dans les conditions définies à l’article R1334-25, dans un délai de trois mois à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation. L’organisme qui réalise les prélèvements d’air remet les résultats des mesures d’empoussièrement au propriétaire contre accusé de réception.</p>
-	<p><span class='strong'>Score 3</span>&nbsp;-&nbsp;Les travaux de confinement ou de retrait de l'amiante sont mis en oeuvre selon les modalités prévues à l'article R. 1334-29.</p>
-	<p><span class='strong'>Article R1334-28&nbsp;:</span> Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est inférieur ou égal à la valeur de cinq fibres par litre, le propriétaire fait procéder à l’évaluation périodique de l'état de conservation des matériaux et produits de la liste A contenant de l’amiante prévue à l’article R1334-20, dans un délai maximal de trois ans à compter de la date de remise des résultats des mesures d’empoussièrement ou à l'occasion de toute modification substantielle de l'ouvrage ou de son usage.</p>
+	<p><span class='bold'>Article R1334-27&nbsp;:</span> En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en oeuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
+	<p><span class='bold'>Score 1</span>&nbsp;-&nbsp;L’évaluation périodique de l'état de conservation de ces matériaux et produits de la liste A contenant de l’amiante est effectué dans un délai maximal de trois ans à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation, ou à l'occasion de toute modification substantielle de l'ouvrage et de son usage.<br>La personne ayant réalisé cette évaluation en remet les résultats au propriétaire contre accusé de réception.</p>
+	<p><span class='bold'>Score 2</span>&nbsp;-&nbsp;La mesure d’empoussièrement dans l’air est effectuée dans les conditions définies à l’article R1334-25, dans un délai de trois mois à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation. L’organisme qui réalise les prélèvements d’air remet les résultats des mesures d’empoussièrement au propriétaire contre accusé de réception.</p>
+	<p><span class='bold'>Score 3</span>&nbsp;-&nbsp;Les travaux de confinement ou de retrait de l'amiante sont mis en oeuvre selon les modalités prévues à l'article R. 1334-29.</p>
+	<p><span class='bold'>Article R1334-28&nbsp;:</span> Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est inférieur ou égal à la valeur de cinq fibres par litre, le propriétaire fait procéder à l’évaluation périodique de l'état de conservation des matériaux et produits de la liste A contenant de l’amiante prévue à l’article R1334-20, dans un délai maximal de trois ans à compter de la date de remise des résultats des mesures d’empoussièrement ou à l'occasion de toute modification substantielle de l'ouvrage ou de son usage.</p>
 	<p>Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est supérieur à cinq fibres par litre, le propriétaire fait procéder à des travaux de confinement ou de retrait de l'amiante, selon les modalités prévues à l’article R1334-29.</p>
-	<p><span class='strong'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
-	<p><span class='strong'>Article R.1334-29-3&nbsp;:</span><br>
+	<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
+	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
 		I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
 		II)&nbsp;Si les travaux ne conduisent pas au retrait total des matériaux et produits de la liste A contenant de l’amiante, il est procédé à une évaluation périodique de l’état de conservation de ces matériaux et produits résiduels dans les conditions prévues par l’arrêté mentionné à l’article R.1334-20, dans un délai maximal de trois ans à compter de la date à laquelle sont remis les résultats du contrôle ou à l’occasion de toute modification substantielle de l’ouvrage ou de son usage.<br>
 		III)&nbsp;Lorsque des travaux de retrait ou de confinement de matériaux et produits de la liste B contenant de l’amiante sont effectués à l’intérieur de bâtiment occupés ou fréquentés, le propriétaire fait procéder, avant toute restitution des locaux traités, à l’examen visuel et à la mesure d’empoussièrement dans l’air mentionnée au premier alinéa du présent article.<br>
@@ -911,7 +928,7 @@
 
 <div class='text-content'>
 	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.7 Recommandations générales de sécurité" level="1" ></bookmark>
+	<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
 	<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
 </div>
 
@@ -923,7 +940,8 @@
 {% endif %}
 
 <div class='text-content'>
-		<img src="{{ imgpath }}certificats/proces_verbaux_danalyse1.png" style='width:100%;'>
+	<p>{{ neant }}</p>
+		<!-- <img src="{{ imgpath }}certificats/proces_verbaux_danalyse1.png" style='width:100%;'> -->
 </div>
 
 {% if format == "pdf" %}
@@ -935,7 +953,7 @@
 
 <div class='text-content'>
 	<div style="height:80mm;width:100%;"></div>
-	<h2 class="stronger center">FIN ANNEXE<br><br>RAPPORT DE MISSION DE REPÉRAGE DES MATÉRIAUX<br>ET PRODUITS DE LA LISTE A<br>CONTENANT DE L’AMIANTE</h2>
+	<h2 class="stronger center">FIN ANNEXE<br><br>RAPPORT DE MISSION DE REPÉRAGE DES MATÉRIAUX ET PRODUITS DE LA LISTE A CONTENANT DE L’AMIANTE</h2>
 </div>
 
 

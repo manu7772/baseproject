@@ -441,7 +441,10 @@ class filemakerController extends fmController {
 						}
 						try {
 							$html2pdf = $this->get('html2pdf_factory')->create();
-							$html2pdf->pdf->setFont('Helvetica', 'BI', 12, '', 'false');
+							$html2pdf->pdf->setFont('helvetica', '', 11, '', 'false');
+							$html2pdf->pdf->addFont('helvetica', 'B', 11, '', 'false');
+							$html2pdf->pdf->addFont('helvetica', 'I', 11, '', 'false');
+							$html2pdf->pdf->addFont('helvetica', 'BI', 11, '', 'false');
 							// $html2pdf->pdf->addFont('ZapfDingbats', '', 12, '', 'false');
 							// $fonts = array('Arial Black.ttf');
 							// foreach ($fonts as $font) {

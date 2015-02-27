@@ -12,10 +12,10 @@
 <style type="text/css">
 <!--
 	* {
-		font-family: Helvetica, Arial, sans-serif, "Lucida Grande", "Lucida Sans Unicode", Verdana;
-		color: {{ darkgris }};
+		font-family: helvetica;
 		margin: 0mm;
 		padding: 0mm;
+		color: {{ darkgris }};
 	}
 
 	/* DIVERS */
@@ -33,11 +33,11 @@
 		font-style: italic;
 	}
 	.strong {
-		font-weight: bolder;
+		font-weight: bold;
 		font-size: 120%;
 	}
 	.stronger {
-		font-weight: bolder;
+		font-weight: bold;
 		font-size: 140%;
 	}
 	.center {
@@ -54,8 +54,8 @@
 		text-align: right;
 	}
 
-	.bolder {
-		font-weight: bolder;
+	.bold {
+		font-weight: bold;
 	}
 	.mini8 {
 		font-size: 8pt;
@@ -84,27 +84,33 @@
 		color: red;
 	}
 
+	.barre-oblique {
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		background-image: url({{ asset(imgpath ~ 'barre_oblique2.png') }});
+		background-color: {{ grisC }};
+	}
 	.arrow-r-right {
-		background-image: url({{ asset(imgpath ~ 'arrows_right.png') }});
 		background-position: right center;
 		background-repeat: no-repeat;
+		background-image: url({{ asset(imgpath ~ 'arrows_right.png') }});
 	}
 	.arrow-l-right {
-		background-image: url({{ asset(imgpath ~ 'arrows_right.png') }});
 		background-position: left center;
 		background-repeat: no-repeat;
 		padding-left: 30px;
+		background-image: url({{ asset(imgpath ~ 'arrows_right.png') }});
 	}
 	.arrow-r-down {
-		background-image: url({{ asset(imgpath ~ 'arrows_down.png') }});
 		background-position: right center;
 		background-repeat: no-repeat;
+		background-image: url({{ asset(imgpath ~ 'arrows_down.png') }});
 	}
 	.arrow-l-down {
-		background-image: url({{ asset(imgpath ~ 'arrows_down.png') }});
 		background-position: left center;
 		background-repeat: no-repeat;
 		padding-left: 30px;
+		background-image: url({{ asset(imgpath ~ 'arrows_down.png') }});
 	}
 
 
@@ -149,17 +155,17 @@
 		font-size: 9pt;
 		margin: 0mm;
 		padding: 0mm;
-		color: {{ gris6 }};
 		text-align: center;
-		font-style: bolder;
+		font-style: bold;
+		color: {{ gris6 }};
 	}
 	p.pf_mention1 {
 		font-size: 8pt;
 		margin: 0mm;
 		padding: 0mm;
 		text-align: center;
-		color: {{ gris6 }};
 		font-style: italic;
+		color: {{ gris6 }};
 	}
 	p.pf_mention2 {
 		font-size: 7pt;
@@ -201,7 +207,7 @@
 	div.text-content h2 {
 		/*display: block;*/
 		width: 100%;
-		font-weight: bolder;
+		font-weight: bold;
 		font-size: 14pt;
 		text-transform: capitalize;
 	}
@@ -209,7 +215,7 @@
 		/*display: block;*/
 		width: 100%;
 		background-color: transparent;
-		font-weight: bolder;
+		font-weight: bold;
 		font-size: 12pt;
 		padding: 3pt 3pt 2pt 3pt;
 		margin: 12pt 0pt 6pt 0pt;
@@ -226,11 +232,11 @@
 
 	div.text-content p {
 		width: 100%;
-		color: {{ darkgris }};
 		font-size: 10pt;
 		line-height: 11pt;
 		text-align: justify;
-		padding: 1pt 4pt 2pt 20pt;
+		padding: 1pt 4pt 1pt 20pt;
+		color: {{ darkgris }};
 	}
 	div.text-content p.signature {
 		font-size: 10pt;
@@ -249,13 +255,13 @@
 
 	div.bloc1 {
 		width: 100%;
-		border: 1pt solid {{ darkgris }};
 		padding: 3mm 0mm 3mm;
 		margin-bottom: 4mm;
+		border: 1pt solid {{ darkgris }};
 	}
 	div.bloc1 h1 {
 		font-size: 18pt;
-		font-weight: bolder;
+		font-weight: bold;
 		text-align: center;
 		width: 100%;
 		margin: 2mm auto;
@@ -264,20 +270,20 @@
 	/* BLOC IMPORTANT */
 	div.important {
 		margin: 0mm;
-		border: 2pt solid {{ darkgris }};
 		padding: 1pt 0pt 6pt;
 		margin-bottom: 12pt;
+		border: 2pt solid {{ darkgris }};
 	}
 	div.important p {
 		padding: 3pt 12pt 2pt 12pt;
 		text-align: justify;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
 	}
 	div.important p.titre {
 		text-align: center;
 		font-size: 13pt;
-		font-weight: bolder;
+		font-weight: bold;
 		text-decoration: underline;
 	}
 
@@ -293,23 +299,23 @@
 		width: 100%;
 	}
 	table.type1 td {
-		color: {{ darkgris }};
 		font-size: 9pt;
 		/*text-align: left;*/
 		vertical-align: top;
 		padding: 1mm;
+		color: {{ darkgris }};
 	}
 	table.type1 th, table.type1 td {
 		border: {{ lines }};
 	}
 	table.type1 th {
-		background-color: {{ grisbleu }};
 		color: #FFF;
 		text-align: center;
 		vertical-align: middle;
 		padding: 1mm;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
+		background-color: {{ grisbleu }};
 	}
 
 	/* TABLE TYPE 2 */
@@ -325,34 +331,36 @@
 	}
 
 	table.type2 td {
-		color: {{ darkgris }};
 		font-size: 9pt;
-		/*text-align: left;*/
+		vertical-align: middle;
 		vertical-align: top;
-		padding: 1mm;
+		padding: 4mm;
+		color: {{ darkgris }};
 	}
 	table.type2 th.one,
 	table.type2 td.one {
-		width: 25%
+		width: 30%;
+		font-weight: bold;
 	}
 	table.type2 th.two,
 	table.type2 td.two {
-		width: 75%
+		width: 70%;
+		vertical-align: middle;
 	}
 	table.type2 th, table.type2 td {
 		border: {{ lines }};
 	}
-	table.type2 th.grisC, table.type2 td.grisC {
+	table.type2 tr.grisC, table.type2 th.grisC, table.type2 td.grisC {
 		background-color: {{ grisC }};
 	}
 	table.type2 th {
-		background-color: {{ grisC }};
-		color: {{ darkgris }};
 		text-align: center;
 		vertical-align: middle;
 		padding: 1mm;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
+		color: {{ darkgris }};
+		background-color: {{ grisC }};
 	}
 
 	/* TABLE TYPE 3 */
@@ -399,7 +407,7 @@
 		vertical-align: middle;
 		padding: 1mm;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
 	}
 
 	/* TABLE TYPE 4 */
@@ -450,7 +458,7 @@
 		vertical-align: middle;
 		padding: 1mm;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
 	}
 
 	/* TABLE TYPE 5 */
@@ -479,7 +487,7 @@
 	}
 	table.type5 th.one {
 		background-color: {{ grisA }};
-		font-weight: bolder;
+		font-weight: bold;
 	}
 	table.type5 td.two {
 		background-color: {{ grisC }};
@@ -490,7 +498,7 @@
 		vertical-align: middle;
 		padding: 1mm;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
 	}
 
 	/* TABLE TYPE 6 */
@@ -543,8 +551,8 @@
 
 	table.type7 {
 		display: block;
-		width: 120mm;
-		margin: 8mm 20mm 4mm 20mm;
+		width: 140mm;
+		margin: 8mm 10mm 4mm 10mm;
 		border-collapse: collapse;
 	}
 	table.type7 tr {
@@ -556,7 +564,7 @@
 		color: {{ darkgris }};
 		font-style: italic;
 		font-size: 12pt;
-		font-weight: bolder;
+		font-weight: bold;
 		vertical-align: middle;
 		text-align: left;
 		padding: 6mm 2mm 6mm 10mm;
@@ -591,14 +599,14 @@
 	table.type8 td.gris {
 		height: 1pt;
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
 		letter-spacing: -1pt;
 		padding: 1mm 1mm 1mm 1mm;
 		background-color: {{ grisC }};
 	}
 	table.type8 td.high {
 		font-size: 11pt;
-		font-weight: bolder;
+		font-weight: bold;
 	}
 
 	/* COLONNES */
@@ -627,7 +635,7 @@
 		width: 100%;
 		border: 2mm solid {{ grisbleu }};
 		font-size: 15pt;
-		font-weight: bolder;
+		font-weight: bold;
 		text-align: center;
 		color: {{ darkgris }};
 		padding: 3mm 5mm;
