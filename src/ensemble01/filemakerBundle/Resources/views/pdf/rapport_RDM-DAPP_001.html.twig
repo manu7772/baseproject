@@ -139,7 +139,23 @@
 
 {% if format == "pdf" %}
 </page>
-<page pageset="old">
+<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="P">
+	<page_header>
+		<table class="phtable" align="center">
+			<tr>
+				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
+				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
+				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
+			</tr>
+		</table>
+		<br>
+		<br>
+	</page_header>
+	<page_footer>
+		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
+		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
+		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-012-01</p>
+	</page_footer>
 {% else %}
 <hr>
 {% endif %}
@@ -181,6 +197,17 @@
 					</tr>
 				</tbody>
 			</table>
+</div>
+
+
+{% if format == "pdf" %}
+</page>
+<page pageset="old">
+{% else %}
+<hr>
+{% endif %}
+
+<div class='text-content'>
 			<h4>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h4>
 			<table class="type2">
 				<thead>
