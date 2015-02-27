@@ -13,9 +13,9 @@
 <!--
 	* {
 		font-family: Helvetica, Arial, sans-serif, "Lucida Grande", "Lucida Sans Unicode", Verdana;
-		color: {{ darkgris }};
 		margin: 0mm;
 		padding: 0mm;
+		color: {{ darkgris }};
 	}
 
 	p {
@@ -23,9 +23,8 @@
 		font-size: 11pt;
 		line-height: 12pt;
 		letter-spacing: -1pt;
-		color: {{ darkgris }};
-		/*text-align: center;*/
 		margin: 3pt auto;
+		color: {{ darkgris }};
 	}
 
 	.ajustement {
@@ -42,7 +41,7 @@
 	}
 	.strong {
 		font-weight: bolder;
-		font-size: 1.2em;
+		font-size: 120%;
 	}
 	.center {
 		text-align: center;
@@ -50,12 +49,15 @@
 	.allcenter,
 	.allcenter * {
 		text-align: center;
+		width: 100%;
 	}
 	.left {
 		text-align: left;
+		width: 100%;
 	}
 	.right {
 		text-align: right;
+		width: 100%;
 	}
 
 	.bolder {
@@ -240,6 +242,15 @@
 		padding: 9pt 0pt;
 	}
 	div.text-content ul li {
+	}
+
+	div.text-content .zapf {
+		font-family: 'zapfdingbats';
+		font-size: 12pt;
+	}
+	div.text-content .symbol {
+		font-family: 'symbol';
+		font-size: 12pt;
 	}
 
 	/* BLOC 1 */

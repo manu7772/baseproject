@@ -99,7 +99,8 @@
 				<td class="left">
 					Référence dossier&nbsp;: {{ rapport.getField('ref_dossier') }}<br>
 					Opérateur de repérage amiante et Signataire&nbsp;: {{ rapport.getField('technicien') }}<br>
-					Laboratoire d’analyses agréé&nbsp;: {{ rapport.getField('Laboratoire') }} -&nbsp;{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}
+					{# Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }} -&nbsp;{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }} #}
+					Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>Zone d'activité de la Baudrière - Route du Neubourg<br>27520 Bourgtheroulde-Infreville</span>
 				</td>
 				<td class="left">
 					Date de commande&nbsp;: {{ transFMdate(rapport.getField('date_commande')) }}<br>
@@ -113,6 +114,9 @@
 	<div class="conclusion">
 		Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré des produits et matériaux contenant de l'amiante.<br>Les conclusions sont en page 3.
 	</div>
+
+	<!-- <p class="zapf" style="font-family: zapfdingbats;width:100mm;">azertyuiopqsdfghjklmwxcvbn<br>AZERTYUIOPQSDFGHJKLMWXCVBN<br>,;:?./é"'(§è!çà)-<br>1234567890°_$*%ù£`=+<br>ë“‘{¶«¡Çø}—´„”’[å»ÛÁØ]–<br>æÂê®†Úºîœπ‡Ò∂ƒﬁÌÏÈ¬µ‹≈©◊ß~<br>∞…÷≠¿•\±€@Ù¥‰#</p> -->
+	<!-- <p class="symbol" style="font-family: symbol;width:100mm;">azertyuiopqsdfghjklmwxcvbn<br>AZERTYUIOPQSDFGHJKLMWXCVBN<br>,;:?./é"'(§è!çà)-<br>1234567890°_$*%ù£`=+<br>ë“‘{¶«¡Çø}—´„”’[å»ÛÁØ]–<br>æÂê®†Úºîœπ‡Ò∂ƒﬁÌÏÈ¬µ‹≈©◊ß~<br>∞…÷≠¿•\±€@Ù¥‰#</p> -->
 
 {% if format == "pdf" %}
 </page>
@@ -136,6 +140,9 @@
 {% else %}
 <hr>
 {% endif %}
+
+<div class='text-content'>
+</div>
 
 {% if format == "pdf" %}
 </page>
@@ -418,7 +425,7 @@
 			<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
 			<p class="center strong">{{ rapport.getField('Laboratoire') }}</p>
 			<p class="center strong">{# rapport.getField('Laboratoire_adresse') #}Zone d'activité de la Baudrière - Route du Neubourg</p>
-			<p class="center">{# rapport.getField('Laboratoire_cp') #} {# rapport.getField('Laboratoire_ville') #}27520 Bourgtheroulde-Infreville</p>
+			<p class="center strong">{# rapport.getField('Laboratoire_cp') #} {# rapport.getField('Laboratoire_ville') #}27520 Bourgtheroulde-Infreville</p>
 			<br>
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>

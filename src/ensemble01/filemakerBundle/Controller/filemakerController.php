@@ -445,6 +445,8 @@ class filemakerController extends fmController {
 							$html2pdf->pdf->addFont('helvetica', 'B', 10, '', 'false');
 							$html2pdf->pdf->addFont('helvetica', 'I', 10, '', 'false');
 							$html2pdf->pdf->addFont('helvetica', 'BI', 10, '', 'false');
+							$html2pdf->pdf->addFont('zapfdingbats', '', 12, '', 'false');
+							$html2pdf->pdf->addFont('symbol', '', 12, '', 'false');
 							// $html2pdf->pdf->addFont('ZapfDingbats', '', 12, '', 'false');
 							// $fonts = array('Arial Black.ttf');
 							// foreach ($fonts as $font) {
