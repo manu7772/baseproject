@@ -453,6 +453,7 @@ class filemakerController extends fmController {
 							// 	$html2pdf->pdf->addTTFfont(__DIR__.'../../../../../web/bundles/ensemble01filemaker/images/'.$font, 'TrueTypeUnicode', '', 32);
 							// }
 							$html2pdf->setTestIsImage(false);
+							$html2pdf->setTestTdInOnePage(false);
 							// $html2pdf->pdf->SetProtection(array('modify'), $this->container->getParameter('pdf_protect_passwrd'));
 							$html2pdf->pdf->SetAuthor('Société GÉODEM - Agence Normandie');
 							$html2pdf->pdf->SetTitle('Rapport réf.'.$RAPP['rapport']->getField('type_rapport').' '.$RAPP['rapport']->getField('id').' du '.$RAPP["date"]->format($this->container->getParameter('formatDateTwig')));
@@ -1052,5 +1053,9 @@ class filemakerController extends fmController {
 			);
 	}
 
+	public function datatables_statesaveAction() {
+		$data = $this->getRequest()->query()->all();
+
+	}
 
 }
