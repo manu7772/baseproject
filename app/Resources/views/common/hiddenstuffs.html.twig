@@ -15,7 +15,7 @@
 <span id='JSdata' style='display:none;'>
 	<span style='display:none;' class='JSdataItem' id='datatables_statesave' data-prototype="{{ url('datatables_statesave') }}"></span>
 	<span style='display:none;' class='JSdataItem' id='UrlI' data-prototype="{{ app.request.requestUri }}"></span>
-	{% if app.security.token.getUser is not null %}
+	{% if app.security.token.getUser != "anon." %}
 	<span style='display:none;' class='JSdataItem' id='username' data-prototype="{{ app.security.token.getUser.username }}"></span>
 	{% set params = app.security.token.getUser.dtselection %}
 	{% if params[app.request.requestUri] is defined %}
