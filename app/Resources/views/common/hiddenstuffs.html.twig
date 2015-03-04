@@ -11,3 +11,20 @@
 {% endfor %}
 </div>
 {% endblock modales %}
+{% block JSdata %}
+<span id='JSdata' style='display:none;'>
+	<span style='display:none;' class='JSdataItem' id='datatables_statesave' data-prototype="{{ url('datatables_statesave') }}"></span>
+	<span style='display:none;' class='JSdataItem' id='UrlI' data-prototype="{{ app.request.requestUri }}"></span>
+	{% if app.security.token.getUser is not null %}
+	<span style='display:none;' class='JSdataItem' id='username' data-prototype="{{ app.security.token.getUser.username }}"></span>
+	{% set params = app.security.token.getUser.dtselection %}
+	{% if params[app.request.requestUri] is defined %}
+	{% if params[app.request.requestUri] is iterable and params[app.request.requestUri]|length > 0 %}
+	{% for key,param in params[app.request.requestUri] %}
+	<span style='display:none;' class='JSdataItem' id='dtParams-{{ key }}' data-prototype='{{ param|raw }}'></span>
+	{% endfor %}
+	{% endif %}
+	{% endif %}
+	{% endif %}
+</span>
+{% endblock JSdata %}

@@ -10,7 +10,175 @@
 {% block body %}
 	<div class="col-lg-12">
 		{% if rapports is iterable %}
-		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
+		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-liste-rapports-complete">
+			<thead>
+				<tr class="active">
+					<th>Id rapport</th>
+					<th>Type</th>
+					<th>Actions</th>
+					<th>Numéro lot</th>
+					<th>Description</th>
+					<th>Adresse</th>
+					<th style="text-align:center;">PDF</th>
+					<!-- <th>Client</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				{% for local in rapports %}
+				{% set idrapport = local.getField('id') %}
+				{% set typerapport = local.getField("type_rapport") %}
+				{% if local.getField('a_traiter') == "0" %}{% set statut = '' %}{% else %}{% set statut = ' class="success"' %}{% endif %}
+				<tr{{ statut|raw }}>
+					<td>{{ local.getField("id")|raw }}</td>
+					<td>{{ typerapport }}</td>
+					<td>
+						{% if local.getField('a_traiter') == "0" %}
+						<div class="btn-group">
+							<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-warning btn-xs">Générer PDF</a>
+							<button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="caret"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
+								<!-- <li><a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'load', format: 'pdf'}) }}">Télécharger PDF</a></li> -->
+								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}">Prévisualiser PDF</a></li>
+								<li class="divider"></li>
+								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}">Prévisualiser HTML</a></li>
+							</ul>
+						</div>
+						{% endif%}
+						{% if is_granted("ROLE_SUPER_ADMIN") and local.getField('a_traiter') != "0" %}
+						<a href="{{ url('ensemble01filemaker_retablirUnRapport', {id: local.getField('id'), pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-success btn-xs">Rétablir rapport</a>
+						{% endif%}
+					</td>
+					<td title='{{ local.getField("num_lot")|raw }}'>{{ local.getField("num_lot")|raw }}</td>
+					<td title='{{ local.getField("Rapport::description")|raw }}'>{{ phraseCut(local.getField("Rapport::description")|raw, 12) }}</td>
+					<td title='{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}'>{{ phraseCut(local.getField("local_adresse")|raw ~ local.getField("local_cp")|raw ~ local.getField("local_ville")|raw, 20) }}</td>
+					<td title='Fichier PDF du rapport' style="text-align:center;">
+						{% if pdf_file[local.getField('id')] != false and local.getField('a_traiter') == '1' %}
+						<a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" title="Visualiser le rapport"></span></a>
+						{% elseif pdf_file[local.getField('id')] == false and local.getField('a_traiter') == '1' %}
+						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" title="Fichier perdu ! Générer le fichier"><span class="glyphicon glyphicon-warning-sign" style="color:red;" aria-hidden="true"></span></a>
+						{% endif %}
+					</td>
+					<!-- <td>{{ local.getField("client")|raw }}</td> -->
+				</tr>
+				{%- endfor %}
+			</tbody>
+		</table>
+		{% elseif rapports == 'No records match the request' %}
+		<!-- Aucun résultat -->
+		<table class="table table-striped table-bordered table-hover table-striped no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
+			<thead>
+				<tr class="active">
+					<th>Id rapport</th>
+					<th>Type</th>
+					<th>Actions</th>
+					<th>Numéro lot</th>
+					<th>Description</th>
+					<th>Adresse</th>
+					<th style="text-align:center;">PDF</th>
+					<!-- <th>Client</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="danger">
+					<td colspan='100%'>Aucun résultat trouvé</td>
+				</tr>
+			</tbody>
+		</table>
+		{% else %}
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: rapports} %}
+		{% endif %}
+	</div>
+	<div class="col-lg-12">
+		{% if rapports is iterable %}
+		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-liste-rapports-complete">
+			<thead>
+				<tr class="active">
+					<th>Id rapport</th>
+					<th>Type</th>
+					<th>Actions</th>
+					<th>Numéro lot</th>
+					<th>Description</th>
+					<th>Adresse</th>
+					<th style="text-align:center;">PDF</th>
+					<!-- <th>Client</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				{% for local in rapports %}
+				{% set idrapport = local.getField('id') %}
+				{% set typerapport = local.getField("type_rapport") %}
+				{% if local.getField('a_traiter') == "0" %}{% set statut = '' %}{% else %}{% set statut = ' class="success"' %}{% endif %}
+				<tr{{ statut|raw }}>
+					<td>{{ local.getField("id")|raw }}</td>
+					<td>{{ typerapport }}</td>
+					<td>
+						{% if local.getField('a_traiter') == "0" %}
+						<div class="btn-group">
+							<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-warning btn-xs">Générer PDF</a>
+							<button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="caret"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
+								<!-- <li><a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'load', format: 'pdf'}) }}">Télécharger PDF</a></li> -->
+								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}">Prévisualiser PDF</a></li>
+								<li class="divider"></li>
+								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}">Prévisualiser HTML</a></li>
+							</ul>
+						</div>
+						{% endif%}
+						{% if is_granted("ROLE_SUPER_ADMIN") and local.getField('a_traiter') != "0" %}
+						<a href="{{ url('ensemble01filemaker_retablirUnRapport', {id: local.getField('id'), pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-success btn-xs">Rétablir rapport</a>
+						{% endif%}
+					</td>
+					<td title='{{ local.getField("num_lot")|raw }}'>{{ local.getField("num_lot")|raw }}</td>
+					<td title='{{ local.getField("Rapport::description")|raw }}'>{{ phraseCut(local.getField("Rapport::description")|raw, 12) }}</td>
+					<td title='{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}'>{{ phraseCut(local.getField("local_adresse")|raw ~ local.getField("local_cp")|raw ~ local.getField("local_ville")|raw, 20) }}</td>
+					<td title='Fichier PDF du rapport' style="text-align:center;">
+						{% if pdf_file[local.getField('id')] != false and local.getField('a_traiter') == '1' %}
+						<a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" title="Visualiser le rapport"></span></a>
+						{% elseif pdf_file[local.getField('id')] == false and local.getField('a_traiter') == '1' %}
+						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" title="Fichier perdu ! Générer le fichier"><span class="glyphicon glyphicon-warning-sign" style="color:red;" aria-hidden="true"></span></a>
+						{% endif %}
+					</td>
+					<!-- <td>{{ local.getField("client")|raw }}</td> -->
+				</tr>
+				{%- endfor %}
+			</tbody>
+		</table>
+		{% elseif rapports == 'No records match the request' %}
+		<!-- Aucun résultat -->
+		<table class="table table-striped table-bordered table-hover table-striped no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
+			<thead>
+				<tr class="active">
+					<th>Id rapport</th>
+					<th>Type</th>
+					<th>Actions</th>
+					<th>Numéro lot</th>
+					<th>Description</th>
+					<th>Adresse</th>
+					<th style="text-align:center;">PDF</th>
+					<!-- <th>Client</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="danger">
+					<td colspan='100%'>Aucun résultat trouvé</td>
+				</tr>
+			</tbody>
+		</table>
+		{% else %}
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: rapports} %}
+		{% endif %}
+	</div>
+	<div class="col-lg-12">
+		{% if rapports is iterable %}
+		<table class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-liste-rapports-complete">
 			<thead>
 				<tr class="active">
 					<th>Id rapport</th>

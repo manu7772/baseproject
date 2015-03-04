@@ -34,6 +34,7 @@ class twigAetools extends \Twig_Extension {
 			'simpleURL'			=> new \Twig_Function_Method($this, 'simpleURL'),
 			'Url_encode'		=> new \Twig_Function_Method($this, 'Url_encode'),
 			'googleMapURL'		=> new \Twig_Function_Method($this, 'googleMapURL'),
+			'serializeT'		=> new \Twig_Function_Method($this, 'serializeT'),
 			'unserializeT'		=> new \Twig_Function_Method($this, 'unserializeT'),
 			'paramsByUrl'		=> new \Twig_Function_Method($this, 'paramsByUrl'),
 			'implode'			=> new \Twig_Function_Method($this, 'implode'),
@@ -478,6 +479,16 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function googleMapURL($adresse) {
 		return str_replace(" ", "+", $adresse);
+	}
+
+	/**
+	 * serializeT
+	 * Renvoie la chaîne unserialisée (PHP : serialize())
+	 *
+	 * @param string $data
+	 */
+	public function serializeT($data) {
+		return serialize($data);
 	}
 
 	/**

@@ -53,11 +53,27 @@ class User extends BaseUser {
 	 */
 	private $dateModifSelection;
 
+	/**
+	 * @var string
+	 * 
+	 * @ORM\Column(name="dtselection", type="text", nullable=true, unique=false)
+	 */
+	private $dtselection;
+
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="dateDtMaj", type="datetime", nullable=true)
+	 */
+	private $dateModifDtSelection;
+
 
 	public function __construct() {
 		parent::__construct();
 		$this->fmselection = null;
+		$this->dtselection = null;
 		$this->dateModifSelection = new \Datetime();
+		$this->dateModifDtSelection = new \Datetime();
 	}
 
 
@@ -119,10 +135,10 @@ class User extends BaseUser {
 	public function setFmselection($fmselection = null) {
 		if(is_array($fmselection)) {
 			$this->fmselection = serialize($fmselection);
-			$this->setDateModifSelection();
 		} else {
 			$this->fmselection = $fmselection;
 		}
+		$this->setDateModifSelection();
 		return $this;
 	}
 
@@ -132,8 +148,12 @@ class User extends BaseUser {
 	 * @return array
 	 */
 	public function getFmselection() {
-		if($this->fmselection === null) return null;
-		return unserialize($this->fmselection);
+		$a = null;
+		if(is_string($this->fmselection)) {
+			$a = unserialize($this->fmselection);
+			if($a === null) $a = $this->fmselection;
+		}
+		return $a;
 	}
 
 	/**
@@ -153,6 +173,137 @@ class User extends BaseUser {
 	 */
 	public function getDateModifSelection() {
 		return $this->dateModifSelection;
+	}
+
+
+	/**
+	 * Set dtselection
+	 *
+	 * @param array $dtselection
+	 * @return User
+	 */
+	public function setDtselection($dtselection = null) {
+		if(is_array($dtselection)) {
+			$this->dtselection = serialize($dtselection);
+		} else return false;
+		$this->verifDtselection();
+		$this->setDateModifDtSelection();
+		return $this;
+	}
+
+	/**
+	 * Add dtselection
+	 *
+	 * @param string $name
+	 * @param mixed $data
+	 * @return User / boolean false
+	 */
+	public function addDtselection($name, $data, $replace = true) {
+		if(is_string($name) && ($name."" != "")) {
+			$a = $this->getDtselection();
+			if(!isset($a[$name]) || $replace === true) $a[$name] = $data;
+			$this->setDtselection($a);
+		} else return false;
+		return $this;
+	}
+
+	/**
+	 * Add dtselection avec sous-array ID
+	 *
+	 * @param string $name
+	 * @param mixed $data
+	 * @return User / boolean false
+	 */
+	public function addDtselection_withID($name, $id, $data, $replace = true) {
+		if(is_string($name) && is_string($id) && ($name."" != "") && ($id."" != "")) {
+			$a = $this->getDtselection();
+			if(!isset($a[$name])) $a[$name] = array();
+			if(!isset($a[$name][$id]) || $replace === true) $a[$name][$id] = $data;
+			$this->setDtselection($a);
+		} else return false;
+		return $this;
+	}
+
+	/**
+	 * Remove dtselection
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
+	public function removeDtselection($name) {
+		if(is_string($name)) {
+			$a = $this->getDtselection();
+			if(isset($a[$name])) {
+				unset($a[$name]);
+				$this->setDtselection($a);
+				return true;
+			} else return false;
+		} else return false;
+	}
+
+	/**
+	 * Remove ALL dtselection
+	 *
+	 * @param string $name
+	 * @return boolean
+	 */
+	public function removeAllDtselection() {
+		$this->setDtselection(array());
+	}
+
+	/**
+	 * Vérifie l'intégrité des informations sur Dtselection
+	 *
+	 * @return User
+	 */
+	public function verifDtselection() {
+		$a = $this->getDtselection();
+		if(is_array($a)) {
+			$b = array();
+			foreach ($a as $key => $value) {
+				if(($key."") != "" && $value !== null) {
+					$b[$key] = $value;
+				}
+			}
+			$this->dtselection = serialize($b);
+			unset($b);
+		}
+		unset($a);
+		return $this;
+	}
+
+	/**
+	 * Get dtselection
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function getDtselection() {
+		$a = null;
+		if(is_string($this->dtselection)) {
+			$a = unserialize($this->dtselection);
+			if($a === null) $a = $this->dtselection;
+		}
+		return $a;
+	}
+
+	/**
+	 * Set dateModifDtSelection
+	 *
+	 * @return User
+	 */
+	public function setDateModifDtSelection() {
+		$this->dateModifDtSelection = new \Datetime();
+		return $this;
+	}
+
+	/**
+	 * Get dateModifDtSelection
+	 *
+	 * @return Datetime 
+	 */
+	public function getDateModifDtSelection() {
+		return $this->dateModifDtSelection;
 	}
 
 

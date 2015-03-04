@@ -24,3 +24,9 @@ ensemble01filemaker_commandeFM_generateByLotRapport:
 ensemble01filemaker_public_listeRapportsLots:
     path:     /liste-rapports-lot/{numlot}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:public_listeRapportsLots, numlot: null}
+
+### STATESAVE DATATABLES ###
+datatables_statesave:
+    path:     /datatables/statesave
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:datatables_statesave }
+

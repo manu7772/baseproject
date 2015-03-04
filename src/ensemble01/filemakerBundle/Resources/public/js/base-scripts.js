@@ -1,7 +1,92 @@
 jQuery(document).ready(function($) {
 
-	var dataTable_language_fr = {
-				decimal:				",",
+	var JsonResult = function(json) {
+		jsonstatus = parseInt(json.status);
+		// alert('Json status : '+json.status+" / "+jsonstatus);
+		// ConsoleResult('JsonResult => ', jsonstatus, true);
+		ResponseArray = Array();
+		if(jsonstatus != 200) {
+			ConsoleResult('Erreur ', jsonstatus, true);
+			ResponseArray["result"] = false;
+			ResponseArray["message"] = "BAD RETURN "+jsonstatus+" !";
+			ResponseArray["html"] = "<p>"+ResponseArray["message"]+"</p>";
+			return ResponseArray;
+		} else ConsoleResult('Statut Retour ', jsonstatus, true);
+		if(typeof json.responseText != "undefined") {
+			ResponseArray = $.parseJSON(json.responseText);
+			CR = new ConsoleResult();
+			CR.add("Résultat : ", ResponseArray["result"]);
+			CR.add("Message : ", ResponseArray["message"]);
+			CR.add("Retour html : ", ResponseArray["html"].length);
+			CR.show();
+			return ResponseArray;
+		} else {
+			ResponseArray["result"] = false;
+			ResponseArray["message"] = "BAD RETURN !!! json.responseText = "+typeof json.responseText;
+			ResponseArray["html"] = "<p>"+ResponseArray["message"]+"</p>";
+			return ResponseArray;
+		}
+	}
+
+	var modedev = true;
+
+	// Affichage en console (uniquement en mode dev ou test)
+	// libelle :			libellé de l'information
+	// texte :				texte de l'information
+	// afficheToutDeSuite : affiche l'information aussitôt (sans appeler "show()")
+	// force :				affiche sans condition de mode (même si modedev=false)
+	var ConsoleResult = function(libelle, texte, afficheToutDeSuite, force) {
+		var objCRparent = this;
+		this.lib = Array();
+		this.tx = Array();
+		this.cpt = 0;
+		this.frc = force;
+		this.show = function(force) {
+			if((modedev == true || objCRparent.frc == true || force == true) && objCRparent.lib.length > 0)
+			for(i in objCRparent.lib) {
+				console.log(objCRparent.lib[i], objCRparent.tx[i]);
+			}
+		}
+		this.add = function(libelle, texte) {
+			if(libelle && (texte != null)) {
+				if(texte == false) texte = "(boolean) false";
+				if(texte == true) texte = "(boolean) true";
+				objCRparent.lib[objCRparent.cpt] = libelle+"";
+				objCRparent.tx[objCRparent.cpt] = texte+"";
+				objCRparent.cpt++;
+			}
+			return this.objCRparent;
+		}
+		if(libelle && texte) this.add(libelle, texte);
+		if(afficheToutDeSuite == true) this.show();
+	}
+
+	ConsoleResult("mode DEV = ", modedev, true);
+
+	initData = function() {
+		if($('#JSdata .JSdataItem').length) {
+			$('#JSdata .JSdataItem').each(function() {
+				if($(this).attr('data-prototype') != null && $(this).attr('data-prototype') != "") {
+					$('#JSdata').data($(this).attr('id'), $(this).attr('data-prototype'));
+				}
+			});
+			$('#JSdata .JSdataItem').each(function() {
+				$(this).remove();
+			});
+		}
+	}
+	initData();
+
+	var JSdata = {
+		get: function(nom) {
+			return $('#JSdata').data(nom);
+		}
+	};
+
+
+	var dataTable_language = {
+		fr: {
+			decimal:				",",
 			processing:				"Traitement en cours...",
 			search:					"Rechercher&nbsp;:",
 			lengthMenu:				"Afficher _MENU_ &eacute;l&eacute;ments",
@@ -21,14 +106,59 @@ jQuery(document).ready(function($) {
 			aria: {
 				sortAscending:		": activer pour trier la colonne par ordre croissant",
 				sortDescending: 	": activer pour trier la colonne par ordre décroissant"
-			}
+			},
+		},
 	};
 
+	// alert("Nombre de tableaux : "+$('.dataTable').length);
 	if($('.dataTable').length) {
-		$('.dataTable').DataTable({
-			stateSave:		true,
-			responsive:		true,
-			language:		dataTable_language_fr
+		$('.dataTable').each(function(index) {
+			var dtJQObjId = $(this);
+			$(this).DataTable({
+				responsive:			true,
+				language:			dataTable_language.fr,
+				stateSave:			true,
+				stateLoadCallback: function (settings) {
+					// alert('Trouvé Id : '+dtJQObj.attr('id'));
+					if(JSdata.get('dtParams-'+dtJQObjId.attr('id')) !== undefined) {
+						// alert("LOAD :\n"+JSdata.get('dtParams'));
+						return $.parseJSON(JSdata.get('dtParams-'+dtJQObjId.attr('id')));
+					} else {
+						// alert("LOAD :\naucune donnée trouvée pour cette page");
+						return null;
+					}
+				},
+				stateSaveCallback:	function (settings, data) {
+					passdata = {
+						"UrlI": JSdata.get('UrlI'),
+						"DtId": dtJQObjId.attr('id'),
+						"data": data
+					};
+					$.ajax( {
+						url: JSdata.get('datatables_statesave'),
+						data: passdata,
+						dataType: "json",
+						type: "POST",
+						success: function(json) {
+							retour = $.parseJSON(json);
+							if(retour.result != true) {
+								// alert('Erreur à l\'enregistrement de vos paramètres de tri');
+							}
+							// alert("SAVE :\n"+retour.data);
+							// alert(
+							// 	'• Json data : result = '+retour.result
+							// 	+'\n• Json data : message = '+retour.message
+							// 	+'\n• Json data parsed = \n'+$.parseJSON(retour.data)
+							// 	+'\n• Json data : data = \n'+retour.data
+							// 	// +'\nRéf. page : '+UrlI
+							// 	// +'\nJson data : nom = \n'+retour.data.UrlI
+							// );
+						},
+						// error: function(json) {
+						// },
+					});
+				}
+			});
 		});
 	}
 

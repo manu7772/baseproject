@@ -176,6 +176,7 @@ class filemakerController extends fmController {
 			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
 			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
 		));
+		// echo("UrlI : <br>".$this->getRequest()->getRequestUri()."<br><br>");
 
 		// données en fonction de la page
 		$this->vardumpDev($ctrlData, "ctrlData : ");
@@ -1054,8 +1055,27 @@ class filemakerController extends fmController {
 	}
 
 	public function datatables_statesaveAction() {
-		$data = $this->getRequest()->query()->all();
-
+		$error = array(
+			"result"	=> false,
+			"message"	=> "Utilisateur non trouvé",
+			"data"		=> "Utilisateur non trouvé",
+		);
+		$user = $this->get('security.context')->getToken()->getUser();
+		if(is_object($user)) {
+			$userManager = $this->get('fos_user.user_manager');
+			$post = $this->getRequest()->request->all();
+			$r = $user->addDtselection_withID($post['UrlI'], $post['DtId'], json_encode($post['data'], true));
+			if($r !== false) {
+				$userManager->updateUser($user);
+				$data = array(
+					"result"	=> true,
+					"message"	=> "Enregistrement réussi",
+					"data"		=> json_encode($post['data'], true),
+				);
+			} else $data = $error;
+		} else $data = $error;
+		return new JsonResponse(json_encode($data, true));
 	}
+
 
 }

@@ -4,7 +4,7 @@
 	<div class="container">
 		{% if fields is iterable %}
 		<h3 class="well well-xs">Liste des champs du modèle {{ layout }} <small>de {{ base }} (Serveur {{ fmdev['Serveur courant'] }})</small></h3>
-		<table class="table table-bordered table-hover table-condensed">
+		<table id='datatable01' class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Liste des champs : <strong>{{ layout }}</strong> <small>{{ fields|length }} résultat(s)</small></th>
 			</tr>
