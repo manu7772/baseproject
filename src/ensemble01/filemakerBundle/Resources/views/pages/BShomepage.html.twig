@@ -4,18 +4,17 @@
 {% endblock h1 %}
 {% block body %}
 	<div class="col-lg-8">
+	<!-- .col-lg-8 -->
 		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'areachart'})) %}
 		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'barchart'})) %}
 		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'timeline'})) %}
-		<!-- /.panel -->
 	</div>
 	<!-- /.col-lg-8 -->
+	<!-- .col-lg-4 -->
 	<div class="col-lg-4">
 		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'notifications'})) %}
 		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
 		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'comment'})) %}
-		<!-- /.panel -->
-		<!-- /.panel .chat-panel -->
 	</div>
 	<!-- /.col-lg-4 -->
 {% endblock body %}

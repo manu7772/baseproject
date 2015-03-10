@@ -1,6 +1,6 @@
 $(function() {
 
-    if($('#morris-area-chart').length) {
+    if($('#morris-area-chart')) {
         Morris.Area({
             element: 'morris-area-chart',
             data: [{
@@ -63,7 +63,7 @@ $(function() {
         });
     }
 
-    if($('#morris-donut-chart').length) {
+    if($('#morris-donut-chart')) {
         Morris.Donut({
             element: 'morris-donut-chart',
             data: [{
@@ -80,7 +80,7 @@ $(function() {
         });
     }
 
-    if($('#morris-bar-chart').length) {
+    if($('#morris-bar-chart')) {
         Morris.Bar({
             element: 'morris-bar-chart',
             data: [{
@@ -120,7 +120,7 @@ $(function() {
         });
     }
 
-    if($('#morris-line-chart').length) {
+    if($('#morris-line-chart')) {
         Morris.Line({
             element: 'morris-line-chart',
             data: [{
