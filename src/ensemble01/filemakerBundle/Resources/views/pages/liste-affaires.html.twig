@@ -14,6 +14,7 @@
 			<thead>
 				<tr class="active">
 					<th>Date</th>
+					<th>Id</th>
 					<th>Intitulé</th>
 					<th>Client</th>
 					<th>En charge</th>
@@ -24,6 +25,7 @@
 				{% for affaire in affaires %}
 				<tr>
 					<td>{{ affaire.getField("date_projet")|raw }}</td>
+					<td>{{ affaire.getField("id")|raw }}</td>
 					<td>{{ affaire.getField("intitule")|raw }}</td>
 					<td>{{ affaire.getField("client")|raw }}</td>
 					<td>{{ affaire.getField("Fk_Id_ChargeAffaire")|raw }}</td>
@@ -38,19 +40,14 @@
 		{% endif %}
 	</div>
 	<br>
+	<br>
+	{% if affaires is iterable %}
+	{% for affaire in affaires %}
 	<!-- .col-lg-4 -->
 	<div class="col-lg-4 col-md-6">
-		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
+		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart', blocdata: {affaire: affaire.getField("id"), title: 'Affaire <strong>' ~ affaire.getField("client") ~ '</strong>' }|json_encode(true) })) %}
 	</div>
 	<!-- /.col-lg-4 -->
-	<!-- .col-lg-4 -->
-	<div class="col-lg-4 col-md-6">
-		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
-	</div>
-	<!-- /.col-lg-4 -->
-	<!-- .col-lg-4 -->
-	<div class="col-lg-4 col-md-6">
-		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
-	</div>
-	<!-- /.col-lg-4 -->
+	{%- endfor %}
+	{% endif %}
 {% endblock body %}

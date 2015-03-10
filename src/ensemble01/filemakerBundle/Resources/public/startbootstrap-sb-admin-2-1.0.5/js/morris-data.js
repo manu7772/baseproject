@@ -1,6 +1,7 @@
 $(function() {
 
-	$('.area-chart').each(function() {
+	$('.area-chart').each(function(index) {
+		if($(this).attr('id') == undefined) $(this).attr('id', 'area-chart-'+index);
 		// data = $.parseJSON($(this).attr('data-chart'));
 		data = [{
 				period: '2010 Q1',
@@ -65,95 +66,12 @@ $(function() {
 		});
 	});
 
-	$('.donut-chart').each(function() {
+	$('.donut-chart').each(function(index) {
+		if($(this).attr('id') == undefined) $(this).attr('id', 'donut-chart-'+index);
 		data = $.parseJSON($(this).attr('data-chart'));
 		Morris.Donut({
 			element: $(this).attr('id'),
 			data: data,
-			resize: true
-		});
-	});
-
-	$('.bar-chart').each(function() {
-		// data = $.parseJSON($(this).attr('data-chart'));
-		data = [{
-				y: '2006',
-				a: 100,
-				b: 90
-			}, {
-				y: '2007',
-				a: 75,
-				b: 65
-			}, {
-				y: '2008',
-				a: 50,
-				b: 40
-			}, {
-				y: '2009',
-				a: 75,
-				b: 65
-			}, {
-				y: '2010',
-				a: 50,
-				b: 40
-			}, {
-				y: '2011',
-				a: 75,
-				b: 65
-			}, {
-				y: '2012',
-				a: 100,
-				b: 90
-			}];
-		Morris.Bar({
-			element: 'morris-bar-chart',
-			data: data,
-			xkey: 'y',
-			ykeys: ['a', 'b'],
-			labels: ['Series A', 'Series B'],
-			hideHover: 'auto',
-			resize: true
-		});
-	});
-
-	$('.line-chart').each(function() {
-		// data = $.parseJSON($(this).attr('data-chart'));
-		data = [{
-				y: '2006',
-				a: 100,
-				b: 90
-			}, {
-				y: '2007',
-				a: 75,
-				b: 65
-			}, {
-				y: '2008',
-				a: 50,
-				b: 40
-			}, {
-				y: '2009',
-				a: 75,
-				b: 65
-			}, {
-				y: '2010',
-				a: 50,
-				b: 40
-			}, {
-				y: '2011',
-				a: 75,
-				b: 65
-			}, {
-				y: '2012',
-				a: 100,
-				b: 90
-			}];
-		Morris.Line({
-			element: $(this).attr('id'),
-			data: data,
-			xkey: 'y',
-			ykeys: ['a', 'b'],
-			labels: ['Series A', 'Series B'],
-			hideHover: 'auto',
 			resize: true
 		});
 	});

@@ -818,7 +818,8 @@ class filemakerController extends fmController {
 			$blocdata['error'] = "Module <strong>".$template."</strong> inconnu.";
 		}
 		// titre/icone du module par défaut
-		$blocdata['module']['title'] = $template;
+		// $blocdata['module']['title'] = $template;
+		if(isset($blocdata['title'])) $blocdata['module']['title'] = $blocdata['title'];
 		$blocdata['module']['icon'] = 'fa-gear';
 		// remplissage des données selon le module
 		if(isset($blocdata['template']) && is_string($blocdata['template'])) $template = $blocdata['template'];
@@ -840,7 +841,7 @@ class filemakerController extends fmController {
 				$blocdata['module']['icon'] = 'fa-bar-chart-o';
 				break;
 			case 'donutchart':
-				$blocdata['module']['title'] = 'Graphique circulaire';
+				if(!isset($blocdata['module']['title'])) $blocdata['module']['title'] = 'Graphique circulaire';
 				$blocdata['module']['icon'] = 'fa-bar-chart-o';
 				$blocdata['module']['datadonut'] = array(
 					array('label' => 'Logements non effectués', 'value' => rand(20,100)),
