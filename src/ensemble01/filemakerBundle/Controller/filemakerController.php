@@ -831,6 +831,10 @@ class filemakerController extends fmController {
 				$blocdata['module']['title'] = 'Graphique à barres';
 				$blocdata['module']['icon'] = 'fa-bar-chart-o';
 				break;
+			case 'timeline':
+				$blocdata['module']['title'] = 'Time line';
+				$blocdata['module']['icon'] = 'fa-clock-o';
+				break;
 			case 'areachart':
 				$blocdata['module']['title'] = 'Graphique surface';
 				$blocdata['module']['icon'] = 'fa-bar-chart-o';
@@ -838,6 +842,10 @@ class filemakerController extends fmController {
 			case 'donutchart':
 				$blocdata['module']['title'] = 'Graphique circulaire';
 				$blocdata['module']['icon'] = 'fa-bar-chart-o';
+				break;
+			case 'comment':
+				$blocdata['module']['title'] = 'Commentaires';
+				$blocdata['module']['icon'] = 'fa-comments';
 				break;
 			
 			default:
