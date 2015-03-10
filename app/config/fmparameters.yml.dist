@@ -1,3 +1,4 @@
 parameters:
-    # pathrapports: "/Users/minimacgeodem/Documents/Rapports/DAPP/"
-    pathrapports: "/Users/Shared/Rapports/DAPP/"
+    pathrapports: "Rapports/"
+    sadmin_login: "login"
+    sadmin_pass:  "passe"

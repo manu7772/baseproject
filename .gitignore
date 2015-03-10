@@ -4,6 +4,7 @@
 /app/cache/*
 /app/config/parameters*.*
 /app/config/fmparameters.yml
+!/app/config/parameters_fm.xml.dist
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
