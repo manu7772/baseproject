@@ -5,5 +5,5 @@
 {% set action_menus = {'Plus…': {1: {nom: 'Revenir au site', href: 'ensemble01site_homepage', type_link: 'route'}, 2: {nom: 'Action 2', href: '#', type_link: 'url'}, 3: {nom: 'Action 3', href: '#', type_link: 'url'}, 4: {nom: null, href: '%divider%'}, 5: {nom: 'Autres actions', href: '%dropdown-header%'}, 6: {nom: 'Action 4', href: '#', type_link: 'url'}}, 'Actions 2': {1: {nom: 'Revenir au site', href: 'ensemble01site_homepage', type_link: 'route'}, 2: {nom: 'Action 2', href: '#', type_link: 'url'}, 3: {nom: 'Action 3', href: '#', type_link: 'url'}, 4: {nom: null, href: '%divider%'}, 5: {nom: 'Autres actions', href: '%dropdown-header%'}, 6: {nom: 'Action 4', href: '#', type_link: 'url'}}} %}
 {% block actions_button %}{% include 'ensemble01filemakerBundle:blocs:actions_button.html.twig' with {action_menus: action_menus} %}{% endblock actions_button %}
 {% block body %}
-	<div id="morris-area-chart"></div>
+	<div id="area-chart-{{ random(100000) }}" class='area-chart' data-chart='{# module.datadonut|json_encode(true) #}'></div>
 {% endblock body %}

@@ -4,6 +4,5 @@
 {% block title %}{{ module.title|raw }}{% endblock title %}
 {% block actions_button %}{{ parent() }}{% endblock actions_button %}
 {% block body %}
-		<div id="donut-chart-{{ random(100000) }}" class='donut-chart' data-donut-chart='{{ module.datadonut|json_encode(true) }}'></div>
-		<a href="#" class="btn btn-default btn-block">Voir détails</a>
+	<div id="line-chart-{{ random(100000) }}" class='line-chart' data-chart='{# module.datadonut|json_encode(true) #}'></div>
 {% endblock body %}
