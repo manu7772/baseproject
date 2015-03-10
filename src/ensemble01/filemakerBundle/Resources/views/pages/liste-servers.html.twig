@@ -1,6 +1,9 @@
-{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
+{% block h1 %}
+	<h1 class="page-header">{{ h1|raw }}</h1>
+{% endblock h1 %}
 {% block body %}
-	<div class="container">
+	<div class="col-lg-12">
 		{% if servers is iterable %}
 		<h3 class="well well-xs">Liste des Serveurs<br /><small>{{ servers|length }} résultat(s) <span class="caret"></span></small></h3>
 		<table class="table table-bordered table-hover table-condensed">

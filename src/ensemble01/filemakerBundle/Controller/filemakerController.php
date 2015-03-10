@@ -40,6 +40,7 @@ class filemakerController extends fmController {
 		if(is_string($datt)) $datt = array($datt);
 		$data = array();
 		foreach($datt as $nom => $val) $data[$nom] = $val;
+		unset($datt);
 
 		// choix du template (redirection si nécessaire)
 		if(!isset($data['page'])) $data['page'] = null;
@@ -84,6 +85,7 @@ class filemakerController extends fmController {
 	 * @return array - actions réalisées en GET/POST
 	 */
 	protected function actionsRequest($method = 'GET') {
+		$this->initFmData();
 		$methods = array('GET' => 'request', 'POST' => 'query');
 		if(!array_key_exists(strtoupper($method), $methods)) {
 			reset($methods);
@@ -267,13 +269,15 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-fields':
 				// liste des modèles
-				$ctrlData['h1'] = "Liste des champs de ".$this->_fm->getCurrentBASE();
-				// $ctrlData['layout'] = $pagedata['layout'];
-				$r = $this->_fm->getDetailFields($pagedata['layout']);
+				$ctrlData['h1'] = "Liste des champs de ".$ctrlData['pagedata']['from_url']['layout'].'<br><small>('.$this->_fm->getCurrentBASE().')</small>';
+				$ctrlData['layout'] = $ctrlData['pagedata']['from_url']['layout'];
+				$ctrlData['base'] = $this->_fm->getCurrentBASE();
+				$ctrlData['serveur'] = $this->_fm->getCurrentSERVER();
+				$r = $this->_fm->getDetailFields($ctrlData['pagedata']['from_url']['layout'], $this->_fm->getCurrentBASE(), $this->_fm->getCurrentSERVER());
 				if(is_array($r)) $ctrlData = array_merge($ctrlData, $r);
 					else $ctrlData['fields'] = $r;
 				// $this->vardumpDev($ctrlData);
-				// die($pagedata['layout']." => ".$ctrlData['layout']);
+				// die($ctrlData['layout']." => ".$ctrlData['layout']);
 				break;
 			case 'liste-tiers-all':
 				// liste des tiers

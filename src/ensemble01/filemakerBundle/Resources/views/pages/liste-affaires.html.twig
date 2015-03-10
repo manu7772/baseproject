@@ -1,6 +1,6 @@
 {% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
 {% block h1 %}
-	<h1 class="page-header">{{ h1 }}</h1>
+	<h1 class="page-header">{{ h1|raw }}</h1>
 	{% if affaires is iterable %}
 	<small>{{ affaires|length }} résultat(s) <span class="caret"></span></small>
 	{% else %}
@@ -25,7 +25,7 @@
 				{% for affaire in affaires %}
 				<tr>
 					<td>{{ affaire.getField("date_projet")|raw }}</td>
-					<td>{{ affaire.getField("id")|raw }}</td>
+					<td>{{ affaire.getField("id_Projet")|raw }}</td>
 					<td>{{ affaire.getField("intitule")|raw }}</td>
 					<td>{{ affaire.getField("client")|raw }}</td>
 					<td>{{ affaire.getField("Fk_Id_ChargeAffaire")|raw }}</td>
@@ -45,7 +45,7 @@
 	{% for affaire in affaires %}
 	<!-- .col-lg-4 -->
 	<div class="col-lg-4 col-md-6">
-		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart', blocdata: {affaire: affaire.getField("id"), title: 'Affaire <strong>' ~ affaire.getField("client") ~ '</strong>' }|json_encode(true) })) %}
+		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart', blocdata: {affaire: affaire.getField("id_Projet"), title: 'Affaire <strong>' ~ affaire.getField("client") ~ '</strong>' }|json_encode(true) })) %}
 	</div>
 	<!-- /.col-lg-4 -->
 	{%- endfor %}

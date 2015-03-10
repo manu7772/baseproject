@@ -168,7 +168,7 @@ class geodiag extends fms {
 		// 	$data['search'][0]['column'] 	= 'intitule';
 		// 	$data['search'][0]['value']		= 'Marché Evreux';
 		// }
-		// $data['sort'][1]['column'] 			= 'date_projet';
+		// $data['sort'][1]['column'] 		= 'date_projet';
 		// $data['sort'][1]['way'] 			= 'DESC';
 		return $this->getData($data2);
 	}

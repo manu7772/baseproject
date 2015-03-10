@@ -1,9 +1,12 @@
-{% extends('ensemble01filemakerBundle::pageBaseFilemaker.html.twig') %}
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
 {% set fmdev = app.session.get('filemaker_DEV') %}
+{% block h1 %}
+	<h1 class="page-header">{{ h1|raw }}</h1>
+{% endblock h1 %}
 {% block body %}
-	<div class="container">
+	<div class="col-lg-12">
 		{% if fields is iterable %}
-		<h3 class="well well-xs">Liste des champs du modèle {{ layout }} <small>de {{ base }} (Serveur {{ fmdev['Serveur courant'] }})</small></h3>
+		<!-- <h3 class="well well-xs">Liste des champs du modèle {{ layout }} <small>de {{ base }} (Serveur {{ serveur }})</small></h3> -->
 		<table id='datatable01' class="table table-bordered table-hover table-condensed">
 			<tr class="active">
 				<th>Liste des champs : <strong>{{ layout }}</strong> <small>{{ fields|length }} résultat(s)</small></th>
