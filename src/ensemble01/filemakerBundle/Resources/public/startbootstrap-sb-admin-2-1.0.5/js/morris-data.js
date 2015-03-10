@@ -63,22 +63,15 @@ $(function() {
         });
     }
 
-    if($('#morris-donut-chart')) {
+    $('.donut-donut').each(function() {
+        data = $.parseJSON($(this).attr('data-donut-chart'));
+        // alert('Donut : ' + $(this).attr('id'));
         Morris.Donut({
-            element: 'morris-donut-chart',
-            data: [{
-                label: "Download Sales",
-                value: 12
-            }, {
-                label: "In-Store Sales",
-                value: 30
-            }, {
-                label: "Mail-Order Sales",
-                value: 20
-            }],
+            element: $(this).attr('id'),
+            data: data,
             resize: true
         });
-    }
+    });
 
     if($('#morris-bar-chart')) {
         Morris.Bar({

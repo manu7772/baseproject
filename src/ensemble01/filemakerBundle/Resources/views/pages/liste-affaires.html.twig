@@ -37,4 +37,20 @@
 		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: affaires} only %}
 		{% endif %}
 	</div>
+	<br>
+	<!-- .col-lg-4 -->
+	<div class="col-lg-4 col-md-6">
+		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
+	</div>
+	<!-- /.col-lg-4 -->
+	<!-- .col-lg-4 -->
+	<div class="col-lg-4 col-md-6">
+		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
+	</div>
+	<!-- /.col-lg-4 -->
+	<!-- .col-lg-4 -->
+	<div class="col-lg-4 col-md-6">
+		{% render(controller('ensemble01filemakerBundle:filemaker:moduleAdmin', {template: 'donutchart'})) %}
+	</div>
+	<!-- /.col-lg-4 -->
 {% endblock body %}

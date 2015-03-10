@@ -842,6 +842,11 @@ class filemakerController extends fmController {
 			case 'donutchart':
 				$blocdata['module']['title'] = 'Graphique circulaire';
 				$blocdata['module']['icon'] = 'fa-bar-chart-o';
+				$blocdata['module']['datadonut'] = array(
+					array('label' => 'Logements non effectués', 'value' => rand(20,100)),
+					array('label' => 'Logements en cours', 'value' => rand(20,100)),
+					array('label' => 'Logements terminés', 'value' => rand(20,100)),
+					);
 				break;
 			case 'comment':
 				$blocdata['module']['title'] = 'Commentaires';
