@@ -174,6 +174,28 @@ class geodiag extends fms {
 	}
 
 	/**
+	 * Renvoie la liste des pièces/détails
+	 * @param array $data - données de recherche et autres données
+	 * @return array
+	 */
+	public function getLocalPiecesDetail($data = null) {
+		if($data === null || !is_array($data)) $data = array();
+		// force les données relatives au modèle
+		$data2 = $data['recherche'];
+		$data2['server'] 		= $this->getCurrentSERVER();
+		$data2['base'] 			= $data['groupes'][1];
+		$data2['modele'] 		= $data['groupes'][2];
+		// autres données, par défaut :
+		// if(!isset($data['column'])) {
+		// 	$data['search'][0]['column'] 	= 'intitule';
+		// 	$data['search'][0]['value']		= 'Marché Evreux';
+		// }
+		// $data['sort'][1]['column'] 		= 'date_projet';
+		// $data['sort'][1]['way'] 			= 'DESC';
+		return $this->getData($data2);
+	}
+
+	/**
 	 * Renvoie la liste des tiers
 	 * @return array
 	 */

@@ -46,6 +46,8 @@ class twigAetools extends \Twig_Extension {
 			'fillOfChars'		=> new \Twig_Function_Method($this, 'fillOfChars'),
 			'transFMdate'		=> new \Twig_Function_Method($this, 'transFMdate'),
 			'CSSclass'			=> new \Twig_Function_Method($this, 'CSSclass'),
+			'base64_decode'		=> new \Twig_Function_Method($this, 'base64_decode'),
+			'image_base64'		=> new \Twig_Function_Method($this, 'image_base64'),
 			);
 	}
 
@@ -660,6 +662,20 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function CSSclass($texte, $classe, $balise = 'span') {
 		return '<'.$balise.' class="'.$classe.'">'.$texte.'</'.$balise.'>';
+	}
+
+	/**
+	 * 
+	 */
+	public function base64_decode($text) {
+		return base64_decode($text);
+	}
+
+	/**
+	 * 
+	 */
+	public function image_base64($text, $format = 'png') {
+		return "<img src='data:image/".$format.";base64,".$text."' style='width:128px;' />";
 	}
 
 }

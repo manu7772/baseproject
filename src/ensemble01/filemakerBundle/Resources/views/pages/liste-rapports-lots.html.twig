@@ -48,24 +48,6 @@
 				{%- endfor %}
 			</tbody>
 		</table>
-		{% elseif rapports == 'No records match the request' %}
-		<!-- Aucun résultat -->
-		<table class="table table-striped table-bordered table-hover table-striped no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
-			<thead>
-				<tr class="active">
-					<th>Réf. lot</th>
-					<th>Type / Actions</th>
-					<th>À traiter</th>
-					<th>Généré</th>
-					<th>Statut lot</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="danger">
-					<td colspan='100%'>Aucun résultat trouvé</td>
-				</tr>
-			</tbody>
-		</table>
 		{% else %}
 		<!-- Message d'erreur -->
 		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: rapports} %}

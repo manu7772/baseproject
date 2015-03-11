@@ -66,27 +66,6 @@
 				{%- endfor %}
 			</tbody>
 		</table>
-		{% elseif rapports == 'No records match the request' %}
-		<!-- Aucun résultat -->
-		<table class="table table-striped table-bordered table-hover table-striped no-footer" role="grid" aria-describedby="dataTables-tiers-liste">
-			<thead>
-				<tr class="active">
-					<th>Id rapport</th>
-					<th>Type</th>
-					<th>Actions</th>
-					<th>Numéro lot</th>
-					<th>Description</th>
-					<th>Adresse</th>
-					<th style="text-align:center;">PDF</th>
-					<!-- <th>Client</th> -->
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="danger">
-					<td colspan='100%'>Aucun résultat trouvé</td>
-				</tr>
-			</tbody>
-		</table>
 		{% else %}
 		<!-- Message d'erreur -->
 		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: rapports} %}

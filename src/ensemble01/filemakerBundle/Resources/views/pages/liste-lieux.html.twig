@@ -6,7 +6,7 @@
 {% block body %}
 	<div class="col-lg-12">
 		{% if lieux is iterable %}
-		<table id='datatable01' class="table table-bordered table-hover table-condensed">
+		<table id='datatable01' class="table table-striped table-bordered table-hover table-striped dataTable no-footer" role="grid" aria-describedby="dataTables-affaires-liste">
 			<thead>
 				<tr class="active">
 					<th title='cle'>Clé lieu</th>
@@ -15,6 +15,9 @@
 					<th title='nb_locaux_diagnostique'>Loc. traités</th>
 					<th title='nb_locaux_en_service'>Loc. en serv.</th>
 					<th title='nb_locaux_calcule'>Loc. réel</th>
+					<th title='TOTAL LOGEMENTS'>Total logement</th>
+					<th title='Fk_IdProjet'>Clé projet</th>
+					<th title='Fk_IdClient'>Clé client</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -26,6 +29,9 @@
 					<td>{{ lieu.getField("nb_locaux_diagnostique") }}</td>
 					<td>{{ lieu.getField("nb_locaux_en_service") }}</td>
 					<td>{{ lieu.getField("nb_locaux_calcule") }}</td>
+					<td>{{ lieu.getField("TOTAL LOGEMENTS") }}</td>
+					<td>{{ lieu.getField("Fk_IdProjet") }}</td>
+					<td>{{ lieu.getField("Fk_IdClient") }}</td>
 				</tr>
 				{%- endfor %}
 			</tbody>

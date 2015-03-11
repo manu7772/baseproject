@@ -25,7 +25,7 @@
 				{% for affaire in affaires %}
 				<tr>
 					<td>{{ affaire.getField("date_projet")|raw }}</td>
-					<td>{{ affaire.getField("id_Projet")|raw }}</td>
+					<td>{{ affaire.getField("IdProjet")|raw }}</td>
 					<td>{{ affaire.getField("intitule")|raw }}</td>
 					<td>{{ affaire.getField("client")|raw }}</td>
 					<td>{{ affaire.getField("Fk_Id_ChargeAffaire")|raw }}</td>

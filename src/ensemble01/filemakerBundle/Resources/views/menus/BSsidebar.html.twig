@@ -21,6 +21,9 @@
 				</a>
 			</li>
 			<li>
+				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'dev_Param_Societe'}) }}"><i class="fa fa-gear fa-fw"></i> Paramètres société</a>
+			</li>
+			<li>
 				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-user fa-fw"></i> Tiers<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
@@ -50,7 +53,7 @@
 						<ul class="nav nav-third-level">
 							{% for affaire in affaires %}
 							<li>
-								<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-lieux'}) }}">{{ affaire.getField("intitule")|raw }} - {{ affaire.getField("client")|raw }}</a>
+								<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-lieux', pagedata: affaire.getField('client')}) }}">{{ affaire.getField("intitule")|raw }} - {{ affaire.getField("client")|raw }}</a>
 							</li>
 							{% endfor %}
 						</ul>

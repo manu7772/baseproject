@@ -5,5 +5,5 @@
 {% block actions_button %}{{ parent() }}{% endblock actions_button %}
 {% block body %}
 		<div id="donut-chart-{{ random(100000) }}" class='donut-chart' data-chart='{{ module.datadonut|json_encode(true) }}'></div>
-		<a href="#" class="btn btn-default btn-block">Voir détails</a>
+		<a href="#" class="btn btn-primary btn-xs btn-block">Voir détails</a>
 {% endblock body %}

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class filemakerController extends fmController {
 
 	const FORCE_SELECT = true;
+	const NORESULT = 'No records match the request';
 
 	protected $_fm;				// service filemakerservice
 	protected $selectService;	// service aeSelect
@@ -24,8 +25,19 @@ class filemakerController extends fmController {
 	}
 
 	public function indexAction() {
-		$data['title'] = "Tableau de bord";
-		return $this->pagewebAction('BShomepage', $data);
+		$data = array();
+		$data['h1'] = "Tableau de bord";
+		// liste des affaires
+		$this->initGlobalData();
+		$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_SERVEUR', 'Projet_Liste'));
+		$this->selectService
+			->setRecherche('intitule', '*')
+			->addRecherche('intitule', 'PROJET TEMOIN', '!')
+			;
+		// $this->vardumpDev($data["new_select"], "New select : ".$this->selectService->getGroupeName());
+		$data['affaires'] = $this->_fm->getAffaires($this->selectService->getCurrentSelect(self::FORCE_SELECT));
+
+		return $this->render($this->verifVersionPage('BShomepage2'), $data);
 	}
 
 	/**
@@ -41,6 +53,7 @@ class filemakerController extends fmController {
 		$data = array();
 		foreach($datt as $nom => $val) $data[$nom] = $val;
 		unset($datt);
+		if(!isset($data['pagedata'])) $data['pagedata'] = array();
 
 		// choix du template (redirection si nécessaire)
 		if(!isset($data['page'])) $data['page'] = null;
@@ -205,6 +218,9 @@ class filemakerController extends fmController {
 				$ctrlData["new_select"] = $this->selectService->getCurrentSelect(self::FORCE_SELECT);
 				// $this->vardumpDev($ctrlData["new_select"], "New select : ".$this->selectService->getGroupeName());
 				$ctrlData['rapports'] = $this->_fm->getListeRapportsByLot($ctrlData["new_select"], $ctrlData['pagedata']['from_url']);
+				if($ctrlData['rapports'] == self::NORESULT) {
+					$ctrlData['rapports'] = array();
+				}
 				break;
 			case 'liste-rapports-complete':
 				$selecValues = array('0','1');
@@ -224,18 +240,36 @@ class filemakerController extends fmController {
 				$ctrlData["new_select"] = $this->selectService->getCurrentSelect(self::FORCE_SELECT);
 				$ctrlData['rapports'] = $this->_fm->getRapports($ctrlData["new_select"]);
 				// ajout présence fichiers PDF
-				foreach($ctrlData['rapports'] as $rapport) {
+				if(is_array($ctrlData['rapports'])) foreach($ctrlData['rapports'] as $rapport) {
 					if($this->_fm->verifRapportFile($rapport) === true) $ctrlData['pdf_file'][$rapport->getField('id')] = true;
 						else $ctrlData['pdf_file'][$rapport->getField('id')] = false;
+				} else if($ctrlData['rapports'] == self::NORESULT) {
+					$ctrlData['rapports'] = array();
 				}
 				break;
 			case 'liste-lieux':
+				$corresp = array(
+					'AGIRE'		=> 'Proj0000001',
+					'SECOMILE'	=> 'Proj0000002',
+					'SILOGE'	=> 'Proj0000003',
+					);
+				// $this->vardumpDev($ctrlData['pagedata']["from_url"], 'Liste lieux :');
 				$ctrlData['h1'] = "Lieux";
-				$pagedata['recherche']['sort'][1] = array(
+				if(isset($corresp[$ctrlData['pagedata']["from_url"]])) {
+					$ctrlData['h1'] .= ' - '.$ctrlData['pagedata']["from_url"];
+					$data['recherche']['search'][0] = array(
+							'column'	=> 'Fk_IdProjet',
+							'value'		=> $corresp[$ctrlData['pagedata']["from_url"]]
+						);
+				}
+				$data['recherche']['sort'][1] = array(
 						'column' 	=> 'cle',
 						'way' 		=> 'ASC'
 					);
-				$ctrlData['lieux'] = $this->_fm->getLieux($pagedata['recherche']);
+				$ctrlData['lieux'] = $this->_fm->getLieux($data['recherche']);
+				if($ctrlData['lieux'] == self::NORESULT) {
+					$ctrlData['lieux'] = array();
+				}
 				break;
 			case 'liste-locaux':
 				// liste des locaux
@@ -266,6 +300,14 @@ class filemakerController extends fmController {
 				// liste des modèles
 				$ctrlData['h1'] = "Liste des modèles de ".$this->_fm->getCurrentBASE();
 				$ctrlData['layouts'] = $this->_fm->getLayouts();
+				break;
+			case 'dev_Param_Societe':
+				// liste des modèles
+				$ctrlData['h1'] = "Paramètres société";
+				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_SERVEUR', 'dev_Param_Societe'));
+				// $this->selectService->setRecherche('id_local', 'loc0000011620');
+				// $this->selectService->setSort('Fk_Id_Local', 'ASC');
+				$ctrlData['params'] = $this->_fm->getLocalPiecesDetail($this->selectService->getCurrentSelect(self::FORCE_SELECT));
 				break;
 			case 'liste-fields':
 				// liste des modèles
