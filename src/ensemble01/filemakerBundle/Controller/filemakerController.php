@@ -204,7 +204,7 @@ class filemakerController extends fmController {
 					case 'all': $ctrlData['h1'] = "Lots liste complète"; break;
 					default: $ctrlData['h1'] = "Lots liste complète";$ctrlData['pagedata']["from_url"] = 'all'; break;
 				}
-				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web'));
+				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web_Light'));
 				// $this->selectService->setRecherche('intitule', '*');
 				// if($ctrlData['pagedata']["from_url"] !== 'all') {
 				// 	$this->selectService
@@ -230,7 +230,7 @@ class filemakerController extends fmController {
 					case 'all': $ctrlData['h1'] = "Rapports liste complète"; break;
 					default: $ctrlData['h1'] = "Rapports liste complète";$ctrlData['pagedata']["from_url"] = 'all'; break;
 				}
-				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web'));
+				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_Rapports', 'Rapports_Local_Web_Light'));
 				if(in_array(strval($ctrlData['pagedata']["from_url"]), $selecValues)) {
 					$this->selectService
 						// ->setRecherche('num_lot', $ctrlData['pagedata']['numlot'])
