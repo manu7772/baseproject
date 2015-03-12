@@ -7,7 +7,7 @@
 {% set defarrow = '<i class="fa fa-play fa-fw"></i>' %}
 
 <div class="navbar-header">
-	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		<span class="sr-only">Toggle navigation</span>
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
@@ -19,7 +19,7 @@
 </div>
 <!-- /.navbar-header -->
 
-<ul class="nav navbar-top-links navbar-left">
+<ul class="nav navbar-top-links navbar-right">
 	{% if is_granted("ROLE_SUPER_ADMIN") %}
 	<!-- /.dropdown -->
 	<li class="dropdown">
@@ -92,8 +92,8 @@
 	{% endif %}
 	{% endif %}
 	<!-- /.dropdown -->
-</ul>
-<ul class="nav navbar-top-links navbar-right">
+<!-- </ul> -->
+<!-- <ul class="nav navbar-top-links navbar-right"> -->
 	<li class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ app.user.username }}">
 			<i class="fa fa-user fa-fw"></i><span class="hidden-xs"> {{ app.user.username }} </span><i class="fa fa-caret-down"></i>
