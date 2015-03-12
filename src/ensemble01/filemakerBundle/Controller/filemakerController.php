@@ -629,7 +629,7 @@ class filemakerController extends fmController {
 	 * @param string $pagedata - Données diverses
 	 */
 	public function generate_by_lot_rapportAction($numlot, $pagedata = null) {
-		set_time_limit(3600); // délai pour le script : 1h !!!
+		set_time_limit(120); // délai pour le script : 1h !!!
 		$ctrlData = $this->initGlobalData(array(
 			// 'page'			=> $page,
 			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
