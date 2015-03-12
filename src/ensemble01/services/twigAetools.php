@@ -672,10 +672,18 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	/**
-	 * 
+	 * Renvoie une balise img de $largeur
+	 * @param string $text - code de l'image (base64)
+	 * @param mixed $classe - nom de(s) classe(s) -> string ou array de string
+	 * @param string $format - format d'image (png, jpg, etc.)
+	 * @param string $largeur - largeur de l'image (préciser l'unité ! px, %, etc.)
+	 * @return string
 	 */
-	public function image_base64($text, $format = 'png') {
-		return "<img src='data:image/".$format.";base64,".$text."' style='width:128px;' />";
+	public function image_base64($text, $classe = null, $format = 'png', $largeur = null) {
+		if(is_array($classe)) $classe = implode(" ", $classe);
+		if(is_string($classe)) $classe = " class='".$classe."'";
+		if(is_string($largeur)) $largeur = " style='width:".$largeur.";'";
+		return "<img src='data:image/".$format.";base64,".$text."'".$classe.$largeur." />";
 	}
 
 }

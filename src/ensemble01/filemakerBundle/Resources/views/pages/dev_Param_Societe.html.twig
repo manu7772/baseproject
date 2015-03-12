@@ -15,23 +15,28 @@
 				<tr class="active">
 					<th>logo</th>
 					<th>Ident.</th>
+					<th>Agence</th>
 					<th>Adresse 1</th>
-					<th>Adresse 2</th>
 					<th>Cp</th>
 					<th>Ville</th>
 					<th>Tél.</th>
+					<th>RCS </th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for param in params %}
 				<tr>
-					<td>{{ image_base64(param.getField("logo_base64"), 'png')|raw }}</td>
+					<td>{{ image_base64(param.getField("logo_base64"), null, 'png', '64px')|raw }}</td>
 					<td>{{ param.getField("identification")|raw }}</td>
-					<td>{{ param.getField("soc_adresse")|raw }}</td>
-					<td>{{ param.getField("soc_adresse2")|raw }}</td>
+					<td>{{ param.getField("soc_agence")|raw }}</td>
+					<td>
+						{{ param.getField("soc_adresse")|raw }}
+						{% if param.getField("soc_adresse2") != '' or param.getField("soc_adresse2") is not null %}<br>{{ param.getField("soc_adresse2")|raw }}{% endif %}
+					</td>
 					<td>{{ param.getField("soc_cp")|raw }}</td>
 					<td>{{ param.getField("soc_ville")|raw }}</td>
 					<td>{{ param.getField("soc_tel")|raw }}</td>
+					<td>{{ param.getField("soc_rcs")|raw }}</td>
 				</tr>
 				{%- endfor %}
 			</tbody>
