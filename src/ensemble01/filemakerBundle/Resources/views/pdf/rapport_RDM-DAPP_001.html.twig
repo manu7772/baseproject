@@ -62,6 +62,7 @@
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
 				<td>
+					<p style='width:100%;'>{{ image_base64(rapport.getField("client_logo_base64"), null, null, '128px')|raw }}</p>
 					<strong>{{ rapport.getField('client_nom') }}</strong><br>
 					{{ rapport.getField('client_adresse') }}<br>
 					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
