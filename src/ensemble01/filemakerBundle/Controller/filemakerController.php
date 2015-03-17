@@ -535,9 +535,11 @@ class filemakerController extends fmController {
 				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
 			} else {
 				// génération echec
+				$idr = $oneRapport['rapport']["rapport"]->getField('id');
 				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
 			}
 		} else {
+			$idr = $oneRapport['rapport']["rapport"]->getField('id');
 			$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
 		}
 		return new Response(null);
