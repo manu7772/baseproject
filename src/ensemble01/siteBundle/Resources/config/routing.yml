@@ -13,6 +13,11 @@ ensemble01site_rapportfm:
     path:     /rapportfm/{id}/{mode}.{format}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, id: null, mode: "file", format: "pdf", pagedata: null}
 
+# génération d'un rapport individuel via FM
+ensemble01filemake_generateByOne:
+    path:     /rapportfm-by-one/{numlot}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rappport_fm}
+
 ensemble01filemaker_generateByLotRapport:
     path:     /rapportfm-by-lot/{numlot}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport, pagedata: null}
