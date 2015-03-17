@@ -15,7 +15,7 @@ ensemble01site_rapportfm:
 
 # génération d'un rapport individuel via FM
 ensemble01filemake_generateByOne:
-    path:     /rapportfm-by-one/{numlot}
+    path:     /rapportfm-by-one/{rapport_id}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rappport_fm}
 
 ensemble01filemaker_generateByLotRapport:

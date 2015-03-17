@@ -477,12 +477,13 @@ class filemakerController extends fmController {
 						break;
 					default: // PDF ou autre
 						$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
+						$html = null;
 						try {
 							$html = $this->renderView($RAPP["template"], $RAPP);
 						} catch (\Exception $e){
 							$aeReponse->addErrorMessage('Erreur génération template : '.$e->getMessage());
 						}
-						try {
+						if(is_string($html)) try {
 							$html2pdf = $this->get('html2pdf_factory')->create();
 							$html2pdf->pdf->setFont('helvetica', '', 10, '', 'false');
 							$html2pdf->pdf->addFont('helvetica', 'B', 10, '', 'false');
@@ -531,18 +532,18 @@ class filemakerController extends fmController {
 			}
 			if($aeReponse->isValid()) {
 				// génération ok
-				$idr = $oneRapport['rapport']["rapport"]->getField('id');
+				$idr = $rapport_id;
 				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
 			} else {
 				// génération echec
-				$idr = $oneRapport['rapport']["rapport"]->getField('id');
+				$idr = $rapport_id;
 				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
 			}
 		} else {
-			$idr = $oneRapport['rapport']["rapport"]->getField('id');
+			$idr = $rapport_id;
 			$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
 		}
-		return new Response(null);
+		return new Response("ok ".$rapport_id);
 	}
 
 	/**
