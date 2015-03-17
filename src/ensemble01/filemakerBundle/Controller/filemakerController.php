@@ -629,7 +629,7 @@ class filemakerController extends fmController {
 	 * @param string $pagedata - Données diverses
 	 */
 	public function generate_by_lot_rapportAction($numlot, $pagedata = null) {
-		set_time_limit(120); // délai pour le script : 1h !!!
+		set_time_limit(3600); // délai pour le script : 1h !!!
 		$ctrlData = $this->initGlobalData(array(
 			// 'page'			=> $page,
 			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
@@ -639,13 +639,15 @@ class filemakerController extends fmController {
 
 		// rapports passés en "généré"
 		$resltRapports = array();
-		$test = $this->_fm->Cloture_LOT_Rapport_Apres_Serveur($numlot);
-		foreach ($test as $rapport) {
+		$test = $this->_fm->Recherche_Rapport_Serveur($numlot);
+		if(is_array($test)) foreach ($test as $rapport) {
 			if(is_object($rapport)) {
-				$resltRapports[$rapport->getField('id')] = $rapport;
+				$resltRapports[$rapport->getField('id')] = $rapport->getField('id');
 			} else {
 				$aeReponse->addErrorMessage($rapport);
 			}
+		} else {
+			return new Response('Erreur : '.$test);
 		}
 		// // liste des rapports à vérifier
 		// $verifRapports = array();
@@ -715,7 +717,8 @@ class filemakerController extends fmController {
 	 */
 	public function generate_by_lot_rapport_fmAction($numlot) {
 		$this->generate_by_lot_rapportAction($numlot);
-		return $this->public_listeRapportsLotsAction($numlot);
+		return new Response('Test');
+		// return $this->public_listeRapportsLotsAction($numlot);
 	}
 
 	/**
@@ -772,7 +775,7 @@ class filemakerController extends fmController {
 		));
 		$aeReponse = $this->get('ensemble01services.aeReponse');
 
-		$action = $this->_fm->Retablir_LOT_Rapport_Apres_Serveur($numlot);
+		$action = $this->_fm->Recherche_Rapport_Serveur($numlot);
 		// $action = 'test';
 		// Si erreur
 		if(is_string($action)) {
@@ -781,7 +784,11 @@ class filemakerController extends fmController {
 			foreach ($action as $key => $rapport) {
 				if($this->_fm->effaceRapportFile($rapport) === true) $addRep = ' Fichier effacé.';
 					else $addRep = ' Fichier introuvable.';
-				$aeReponse->addMessage("Rapport rétabli : ".$rapport->getField('id')." (version ".$rapport->getField('version').")".$addRep);
+				$rep = $this->_fm->Retablir_UN_Rapport_Apres_Serveur($rapport->getField('id'));
+				if(is_string($rep)) $addRep1 = 'non rétabli';
+					else $addRep1 = 'rétabli';
+				$aeReponse->addMessage("Rapport ".$addRep1." : ".$rapport->getField('id')." (version ".$rapport->getField('version').")".$addRep);
+				unset($rep);
 			}
 		}
 		$aeReponse->putAllMessagesInFlashbag();
@@ -802,6 +809,13 @@ class filemakerController extends fmController {
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
+
+	/**
+	 *
+	 */
+	public function test_refreshAction() {
+		return $this->render('ensemble01filemakerBundle:test:testrefresh.html.twig');
+	}
 
 	/****************************************/
 	/*** BLOCS ET MODULES

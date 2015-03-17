@@ -455,12 +455,19 @@ class geodiag extends fms {
 	public function Cloture_LOT_Rapport_Apres_Serveur($num_lot) {
 		$this->setCurrentBASE('GEODIAG_Rapports');
 		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Cloture_Rapport_Apres_Serveur(num_lot)', $num_lot);
-		return $this->getRecords($newPerformScript->execute());
+		$this->getRecords($newPerformScript->execute());
+		return true;
 	}
 
 	public function Retablir_LOT_Rapport_Apres_Serveur($num_lot) {
 		$this->setCurrentBASE('GEODIAG_Rapports');
 		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Retablir_Rapport_Apres_Serveur(num_lot)', $num_lot);
+		return $this->getRecords($newPerformScript->execute());
+	}
+
+	public function Recherche_Rapport_Serveur($num_lot) {
+		$this->setCurrentBASE('GEODIAG_Rapports');
+		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web_Light', 'Recherche_Rapport_Serveur(num_lot)', $num_lot);
 		return $this->getRecords($newPerformScript->execute());
 	}
 

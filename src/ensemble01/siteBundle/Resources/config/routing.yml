@@ -17,6 +17,7 @@ ensemble01filemaker_generateByLotRapport:
     path:     /rapportfm-by-lot/{numlot}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport, pagedata: null}
 
+## url pour lancer des rapports par numéro de lot via FM
 ensemble01filemaker_commandeFM_generateByLotRapport:
     path:     /rapportfm-by-lot-action-fm/{numlot}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport_fm}
@@ -30,3 +31,7 @@ datatables_statesave:
     path:     /datatables/statesave
     defaults: { _controller: ensemble01filemakerBundle:filemaker:datatables_statesave }
 
+### TEST FM
+ensemble01filemaker_test_refresh:
+    path:     /test/refresh
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:test_refresh}
