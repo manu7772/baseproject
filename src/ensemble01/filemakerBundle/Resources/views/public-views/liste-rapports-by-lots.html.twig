@@ -1,20 +1,23 @@
-{% extends(':public:public-pageRoot.html.twig') %}
-
-{% block title %}
-{% if numlot is not null %}Liste des rapports du lot {{ numlot }}{% else %}Liste complète des rapports{% endif %}
-{% endblock title %}
-
-{% block body %}
-
-<h1>{% if numlot is not null %}Liste des rapports du lot {{ numlot }}{% else %}Liste complète des rapports{% endif %}</h1>
-
-{% if rapports is iterable %}
-{% for rapport in rapports %}
-<h4>Rapport {{ rapport.getField("id")|raw }}</h4>
-{% endfor %}
-{% else %}
-<h4>Aucun rapport</h4>
-<p>{{ rapports }} <a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: rapport.getField('id'), mode: 'screen', format: 'pdf'}) }}">Voir PDF</a></p>
-{% endif %}
-
-{% endblock body  %}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="refresh" content="1;refresh">
+		<title>Liste des rapports générés</title>
+	</head>
+	<body>
+		<h1>{% if numlot is not null %}Liste des rapports du lot {{ numlot }}{% else %}Liste complète des rapports{% endif %}</h1>
+		{% if rapports is iterable %}
+		{% if rapports|count > 0 %}
+		{% for rapport in rapports %}
+		<h4>Rapport {{ rapport.getField("id")|raw }}</h4>
+		{% endfor %}
+		{% else %}
+		<h4>Aucun rapport</h4>
+		<p>{{ rapports }} <a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: rapport.getField('id'), mode: 'screen', format: 'pdf'}) }}">Voir PDF</a></p>
+		{% endif %}
+		{% else %}
+		<p>Aucun rapport pour l'instant</p>
+		{% endif %}
+	</body>
+</html>

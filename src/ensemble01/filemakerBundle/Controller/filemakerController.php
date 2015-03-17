@@ -461,10 +461,6 @@ class filemakerController extends fmController {
 			}
 			// nom du fichier du rapport
 			$RAPP["ref_rapport"] = $this->_fm->getRapportFileName($RAPP["rapport"]);
-			// documents annexes
-			$RAPP["documents"] = $this->getCertificats();
-			// données images
-			$RAPP['image_logo_geodem'] = "logos/logoGeodem.png";
 			// données spécifiques au format
 			if($aeReponse->isValid()) {
 				switch(strtolower($format)) {
@@ -717,8 +713,8 @@ class filemakerController extends fmController {
 	 */
 	public function generate_by_lot_rapport_fmAction($numlot) {
 		$this->generate_by_lot_rapportAction($numlot);
-		return new Response('Test');
-		// return $this->public_listeRapportsLotsAction($numlot);
+		// return new Response('Test');
+		return $this->public_listeRapportsLotsAction($numlot);
 	}
 
 	/**
@@ -730,7 +726,7 @@ class filemakerController extends fmController {
 	public function public_listeRapportsLotsAction($numlot = null) {
 		$data = array();
 		$numlot === null ? $all = true : $all = false;
-		$data["rapports"] = $this->initFmData()->getRapportsByLot($numlot, $all);
+		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot, $all);
 		$data["numlot"] = $numlot;
 		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
 	}
