@@ -752,9 +752,9 @@ class filemakerController extends fmController {
 	 */
 	public function public_listeRapportsLotsAction($numlot = null) {
 		$data = array();
-		$numlot === null ? $all = true : $all = false;
-		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot, $all);
+		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
 		foreach($data["rapports"] as $rapport) {
+			// fichier PDF
 			if($this->_fm->verifRapportFile($rapport) === true) {
 				$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
 			} else {
