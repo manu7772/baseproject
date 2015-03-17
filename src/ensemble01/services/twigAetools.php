@@ -48,6 +48,7 @@ class twigAetools extends \Twig_Extension {
 			'CSSclass'			=> new \Twig_Function_Method($this, 'CSSclass'),
 			'base64_decode'		=> new \Twig_Function_Method($this, 'base64_decode'),
 			'image_base64'		=> new \Twig_Function_Method($this, 'image_base64'),
+			'separdates'		=> new \Twig_Function_Method($this, 'separdates'),
 			);
 	}
 
@@ -685,6 +686,19 @@ class twigAetools extends \Twig_Extension {
 		if(is_string($largeur)) $largeur = " style='width:".$largeur.";'";
 		return "<img src='data:image/".$format.";base64,".$text."'".$classe.$largeur." />";
 	}
+
+	/**
+	 * Transforme le texte dates en provenance de FM (séparées par des pipe)
+	 * la dernière date est en gras
+	 * @param string $dates
+	 * @return string
+	 */
+	public function separdates($dates, $boldlastdate = true) {
+		$dates = explode('|', $dates);
+		$d = implode(' - ', $dates);
+		return $d;
+	}
+
 
 }
 

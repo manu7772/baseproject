@@ -64,9 +64,10 @@
 				<td>
 					<p style='width:100%;'>{{ image_base64(rapport.getField("client_logo_base64"), null, null, '128px')|raw }}</p>
 					<strong>{{ rapport.getField('client_nom') }}</strong><br>
-					{{ rapport.getField('client_adresse') }}<br>
+					<span class='ajustement'>Adresse</span>
+<!-- 					{{ rapport.getField('client_adresse') }}<br>
 					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
-				</td>
+ -->				</td>
 				<td>
 					{{ rapport.getField('soc_nom') }} - {{ rapport.getField('soc_agence') }}<br>
 					{{ rapport.getField('soc_adresse') }}<br>
@@ -82,9 +83,10 @@
 			</tr>
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
-				<td>
-					Client<br>
-					Fonction
+				<td><span class='ajustement'>
+					{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}<br>
+					{{ rapport.getField('client_representant_fonction') }}
+				</span>
 				</td>
 				<td>
 					{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}<br>
@@ -100,13 +102,13 @@
 			<tr>
 				<td class="left">
 					Référence dossier&nbsp;: {{ rapport.getField('ref_dossier') }}<br>
-					Opérateur de repérage amiante et Signataire&nbsp;: {{ rapport.getField('technicien') }}<br>
+					Opérateur de repérage amiante et Signataire&nbsp;: {{ rapport.getField('tech_nom') }}<br>
 					Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>{{ rapport.getField('Laboratoire_adresse') }} {{ rapport.getField('Laboratoire_adresse2') }}<br>{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</span>
 					<!-- Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>Zone d'activité de la Baudrière - Route du Neubourg<br>27520 Bourgtheroulde-Infreville</span> -->
 				</td>
 				<td class="left">
 					Date de commande&nbsp;: {{ transFMdate(rapport.getField('date_commande')) }}<br>
-					Dates de visites&nbsp;: {{ rapport.getField('technicien') }}<br>
+					Dates de visites&nbsp;: {{ separdates(rapport.getField('local_dates_visites'))|raw }}<br>
 					Accompagnateur&nbsp;: {{ neant }}
 				</td>
 			</tr>
