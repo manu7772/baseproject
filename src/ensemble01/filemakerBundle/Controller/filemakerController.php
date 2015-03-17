@@ -517,6 +517,31 @@ class filemakerController extends fmController {
 		return $aeReponse;
 	}
 
+	public function generate_rappport_fmAction($rapport_id) {
+		// $rapport = $this->_fm->getOneRapport($id);
+		$aeReponse = $this->generate_un_rapport($rapport_id);
+		if($aeReponse->isValid()) {
+			$oneRapport = $aeReponse->getDataAndSupp();
+			$path = $this->_fm->verifAndGoDossier($oneRapport['rapport']["type"]);
+			try {
+				$oneRapport['pdf']->Output($path.$oneRapport['rapport']["ref_rapport"].'.'.$format, "F");
+				$aeReponse->addMessage("Le rapport ".$oneRapport['rapport']["type"]." réf.".$oneRapport['rapport']["ref_rapport"]." a été généré.");
+			} catch (HTML2PDF_exception $e) {
+				$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
+			}
+			if($aeReponse->isValid()) {
+				// génération ok
+				$idr = $oneRapport['rapport']["rapport"]->getField('id');
+				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
+			} else {
+				// génération echec
+				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
+			}
+		} else {
+			$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
+		}
+		return new Response(null);
+	}
 
 	/**
 	 * Génère un rapport d'id $id - ou tous les rapports à générer si pas d'id précisé
@@ -727,6 +752,13 @@ class filemakerController extends fmController {
 		$data = array();
 		$numlot === null ? $all = true : $all = false;
 		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot, $all);
+		foreach($data["rapports"] as $rapport) {
+			if($this->_fm->verifRapportFile($rapport) === true) {
+				$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
+			} else {
+				$data['pdf'][$rapport->getField('id')] = false;
+			}
+		}
 		$data["numlot"] = $numlot;
 		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
 	}
