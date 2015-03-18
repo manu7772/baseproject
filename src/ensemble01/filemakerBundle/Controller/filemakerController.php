@@ -557,6 +557,10 @@ class filemakerController extends fmController {
 		return new Response($repss);
 	}
 
+	public function retablish_rapport_fmAction($rapport_id) {
+		return new Response('Rapport rétabli : '.$rapport_id);
+	}
+
 	/**
 	 * Génère un rapport d'id $id - ou tous les rapports à générer si pas d'id précisé
 	 * @param string $id - champ "id" de fm

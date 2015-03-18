@@ -1,25 +1,68 @@
-<!DOCTYPE html>
-<html lang="fr">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="refresh" content="1;{{ numlot }}">
-		<title>Liste des rapports générés</title>
-	</head>
-	<body>
-		<h1>{% if numlot is not null %}Liste des rapports du lot {{ numlot }}{% else %}Liste complète des rapports{% endif %}</h1>
-		{% if rapports is iterable %}
-		{% if rapports|length > 0 %}
-		{% for rapport in rapports %}
-		{% if pdf[rapport.getField("id")] != false and rapport.getField('a_traiter') == "1" %}
-		<a href='#' title='{{ pdf[rapport.getField("id")] }}'><h4>Rapport {{ rapport.getField("id")|raw }}</h4></a>
+{% extends(':public:BSsimplePageRoot.html.twig') %}
+{% set colsbtn = 'col-md-2 col-sm-3 col-xs-4' %}
+{% set brokens = false %}
+{% set affbrokens = true %}
+
+{% block metatitles %}
+	<meta http-equiv="refresh" content="{{ timelaps|default('5') }};{{ numlot }}">
+	{{ parent() }}
+{% endblock metatitles %}
+{% block title %}Rapports générés{% endblock title %}
+{% block body %}
+	<div class="container-fluid">
+		<div class='row'>
+			<h2 class="well well-xs">{% if numlot is not null %}Liste des rapports du lot {{ numlot }}{% else %}Liste complète des rapports{% endif %}</h2>
+			{% if rapports is iterable %}
+			{% if rapports|length > 0 %}
+			{% for rapport in rapports %}
+			{% if pdf[rapport.getField("id")] != false and rapport.getField('a_traiter') == "1" %}
+			<div class='{{ colsbtn|raw }} bloc-rapport' style='text-align:center;'>
+				<h4>
+					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+				</h4>
+				<a class="btn btn-primary" href="#" role="button">
+					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;PDF
+				</a>
+			</div>
+			{% elseif affbrokens == true %}
+			<div class='{{ colsbtn|raw }} bloc-rapport' style='text-align:center;'>
+				<h4>
+					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+				</h4>
+				<a class="btn btn-info" href="#" role="button">
+					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF
+				</a>
+			</div>
+			{% set brokens = true %}
+			{% endif %}
+			{% endfor %}
+		</div>
+		{% if brokens == true %}
+		<hr>
+		<div class='row'>
+			<div class="alert alert-info" role="alert">
+				Les éléments en bleu clair sont des fichiers PDF qui correspondent à des rapports non générés.<br>
+				<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Cliquez sur le bouton pour supprimer le fichier.
+			</div>
+		</div>
 		{% endif %}
-		{% endfor %}
 		{% else %}
-		<h4>Aucun rapport</h4>
-		<p>{{ rapports }} <a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: rapport.getField('id'), mode: 'screen', format: 'pdf'}) }}">Voir PDF</a></p>
+		<br>
+		<br>
+		<div class='row'>
+			<div class="alert alert-warning" role="alert">
+				<p>Aucun rapport pour l'instant…</p>
+			</div>
+		</div>
 		{% endif %}
 		{% else %}
-		<p>Aucun rapport pour l'instant</p>
+		<div class='row'>
+			<div class="alert alert-danger" role="alert">
+				<p>{{ rapports }}</p>
+			</div>
+		</div>
 		{% endif %}
-	</body>
-</html>
+	</div>
+{% endblock body %}
