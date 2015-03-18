@@ -778,7 +778,30 @@ class filemakerController extends fmController {
 			}
 		}
 		$data["numlot"] = $numlot;
+		$sata["timelaps"] = 1;
 		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
+	}
+
+	/**
+	 * Affiche la liste des rapports d'un lot, présents sur le disque
+	 * 
+	 * @param string $numlot - référence du lot
+	 * @return Response
+	 */
+	public function ZIP_listeRapportsLotsAction($numlot = null) {
+		$data = array();
+		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
+		foreach($data["rapports"] as $rapport) {
+			// fichier PDF
+			if($this->_fm->verifRapportFile($rapport) === true) {
+				$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
+			} else {
+				$data['pdf'][$rapport->getField('id')] = false;
+			}
+		}
+		$data["numlot"] = $numlot;
+		$sata["timelaps"] = 1;
+		return new Response('Hop !! '.$numlot);
 	}
 
 	public function retablir_un_rapportAction($id, $pagedata = null) {
