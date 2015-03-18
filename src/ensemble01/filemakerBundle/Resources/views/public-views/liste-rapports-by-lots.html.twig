@@ -10,7 +10,7 @@
 		{% if rapports is iterable %}
 		{% if rapports|length > 0 %}
 		{% for rapport in rapports %}
-		{% if pdf[rapport.getField("id")] != false %}
+		{% if pdf[rapport.getField("id")] != false and rapport.getField('a_traiter') == "1" %}
 		<a href='#' title='{{ pdf[rapport.getField("id")] }}'><h4>Rapport {{ rapport.getField("id")|raw }}</h4></a>
 		{% endif %}
 		{% endfor %}
