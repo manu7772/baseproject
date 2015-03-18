@@ -446,7 +446,7 @@ class filemakerController extends fmController {
 			// transforme l'ID en objet
 			if(!is_object($id_rapport)) {
 				$this->initFmData();
-				$id_rapport = $this->_fm->getOneRapport(strval($id_rapport));
+				$id_rapport = $this->_fm->getOneRapport($id_rapport);
 				// Rapport non trouvé…
 				if(is_string($id_rapport)) return $aeReponse->addErrorMessage($id_rapport);
 			}
@@ -456,6 +456,8 @@ class filemakerController extends fmController {
 			$RAPP["format"] = $format;
 			$RAPP["type"] = $id_rapport->getField('type_rapport');
 			$RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_001.html.twig";
+			// rapport de test
+			// $RAPP["template"] = "ensemble01filemakerBundle:pdf:testEmply.html.twig";
 			if(!$this->get('templating')->exists($RAPP["template"])) {
 				$aeReponse->addErrorMessage('Modèle de rapport introuvable : '.$RAPP["template"], true);
 			}
@@ -503,8 +505,7 @@ class filemakerController extends fmController {
 							$html2pdf->pdf->SetTitle('Rapport réf.'.$RAPP['rapport']->getField('type_rapport').' '.$RAPP['rapport']->getField('id').' du '.$RAPP["date"]->format($this->container->getParameter('formatDateTwig')));
 							$html2pdf->writeHTML($html, false);
 							$html2pdf->createIndex("Sommaire", 25, 12, false, true, 2);
-							$aeReponse->addData(array('html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
-							$aeReponse->addData(array('pdf' => $html2pdf, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
+							$aeReponse->addData(array('pdf' => $html2pdf, 'html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
 						} catch (HTML2PDF_exception $e){
 							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 						}
@@ -518,32 +519,42 @@ class filemakerController extends fmController {
 		return $aeReponse;
 	}
 
-	public function generate_rappport_fmAction($rapport_id) {
+	public function generate_rapport_fmAction($rapport_id) {
+		$format = 'pdf';
 		// $rapport = $this->_fm->getOneRapport($id);
 		$aeReponse = $this->generate_un_rapport($rapport_id);
 		if($aeReponse->isValid()) {
-			$oneRapport = $aeReponse->getDataAndSupp();
-			$path = $this->_fm->verifAndGoDossier($oneRapport['rapport']["type"]);
+			$datassup = $aeReponse->getDataAndSupp();
+			// echo('Nombre de retours de rapports ('.key($datassup).') : '.count($datassup)."<br>");
+			$oneRapport = current($datassup);
+			// echo('<pre>');
+			// var_dump($oneRapport);
+			// die('</pre>');
+			$path = $this->_fm->verifAndGoDossier($oneRapport["rapport"]["type"]);
+			// echo("Path : ".$path."<br>");
 			try {
-				$oneRapport['pdf']->Output($path.$oneRapport['rapport']["ref_rapport"].'.'.$format, "F");
-				$aeReponse->addMessage("Le rapport ".$oneRapport['rapport']["type"]." réf.".$oneRapport['rapport']["ref_rapport"]." a été généré.");
+				$oneRapport['pdf']->Output($path.$oneRapport["rapport"]["ref_rapport"].'.'.$format, "F");
+				$aeReponse->addMessage("Le rapport ".$oneRapport["rapport"]["type"]." réf.".$oneRapport["rapport"]["ref_rapport"]." a été généré.");
 			} catch (HTML2PDF_exception $e) {
 				$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 			}
+			$repss = implode('<br>', $aeReponse->getAllMessages(true));
 			if($aeReponse->isValid()) {
 				// génération ok
-				$idr = $rapport_id;
-				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
+				$add = "Génération OK";
+				$messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id);
+				// $aeReponse->addErrorMessage($messtest);
+				// $repss = implode('<br>', $aeReponse->getAllMessages(true));
 			} else {
 				// génération echec
-				$idr = $rapport_id;
-				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
+				$add = "Echec génération/output PDF";
+				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
 			}
 		} else {
-			$idr = $rapport_id;
-			$this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr, "Erreur génération rapport");
+			$repss = implode('<br>', $aeReponse->getAllMessages(true));
+			$this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
 		}
-		return new Response("ok ".$rapport_id);
+		return new Response($repss);
 	}
 
 	/**

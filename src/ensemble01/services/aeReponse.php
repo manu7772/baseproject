@@ -53,6 +53,11 @@ class aeReponse {
 		return array_merge($this->data["messages"], $this->data["ERRORmessages"]);
 	}
 
+	// public function getAllMessagesInHtml($mix = false) {
+	// 	if($mix === false) return array("messages" => $this->data["messages"], "ERRORmessages" => $this->data["ERRORmessages"]);
+	// 	return array_merge($this->data["messages"], $this->data["ERRORmessages"]);
+	// }
+
 	public function getData($nom = null, $efface = false) {
 		if(is_string($nom) && isset($this->data["data"][$nom])) {
 			$result = $this->data["data"][$nom];

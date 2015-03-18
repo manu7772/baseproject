@@ -441,10 +441,16 @@ class geodiag extends fms {
 	}
 
 	public function Cloture_UN_Rapport_Apres_Serveur($num_rapport, $messageError = null) {
+		$separator = '|';
 		$this->setCurrentBASE('GEODIAG_Rapports');
-		if($messageError !== null) $num_rapport = $num_rapport.'\n'.$messageError;
+		if($messageError !== null) {
+			if(is_array($messageError)) $messageError = implode($separator, $messageError);
+			$num_rapport = $num_rapport.$separator.$messageError;
+		}
+		$num_rapport = $num_rapport.$separator;
 		$newPerformScript = $this->FMbaseUser->newPerformScriptCommand('Rapports_Local_Web', 'Cloture_Rapport_Apres_Serveur(num_rapport)', $num_rapport);
-		return $this->getRecords($newPerformScript->execute());
+		$this->getRecords($newPerformScript->execute());
+		return $num_rapport;
 	}
 
 	public function Retablir_UN_Rapport_Apres_Serveur($num_rapport) {
