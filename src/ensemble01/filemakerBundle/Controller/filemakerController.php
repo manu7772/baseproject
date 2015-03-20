@@ -790,7 +790,15 @@ class filemakerController extends fmController {
 	 */
 	public function ZIP_listeRapportsLotsAction($numlot = null) {
 		$download = false;
-		$dossierZip = 'Rapports/ZIP/';
+		// dossier
+		$nomZip = 'ZIP';
+		$aetools = $this->get('ensemble01services.aetools');
+		$rootpath = $this->container->getParameter('pathrapports');
+		$aetools->setWebPath($rootpath);
+		$aetools->verifDossierAndCreate($nomZip);
+		$aetools->setWebPath($rootpath.$nomZip.'/');
+		// $aetools->setWebPath();
+
 		$data = array();
 		$data['error'] = null;
 		$data['numlot'] = $numlot;
@@ -813,13 +821,13 @@ class filemakerController extends fmController {
 		if($data["nombrePDF"] > 0) {
 			$zip = new ZipArchive();
 			// On crée l’archive.
-			if($zip->open($dossierZip.$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
+			if($zip->open($aetools->getCurrentPath().$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
 				foreach ($data['pdf_ok'] as $id => $fichier) {
 					# $fichier['pathfile']
 					$zip->addFile($fichier['pathfile'], '/'.$fichier['file']);
 				}
 				$zip->close();
-				return new Response(file_get_contents($dossierZip.$data['fichierZip']), 200, array(
+				return new Response(file_get_contents($aetools->getCurrentPath().$data['fichierZip']), 200, array(
 					// 'Content-Transfer-Encoding' => 'binary',
 					// 'Content-Length: ' => filesize($data['fichierZip']),
 					'Content-Type' => 'application/force-download',
