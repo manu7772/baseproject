@@ -1,0 +1,38 @@
+{% extends(':public:BSsimplePageRoot.html.twig') %}
+{% block metatitles %}
+	<!-- <meta http-equiv="refresh" content="{{ timelaps|default('10') }};{{ numlot }}"> -->
+	{{ parent() }}
+{% endblock metatitles %}
+{% block title %}Rapports générés{% endblock title %}
+{% block body %}
+	<div id="container-fluid">
+		<!-- <div class='row'> -->
+			<h2 class="well well-xs">
+				{% if rapports is iterable %}
+					{% if rapports|length > 0 %}
+					{{ rapports[0].getField('type_rapport') }} - {{ rapports[0].getField('local_adresse') }}
+					{% endif %}
+				{% elseif numlot is not null %}
+					Liste des rapports du lot {{ numlot }}
+				{% else %}
+					Liste de rapports…
+				{% endif %}
+				<small><span id='visu'><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span></small>
+			</h2>
+		<!-- <div> -->
+		<span id='lot-{{ numlot }}' class="ajax-reload" data-url='{{ url("ensemble01filemaker_check_listeRapportsLots", {numlot: numlot}) }}'>
+			{# include("ensemble01filemakerBundle:public-views:liste-rapports-in-bloc.html.twig") #}
+		</span>
+		<br>
+		<br>
+		<div class='row' id="download-Zip-Button-1" style="display:none;">
+			<div class="col-md-4 col-sm-3 col-xs-2"></div>
+			<div class="col-md-4 col-sm-6 col-xs-8">
+				<a data-numlot="{{ numlot }}" href='{{ url("ensemble01filemaker_ZIP_listeRapportsLots", {numlot: numlot}) }}' type="button" class="btn btn-primary btn-lg btn-block">
+					<span class="glyphicon glyphicon-save URLext" aria-hidden="true"></span>&nbsp;Télécharger ZIP
+				</a>
+			</div>
+			<div class="col-md-4 col-sm-3 col-xs-2"></div>
+		</div>
+	</div>
+{% endblock body %}
