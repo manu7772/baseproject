@@ -38,7 +38,7 @@
 		<tbody>
 			<tr>
 				<td>Adresse</td>
-				<td>Numéro {{ rapport.getField('num_porte') }} -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
+				<td>Logement {{ rapport.getField('num_porte')|raw }} -&nbsp;Étage <span class='ajustement'>00</span> -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de bâtiment</td>
@@ -50,7 +50,7 @@
 			</tr>
 			<tr>
 				<td>Locaux visés par le rapport de repérage<br>des matériaux et produits de la liste A</td>
-				<td>Appartement n°{{ rapport.getField('num_porte')|raw }}</td>
+				<td>Logement {{ rapport.getField('num_porte')|raw }}<br>Étage <span class='ajustement'>00</span></td>
 			</tr>
 			<!-- ENTETE BIS -->
 			<tr>
@@ -373,7 +373,7 @@
 		<h3>5.2 Objet de la mission</h3>
 		<p>Ce rapport est établi dans le cadre du repérage des matériaux et produits susceptibles de contenir de l’amiante pour intégration au Dossier Amiante – Parties Privatives n° <span class='ajustement'>xx-xxxx</span></p>
 		<p><span class='underline'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
-		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial n° <span class='ajustement'>xx-xxxx</span>.</p>
+		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
