@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 	/* **************************************************** */
 	$(".URLext").on("click", function(event) {
 		URL = $(this).attr("href");
-		if(URL == undefined) URL = $(">a", this).first().attr("href");
+		if(URL == undefined) URL = $("a", this).first().attr("href");
 		// alert(URL);
 		window.open(URL);
 		event.preventDefault();

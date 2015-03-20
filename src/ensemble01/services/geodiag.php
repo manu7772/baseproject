@@ -91,7 +91,6 @@ class geodiag extends fms {
 		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
 		// dossiers etc.
 		if(is_object($rapport)) {
-			$ext = 'pdf';
 			$r = array();
 			$dossier = $rapport->getField('type_rapport');
 			$this->verifAndGoDossier($dossier);

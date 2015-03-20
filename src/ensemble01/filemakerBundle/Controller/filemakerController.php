@@ -663,6 +663,29 @@ class filemakerController extends fmController {
 
 	// http://localhost:8888/GitHub/baseproject/web/app_dev.php/fm/rapportfm-by-lot/000000147205-02-2015-17-42
 
+	public function visualise_rapportAction($id, $load = false) {
+		if($load === true) $load = 'application/force-download';
+			else $load = 'application/pdf';
+		$this->initFmData();
+		$file = $this->_fm->getRapportFilePath($id);
+		if($file !== false) {
+			$response = new Response();
+			$response->setContent(file_get_contents($file['pathfile']));
+			$response->headers->set('Content-Type', $load); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+			$response->headers->set('Content-Length', filesize($file['pathfile']));
+			// $response->headers->set('Content-disposition', 'filename='.$file['file']);
+			$response->headers->set('Content-disposition', 'attachment; filename='.$file['file']);
+			return $response;
+			// return new Response(file_get_contents($file['pathfile']), 200, array(
+			// 	'Content-Length: ' => filesize($file['pathfile']),
+			// 	// 'Content-Type' => 'application/force-download',
+			// 	'Content-Type' => 'application/pdf',
+			// 	// 'Content-Disposition' => 'attachment; filename='.$file['file']
+			// 	'Content-Disposition' => 'attachment; filename='.$file['file']
+			// 	));
+		} else return new Response('<h2>Rapport PDF '.$id.' manquant.</h2><p>Veuiller regénérer le rapport PDF pour pouvoir le visualiser.</p>');
+	}
+
 	/**
 	 * Génère les rapports selon un numéro de lot (ensemble de rapports)
 	 * @param string $numlot - numéro du lot
@@ -796,7 +819,7 @@ class filemakerController extends fmController {
 		$rootpath = $this->container->getParameter('pathrapports');
 		$aetools->setWebPath($rootpath);
 		$aetools->verifDossierAndCreate($nomZip);
-		$aetools->setWebPath($rootpath.$nomZip.'/');
+		// $aetools->setWebPath($rootpath.$nomZip.'/');
 		// $aetools->setWebPath();
 
 		$data = array();
@@ -820,6 +843,7 @@ class filemakerController extends fmController {
 		// ZIP
 		if($data["nombrePDF"] > 0) {
 			$zip = new ZipArchive();
+			$aetools->setWebPath($rootpath.$nomZip.'/');
 			// On crée l’archive.
 			if($zip->open($aetools->getCurrentPath().$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
 				foreach ($data['pdf_ok'] as $id => $fichier) {
@@ -829,7 +853,7 @@ class filemakerController extends fmController {
 				$zip->close();
 				return new Response(file_get_contents($aetools->getCurrentPath().$data['fichierZip']), 200, array(
 					// 'Content-Transfer-Encoding' => 'binary',
-					// 'Content-Length: ' => filesize($data['fichierZip']),
+					'Content-Length: ' => filesize($aetools->getCurrentPath().$data['fichierZip']),
 					'Content-Type' => 'application/force-download',
 					'Content-Disposition' => 'attachment; filename='.$data['fichierZip']
 					));

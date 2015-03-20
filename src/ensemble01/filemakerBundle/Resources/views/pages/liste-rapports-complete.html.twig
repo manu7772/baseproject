@@ -56,7 +56,7 @@
 					<td title='{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}'>{{ phraseCut(local.getField("local_adresse")|raw ~ local.getField("local_cp")|raw ~ local.getField("local_ville")|raw, 20) }}</td>
 					<td title='Fichier PDF du rapport' style="text-align:center;">
 						{% if pdf_file[local.getField('id')] != false and local.getField('a_traiter') == '1' %}
-						<a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" title="Visualiser le rapport"></span></a>
+						<a class="URLext" href="{{ url('ensemble01site_rapportscreen', {id: idrapport}) }}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" title="Visualiser le rapport"></span></a>
 						{% elseif pdf_file[local.getField('id')] == false and local.getField('a_traiter') == '1' %}
 						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" title="Fichier perdu ! Générer le fichier"><span class="glyphicon glyphicon-warning-sign" style="color:red;" aria-hidden="true"></span></a>
 						{% endif %}
