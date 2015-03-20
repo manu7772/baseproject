@@ -812,7 +812,6 @@ class filemakerController extends fmController {
 	 * @return Response
 	 */
 	public function ZIP_listeRapportsLotsAction($numlot = null) {
-		$download = false;
 		// dossier
 		$nomZip = 'ZIP';
 		$aetools = $this->get('ensemble01services.aetools');
@@ -825,7 +824,7 @@ class filemakerController extends fmController {
 		$data = array();
 		$data['error'] = null;
 		$data['numlot'] = $numlot;
-		$data['fichierZip'] = 'rapports_'.$numlot.'.zip';
+		$data['fichierZip'] = 'rapports_lot_'.$numlot.'.zip';
 		$rapports = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
 		$data["nombre"] = count($rapports);
 		$data['pdf_ok'] = array();
@@ -846,18 +845,19 @@ class filemakerController extends fmController {
 			$aetools->setWebPath($rootpath.$nomZip.'/');
 			// On crée l’archive.
 			if($zip->open($aetools->getCurrentPath().$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
+				$aetools->setWebPath();
 				foreach ($data['pdf_ok'] as $id => $fichier) {
 					# $fichier['pathfile']
 					$zip->addFile($fichier['pathfile'], '/'.$fichier['file']);
 				}
 				$zip->close();
-				return new Response(file_get_contents($aetools->getCurrentPath().$data['fichierZip']), 200, array(
-					// 'Content-Transfer-Encoding' => 'binary',
-					'Content-Length: ' => filesize($aetools->getCurrentPath().$data['fichierZip']),
-					'Content-Type' => 'application/force-download',
-					'Content-Disposition' => 'attachment; filename='.$data['fichierZip']
-					));
-				$download = true;
+				$aetools->setWebPath($rootpath.$nomZip.'/');
+				$response = new Response();
+				$response->setContent(file_get_contents($aetools->getCurrentPath().$data['fichierZip']));
+				$response->headers->set('Content-Type', 'application/force-download'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+				$response->headers->set('Content-Length', filesize($aetools->getCurrentPath().$data['fichierZip']));
+				$response->headers->set('Content-disposition', 'attachment; filename='.$data['fichierZip']);
+				return $response;
 			} else $data['error'] = 'Ouverture archive zip impossible.';
 		} else $data['error'] = 'Il n\'y a aucun rapport à compresser.';
 		return new JsonResponse(json_encode($data, true));
