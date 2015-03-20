@@ -38,7 +38,11 @@ ensemble01filemaker_public_listeRapportsLots:
 
 ensemble01filemaker_ZIP_listeRapportsLots:
     path:     /zip-rapports-lot/{numlot}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:ZIP_listeRapportsLots, numlot: null}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:ZIP_listeRapportsLots}
+
+ensemble01filemaker_check_listeRapportsLots:
+    path:     /check-rapports-lot/{numlot}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:check_listeRapportsLots}
 
 ### STATESAVE DATATABLES ###
 datatables_statesave:

@@ -5,6 +5,7 @@ namespace ensemble01\filemakerBundle\Controller;
 use filemakerBundle\Controller\filemakerController as fmController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use \ZipArchive;
 
 class filemakerController extends fmController {
 
@@ -778,17 +779,65 @@ class filemakerController extends fmController {
 			}
 		}
 		$data["numlot"] = $numlot;
-		$sata["timelaps"] = 1;
 		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
 	}
 
 	/**
-	 * Affiche la liste des rapports d'un lot, présents sur le disque
+	 * Zippe et télécharge les rapports d'un lot, présents sur le disque
 	 * 
 	 * @param string $numlot - référence du lot
 	 * @return Response
 	 */
 	public function ZIP_listeRapportsLotsAction($numlot = null) {
+		$download = false;
+		$dossierZip = 'Rapports/ZIP/';
+		$data = array();
+		$data['error'] = null;
+		$data['numlot'] = $numlot;
+		$data['fichierZip'] = 'rapports_'.$numlot.'.zip';
+		$rapports = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
+		$data["nombre"] = count($rapports);
+		$data['pdf_ok'] = array();
+		$data['pdf_no'] = array();
+		foreach($rapports as $rapport) {
+			// fichier PDF
+			$filePath = $this->_fm->getRapportFilePath($rapport);
+			if(is_array($filePath)) {
+				$data['pdf_ok'][$rapport->getField('id')] = $filePath;
+			} else {
+				$data['pdf_no'][$rapport->getField('id')] = false;
+			}
+		}
+		$data["nombrePDF"] = count($data['pdf_ok']);
+		// ZIP
+		if($data["nombrePDF"] > 0) {
+			$zip = new ZipArchive();
+			// On crée l’archive.
+			if($zip->open($dossierZip.$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
+				foreach ($data['pdf_ok'] as $id => $fichier) {
+					# $fichier['pathfile']
+					$zip->addFile($fichier['pathfile'], '/'.$fichier['file']);
+				}
+				$zip->close();
+				return new Response(file_get_contents($dossierZip.$data['fichierZip']), 200, array(
+					// 'Content-Transfer-Encoding' => 'binary',
+					// 'Content-Length: ' => filesize($data['fichierZip']),
+					'Content-Type' => 'application/force-download',
+					'Content-Disposition' => 'attachment; filename='.$data['fichierZip']
+					));
+				$download = true;
+			} else $data['error'] = 'Ouverture archive zip impossible.';
+		} else $data['error'] = 'Il n\'y a aucun rapport à compresser.';
+		return new JsonResponse(json_encode($data, true));
+	}
+
+	/**
+	 * CHECKE les rapports d'un lot
+	 * 
+	 * @param string $numlot - référence du lot
+	 * @return Response
+	 */
+	public function check_listeRapportsLotsAction($numlot = null) {
 		$data = array();
 		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
 		foreach($data["rapports"] as $rapport) {
@@ -800,8 +849,8 @@ class filemakerController extends fmController {
 			}
 		}
 		$data["numlot"] = $numlot;
-		$sata["timelaps"] = 1;
-		return new Response('Hop !! '.$numlot);
+		$html = $this->renderView($this->verifVersionPage("liste-rapports-in-bloc", "public-views"), $data);
+		return new Response($html);
 	}
 
 	public function retablir_un_rapportAction($id, $pagedata = null) {

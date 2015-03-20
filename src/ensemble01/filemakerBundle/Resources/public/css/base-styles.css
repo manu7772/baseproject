@@ -21,6 +21,9 @@ body {
 ul {
 	list-style-position: inside;
 }
+*:focus {
+	outline: none;
+}
 
 .ecart {
 	clear: both;

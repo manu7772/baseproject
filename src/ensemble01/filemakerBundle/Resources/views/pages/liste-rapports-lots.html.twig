@@ -40,6 +40,7 @@
 						{% if data.statut == "à traiter" or data.statut == "partiel" %}
 						<a href="{{ url('ensemble01filemaker_generateByLotRapport', {numlot: numlot, pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-warning btn-xs">Traiter rapports</a>
 						{% endif %}
+						<a href="{{ url('ensemble01filemaker_public_listeRapportsLots', {numlot: numlot}) }}" type="button" class="btn btn-warning btn-xs URLext">Voir</a>
 					</td>
 					<td>{{ data.nb0 }}</td>
 					<td>{{ data.nb1 }}</td>

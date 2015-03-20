@@ -32,7 +32,7 @@ class geodiag extends fms {
 	 * @return array
 	 */
 	public function getRapportFileName($rapport) {
-		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
 		// echo("Rapport ".$rapport->getField('id')." = ".get_class($rapport)."<br>");
 		return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('id')."-".$rapport->getField('num_porte')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
 	}
@@ -67,7 +67,7 @@ class geodiag extends fms {
 	 * @return boolean
 	 */
 	public function verifRapportFile($rapport, $ext = 'pdf') {
-		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
 		// dossiers etc.
 		if(is_object($rapport)) {
 			$dossier = $rapport->getField('type_rapport');
@@ -82,13 +82,38 @@ class geodiag extends fms {
 	}
 
 	/**
+	 * Renvoie le nom du fichier et son chemin
+	 * @param mixed $rapport - id ou objet rapport
+	 * @param string $ext - (optionnel - 'pdf' par défaut) extension du nom du fichier
+	 * @return array
+	 */
+	public function getRapportFilePath($rapport, $ext = 'pdf') {
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
+		// dossiers etc.
+		if(is_object($rapport)) {
+			$ext = 'pdf';
+			$r = array();
+			$dossier = $rapport->getField('type_rapport');
+			$this->verifAndGoDossier($dossier);
+			$r['file'] = $this->getRapportFileName($rapport).'.'.$ext;
+			$r['paht'] = $this->aetools->getCurrentPath();
+			$r['pathfile'] = $r['paht'].$r['file'];
+			if(!@file_exists($r['pathfile'])) {
+				unset($r);
+				$r = false;
+			}
+		} else $r = false;
+		return $r;
+	}
+
+	/**
 	 * Renvoie le nom de fichier d'un rapport
 	 * @param mixed $rapport - id ou objet rapport
 	 * @param string $ext - (optionnel - 'pdf' par défaut) extension du nom du fichier
 	 * @return boolean
 	 */
 	public function effaceRapportFile($rapport, $ext = 'pdf') {
-		if(!is_object($rapport)) $rapport = $this->getOneRapport(strval($rapport));
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
 		// dossiers etc.
 		if(is_object($rapport)) {
 			$dossier = $rapport->getField('type_rapport');
@@ -345,6 +370,29 @@ class geodiag extends fms {
 		// $data['server'] 		= "Géodem mac-mini";
 		$data['base'] 			= 'GEODIAG_Rapports';
 		$data['modele'] 		= 'Rapports_Local_Web';
+		// autres données, par défaut :
+		$data['search'][0]['column'] 	= 'id';
+		$data['search'][0]['value']		= $id."";
+		$result = $this->getData($data);
+		if(is_array($result)) {
+			reset($result);
+			$result = current($result);
+		}
+		return $result;
+	}
+
+	/**
+	 * Renvoie un rapport $id light (modèle de données light : Rapports_Local_Web_Light)
+	 * @param string $id - id du rapport
+	 * @return FileMaker
+	 */
+	public function getOneRapportLight($id) {
+		$data = array();
+		// force les données relatives au modèle
+		$data['server'] 		= $this->getCurrentSERVER();
+		// $data['server'] 		= "Géodem mac-mini";
+		$data['base'] 			= 'GEODIAG_Rapports';
+		$data['modele'] 		= 'Rapports_Local_Web_Light';
 		// autres données, par défaut :
 		$data['search'][0]['column'] 	= 'id';
 		$data['search'][0]['value']		= $id."";

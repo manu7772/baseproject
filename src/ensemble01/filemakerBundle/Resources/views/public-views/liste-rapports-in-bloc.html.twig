@@ -1,0 +1,77 @@
+{% set colsbtn = 'col-md-2 col-sm-3 col-xs-4' %}
+{% set test = true %}
+{% set notReady = false %}
+{% set brokens = false %}
+{% set download = false %}
+{% set affNotCreated = true %}
+{% set affNotRelated = true %}
+
+{% if rapports is iterable %}
+{% if rapports|length > 0 %}
+<div class='row'>
+{% for rapport in rapports %}
+	{% if pdf[rapport.getField("id")] != false and rapport.getField('a_traiter') == "1" %}
+	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-ok' style='text-align:center;'>
+		<h4>
+			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+		</h4>
+		<a class="btn btn-primary URLext" href="#" role="button">
+			<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Voir PDF
+		</a>
+	</div>
+	{% set download = true %}
+	{% elseif affNotCreated == true and pdf[rapport.getField("id")] != false %}
+	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-onair' style='text-align:center;'>
+		<h4>
+			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+		</h4>
+		<a class="btn btn-info URLext" href="#" role="button" disabled="disabled">
+			<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
+		</a>
+	</div>
+	{% set notReady = true %}
+	{% elseif affNotRelated == true and (pdf[rapport.getField("id")] == false and rapport.getField('a_traiter') == "1" ) %}
+	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-missing' style='text-align:center;'>
+		<h4>
+			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+		</h4>
+		<a class="btn btn-danger URLext" href="#" role="button" disabled="disabled">
+			<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Absent
+		</a>
+	</div>
+	{% set brokens = true %}
+	{% elseif affNotRelated == true and (pdf[rapport.getField("id")] == false and rapport.getField('a_traiter') == "1" ) %}
+	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-standby' style='text-align:center;'>
+		<h4>
+			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+		</h4>
+		<a class="btn btn-default URLext" href="#" role="button" disabled="disabled">
+			<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
+		</a>
+	</div>
+	{% set notReady = true %}
+	{% endif %}
+{% endfor %}
+</div>
+{% else %}
+<br>
+<br>
+<div class='row'>
+	<div class="alert alert-warning" role="alert">
+		<p>Aucun rapport pour l'instant…</p>
+	</div>
+</div>
+{% endif %}
+{% else %}
+<br>
+<br>
+<div class='row'>
+	<div class="alert alert-danger" role="alert">
+		<p>{{ rapports }}</p>
+	</div>
+</div>
+{% endif %}
