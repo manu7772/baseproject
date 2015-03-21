@@ -5,24 +5,69 @@
 {% endblock metatitles %}
 {% block title %}Rapports générés{% endblock title %}
 {% block body %}
-	<div id="container-fluid">
-		<!-- <div class='row'> -->
-			<h2 class="well well-xs">
-				{% if rapports is iterable %}
-					{% if rapports|length > 0 %}
-					{{ rapports[0].getField('type_rapport') }} - {{ rapports[0].getField('local_adresse') }}
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">
+					{% if rapports is iterable and rapports|length > 0 %}
+						{{ rapports[0].getField('type_rapport') }}
+					{% else %}
+						Live Rapports
 					{% endif %}
-				{% elseif numlot is not null %}
-					Liste des rapports du lot {{ numlot }}
-				{% else %}
-					Liste de rapports…
-				{% endif %}
-				<small><span id='visu'><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span></small>
-			</h2>
-		<!-- <div> -->
+				</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<p class="navbar-text hidden-xs">
+						<span id='visu'><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
+					</p>
+					<li>
+						<a href="{{ url('ensemble01filemaker_homepage') }}" class='URLext'>Géodiag Web</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li id="download-Zip-Button-1" style="display:none;">
+						<a data-numlot="{{ numlot }}" href='{{ url("ensemble01filemaker_ZIP_listeRapportsLots", {numlot: numlot}) }}' type="button" class="btn btn-sm btn-primary navbar-btn">
+							<span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;Télécharger ZIP
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div class="container-fluid">
+		<!-- Page Heading -->
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">
+					{% if rapports is iterable and rapports|length > 0 %}
+						{{ rapports[0].getField('type_rapport') }} <small>{{ rapports[0].getField('local_adresse') }}</small>
+					{% elseif numlot is not null %}
+						Liste des rapports du lot {{ numlot }}
+					{% else %}
+						Liste de rapports…
+					{% endif %}
+				</h1>
+			</div>
+		</div>
+		<!-- /.row -->
+
 		<span id='lot-{{ numlot }}' class="ajax-reload" data-url='{{ url("ensemble01filemaker_check_listeRapportsLots", {numlot: numlot}) }}'>
 			{# include("ensemble01filemakerBundle:public-views:liste-rapports-in-bloc.html.twig") #}
 		</span>
+		{#
 		<br>
 		<br>
 		<div class='row' id="download-Zip-Button-1" style="display:none;">
@@ -34,5 +79,6 @@
 			</div>
 			<div class="col-md-4 col-sm-3 col-xs-2"></div>
 		</div>
+		#}
 	</div>
 {% endblock body %}

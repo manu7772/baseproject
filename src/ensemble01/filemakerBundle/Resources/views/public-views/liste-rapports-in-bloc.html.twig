@@ -1,4 +1,4 @@
-{% set colsbtn = 'col-md-2 col-sm-3 col-xs-4' %}
+{% set colsbtn = 'col-lg-2 col-md-3 col-sm-4 col-xs-6' %}
 {% set test = true %}
 {% set notReady = false %}
 {% set brokens = false %}
@@ -12,46 +12,62 @@
 {% for rapport in rapports %}
 	{% if pdf[rapport.getField("id")] != false and rapport.getField('a_traiter') == "1" %}
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-ok' style='text-align:center;'>
-		<h4>
-			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-		</h4>
-		<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: true}) }}" role="button">
-			<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Charger PDF
-		</a>
+		<div class="thumbnail">
+			<div class="caption">
+				<h4>
+					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+				</h4>
+				<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: true}) }}" role="button">
+					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Charger PDF
+				</a>
+			</div>
+		</div>
 	</div>
 	{% set download = true %}
 	{% elseif affNotCreated == true and pdf[rapport.getField("id")] != false %}
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-onair' style='text-align:center;'>
-		<h4>
-			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-		</h4>
-		<a class="btn btn-info URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-			<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
-		</a>
+		<div class="thumbnail">
+			<div class="caption">
+				<h4>
+					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+				</h4>
+				<a class="btn btn-info URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
+					<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
+				</a>
+			</div>
+		</div>
 	</div>
 	{% set notReady = true %}
 	{% elseif affNotRelated == true and (pdf[rapport.getField("id")] == false and rapport.getField('a_traiter') == "1" ) %}
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-missing' style='text-align:center;'>
-		<h4>
-			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-		</h4>
-		<a class="btn btn-danger URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-			<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Absent
-		</a>
+		<div class="thumbnail">
+			<div class="caption">
+				<h4>
+					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+				</h4>
+				<a class="btn btn-danger URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
+					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Absent
+				</a>
+			</div>
+		</div>
 	</div>
 	{% set brokens = true %}
 	{% elseif affNotRelated == true and (pdf[rapport.getField("id")] == false and rapport.getField('a_traiter') == "1" ) %}
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-standby' style='text-align:center;'>
-		<h4>
-			{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-			<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-		</h4>
-		<a class="btn btn-default URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-			<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
-		</a>
+		<div class="thumbnail">
+			<div class="caption">
+				<h4>
+					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
+					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
+				</h4>
+				<a class="btn btn-default URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
+					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
+				</a>
+			</div>
+		</div>
 	</div>
 	{% set notReady = true %}
 	{% endif %}

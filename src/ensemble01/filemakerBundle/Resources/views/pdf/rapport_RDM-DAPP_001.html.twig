@@ -38,7 +38,7 @@
 		<tbody>
 			<tr>
 				<td>Adresse</td>
-				<td>Logement {{ rapport.getField('num_porte')|raw }} -&nbsp;Étage <span class='ajustement'>00</span> -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
+				<td>Logement {{ rapport.getField('num_porte')|raw }} -&nbsp;Étage {{ rapport.getField('local_etage')|raw }} -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de bâtiment</td>
@@ -50,7 +50,7 @@
 			</tr>
 			<tr>
 				<td>Locaux visés par le rapport de repérage<br>des matériaux et produits de la liste A</td>
-				<td>Logement {{ rapport.getField('num_porte')|raw }}<br>Étage <span class='ajustement'>00</span></td>
+				<td>Logement {{ rapport.getField('num_porte')|raw }}<br>Étage {{ rapport.getField('local_etage')|raw }}</td>
 			</tr>
 			<!-- ENTETE BIS -->
 			<tr>
