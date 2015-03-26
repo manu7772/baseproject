@@ -62,7 +62,7 @@ class geodiag extends filemakerservice2 {
 	 * @return string - chemin courant
 	 */
 	public function verifAndGoDossier($type = null) {
-		$this->rootpath = $this->fmparameters['dossiers']['pathrapports'];
+		$this->rootpath = $this->fmparameters['fmparameters']['dossiers']['pathrapports'];
 		// vérifie la présence du dossier pathrapports et pointe dessus
 		$this->aetools->setWebPath();
 		$this->aetools->verifDossierAndCreate($this->rootpath);

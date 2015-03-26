@@ -813,7 +813,7 @@ class filemakerController extends fmController {
 			}
 		}
 		$data["numlot"] = $numlot;
-		return $this->render($this->verifVersionPage("liste-rapports-by-lots", "public-views"), $data);
+		return $this->render($this->verifVersionPage("live-rapports-by-lots", "public-views"), $data);
 	}
 
 	/**
@@ -827,7 +827,7 @@ class filemakerController extends fmController {
 		$aetools = $this->get('ensemble01services.aetools');
 		$FMparams = $this->container->getParameter('fmparameters');
 		$rootpath = $FMparams['dossiers']['pathrapports'];
-		$nomDossierZip = $FMparams['dossiers']['zipfiles'];;
+		$nomDossierZip = $FMparams['dossiers']['zipfiles'];
 		$aetools->setWebPath($rootpath);
 		$aetools->verifDossierAndCreate($nomDossierZip);
 		// $aetools->setWebPath($rootpath.$nomDossierZip.'/');

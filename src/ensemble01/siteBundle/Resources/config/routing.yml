@@ -23,6 +23,7 @@ ensemble01site_rapportscreen:
     defaults: { _controller: ensemble01filemakerBundle:filemaker:visualise_rapport, load: false}
 
 # génération d'un rapport individuel via FM
+## --> lancé par FM pour générer les lots de rapports
 ensemble01filemake_generateByOne:
     path:     /rapportfm-by-one/{rapport_id}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport_fm}
@@ -41,10 +42,12 @@ ensemble01filemaker_commandeFM_generateByLotRapport:
     path:     /rapportfm-by-lot-action-fm/{numlot}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_by_lot_rapport_fm}
 
+## --> visualiseur en live
 ensemble01filemaker_public_listeRapportsLots:
-    path:     /liste-rapports-lot/{numlot}
+    path:     /live-rapports-lot/{numlot}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:public_listeRapportsLots, numlot: null}
 
+## --> téléchargement ZIP
 ensemble01filemaker_ZIP_listeRapportsLots:
     path:     /zip-rapports-lot/{numlot}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:ZIP_listeRapportsLots}
