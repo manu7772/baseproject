@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FMSERVERS>
+
+	<!-- GEODEM -->
+	<SERVER nom="Géodem mac-mini" ip="http://91.90.103.107" default="default">
+		<FMBASE nom="GEODIAG_SERVEUR" descriptif="Base FM Géodiag">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+		<FMBASE nom="GEODIAG_Rapports" descriptif="Rapports FM Géodiag" default="default">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+		<FMBASE nom="GEODIAG_REF_WEB_2" descriptif="WEB 2 en local sur mon mbp-emmanuel">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+	</SERVER>
+
+	<!-- LOCAL -->
+<!-- 	<SERVER nom="mbp-emmanuel" ip="http://localhost">
+		<FMBASE nom="GEODIAG_Rapports" descriptif="Rapports FM Géodiag" default="default">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+		<FMBASE nom="GEODIAG_SERVEUR" descriptif="Base FM Géodiag">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+		<FMBASE nom="GEODIAG_REF_WEB" descriptif="WEB en local sur mon mbp-emmanuel">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+		<FMBASE nom="GEODIAG_REF_WEB_2" descriptif="WEB 2 en local sur mon mbp-emmanuel">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+		<FMBASE nom="NOIX" descriptif="Base inexistante pour test">
+			<user username="sadmin" login="sadmin" passe="symfony76" superadmin="default" />
+		</FMBASE>
+	</SERVER>
+ -->
+</FMSERVERS>

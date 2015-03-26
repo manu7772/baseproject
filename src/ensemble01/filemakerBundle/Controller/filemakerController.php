@@ -824,9 +824,10 @@ class filemakerController extends fmController {
 	 */
 	public function ZIP_listeRapportsLotsAction($numlot = null) {
 		// dossier
-		$nomDossierZip = 'ZIP';
 		$aetools = $this->get('ensemble01services.aetools');
-		$rootpath = $this->container->getParameter('pathrapports');
+		$FMparams = $this->container->getParameter('fmparameters');
+		$rootpath = $FMparams['dossiers']['pathrapports'];
+		$nomDossierZip = $FMparams['dossiers']['zipfiles'];;
 		$aetools->setWebPath($rootpath);
 		$aetools->verifDossierAndCreate($nomDossierZip);
 		// $aetools->setWebPath($rootpath.$nomDossierZip.'/');
