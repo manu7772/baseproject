@@ -543,13 +543,13 @@ class filemakerController extends fmController {
 			if($aeReponse->isValid()) {
 				// génération ok
 				$add = "Génération OK";
-				// $messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id);
+				$messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id);
 				// $aeReponse->addErrorMessage($messtest);
 				// $repss = implode('<br>', $aeReponse->getAllMessages(true));
 			} else {
 				// génération echec
 				$add = "Echec génération/output PDF";
-				// $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
+				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
 			}
 		} else {
 			$repss = implode('<br>', $aeReponse->getAllMessages(true));
