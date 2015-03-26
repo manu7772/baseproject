@@ -18,37 +18,40 @@ class twigAetools extends \Twig_Extension {
 
 	public function getFunctions() {
 		return array(
-			'phraseCut'			=> new \Twig_Function_Method($this, 'phraseCut'),
-			'adminDataType'		=> new \Twig_Function_Method($this, 'adminDataType'),
-			'intervalDateFR'	=> new \Twig_Function_Method($this, 'intervalDateFR'),
-			'dateFR'			=> new \Twig_Function_Method($this, 'dateFR'),
-			'minUCfirst'		=> new \Twig_Function_Method($this, 'minUCfirst'),
-			'UCfirst'			=> new \Twig_Function_Method($this, 'UCfirst'),
-			'magnifyText'		=> new \Twig_Function_Method($this, 'magnifyText'),
-			'addZeros'			=> new \Twig_Function_Method($this, 'addZeros'),
-			'dureeHM'			=> new \Twig_Function_Method($this, 'dureeHM'),
-			'arrayprint'		=> new \Twig_Function_Method($this, 'arrayprint'),
-			'slug'				=> new \Twig_Function_Method($this, 'slug'),
-			'siteNFormat'		=> new \Twig_Function_Method($this, 'siteNFormat'),
-			'pathTree'			=> new \Twig_Function_Method($this, 'pathTree'),
-			'simpleURL'			=> new \Twig_Function_Method($this, 'simpleURL'),
-			'Url_encode'		=> new \Twig_Function_Method($this, 'Url_encode'),
-			'googleMapURL'		=> new \Twig_Function_Method($this, 'googleMapURL'),
-			'serializeT'		=> new \Twig_Function_Method($this, 'serializeT'),
-			'unserializeT'		=> new \Twig_Function_Method($this, 'unserializeT'),
-			'paramsByUrl'		=> new \Twig_Function_Method($this, 'paramsByUrl'),
-			'implode'			=> new \Twig_Function_Method($this, 'implode'),
-			'plur'				=> new \Twig_Function_Method($this, 'pluriel'),
-			'valueOfObject'		=> new \Twig_Function_Method($this, 'valueOfObject'),
-			'imgVolume'			=> new \Twig_Function_Method($this, 'imgVolume'),
-			'annee'				=> new \Twig_Function_Method($this, 'annee'),
-			'URIperform'		=> new \Twig_Function_Method($this, 'URIperform'),
-			'fillOfChars'		=> new \Twig_Function_Method($this, 'fillOfChars'),
-			'transFMdate'		=> new \Twig_Function_Method($this, 'transFMdate'),
-			'CSSclass'			=> new \Twig_Function_Method($this, 'CSSclass'),
-			'base64_decode'		=> new \Twig_Function_Method($this, 'base64_decode'),
-			'image_base64'		=> new \Twig_Function_Method($this, 'image_base64'),
-			'separdates'		=> new \Twig_Function_Method($this, 'separdates'),
+			'phraseCut'				=> new \Twig_Function_Method($this, 'phraseCut'),
+			'adminDataType'			=> new \Twig_Function_Method($this, 'adminDataType'),
+			'intervalDateFR'		=> new \Twig_Function_Method($this, 'intervalDateFR'),
+			'dateFR'				=> new \Twig_Function_Method($this, 'dateFR'),
+			'minUCfirst'			=> new \Twig_Function_Method($this, 'minUCfirst'),
+			'UCfirst'				=> new \Twig_Function_Method($this, 'UCfirst'),
+			'magnifyText'			=> new \Twig_Function_Method($this, 'magnifyText'),
+			'addZeros'				=> new \Twig_Function_Method($this, 'addZeros'),
+			'dureeHM'				=> new \Twig_Function_Method($this, 'dureeHM'),
+			'arrayprint'			=> new \Twig_Function_Method($this, 'arrayprint'),
+			'slug'					=> new \Twig_Function_Method($this, 'slug'),
+			'siteNFormat'			=> new \Twig_Function_Method($this, 'siteNFormat'),
+			'pathTree'				=> new \Twig_Function_Method($this, 'pathTree'),
+			'simpleURL'				=> new \Twig_Function_Method($this, 'simpleURL'),
+			'Url_encode'			=> new \Twig_Function_Method($this, 'Url_encode'),
+			'googleMapURL'			=> new \Twig_Function_Method($this, 'googleMapURL'),
+			'serializeT'			=> new \Twig_Function_Method($this, 'serializeT'),
+			'unserializeT'			=> new \Twig_Function_Method($this, 'unserializeT'),
+			'paramsByUrl'			=> new \Twig_Function_Method($this, 'paramsByUrl'),
+			'implode'				=> new \Twig_Function_Method($this, 'implode'),
+			'plur'					=> new \Twig_Function_Method($this, 'pluriel'),
+			'valueOfObject'			=> new \Twig_Function_Method($this, 'valueOfObject'),
+			'imgVolume'				=> new \Twig_Function_Method($this, 'imgVolume'),
+			'annee'					=> new \Twig_Function_Method($this, 'annee'),
+			'URIperform'			=> new \Twig_Function_Method($this, 'URIperform'),
+			'fillOfChars'			=> new \Twig_Function_Method($this, 'fillOfChars'),
+			'transFMdate'			=> new \Twig_Function_Method($this, 'transFMdate'),
+			'CSSclass'				=> new \Twig_Function_Method($this, 'CSSclass'),
+			'base64_decode'			=> new \Twig_Function_Method($this, 'base64_decode'),
+			'image_base64'			=> new \Twig_Function_Method($this, 'image_base64'),
+			'separdates'			=> new \Twig_Function_Method($this, 'separdates'),
+			// spécial GEODIAG WEB 
+			'docsAnterieurs'		=> new \Twig_Function_Method($this, 'docsAnterieurs'),
+			'partie_nom_rapport'	=> new \Twig_Function_Method($this, 'partie_nom_rapport'),
 			);
 	}
 
@@ -699,6 +702,35 @@ class twigAetools extends \Twig_Extension {
 		return $d;
 	}
 
+	/**
+	 * Décompose une chaîne en array
+	 * @param string $data
+	 * @return array
+	 */
+	public function docsAnterieurs($data) {
+		$lignes = explode('|*|', $data);
+		foreach ($lignes as $key => $value) {
+			$cols[$key] = explode('|', $value);
+			$cols[$key][0] = substr($cols[$key][0], 2);
+			foreach ($cols[$key] as $key2 => $value2) {
+				if(trim($cols[$key][$key2]."") == "") $cols[$key][$key2] = "-";
+			}
+		}
+		unset($data);
+		unset($lignes);
+		return $cols;
+	}
+
+	/**
+	 * nom court de la référence du rapport
+	 * @param string $data
+	 * @return array
+	 */
+	public function partie_nom_rapport($txt) {
+		$ref = explode('-', $txt, 3);
+		if(count($ref) > 1) return $ref[0].'-'.$ref[1];
+		else return $txt;
+	}
 
 }
 

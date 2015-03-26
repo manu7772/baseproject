@@ -4,9 +4,9 @@
 namespace ensemble01\services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use filemakerBundle\services\filemakerservice as fms;
+use filemakerBundle\services\filemakerservice2;
 
-class geodiag extends fms {
+class geodiag extends filemakerservice2 {
 
 	const STATUT_COMPLET = 'complet';
 	const STATUT_TRAITER = 'à traiter';
@@ -27,14 +27,31 @@ class geodiag extends fms {
 	// *************************
 	
 	/**
+	 * Nom du service parent
+	 * @return string
+	 */
+	public function getParent() {
+		return self::SERVICE_NOM;
+	}
+
+	/**
+	 * Nom du service
+	 * @return string
+	 */
+	public function getName() {
+		return "geodiag";
+	}
+
+	/**
 	 * Renvoie le nom de fichier d'un rapport
 	 * @param mixed $rapport - id ou objet rapport
 	 * @return array
 	 */
-	public function getRapportFileName($rapport) {
-		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
+	public function getRapportFileName($rapport) { // rapport_nom
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight($rapport);
 		// echo("Rapport ".$rapport->getField('id')." = ".get_class($rapport)."<br>");
-		return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('id')."-".$rapport->getField('num_porte')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+		// return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('id')."-".$rapport->getField('num_porte')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+		return $rapport->getField('rapport_nom');
 	}
 
 	/**
@@ -45,7 +62,7 @@ class geodiag extends fms {
 	 * @return string - chemin courant
 	 */
 	public function verifAndGoDossier($type = null) {
-		$this->rootpath = $this->container->getParameter('pathrapports');
+		$this->rootpath = $this->fmparameters['dossiers']['pathrapports'];
 		// vérifie la présence du dossier pathrapports et pointe dessus
 		$this->aetools->setWebPath();
 		$this->aetools->verifDossierAndCreate($this->rootpath);
@@ -82,13 +99,13 @@ class geodiag extends fms {
 	}
 
 	/**
-	 * Renvoie le nom du fichier et son chemin
+	 * Renvoie le nom du fichier et son chemin (SI le fichier existe bien / sinon renvoie false)
 	 * @param mixed $rapport - id ou objet rapport
 	 * @param string $ext - (optionnel - 'pdf' par défaut) extension du nom du fichier
-	 * @return array
+	 * @return array / false
 	 */
 	public function getRapportFilePath($rapport, $ext = 'pdf') {
-		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight($rapport);
 		// dossiers etc.
 		if(is_object($rapport)) {
 			$r = array();

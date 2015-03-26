@@ -111,13 +111,15 @@ class aeReponse {
 
 	// SETTERS
 
-	public function setValid() {
+	public function setValid($message = null) {
 		$this->setResult(true);
+		if($message !== null) $this->addMessage($message);
 		return $this;
 	}
 
-	public function setUnvalid() {
+	public function setUnvalid($ERRORmessage = null) {
 		$this->setResult(false);
+		if($ERRORmessage !== null) $this->data["ERRORmessages"][] = $ERRORmessage;
 		return $this;
 	}
 

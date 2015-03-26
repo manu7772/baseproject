@@ -20,7 +20,6 @@
 					<th>Description</th>
 					<th>Adresse</th>
 					<th style="text-align:center;">PDF</th>
-					<!-- <th>Client</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -61,7 +60,6 @@
 						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" title="Fichier perdu ! Générer le fichier"><span class="glyphicon glyphicon-warning-sign" style="color:red;" aria-hidden="true"></span></a>
 						{% endif %}
 					</td>
-					<!-- <td>{{ local.getField("client")|raw }}</td> -->
 				</tr>
 				{%- endfor %}
 			</tbody>

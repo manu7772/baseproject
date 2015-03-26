@@ -48,8 +48,8 @@
 					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
 					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
 				</h4>
-				<a class="btn btn-danger URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Absent
+				<a class="btn btn-danger rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant' data-html-ok="">
+					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF Absent
 				</a>
 			</div>
 		</div>

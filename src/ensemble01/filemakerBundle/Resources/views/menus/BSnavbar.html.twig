@@ -1,4 +1,4 @@
-{% set fmservice = app.session.get('filemakerservice') %}
+{% set fmservice = app.session.get('filemakerservice2') %}
 {% set fmdev = app.session.get('filemaker_DEV') %}
 {% set currentserver = "" %}
 {% set currentbase = "" %}
@@ -32,9 +32,9 @@
 			</li>
 			<li class="divider"></li>
 			<li role="presentation" class="dropdown-header">Serveur actif</li>
-			{% for server, data in fmservice %}
+			{% for server, data in fmservice.servers %}
 			{% if data.statut == true %}
-			{% if data.current == true %}
+			{% if data.nom == fmservice.current_server %}
 				{% set active = " class='disabled'" %}
 				{% set arrow = defarrow %}
 				{% set currentserver = data.nom %}
@@ -49,17 +49,17 @@
 			{% endfor %}
 			<li class="divider"></li>
 			<li role="presentation" class="dropdown-header">Base active</li>
-			{% for base, data in fmservice[currentserver].databases.valids %}
-			{% if data.current == true %}
+			{% for base, data in fmservice.servers[currentserver].bases %}
+			{% if base == fmservice.servers[currentserver].current_base %}
 				{% set active = " class='disabled'" %}
 				{% set arrow = defarrow %}
-				{% set currentbase = data.nom %}
+				{% set currentbase = base %}
 			{% else %}
 				{% set active = "" %}
 				{% set arrow = "" %}
 			{% endif %}
 			<li{{ active|raw }}>
-				<a href="?basechange={{ data.nom }}"{% if data.descriptif is defined %} title = "Changer de base pour {{ data.descriptif }}"{% endif %}>{{ arrow|raw }}{{ data.nom }}</a>
+				<a href="?basechange={{ base }}"{% if data.descriptif is defined %} title = "Changer de base pour {{ data.descriptif }}"{% endif %}>{{ arrow|raw }}{{ base }}</a>
 			</li>
 			{% endfor %}
 			<li class="divider"></li>
@@ -80,7 +80,7 @@
 			<i class="fa fa-tasks fa-fw"></i><span class="hidden-xs"> DEV info </span><i class="fa fa-caret-down"></i>
 		</a>
 		<ul class="dropdown-menu dropdown-user">
-			{% for nom, dat in fmdev %}
+			{% for nom, dat in fmdev if nom != 'devcommentaires' %}
 			{% if not loop.first %}
 			<li class="divider"></li>
 			{% endif %}

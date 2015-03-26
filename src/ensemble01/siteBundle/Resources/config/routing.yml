@@ -13,6 +13,11 @@ ensemble01site_rapportfm:
     path:     /rapportfm/{id}/{mode}.{format}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_rapport, id: null, mode: "file", format: "pdf", pagedata: null}
 
+    # Rapport PDF ajax
+ensemble01site_rapportPDFrefresh:
+    path:     /rapportpdfrefresh/{id}/{pagedata}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_ajax_pdf_rapport, pagedata: null}
+
 ensemble01site_rapportscreen:
     path:     /rapport-screen/{id}/{load}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:visualise_rapport, load: false}

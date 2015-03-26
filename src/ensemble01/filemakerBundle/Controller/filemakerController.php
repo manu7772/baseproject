@@ -6,6 +6,7 @@ use filemakerBundle\Controller\filemakerController as fmController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use \ZipArchive;
+use \DateTime;
 
 class filemakerController extends fmController {
 
@@ -21,7 +22,6 @@ class filemakerController extends fmController {
 	protected $aetools;
 
 	function __destruct() {
-		// parent::__destruct();
 		$this->affAllDev();
 	}
 
@@ -452,11 +452,11 @@ class filemakerController extends fmController {
 				if(is_string($id_rapport)) return $aeReponse->addErrorMessage($id_rapport);
 			}
 			// données globales
-			$RAPP["date"] = new \DateTime;
+			$RAPP["date"] = new DateTime;
 			$RAPP["rapport"] = $id_rapport;
 			$RAPP["format"] = $format;
 			$RAPP["type"] = $id_rapport->getField('type_rapport');
-			$RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_001.html.twig";
+			$RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_002.html.twig";
 			// rapport de test
 			// $RAPP["template"] = "ensemble01filemakerBundle:pdf:testEmply.html.twig";
 			if(!$this->get('templating')->exists($RAPP["template"])) {
@@ -543,23 +543,34 @@ class filemakerController extends fmController {
 			if($aeReponse->isValid()) {
 				// génération ok
 				$add = "Génération OK";
-				$messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id);
+				// $messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id);
 				// $aeReponse->addErrorMessage($messtest);
 				// $repss = implode('<br>', $aeReponse->getAllMessages(true));
 			} else {
 				// génération echec
 				$add = "Echec génération/output PDF";
-				$this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
+				// $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
 			}
 		} else {
 			$repss = implode('<br>', $aeReponse->getAllMessages(true));
-			$this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
+			// $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
 		}
 		return new Response($repss);
 	}
 
 	public function retablish_rapport_fmAction($rapport_id) {
 		return new Response('Rapport rétabli : '.$rapport_id);
+	}
+
+	public function generate_ajax_pdf_rapportAction($id, $pagedata = null) {
+		$aeReponse = $this->get('ensemble01services.aeReponse');
+		$rapport = $this->_fm->getOneRapport($id);
+		if(is_object($rapport)) {
+			$aeReponse = $this->generate_un_rapport($rapport, 'pdf', $aeReponse);
+		} else {
+			$aeReponse->setUnvalid($rapport);
+		}
+		return new JsonResponse($aeReponse->getJSONreponse());
 	}
 
 	/**
@@ -642,10 +653,10 @@ class filemakerController extends fmController {
 						}
 						if($aeReponse->isValid()) {
 							$idr = $oneRapport['rapport']["rapport"]->getField('id');
-							$r = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
-							if(is_string($r)) {
-								$aeReponse->addErrorMessage('Le rapport '.$path.$oneRapport['rapport']["ref_rapport"].'('.$idr.') n\'a pu être traité en BDD FM');
-							}
+							// $r = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($idr);
+							// if(is_string($r)) {
+							// 	$aeReponse->addErrorMessage('Le rapport '.$path.$oneRapport['rapport']["ref_rapport"].'('.$idr.') n\'a pu être traité en BDD FM');
+							// }
 						}
 						$aeReponse->putAllMessagesInFlashbag();
 						break;
@@ -733,7 +744,7 @@ class filemakerController extends fmController {
 				if(is_array($one2Rapport)) {
 					$type = $one2Rapport["rapport"]["type"];
 					$path = $this->_fm->verifAndGoDossier($type);
-					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_001.html.twig";
+					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_002.html.twig";
 					$nomRapport = $one2Rapport["rapport"]["ref_rapport"].'.'.$format;
 					// nom du fichier du rapport
 					$one2Rapport["rapport"]["ref_rapport"] = $this->_fm->getRapportFileName($one2Rapport["rapport"]["rapport"]);
@@ -813,12 +824,12 @@ class filemakerController extends fmController {
 	 */
 	public function ZIP_listeRapportsLotsAction($numlot = null) {
 		// dossier
-		$nomZip = 'ZIP';
+		$nomDossierZip = 'ZIP';
 		$aetools = $this->get('ensemble01services.aetools');
 		$rootpath = $this->container->getParameter('pathrapports');
 		$aetools->setWebPath($rootpath);
-		$aetools->verifDossierAndCreate($nomZip);
-		// $aetools->setWebPath($rootpath.$nomZip.'/');
+		$aetools->verifDossierAndCreate($nomDossierZip);
+		// $aetools->setWebPath($rootpath.$nomDossierZip.'/');
 		// $aetools->setWebPath();
 
 		$data = array();
@@ -842,7 +853,7 @@ class filemakerController extends fmController {
 		// ZIP
 		if($data["nombrePDF"] > 0) {
 			$zip = new ZipArchive();
-			$aetools->setWebPath($rootpath.$nomZip.'/');
+			$aetools->setWebPath($rootpath.$nomDossierZip.'/');
 			// On crée l’archive.
 			if($zip->open($aetools->getCurrentPath().$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
 				$aetools->setWebPath();
@@ -851,14 +862,14 @@ class filemakerController extends fmController {
 					$zip->addFile($fichier['pathfile'], '/'.$fichier['file']);
 				}
 				$zip->close();
-				$aetools->setWebPath($rootpath.$nomZip.'/');
+				$aetools->setWebPath($rootpath.$nomDossierZip.'/');
 				$response = new Response();
 				$response->setContent(file_get_contents($aetools->getCurrentPath().$data['fichierZip']));
 				$response->headers->set('Content-Type', 'application/force-download'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
 				$response->headers->set('Content-Length', filesize($aetools->getCurrentPath().$data['fichierZip']));
 				$response->headers->set('Content-disposition', 'attachment; filename='.$data['fichierZip']);
 				return $response;
-			} else $data['error'] = 'Ouverture archive zip impossible.';
+			} else $data['error'] = 'Création archive zip impossible.';
 		} else $data['error'] = 'Il n\'y a aucun rapport à compresser.';
 		return new JsonResponse(json_encode($data, true));
 	}
@@ -996,6 +1007,8 @@ class filemakerController extends fmController {
 	public function BSsidebarAction($title = 'Tableau de bord', $icon = 'fa-dashboard', $template = 'BSsidebar') {
 		$data = array();
 		$this->initFmData();
+		$CS = $this->_fm->getCurrentSERVER();
+		$CB = $this->_fm->getCurrentBASE();
 		// sélection
 		$this->selectService = $this->get('ensemble01services.selection');
 		$this->selectService->setSelectName('BSsideBar');
@@ -1010,6 +1023,7 @@ class filemakerController extends fmController {
 		$data['title'] = $title;
 		$data['icon'] = $icon;
 		$data['affaires'] = $this->_fm->getAffaires($this->selectService->getCurrentSelect(self::FORCE_SELECT));
+		$this->_fm->setCurrentBASE($CB, $CS);
 		return $this->render('ensemble01filemakerBundle:menus:'.$template.'.html.twig', $data);
 	}
 
@@ -1198,11 +1212,11 @@ class filemakerController extends fmController {
 						$method = 'get'.ucfirst($nomtest);
 						if(method_exists($data, $method)) {
 							$val = $data->$method();
-							// if($val instanceOf \DateTime) $val = $val->format("Y-m-d H:i:s");
+							// if($val instanceOf DateTime) $val = $val->format("Y-m-d H:i:s");
 							$tab[$nomtest] = $val;
 						}
 					}
-					if($data instanceOf \DateTime) $affdata = $data->format("Y-m-d H:i:s");
+					if($data instanceOf DateTime) $affdata = $data->format("Y-m-d H:i:s");
 						else $affdata = '';
 					$texte .= ("<div".$style.">");
 					$texte .= ($affNom." <i".$istyle.">".gettype($data)." > ".get_class($data)."</i> ".$affdata); // [ ".implode(" ; ", $tab)." ]
@@ -1270,36 +1284,6 @@ class filemakerController extends fmController {
 		}
 	}
 
-	protected function getCertificats() {
-		return array(
-			'cartificats' => array(
-				//
-				),
-			);
-	}
-
-	public function datatables_statesaveAction() {
-		$error = array(
-			"result"	=> false,
-			"message"	=> "Utilisateur non trouvé",
-			"data"		=> "Utilisateur non trouvé",
-		);
-		$user = $this->get('security.context')->getToken()->getUser();
-		if(is_object($user)) {
-			$userManager = $this->get('fos_user.user_manager');
-			$post = $this->getRequest()->request->all();
-			$r = $user->addDtselection_withID($post['UrlI'], $post['DtId'], json_encode($post['data'], true));
-			if($r !== false) {
-				$userManager->updateUser($user);
-				$data = array(
-					"result"	=> true,
-					"message"	=> "Enregistrement réussi",
-					"data"		=> json_encode($post['data'], true),
-				);
-			} else $data = $error;
-		} else $data = $error;
-		return new JsonResponse(json_encode($data, true));
-	}
 
 
 }

@@ -1,4 +1,28 @@
 parameters:
-    pathrapports: "Rapports/"
-    sadmin_login: "login"
-    sadmin_pass:  "passe"
+    fmparameters:
+        dossiers:
+            pathrapports: Rapports
+            zipfiles:     ZIP
+        servers:
+            Geodem_mac_mini:
+                ip:                     http://91.90.103.107
+                default:                true
+                bases:
+                    GEODIAG_SERVEUR:
+                        descriptif:     Base FM Géodiag
+                        default:        true
+                        access:
+                            login:      sadmin
+                            passe:      symfony76
+                    GEODIAG_Rapports:
+                        descriptif:     Rapports FM Géodiag
+                        default:        ~
+                        access:
+                            login:      sadmin
+                            passe:      symfony76
+                    GEODIAG_REF_WEB_2:
+                        descriptif:     WEB 2 en local sur mon mbp-emmanuel
+                        default:        ~
+                        access:
+                            login:      sadmin
+                            passe:      symfony76
