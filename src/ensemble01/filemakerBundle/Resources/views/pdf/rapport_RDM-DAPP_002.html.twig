@@ -45,6 +45,7 @@
 			<tr>
 				<td>Adresse</td>
 				<td>
+					{{ rapport.getField('local_type_bat_texte')|raw }}<br>
 					Logement {{ rapport.getField('num_porte')|raw }} -&nbsp;Étage {{ rapport.getField('local_etage')|raw }} -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />
 					{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
 				</td>
@@ -55,7 +56,7 @@
 			</tr>
 			<tr>
 				<td>Type de logement</td>
-				<td>{{ rapport.getField('local_type_bat_texte')|raw }}</td>
+				<td>{{ rapport.getField('local_type_logement')|raw }}</td>
 			</tr>
 			<!-- ENTETE BIS -->
 			<tr>
