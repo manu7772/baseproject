@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
 				});
 			}
 		});
-		if($('body .rapport-ok').length) showDownloadZipButton(1);
+		if($('body .rapport-ok').length == parseInt($('body #rapport-quantity'))) showDownloadZipButton(1);
 			else hideDownloadZipButton(1);
 		compteur++;
 		setTimeout(function(){ $('#visu').html(objparent1.texte); }, 100);

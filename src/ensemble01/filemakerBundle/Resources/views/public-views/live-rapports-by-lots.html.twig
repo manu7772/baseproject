@@ -52,6 +52,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">
+					<span id="rapport-quantity">{% if rapports is iterable %}{{ rapports|length }}{% endif %}</span>
 					{% if rapports is iterable and rapports|length > 0 %}
 						{{ rapports[0].getField('type_rapport') }} <small>{{ rapports[0].getField('local_adresse') }}</small>
 					{% elseif numlot is not null %}
