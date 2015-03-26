@@ -72,8 +72,13 @@ jQuery(document).ready(function($) {
 				});
 			}
 		});
-		if($('body .rapport-ok').length == parseInt($('body #rapport-quantity'))) showDownloadZipButton(1);
-			else hideDownloadZipButton(1);
+		if($('body .rapport-ok').length == parseInt($('body #rapport-quantity'))) {
+			showDownloadZipButton(1);
+			hideDownloadZipButton(2);
+		} else {
+			hideDownloadZipButton(1);
+			showDownloadZipButton(2);
+		}
 		compteur++;
 		setTimeout(function(){ $('#visu').html(objparent1.texte); }, 100);
 		setTimeout(function(){ verifLoad(); }, 1000);
