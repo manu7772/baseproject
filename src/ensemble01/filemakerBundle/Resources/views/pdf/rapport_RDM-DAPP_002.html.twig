@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{{ getDateConstruction(rapport.getField('documents_anterieurs'))}}</td>
+				<td>{{ getDateConstruction(rapport.getField('documents_anterieurs'))|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de logement</td>
