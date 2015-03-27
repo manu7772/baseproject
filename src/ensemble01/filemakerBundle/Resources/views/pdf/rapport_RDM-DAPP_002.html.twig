@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{{ rapport.getField('annee_construction')|raw }}</td>
+				<td>{{ getDateConstruction(rapport.getField('documents_anterieurs'))}}</td>
 			</tr>
 			<tr>
 				<td>Type de logement</td>
@@ -350,7 +350,7 @@
 
 		<bookmark title="5.2 Objet de la mission" level="1" ></bookmark>
 		<h3>5.2 Objet de la mission</h3>
-		<p>Ce rapport est établi dans le cadre du repérage des matériaux et produits susceptibles de contenir de l’amiante pour intégration au Dossier Amiante – Parties Privatives n° {{ partie_nom_rapport(rapport.getField('rapport_nom')|raw) }}</p>
+		<p>Ce rapport est établi dans le cadre du repérage des matériaux et produits susceptibles de contenir de l’amiante pour intégration au Dossier Amiante – Parties Privatives n° {{ partie_nom_rapport(rapport.getField('rapport_nom')|raw) }}-DAPP</p>
 		<p><span class='underline bold'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
 		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 

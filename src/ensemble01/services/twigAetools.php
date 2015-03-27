@@ -52,6 +52,7 @@ class twigAetools extends \Twig_Extension {
 			// spécial GEODIAG WEB 
 			'docsAnterieurs'		=> new \Twig_Function_Method($this, 'docsAnterieurs'),
 			'partie_nom_rapport'	=> new \Twig_Function_Method($this, 'partie_nom_rapport'),
+			'getDateConstruction'	=> new \Twig_Function_Method($this, 'getDateConstruction'),
 			);
 	}
 
@@ -719,6 +720,17 @@ class twigAetools extends \Twig_Extension {
 		unset($data);
 		unset($lignes);
 		return $cols;
+	}
+
+	public function getDateConstruction($txt) {
+		$lignes = explode('|*|', $data);
+		foreach ($lignes as $key => $value) {
+			if(substr($value, 0, 1) == '5') {
+				$xp = explode('|', $value);
+				$date = $xp[2];
+			}
+		}
+		return $date;
 	}
 
 	/**
