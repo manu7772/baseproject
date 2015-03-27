@@ -723,7 +723,8 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	public function getDateConstruction($txt) {
-		$lignes = explode('|*|', $data);
+		$date = '&lt;= 1997';
+		$lignes = explode('|*|', $txt);
 		foreach ($lignes as $key => $value) {
 			if(substr($value, 0, 1) == '5') {
 				$xp = explode('|', $value);

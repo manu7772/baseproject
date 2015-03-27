@@ -281,10 +281,10 @@
 				{% for line in data if data|length > 0 %}
 				{% if line|length == 4 %}
 				<tr>
-					<td class='one'>{{ line[0] }}</td>
-					<td class='two center'>{{ line[1] }}</td>
-					<td class='three center'>{{ line[2] }}</td>
-					<td class='four center'>{{ line[3] }}</td>
+					<td class='one'>{{ line[0]|raw }}</td>
+					<td class='two center'>{{ line[1]|raw }}</td>
+					<td class='three center'>{{ line[2]|raw }}</td>
+					<td class='four center'>{{ line[3]|raw }}</td>
 				</tr>
 				{% else %}
 				<tr>
