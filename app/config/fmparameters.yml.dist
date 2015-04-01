@@ -1,7 +1,7 @@
 parameters:
     fmparameters:
         dossiers:
-            pathrapports: Rapports
+            pathrapports: Rapports/
             zipfiles:     ZIP
         servers:
             Geodem_mac_mini:

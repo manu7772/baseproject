@@ -109,7 +109,7 @@
 				</td>
 				<td class="left">
 					Date de commande&nbsp;: {{ transFMdate(rapport.getField('date_commande')) }}<br>
-					Dates de visites&nbsp;: {{ separdates(rapport.getField('local_dates_visites'), true)|raw }}<br>
+					Dates de visites&nbsp;: {{ lastdate(rapport.getField('local_dates_visites'))|raw }}{# separdates(rapport.getField('local_dates_visites'), true)|raw #}<br>
 					Accompagnateur&nbsp;: {{ neant }}
 				</td>
 			</tr>
