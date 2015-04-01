@@ -44,12 +44,13 @@ class twigAetools extends \Twig_Extension {
 			'annee'					=> new \Twig_Function_Method($this, 'annee'),
 			'URIperform'			=> new \Twig_Function_Method($this, 'URIperform'),
 			'fillOfChars'			=> new \Twig_Function_Method($this, 'fillOfChars'),
+			// spécial GEODIAG WEB 
 			'transFMdate'			=> new \Twig_Function_Method($this, 'transFMdate'),
 			'CSSclass'				=> new \Twig_Function_Method($this, 'CSSclass'),
 			'base64_decode'			=> new \Twig_Function_Method($this, 'base64_decode'),
 			'image_base64'			=> new \Twig_Function_Method($this, 'image_base64'),
 			'separdates'			=> new \Twig_Function_Method($this, 'separdates'),
-			// spécial GEODIAG WEB 
+			'lastdate'				=> new \Twig_Function_Method($this, 'lastdate'),
 			'docsAnterieurs'		=> new \Twig_Function_Method($this, 'docsAnterieurs'),
 			'partie_nom_rapport'	=> new \Twig_Function_Method($this, 'partie_nom_rapport'),
 			'getDateConstruction'	=> new \Twig_Function_Method($this, 'getDateConstruction'),
@@ -699,8 +700,24 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function separdates($dates, $boldlastdate = true) {
 		$dates = explode('|', $dates);
-		$d = implode(' - ', $dates);
-		return $d;
+		if($boldlastdate === true) {
+			end($dates);
+			$key = key($dates);
+			$dates[$key] = '<span style="font-weight:bold;">'.$dates[$key].'</span>';
+		}
+		$dates = implode(' - ', $dates);
+		return $dates;
+	}
+
+	/**
+	 * Transforme le texte dates en provenance de FM (séparées par des pipe)
+	 * la dernière date est en gras
+	 * @param string $dates
+	 * @return string
+	 */
+	public function lastdate($dates) {
+		$dates = explode('|', $dates);
+		return end($dates);
 	}
 
 	/**

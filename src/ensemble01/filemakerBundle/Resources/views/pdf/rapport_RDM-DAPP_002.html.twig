@@ -106,11 +106,10 @@
 					Référence dossier&nbsp;: {{ rapport.getField('rapport_nom') }}<br>
 					Opérateur de repérage amiante et Signataire&nbsp;:<br>{{ rapport.getField('tech_prenom') }} {{ rapport.getField('tech_nom') }}<br>
 					Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>{{ rapport.getField('Laboratoire_adresse') }} {{ rapport.getField('Laboratoire_adresse2') }}<br>{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</span>
-					<!-- Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>Zone d'activité de la Baudrière - Route du Neubourg<br>27520 Bourgtheroulde-Infreville</span> -->
 				</td>
 				<td class="left">
 					Date de commande&nbsp;: {{ transFMdate(rapport.getField('date_commande')) }}<br>
-					Dates de visites&nbsp;: {{ separdates(rapport.getField('local_dates_visites'))|raw }}<br>
+					Dates de visites&nbsp;: {{ separdates(rapport.getField('local_dates_visites'), true)|raw }}<br>
 					Accompagnateur&nbsp;: {{ neant }}
 				</td>
 			</tr>
@@ -120,9 +119,6 @@
 	<div class="conclusion">
 		Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré des produits et matériaux contenant de l'amiante.<br>Les conclusions sont en <a href="#page3">page 3.</a>
 	</div>
-
-	<!-- <p class="zapf" style="font-family: zapfdingbats;width:100mm;">azertyuiopqsdfghjklmwxcvbn<br>AZERTYUIOPQSDFGHJKLMWXCVBN<br>,;:?./é"'(§è!çà)-<br>1234567890°_$*%ù£`=+<br>ë“‘{¶«¡Çø}—´„”’[å»ÛÁØ]–<br>æÂê®†Úºîœπ‡Ò∂ƒﬁÌÏÈ¬µ‹≈©◊ß~<br>∞…÷≠¿•\±€@Ù¥‰#</p> -->
-	<!-- <p class="symbol" style="font-family: symbol;width:100mm;">azertyuiopqsdfghjklmwxcvbn<br>AZERTYUIOPQSDFGHJKLMWXCVBN<br>,;:?./é"'(§è!çà)-<br>1234567890°_$*%ù£`=+<br>ë“‘{¶«¡Çø}—´„”’[å»ÛÁØ]–<br>æÂê®†Úºîœπ‡Ò∂ƒﬁÌÏÈ¬µ‹≈©◊ß~<br>∞…÷≠¿•\±€@Ù¥‰#</p> -->
 
 {% if format == "pdf" %}
 </page>
@@ -255,7 +251,9 @@
 		<p>De manière générale, les matériaux en contact direct avec des matériaux amiantés sont considérés comme amiantés par pollution.</p>
 		<p>Tout autre matériau découvert pendant les opérations qui serait susceptible de contenir de l’amiante devra faire l’objet d’un complément de diagnostic par la société GEODEM. Cette dernière reste à la disposition de la maîtrise d’ouvrage pour intervenir afin de lever les doutes existants.</p>
 
-		<p class="signature">À Bourgtheroulde-Infreville, le {{ date|date(formatDateTwig, timezoneTwig) }},<br>
+		<p class="signature">
+			<!-- À Bourgtheroulde-Infreville, le {{ date|date(formatDateTwig, timezoneTwig) }},<br> -->
+			À Bourgtheroulde-Infreville, le {{ lastdate(rapport.getField('local_dates_visites'))|raw }},<br>
 			L’opérateur de repérage<br>
 			<br>
 			Diagnostiqueur<br>
