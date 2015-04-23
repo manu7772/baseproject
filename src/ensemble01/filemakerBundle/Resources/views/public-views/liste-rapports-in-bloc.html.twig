@@ -14,13 +14,32 @@
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-ok' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
-				<h4>
-					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-				</h4>
-				<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: true}) }}" role="button">
-					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Charger PDF
-				</a>
+				<h5>
+					{{ rapport.getField("rapport_nom")|raw }}
+					<br>
+					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+				</h5>
+				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
+					<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: true}) }}" role="button" title="Charger PDF">
+						<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+					</a>
+					<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: false}) }}" role="button" title="Visualiser PDF">
+						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+					</a>
+					<a class="btn btn-primary rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title="Regénérer PDF">
+						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+					</a>
+				</div>
+<!-- 				<div class="btn-group">
+					<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Charger PDF</button>
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a class="rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}">Regénérer PDF</a></li>
+					</ul>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -29,10 +48,11 @@
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-onair' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
-				<h4>
-					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-				</h4>
+				<h5>
+					{{ rapport.getField("rapport_nom")|raw }}
+					<br>
+					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+				</h5>
 				<a class="btn btn-info URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
 					<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
 				</a>
@@ -44,13 +64,16 @@
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-missing' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
-				<h4>
-					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-				</h4>
-				<a class="btn btn-danger rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant' data-html-ok="">
-					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF Absent
-				</a>
+				<h5>
+					{{ rapport.getField("rapport_nom")|raw }}
+					<br>
+					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+				</h5>
+				<div>
+					<button class="btn btn-danger rapportPDFrefresh" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant'>
+						<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF Absent
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,10 +82,11 @@
 	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-standby' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
-				<h4>
-					{{ rapport.getField("Fk_Id_Local")|raw }}<br>
-					<small>{{ rapport.getField("type_rapport")|raw }} v.{{ rapport.getField("version")|raw }}</small>
-				</h4>
+				<h5>
+					{{ rapport.getField("rapport_nom")|raw }}
+					<br>
+					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+				</h5>
 				<a class="btn btn-default URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
 					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
 				</a>

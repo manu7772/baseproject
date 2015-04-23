@@ -44,6 +44,7 @@ class twigAetools extends \Twig_Extension {
 			'annee'					=> new \Twig_Function_Method($this, 'annee'),
 			'URIperform'			=> new \Twig_Function_Method($this, 'URIperform'),
 			'fillOfChars'			=> new \Twig_Function_Method($this, 'fillOfChars'),
+			'idify'					=> new \Twig_Function_Method($this, 'idify'),
 			// spécial GEODIAG WEB 
 			'transFMdate'			=> new \Twig_Function_Method($this, 'transFMdate'),
 			'CSSclass'				=> new \Twig_Function_Method($this, 'CSSclass'),
@@ -54,6 +55,7 @@ class twigAetools extends \Twig_Extension {
 			'docsAnterieurs'		=> new \Twig_Function_Method($this, 'docsAnterieurs'),
 			'partie_nom_rapport'	=> new \Twig_Function_Method($this, 'partie_nom_rapport'),
 			'getDateConstruction'	=> new \Twig_Function_Method($this, 'getDateConstruction'),
+			'getRev'				=> new \Twig_Function_Method($this, 'getRev'),
 			);
 	}
 
@@ -647,6 +649,23 @@ class twigAetools extends \Twig_Extension {
 		return $string;
 	}
 
+	/**
+	 * Transforme le texte en élément utilisable pour une classe ou un id. 
+	 * sans espace ou caractères conflictuels
+	 * @param string $text
+	 * @return string
+	 */
+	public function idify($text) {
+		$trans = array(
+			" " => '_',
+			"-" => '_',
+			"%" => '',
+			"#" => '',
+			"*" => '',
+			"&" => '',
+			);
+		return strtr($text, $trans);
+	}
 
 	/**
 	 * Transforme le texte date en provenance de FM 
@@ -760,6 +779,22 @@ class twigAetools extends \Twig_Extension {
 		$ref = explode('-', $txt, 3);
 		if(count($ref) > 1) return $ref[0].'-'.$ref[1];
 		else return $txt;
+	}
+
+	/**
+	 * renvoie la révision en fonction de la version
+	 * @param string $rev
+	 * @return string
+	 */
+	public function getRev($ver) {
+		$rev = " rev.";
+		$ver = intval($ver);
+		if($ver > 1) {
+			$ver = $ver - 1;
+			if($ver < 10) $add = $rev."0";
+				else $add = $rev."";
+			return $add.$ver;
+		} else return "";
 	}
 
 }

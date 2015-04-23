@@ -87,14 +87,12 @@
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
 				<td>
-					{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}
-					<br>
+					{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}<br>
 					{{ rapport.getField('client_representant_fonction') }}
 				</td>
 				<td>
-					<span class="bold">{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}</span>
-					<br>
-					<span class="bold">{{ rapport.getField('soc_representant_fonction') }}</span>
+					<span class="bold">{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}<br>
+					{{ rapport.getField('soc_representant_fonction') }}</span>
 				</td>
 			</tr>
 			<!-- ENTETE BIS -->
@@ -878,4 +876,5 @@
 </body>
 </html>
 {% endif %}
+
 

@@ -31,7 +31,10 @@
 				<a href="?fmreload=reload"><i class="fa fa-refresh fa-fw"></i> Recharger</a>
 			</li>
 			<li class="divider"></li>
-			<li role="presentation" class="dropdown-header">Serveur actif</li>
+			<li>
+				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-servers'}) }}"> Serveurs ({{ fmservice.servers|length }})</a>
+			</li>
+			<li class="divider"></li>
 			{% for server, data in fmservice.servers %}
 			{% if data.statut == true %}
 			{% if data.nom == fmservice.current_server %}
@@ -48,28 +51,31 @@
 			{% endif %}
 			{% endfor %}
 			<li class="divider"></li>
-			<li role="presentation" class="dropdown-header">Base active</li>
+			<li role="presentation" class="dropdown-header">Bases ({{ fmservice.servers[currentserver].bases|length }})</li>
 			{% for base, data in fmservice.servers[currentserver].bases %}
+			{% set unvalid = '' %}
 			{% if base == fmservice.servers[currentserver].current_base %}
-				{% set active = " class='disabled'" %}
+				{% set active = "" %}
 				{% set arrow = defarrow %}
-				{% set currentbase = base %}
 			{% else %}
 				{% set active = "" %}
 				{% set arrow = "" %}
 			{% endif %}
-			<li{{ active|raw }}>
-				<a href="?basechange={{ base }}"{% if data.descriptif is defined %} title = "Changer de base pour {{ data.descriptif }}"{% endif %}>{{ arrow|raw }}{{ base }}</a>
-			</li>
-			{% endfor %}
+			{% if data.statut == false %}
+				{% set unvalid = ' style="color:darkred;"' %}
+				{% set active = " class='disabled'" %}
+			{% endif %}
 			<li class="divider"></li>
-			<li role="presentation" class="dropdown-header">Base {{ currentbase }}</li>
-			<li>
-				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-layouts'}) }}"><i class="fa fa-file-text fa-fw"></i> Voir modèles</a>
+			<li role="presentation" class="dropdown-header" {{ unvalid|raw }}>{{ arrow|raw }} {{ base }}</li>
+			{% if unvalid == '' %}
+			<li{{ active|raw }}>
+				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-layouts', pagedata: {server: currentserver, base: base}|json_encode(true) }) }}"><i class="fa fa-file-text fa-fw"></i> Modèles</a>
 			</li>
-			<li>
-				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-scripts'}) }}"><i class="fa fa-cogs fa-fw"></i> Voir scripts</a>
+			<li{{ active|raw }}>
+				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-scripts', pagedata: {server: currentserver, base: base}|json_encode(true) }) }}"><i class="fa fa-cogs fa-fw"></i> Scripts</a>
 			</li>
+			{% endif %}
+			{% endfor %}
 		</ul>
 		<!-- /.dropdown-user -->
 	</li>

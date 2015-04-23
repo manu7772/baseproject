@@ -20,6 +20,12 @@ parameters:
                         access:
                             login:      sadmin
                             passe:      symfony76
+                    GEODIAG_Medias:
+                        descriptif:     Médias FM Géodiag
+                        default:        ~
+                        access:
+                            login:      sadmin
+                            passe:      symfony76
                     GEODIAG_REF_WEB_2:
                         descriptif:     WEB 2 en local sur mon mbp-emmanuel
                         default:        ~

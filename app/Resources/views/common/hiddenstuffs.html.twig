@@ -1,6 +1,6 @@
 {% block modales %}
 <div class="messages" title="Message...">
-{% for type in ['info', 'success', 'error', 'FMerror'] %}
+{% for type in ['info', 'success', 'notice', 'error', 'FMerror'] %}
 {% set errors = app.session.flashbag.get(type) %}
 {% if errors|length > 0 %}
 	<h4 style="text-decoration: underline;color:#006;">{{ type }} ({{ errors|length}})</h4>

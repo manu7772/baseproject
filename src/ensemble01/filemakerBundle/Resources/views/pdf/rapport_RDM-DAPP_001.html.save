@@ -2,7 +2,6 @@
 {% set observation = 'Sans objet' %}
 
 {% if format == 'pdf' %}
-{% set pathimage = imgpath ~ image_logo_geodem %}
 {% include('ensemble01filemakerBundle:pdf:styles_001_' ~ format ~ '.html.twig') %}
 <page backtop="0mm" backbottom="16mm" backleft="0mm" backright="0mm" orientation="P">
 	<page_footer>
@@ -11,7 +10,6 @@
 		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-012-01</p>
 	</page_footer>
 {% else %}
-{% set pathimage = asset(imgpath ~ image_logo_geodem) %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,8 +23,10 @@
 		<h1 class='center'>ANNEXE N°5.1</h1>
 		<h1 class='center'>RAPPORT DE&nbsp;REPÉRAGE DES&nbsp;MATÉRIAUX ET&nbsp;PRODUITS DE&nbsp;LA&nbsp;LISTE A CONTENANT DE&nbsp;L’AMIANTE</h1>
 		<p class="mini8 reduit center">Conformément aux dispositions du Code de la santé publique et à son annexe 13-9, aux articles L.271-4 à L.271-6 du Code de la construction et de l’habitation, aux arrêtés du 12 décembre 2012, du 21 décembre 2012 et du 26 juin 2013, et au décret n°2011-629 du 03 juin 2011</p>
-		<div class="logoentete"><img src="{{ pathimage }}"></div>
-		<p class="mini10 bolder center">Référence rapport&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}</p>
+		<div class="logoentete">
+			{{ image_base64(rapport.getField("soc_logo"))|raw }}
+		</div>
+		<p class="mini10 bolder center">Référence rapport&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }} - Local {{ rapport.getField('Fk_Id_Local')|raw }} - Lieu {{ rapport.getField('Fk_Id_Lieu')|raw }}</p>
 	</div>
 
 	<table class="type1 allcenter col-2" align="center">
@@ -38,7 +38,7 @@
 		<tbody>
 			<tr>
 				<td>Adresse</td>
-				<td>{{ rapport.getField('num_porte') }} -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
+				<td>Logement {{ rapport.getField('num_porte')|raw }} -&nbsp;Étage {{ rapport.getField('local_etage')|raw }} -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de bâtiment</td>
@@ -46,11 +46,11 @@
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{# rapport.getField('annee_construction')|raw #}&lt;= 1997</td>
+				<td>{{ rapport.getField('annee_construction')|raw }}</td>
 			</tr>
 			<tr>
 				<td>Locaux visés par le rapport de repérage<br>des matériaux et produits de la liste A</td>
-				<td>Appartement n°{{ rapport.getField('num_porte')|raw }}</td>
+				<td>Logement {{ rapport.getField('num_porte')|raw }}<br>Étage {{ rapport.getField('local_etage')|raw }}</td>
 			</tr>
 			<!-- ENTETE BIS -->
 			<tr>
@@ -60,16 +60,18 @@
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
 				<td>
+					<p style='width:100%;'>{{ image_base64(rapport.getField("client_logo_base64"), null, null, '128px')|raw }}</p>
 					<strong>{{ rapport.getField('client_nom') }}</strong><br>
-					{{ rapport.getField('client_adresse') }}<br>
+					<span class='ajustement'>Adresse</span>
+<!-- 					{{ rapport.getField('client_adresse') }}<br>
 					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
-				</td>
+ -->				</td>
 				<td>
-					GEODEM - Agence Normandie<br>
-					137, route d’Elbeuf<br>
-					27520 BOURGTHEROULDE-INFREVILLE<br>
-					Tél.&nbsp;: 02 32 82 37 20<br>
-					RCS BERNAY 448.218.123
+					{{ rapport.getField('soc_nom') }} - {{ rapport.getField('soc_agence') }}<br>
+					{{ rapport.getField('soc_adresse') }}<br>
+					{{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}<br>
+					Tél.&nbsp;: {{ rapport.getField('soc_tel') }}<br>
+					<small>{{ rapport.getField('soc_rcs') }}</small>
 				</td>
 			</tr>
 			<!-- ENTETE BIS -->
@@ -79,13 +81,14 @@
 			</tr>
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
-				<td>
-					Client<br>
-					Fonction
+				<td><span class='ajustement'>
+					{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}<br>
+					{{ rapport.getField('client_representant_fonction') }}
+				</span>
 				</td>
 				<td>
-					Monsieur Nicolas LEGENDRE<br>
-					Directeur opérationnel
+					{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}<br>
+					{{ rapport.getField('soc_representant_fonction') }}
 				</td>
 			</tr>
 			<!-- ENTETE BIS -->
@@ -97,13 +100,13 @@
 			<tr>
 				<td class="left">
 					Référence dossier&nbsp;: {{ rapport.getField('ref_dossier') }}<br>
-					Opérateur de repérage amiante et Signataire&nbsp;: {{ rapport.getField('technicien') }}<br>
-					{# Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }} -&nbsp;{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }} #}
-					Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>Zone d'activité de la Baudrière - Route du Neubourg<br>27520 Bourgtheroulde-Infreville</span>
+					Opérateur de repérage amiante et Signataire&nbsp;: {{ rapport.getField('tech_prenom') }} {{ rapport.getField('tech_nom') }}<br>
+					Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>{{ rapport.getField('Laboratoire_adresse') }} {{ rapport.getField('Laboratoire_adresse2') }}<br>{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</span>
+					<!-- Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>Zone d'activité de la Baudrière - Route du Neubourg<br>27520 Bourgtheroulde-Infreville</span> -->
 				</td>
 				<td class="left">
 					Date de commande&nbsp;: {{ transFMdate(rapport.getField('date_commande')) }}<br>
-					Dates de visites&nbsp;: {{ rapport.getField('technicien') }}<br>
+					Dates de visites&nbsp;: {{ separdates(rapport.getField('local_dates_visites'))|raw }}<br>
 					Accompagnateur&nbsp;: {{ neant }}
 				</td>
 			</tr>
@@ -123,8 +126,8 @@
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
-				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
+				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
+				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
 				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
@@ -149,8 +152,8 @@
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
-				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
+				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
+				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
 				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
@@ -257,7 +260,9 @@
 		<p class="signature">À Bourgtheroulde-Infreville, le {{ date|date(formatDateTwig, timezoneTwig) }},<br>
 			L’opérateur de repérage<br>
 			<br>
-			Diagnostiqueur {{ rapport.getField('technicien') }}
+			Diagnostiqueur<br>
+			{{ rapport.getField('tech_prenom') }} {{ rapport.getField('tech_nom') }}<br>
+			{{ image_base64(rapport.getField("tech_signature"), null, null, '70mm')|raw }}
 		</p>
 </div>
 
@@ -370,7 +375,7 @@
 		<h3>5.2 Objet de la mission</h3>
 		<p>Ce rapport est établi dans le cadre du repérage des matériaux et produits susceptibles de contenir de l’amiante pour intégration au Dossier Amiante – Parties Privatives n° <span class='ajustement'>xx-xxxx</span></p>
 		<p><span class='underline'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
-		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial n° <span class='ajustement'>xx-xxxx</span>.</p>
+		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
@@ -425,8 +430,8 @@
 			<h4>5.3.5 Laboratoire accrédité</h4>
 			<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
 			<p class="center strong">{{ rapport.getField('Laboratoire') }}</p>
-			<p class="center strong">{# rapport.getField('Laboratoire_adresse') #}Zone d'activité de la Baudrière - Route du Neubourg</p>
-			<p class="center strong">{# rapport.getField('Laboratoire_cp') #} {# rapport.getField('Laboratoire_ville') #}27520 Bourgtheroulde-Infreville</p>
+			<p class="center strong">{{ rapport.getField('Laboratoire_adresse') }} - {{ rapport.getField('Laboratoire_adresse') }}</p>
+			<p class="center strong">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
 			<br>
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
@@ -445,8 +450,8 @@
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
-				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
+				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
+				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
 				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
@@ -592,8 +597,8 @@
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
-				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
+				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
+				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
 				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
@@ -646,14 +651,14 @@
 {% endif %}
 
 <div class='text-content'>
-	<h4>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h4>
+	<h3>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h3>
 	<p>Les maladies liées à l’amiante sont provoquées par l’inhalation des fibres. Toutes les variétés d’amiante sont classées comme substances cancérogènes avérées pour l’homme. L’inhalation de fibres d’amiante est à l’origine de cancers (mésothéliomes, cancers broncho-pulmonaires) et d’autres pathologies non cancéreuses (épanchements pleuraux, plaques pleurales).</p>
 	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à l’amiante. Elle doit être complétée par la définition et la mise en œuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans l’immeuble. L’information des occupants présents temporairement ou de façon permanente est un préalable essentiel à la prévention du risque d’exposition à l’amiante.</p>
 	<p>Il convient donc de veiller au maintien du bon état de conservation des matériaux et produits contenant de l’amiante afin de remédier au plus tôt aux situations d’usure anormale ou de dégradation.</p>
 	<p>Il conviendra de limiter autant que possible les interventions sur les matériaux et produits contenant de l’amiante qui ont été repérés et de faire appel aux professionnels qualifiés, notamment dans le cas de retrait ou de confinement de ce type de matériau ou produit.</p>
 	<p>Enfin, les déchets contenant de l’amiante doivent être éliminés dans des conditions strictes. Renseignez-vous auprès de votre mairie ou de votre préfecture. Pour connaître les centres d’élimination près de chez vous, consultez la base de données "déchets" gérée par l’ADEME, directement accessible sur le site internet <a href='http://www.sinoe.org' target='_blank'>www.sinoe.org</a>.</p>
 	<br>
-	<h4>Informations conformes à l’article 6.9° de l’arrêté du 12 décembre 2012</h4>
+	<h3>Informations conformes à l’article 6.9° de l’arrêté du 12 décembre 2012</h3>
 	<p>Dans tous les cas, le propriétaire avertira de la présence d’amiante toute personne pouvant intervenir sur ou à proximité des matériaux et produits concernés ou de ceux les recouvrant ou les protégeant.</p>
 </div>
 
@@ -672,7 +677,6 @@
 	<br><br><br>
 
 	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
-	<!-- <img src="{{ imgpath }}exemple_plan.png"> -->
 </div>
 
 {% if format == "pdf" %}
@@ -681,8 +685,8 @@
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
-				<td id="row1"><img src="{{ pathimage }}" class="logoheader"></td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>Adresse</td>
+				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
+				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
 				<td id="row3">Réf.&nbsp;: {{ rapport.getField('type_rapport')|raw }} {{ rapport.getField('id')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
@@ -712,7 +716,11 @@
 {% endif %}
 
 <div class='text-content'>
-	<img src="{{ imgpath }}certificats/20140922-CERTIFICAT-COIS-SEBASTIEN-A.png" style='width:100%;'>
+	{% if rapport.getField("tech_certificat") != "" and rapport.getField("tech_certificat") is not null %}
+	{{ image_base64(rapport.getField("tech_certificat"), null, null, '100%')|raw }}
+	{% else %}
+	<h3>Certificat introuvable</h3>
+	{% endif %}
 </div>
 
 {% if format == "pdf" %}
@@ -734,12 +742,16 @@
 {% else %}
 <hr>
 {% endif %}
-
+	
 <div class='text-content'>
-	<img src="{{ imgpath }}certificats/certif_Assu1.png" style='width:100%;'>
+{% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
+	{{ image_base64(rapport.getField("soc_assurance1"), null, null, '100%')|raw }}
+{% else %}
+	<h3>Document d'assurance introuvable</h3>
+{% endif %}
 </div>
 
-
+{% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
 {% if format == "pdf" %}
 </page>
 <page pageset="old">
@@ -748,8 +760,9 @@
 {% endif %}
 
 <div class='text-content'>
-	<img src="{{ imgpath }}certificats/certif_Assu2.png" style='width:100%;'>
+	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '100%')|raw }}
 </div>
+{% endif %}
 
 {% if format == "pdf" %}
 </page>
@@ -816,19 +829,16 @@
 	<h3>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h3>
 		<h4>• Flocages</h4>
 		<p>{{ neant }}</p>
-		<!-- <img src="{{ imgpath }}certificats/grille_eval_flocage.png" style='width:100%;'> -->
 
 		<br><br><br>
 
 		<h4>• Calorifugeages</h4>
 		<p>{{ neant }}</p>
-		<!-- <img src="{{ imgpath }}certificats/grille_eval_calorifugeage.png" style='width:100%;'> -->
 
 		<br><br><br>
 
 		<h4>• Faux plafonds</h4>
 		<p>{{ neant }}</p>
-		<!-- <img src="{{ imgpath }}certificats/grille_eval_fauxPlafonds.png" style='width:100%;'> -->
 </div>
 
 {% if format == "pdf" %}
@@ -944,7 +954,6 @@
 	<br><br><br>
 
 	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
-		<!-- <img src="{{ imgpath }}certificats/proces_verbaux_danalyse1.png" style='width:100%;'> -->
 </div>
 
 {% if format == "pdf" %}

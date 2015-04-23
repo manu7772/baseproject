@@ -1,24 +1,165 @@
 {% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
 {% block h1 %}
-	<h1 class="page-header">{{ h1|raw }}</h1>
+	<h1 class="page-header">{{ h1|raw }}<small> | {{ SERVER.servers|length }} serveur{{ plur(SERVER.servers) }}</small></h1>
 {% endblock h1 %}
 {% block body %}
 	<div class="col-lg-12">
-		{% if servers is iterable %}
-		<h3 class="well well-xs">Liste des Serveurs<br /><small>{{ servers|length }} résultat(s) <span class="caret"></span></small></h3>
-		<table class="table table-bordered table-hover table-condensed">
-			<tr class="active">
-				<th>Nom du serveur</th>
-			</tr>
-			{% for server in servers %}
-			<tr>
-				<td>{{ server|raw }}</td>
-			</tr>
-			{%- endfor %}
-		</table>
+		{% if SERVER.servers is defined %}
+		{% if SERVER is iterable and SERVER.servers|length > 0 %}
+		{% for server in SERVER.servers %}
+		{% if server.statut == true %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					{% if server.nom == SERVER.default_server %}
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;
+					{% else %}
+						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>&nbsp;
+					{% endif %}
+					{% if server.nom == SERVER.current_server %}<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;{% endif %}
+					{{ server.nom }} <small>{{ server.ip }}</small>
+				</h3>
+			</div>
+			<div class="panel-body">
+				{% for nombase,servBase in server.bases %}
+				{% if servBase.statut == true %}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">{{ nombase }}</h3>
+					</div>
+					<div class="panel-body">
+						<div class="panel panel-default">
+							{% if servBase.layouts is defined %}
+							{% if servBase.layouts is iterable %}
+							{% set idlistmodels = idify('models_' ~ server.nom ~ nombase ~ loop.index) %}
+							<div class="panel-heading list-toogle" data-toogle-target='#{{ idlistmodels|raw }}'>
+								<h3 class="panel-title"><i class="fa fa-file-text fa-fw"></i> Modèle{{ plur(servBase.layouts) }} <span class="badge">{{ servBase.layouts|length }}</span></h3>
+							</div>
+							<div class="panel-body">
+								<span id="{{ idlistmodels }}">
+									{% if servBase.layouts|length > 0 %}
+									{% for nomlayout,layout in servBase.layouts %}
+									{% if layout.champs is defined %}
+									{% if layout.champs is iterable %}
+									{% set idlistchamp = idify('champs_' ~ server.nom ~ nombase ~ loop.index) %}
+									<div class="panel panel-default">
+										<div class="panel-heading list-toogle" data-toogle-target='#{{ idlistchamp|raw }}'>
+											<h3 class="panel-title">{{ nomlayout }} <span class="badge">{{ layout.champs|length }} champ{{ plur(layout.champs) }}</span></h3>
+										</div>
+										{% if layout.champs|length > 0 %}
+										<div class="panel-body">
+											<ul class="list-group" id="{{ idlistchamp|raw }}">
+											{% for champ in layout.champs %}
+												<li class="list-group-item">{{ champ }}</li>
+											{% endfor %}
+											</ul>
+										</div>
+										{% else %}
+										<div class="panel-body"></div>
+										{% endif %}
+									</div>
+									{% else %}
+									<div class="panel panel-danger">
+										<div class="panel-heading">
+											<h3 class="panel-title">Erreur sur champs du modèle {{ nomlayout }}</h3>
+										</div>
+										<div class="panel-body">
+											<p>{{ layout.champs }}</p>
+										</div>
+									</div>
+									{% endif %}
+									{% else %}
+									<div class="panel panel-danger">
+										<div class="panel-heading">
+											<h3 class="panel-title">Erreur sur champs du modèle {{ nomlayout }}</h3>
+										</div>
+										<div class="panel-body">
+											<p>Aucun champ defini.</p>
+										</div>
+									</div>
+									{% endif %}
+									{% endfor %}
+									{% else %}
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h3 class="panel-title">{{ nomlayout }} <span class="badge">0 modèle</span></h3>
+										</div>
+										<div class="panel-body"></div>
+									</div>
+									{% endif %}
+								</span>
+							</div>
+							{% else %}
+							<div class="panel-heading">
+								<h3 class="panel-title"><i class="fa fa-file-text fa-fw"></i>0 modèle</h3>
+							</div>
+							<div class="panel-body">
+								<p>{{ servBase.layouts }}</p>
+							</div>
+							{% endif %}
+							{% endif %}
+						</div>
+						{% include 'ensemble01filemakerBundle:blocs:recursive-liste.html.twig' with {liste: scripts[server.nom][nombase].group, titre: 'Scripts ' ~ nombase} %}
+					</div>
+				</div>
+				{% else %}
+				<div class="panel panel-danger">
+					<div class="panel-heading">
+						<h3 class="panel-title"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>&nbsp;{{ nombase }}</h3>
+					</div>
+					<div class="panel-body">
+						<div class="alert alert-danger" role="alert">
+							<h4>Base non initialisée</h4>
+							{% for error in servBase.errors %}
+							<p>{{ error }}</p>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+		</div>
 		{% else %}
-		<h3 class="well well-xs">Liste des Serveurs<br /><small>Erreur</small></h3>
-		<div class="alert alert-danger" role="alert">{{ servers|raw }}</div>
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>&nbsp;
+					{{ server.nom }} <small>{{ server.ip }}</small>
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div class="alert alert-danger" role="alert">
+					<h4>Serveur non initialisé</h4>
+					{% for error in server.errors %}
+					<p>{{ error }}</p>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		{% endfor %}
+		{% else %}
+		<h3 class="well well-xs">
+			Liste des Serveurs<br /><small>Erreur</small>
+		</h3>
+		<div class="alert alert-danger" role="alert">Aucun serveur trouvé</div>
+		{% endif %}
+		{% else %}
+		<h3 class="well well-xs">
+			Liste des Serveurs<br /><small>Erreur</small>
+		</h3>
+		<div class="alert alert-danger" role="alert">{{ SERVER|raw }}</div>
 		{% endif %}
 	</div>
 {% endblock body %}
+
+{#
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">TITRE</h3>
+	</div>
+	<div class="panel-body">
+	</div>
+</div>
+#}

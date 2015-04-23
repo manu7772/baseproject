@@ -119,22 +119,26 @@ class filemakerController extends fmController {
 				switch ($param) {
 					case 'fmreload':
 						// Reload fm data
-						if($commande === "reload") $result = $this->_fm->reinitService();
+						if($request->get($param) == $commande) {
+							// echo('&gt; Rechargement : '.$request->get($param).'<br>');
+							$result = $this->_fm->reinitService();
+						}
 						break;
 					case 'serverchange':
 						// Change server
-						$result = $this->_fm->setCurrentSERVER($commande);
+						$result = $this->_fm->setCurrentSERVER($request->get($param));
 						break;
 					case 'basechange':
 						// Change base
-						$result = $this->_fm->setCurrentBASE($commande, null);
+						// echo('&gt; Nouvelle base : '.$request->get($param).'<br>');
+						$result = $this->_fm->setCurrentBASE($request->get($param), null);
 						break;
 					default:
 						# code...
 						break;
 				}
 				if($result !== 'no') {
-					$data[$param]['commande'] = $commande;
+					$data[$param]['commande'] = $request->get($param);
 					$data[$param]['result'] = $result;
 				}
 			}
@@ -247,6 +251,9 @@ class filemakerController extends fmController {
 				} else if($ctrlData['rapports'] == self::NORESULT) {
 					$ctrlData['rapports'] = array();
 				}
+				// echo("<pre>");
+				// var_dump($ctrlData['pdf_file']);
+				// die("</pre>");
 				break;
 			case 'liste-lieux':
 				$corresp = array(
@@ -285,10 +292,10 @@ class filemakerController extends fmController {
 				$ctrlData['h1'] = "Liste des affaires";
 				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_SERVEUR', 'Projet_Liste'));
 				// $this->selectService->setRecherche('intitule', 'Marché Evreux');
-				$this->selectService
-					->setRecherche('intitule', '*')
-					->addRecherche('intitule', 'PROJET TEMOIN', '!')
-					;
+				$this->selectService->setRecherche('intitule', '*');
+				if(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+					$this->selectService->addRecherche('intitule', 'PROJET TEMOIN', '!');
+				}
 				// $this->selectService->emptyRecherche();
 				// $this->selectService->setSort('date_projet', 'DESC');
 
@@ -297,30 +304,13 @@ class filemakerController extends fmController {
 				$ctrlData['affaires'] = $this->_fm->getAffaires($ctrlData["new_select"]);
 
 				break;
-			case 'liste-layouts':
-				// liste des modèles
-				$ctrlData['h1'] = "Liste des modèles de ".$this->_fm->getCurrentBASE();
-				$ctrlData['layouts'] = $this->_fm->getLayouts();
-				break;
 			case 'dev_Param_Societe':
-				// liste des modèles
+				// paramètres de société
 				$ctrlData['h1'] = "Paramètres société";
 				$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_SERVEUR', 'dev_Param_Societe'));
 				// $this->selectService->setRecherche('id_local', 'loc0000011620');
 				// $this->selectService->setSort('Fk_Id_Local', 'ASC');
 				$ctrlData['params'] = $this->_fm->getLocalPiecesDetail($this->selectService->getCurrentSelect(self::FORCE_SELECT));
-				break;
-			case 'liste-fields':
-				// liste des modèles
-				$ctrlData['h1'] = "Liste des champs de ".$ctrlData['pagedata']['from_url']['layout'].'<br><small>('.$this->_fm->getCurrentBASE().')</small>';
-				$ctrlData['layout'] = $ctrlData['pagedata']['from_url']['layout'];
-				$ctrlData['base'] = $this->_fm->getCurrentBASE();
-				$ctrlData['serveur'] = $this->_fm->getCurrentSERVER();
-				$r = $this->_fm->getDetailFields($ctrlData['pagedata']['from_url']['layout'], $this->_fm->getCurrentBASE(), $this->_fm->getCurrentSERVER());
-				if(is_array($r)) $ctrlData = array_merge($ctrlData, $r);
-					else $ctrlData['fields'] = $r;
-				// $this->vardumpDev($ctrlData);
-				// die($ctrlData['layout']." => ".$ctrlData['layout']);
 				break;
 			case 'liste-tiers-all':
 				// liste des tiers
@@ -378,12 +368,39 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-scripts':
 				// liste des scripts - regroupés par dossiers
-				$ctrlData['h1'] = "Scripts FM ".$this->_fm->getCurrentBASE();
+				$newserv = $ctrlData['pagedata']["from_url"]['server'];
+				$newbase = $ctrlData['pagedata']["from_url"]['base'];
+
+				$ctrlData['h1'] = "Scripts de ".$newbase;
 				$ctrlData['forceload'] = true;
-				$ctrlData['scripts'] = array_merge($ctrlData,
-					array('liste' => $this->_fm->getScripts(null, null, $ctrlData['forceload'], false)),
-					array('group' => $this->_fm->getScripts(null, null, $ctrlData['forceload'], true))
+				$ctrlData['scripts'] = array_merge(
+					$ctrlData,
+					array('liste' => $this->_fm->getScripts($newserv, $newbase, $ctrlData['forceload'], false)),
+					array('group' => $this->_fm->getScripts($newserv, $newbase, $ctrlData['forceload'], true))
 					);
+				break;
+			case 'liste-layouts':
+				// liste des modèles
+				$newserv = $ctrlData['pagedata']["from_url"]['server'];
+				$newbase = $ctrlData['pagedata']["from_url"]['base'];
+				// 
+				$ctrlData['h1'] = "Modèles de ".$newbase;
+				$ctrlData['layouts'] = $this->_fm->getLayouts($newserv, $newbase, true);
+				break;
+			case 'liste-fields':
+				// liste des champs
+				$ctrlData['server'] = $ctrlData['pagedata']["from_url"]['server'];
+				$ctrlData['base'] = $ctrlData['pagedata']["from_url"]['base'];
+				$ctrlData['layout'] = $ctrlData['pagedata']["from_url"]['layout'];
+				// 
+				$ctrlData['h1'] = "Champs de ".$ctrlData['layout'];
+				$r = $this->_fm->getDetailFields($ctrlData['layout'], $ctrlData['base'], $ctrlData['server']);
+				if(is_array($r)) $ctrlData = array_merge($ctrlData, $r);
+					else $ctrlData['fields'] = $r;
+				// echo("<pre>");
+				// var_dump($ctrlData);
+				// echo("</pre>");
+				// die("Layout : ".$ctrlData['layout']);
 				break;
 			case 'liste-databases':
 				// liste des bases de données FM
@@ -392,8 +409,28 @@ class filemakerController extends fmController {
 				break;
 			case 'liste-servers':
 				// liste des bases de données FM
-				$ctrlData['h1'] = "Serveurs FM disponibles";
-				$ctrlData['servers'] = $this->_fm->getListOfServersNames();
+				$ctrlData['h1'] = "Serveurs FileMaker";
+				// $ctrlData['servers'] = $this->_fm->getListOfServersNames();
+				$ctrlData['SERVER'] = $this->_fm->getGlobalData();
+
+				$ctrlData['forceload'] = false;
+				$ctrlData['scripts'] = array();
+				foreach ($ctrlData['SERVER']['servers'] as $nomServer => $server) {
+					if($server['statut'] === true) {
+						$ctrlData['scripts'][$nomServer] = array();
+						foreach ($server['bases'] as $nomBase => $base) {
+							$ctrlData['scripts'][$nomServer][$nomBase] = array_merge(
+								$ctrlData,
+								array('liste' => $this->_fm->getScripts($nomServer, $nomBase, $ctrlData['forceload'], false)),
+								array('group' => $this->_fm->getScripts($nomServer, $nomBase, $ctrlData['forceload'], true))
+								);
+						}
+					}
+				}
+				// echo('<pre>');
+				// var_dump($ctrlData['SERVER']);
+				// echo('</pre>');
+				// die("OK !!! :-)");
 				break;
 			
 			default: // homepage, ou null
@@ -424,6 +461,20 @@ class filemakerController extends fmController {
 		return $this->render($this->verifVersionPage($data['page']), $data);
 	}
 
+	/**
+	 * Renvoie le template en fonction du type de rapport
+	 * @param string $type
+	 * @return string
+	 */
+	protected function getRapportTemplate($type) {
+		$templates = array(
+			"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP_001.html.twig",
+			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-SP_001.html.twig",
+			"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			);
+		if(isset($templates[$type])) return $templates[$type];
+			else return false;
+	}
 
 	/**
 	 * Génère un rapport d'id $id ou objet
@@ -442,21 +493,26 @@ class filemakerController extends fmController {
 		// 			['type'] => type de rapport
 		// 			['template'] => nom du template
 
+		$this->initFmData();
 		if($aeReponse === null) $aeReponse = $this->get('ensemble01services.aeReponse');
 		if($aeReponse->isValid()) {
 			// transforme l'ID en objet
-			if(!is_object($id_rapport)) {
-				$this->initFmData();
-				$id_rapport = $this->_fm->getOneRapport($id_rapport);
+			if(!is_object($id_rapport)) {				
+				$RAPP["rapport"] = $this->_fm->getOneRapport($id_rapport);
 				// Rapport non trouvé…
-				if(is_string($id_rapport)) return $aeReponse->addErrorMessage($id_rapport);
+				if(is_string($RAPP["rapport"])) return $aeReponse->addErrorMessage($RAPP["rapport"]);
+			} else {
+				$RAPP["rapport"] = $id_rapport;
 			}
+			unset($id_rapport);
 			// données globales
 			$RAPP["date"] = new DateTime;
-			$RAPP["rapport"] = $id_rapport;
 			$RAPP["format"] = $format;
-			$RAPP["type"] = $id_rapport->getField('type_rapport');
-			$RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_002.html.twig";
+			$RAPP["type"] = $RAPP["rapport"]->getField('type_rapport');
+			// Template du rapport
+			// $RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_002.html.twig";
+			// $RAPP["template"] = $this->_fm->getRapportTwigTemplate($RAPP["rapport"]);
+			$RAPP["template"] = $this->getRapportTemplate($RAPP["type"]);
 			// rapport de test
 			// $RAPP["template"] = "ensemble01filemakerBundle:pdf:testEmply.html.twig";
 			if(!$this->get('templating')->exists($RAPP["template"])) {
@@ -543,7 +599,7 @@ class filemakerController extends fmController {
 			if($aeReponse->isValid()) {
 				// génération ok
 				$add = "Génération OK";
-				$messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id);
+				$messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id); // ????? demander à SEB si c'est toujours utile
 				// $aeReponse->addErrorMessage($messtest);
 				// $repss = implode('<br>', $aeReponse->getAllMessages(true));
 			} else {
@@ -558,15 +614,39 @@ class filemakerController extends fmController {
 		return new Response($repss);
 	}
 
-	public function retablish_rapport_fmAction($rapport_id) {
-		return new Response('Rapport rétabli : '.$rapport_id);
-	}
+	// public function retablish_rapport_fmAction($rapport_id) {
+	// 	return new Response('Rapport rétabli : '.$rapport_id);
+	// }
 
-	public function generate_ajax_pdf_rapportAction($id, $pagedata = null) {
+	/**
+	 * Génération d'un rapport sur un appel AJAX
+	 * @param string $id - id du rapport
+	 * @return aeReponse
+	 */
+	public function generate_ajax_pdf_rapportAction($id) {
+		$format = 'pdf';
 		$aeReponse = $this->get('ensemble01services.aeReponse');
+		$this->initFmData();
 		$rapport = $this->_fm->getOneRapport($id);
 		if(is_object($rapport)) {
+			$this->_fm->effaceRapportFile($rapport);
 			$aeReponse = $this->generate_un_rapport($rapport, 'pdf', $aeReponse);
+			if($aeReponse->isValid()) {
+				$datassup = $aeReponse->getDataAndSupp();
+				$oneRapport = current($datassup);
+				$path = $this->_fm->verifAndGoDossier($oneRapport["rapport"]["type"]);
+				try {
+					$oneRapport['pdf']->Output($path.$oneRapport["rapport"]["ref_rapport"].'.'.$format, "F");
+					$aeReponse->addMessage("Rapport généré :");
+					$aeReponse->addMessage("Le rapport ".$oneRapport["rapport"]["type"]." réf.".$oneRapport["rapport"]["ref_rapport"]);
+				} catch (HTML2PDF_exception $e) {
+					$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
+				}
+				$repss = implode('<br>', $aeReponse->getAllMessages(true));
+				// if($aeReponse->isUnvalid()) {
+				// 	$aeReponse->setUnvalid("Echec génération/output PDF");
+				// }
+			}
 		} else {
 			$aeReponse->setUnvalid($rapport);
 		}
@@ -622,12 +702,12 @@ class filemakerController extends fmController {
 								$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 							}
 						}
-						break 2;
+						break 2; // --> break 2 parce qu'il ne peut y avoir qu'un rapport
 					case 'load':
 						if ($format === "pdf") {
 							$path = $this->_fm->verifAndGoDossier("TEMP");
 							try {
-								$tempfile = $oneRapport['rapport']["ref_rapport"].'.'.$format;
+								$tempfile = $path.$oneRapport['rapport']["ref_rapport"].'.'.$format;
 								// $oneRapport['pdf']->Output($path.$tempfile, "F");
 								// return new Response(file_get_contents($path.$tempfile), 200, array(
 								// 	'Content-Type' => 'application/force-download',
@@ -642,11 +722,11 @@ class filemakerController extends fmController {
 							$aeReponse->addErrorMessage('Le format demandé n\'est pas du PDF : '.$format);
 						}
 						$aeReponse->putErrorMessagesInFlashbag();
-						break 2;
+						break 2; // --> break 2 parce qu'il ne peut y avoir qu'un rapport
 					default: // file (sur disque dur)
-						$path = $this->_fm->verifAndGoDossier($oneRapport['rapport']["type"]);
+						$path = $this->_fm->getRapportFilePath($oneRapport['rapport']["rapport"]);
 						try {
-							$oneRapport['pdf']->Output($path.$oneRapport['rapport']["ref_rapport"].'.'.$format, "F");
+							$oneRapport['pdf']->Output($path['pathfile'], "F");
 							$aeReponse->addMessage("Le rapport ".$oneRapport['rapport']["type"]." réf.".$oneRapport['rapport']["ref_rapport"]." a été généré.");
 						} catch (HTML2PDF_exception $e) {
 							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
@@ -666,10 +746,13 @@ class filemakerController extends fmController {
 			$aeReponse->addErrorMessage('Opération de génération de rapports échouée');
 			$aeReponse->putErrorMessagesInFlashbag();
 		}
+		// echo('<pre>');
+		// var_dump($aeReponse->getAllMessages());
+		// die('</pre>');
 		// page à afficher
 		if(!isset($ctrlData['redirect'])) $ctrlData['redirect'] = 'liste-rapports-complete';
-		return $this->pagewebAction($ctrlData['redirect'], $ctrlData['pagedata_raw']);
-		// return $this->redirect($this->generateUrl("ensemble01filemaker_pageweb", array("page"=>'liste-rapports-complete', "pagedata" => '0')));
+		// return $this->pagewebAction($ctrlData['redirect'], $ctrlData['pagedata_raw']);
+		return $this->redirect($this->generateUrl("ensemble01filemaker_pageweb", array("page" => $ctrlData['redirect'], "pagedata" => '1')));
 	}
 
 	// http://localhost:8888/GitHub/baseproject/web/app_dev.php/fm/rapportfm-by-lot/000000147205-02-2015-17-42
@@ -744,7 +827,10 @@ class filemakerController extends fmController {
 				if(is_array($one2Rapport)) {
 					$type = $one2Rapport["rapport"]["type"];
 					$path = $this->_fm->verifAndGoDossier($type);
-					$templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_002.html.twig";
+					// $templt = "ensemble01filemakerBundle:pdf:rapport_".$type."_002.html.twig";
+					// $templt = $this->_fm->getRapportTwigTemplate($RAPP["rapport"]);
+					$templt = $this->getRapportTemplate($type);
+					// 
 					$nomRapport = $one2Rapport["rapport"]["ref_rapport"].'.'.$format;
 					// nom du fichier du rapport
 					$one2Rapport["rapport"]["ref_rapport"] = $this->_fm->getRapportFileName($one2Rapport["rapport"]["rapport"]);
@@ -804,13 +890,17 @@ class filemakerController extends fmController {
 	public function public_listeRapportsLotsAction($numlot = null) {
 		$data = array();
 		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
-		foreach($data["rapports"] as $rapport) {
-			// fichier PDF
-			if($this->_fm->verifRapportFile($rapport) === true) {
-				$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
-			} else {
-				$data['pdf'][$rapport->getField('id')] = false;
+		if(is_array($data["rapports"])) {
+			foreach($data["rapports"] as $rapport) {
+				// fichier PDF
+				if($this->_fm->verifRapportFile($rapport) === true) {
+					$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
+				} else {
+					$data['pdf'][$rapport->getField('id')] = false;
+				}
 			}
+		} else {
+			//
 		}
 		$data["numlot"] = $numlot;
 		return $this->render($this->verifVersionPage("live-rapports-by-lots", "public-views"), $data);
@@ -841,16 +931,21 @@ class filemakerController extends fmController {
 		$data["nombre"] = count($rapports);
 		$data['pdf_ok'] = array();
 		$data['pdf_no'] = array();
-		foreach($rapports as $rapport) {
-			// fichier PDF
-			$filePath = $this->_fm->getRapportFilePath($rapport);
-			if(is_array($filePath)) {
-				$data['pdf_ok'][$rapport->getField('id')] = $filePath;
-			} else {
-				$data['pdf_no'][$rapport->getField('id')] = false;
+		if(is_array($data["rapports"])) {
+			foreach($rapports as $rapport) {
+				// fichier PDF
+				$filePath = $this->_fm->getRapportFilePath($rapport);
+				if(is_array($filePath)) {
+					$data['pdf_ok'][$rapport->getField('id')] = $filePath;
+				} else {
+					$data['pdf_no'][$rapport->getField('id')] = false;
+				}
 			}
+			$data["nombrePDF"] = count($data['pdf_ok']);
+		} else {
+			// aucun rapport trouvé
+			$data["nombrePDF"] = 0;
 		}
-		$data["nombrePDF"] = count($data['pdf_ok']);
 		// ZIP
 		if($data["nombrePDF"] > 0) {
 			$zip = new ZipArchive();
@@ -884,13 +979,17 @@ class filemakerController extends fmController {
 	public function check_listeRapportsLotsAction($numlot = null) {
 		$data = array();
 		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
-		foreach($data["rapports"] as $rapport) {
-			// fichier PDF
-			if($this->_fm->verifRapportFile($rapport) === true) {
-				$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
-			} else {
-				$data['pdf'][$rapport->getField('id')] = false;
+		if(is_array($data["rapports"])) {
+			foreach($data["rapports"] as $rapport) {
+				// fichier PDF
+				if($this->_fm->verifRapportFile($rapport) === true) {
+					$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
+				} else {
+					$data['pdf'][$rapport->getField('id')] = false;
+				}
 			}
+		} else {
+			//
 		}
 		$data["numlot"] = $numlot;
 		$html = $this->renderView($this->verifVersionPage("liste-rapports-in-bloc", "public-views"), $data);
@@ -1010,21 +1109,30 @@ class filemakerController extends fmController {
 		$this->initFmData();
 		$CS = $this->_fm->getCurrentSERVER();
 		$CB = $this->_fm->getCurrentBASE();
+		// echo('1 - Current : '.$CS." / ".$CB."<br>");
 		// sélection
 		$this->selectService = $this->get('ensemble01services.selection');
 		$this->selectService->setSelectName('BSsideBar');
 		$this->selectService->addGroupe(array($this->_fm->getCurrentSERVER(), 'GEODIAG_SERVEUR', 'Projet_Liste'));
 		// $this->selectService->emptyRecherche();
-		$this->selectService
-			->setRecherche('intitule', '*')
-			->addRecherche('intitule', 'PROJET TEMOIN', '!')
-			// ->emptyRecherche();
-			;
+		$this->selectService->setRecherche('intitule', '*');
+		if(!$this->get('security.context')->isGranted('ROLE_SUPER_ADMIN')) {
+			$this->selectService->addRecherche('intitule', 'PROJET TEMOIN', '!');
+		}
 		// data
 		$data['title'] = $title;
 		$data['icon'] = $icon;
 		$data['affaires'] = $this->_fm->getAffaires($this->selectService->getCurrentSelect(self::FORCE_SELECT));
+
+		// $CS2 = $this->_fm->getCurrentSERVER();
+		// $CB2 = $this->_fm->getCurrentBASE();
+		// echo('2 - Current : '.$CS2." / ".$CB2."<br>");
+
 		$this->_fm->setCurrentBASE($CB, $CS);
+
+		// $CS3 = $this->_fm->getCurrentSERVER();
+		// $CB3 = $this->_fm->getCurrentBASE();
+		// echo('3 - Current : '.$CS3." / ".$CB3."<br>");
 		return $this->render('ensemble01filemakerBundle:menus:'.$template.'.html.twig', $data);
 	}
 
@@ -1285,6 +1393,28 @@ class filemakerController extends fmController {
 		}
 	}
 
+	public function datatables_statesaveAction() {
+		$error = array(
+			"result"	=> false,
+			"message"	=> "Utilisateur non trouvé",
+			"data"		=> "Utilisateur non trouvé",
+		);
+		$user = $this->get('security.context')->getToken()->getUser();
+		if(is_object($user)) {
+			$userManager = $this->get('fos_user.user_manager');
+			$post = $this->getRequest()->request->all();
+			$r = $user->addDtselection_withID($post['UrlI'], $post['DtId'], json_encode($post['data'], true));
+			if($r !== false) {
+				$userManager->updateUser($user);
+				$data = array(
+					"result"	=> true,
+					"message"	=> "Enregistrement réussi",
+					"data"		=> json_encode($post['data'], true),
+				);
+			} else $data = $error;
+		} else $data = $error;
+		return new JsonResponse(json_encode($data, true));
+	}
 
 
 }

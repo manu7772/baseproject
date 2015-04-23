@@ -1,14 +1,17 @@
+{% set idlistscripts = idify("lstcripts_" ~ titre) %}
 <div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">{{ titre }} <span class="badge">{{ liste|length }}</span></h3>
+	<div class="panel-heading list-toogle" data-toogle-target="#{{ idlistscripts }}">
+		<h3 class="panel-title">{{ titre }} <span class="badge">{{ liste|length }} script{{ plur(liste) }}</span></h3>
 	</div>
 	<div class="panel-body">
+		<span id="{{ idlistscripts }}">
 		{% for key,elem in liste %}
 			{% if elem is iterable %}
-				<p>{% include 'ensemble01filemakerBundle:blocs:recursive-liste.html.twig' with {liste: elem, titre: key} %}</p>
+			<p>{% include 'ensemble01filemakerBundle:blocs:recursive-liste.html.twig' with {liste: elem, titre: key} %}</p>
 			{% else %}
-				<p>{{ elem }}</p>
+			<p>{{ elem }}</p>
 			{% endif %}
 		{% endfor %}
+		</span>
 	</div>
 </div>

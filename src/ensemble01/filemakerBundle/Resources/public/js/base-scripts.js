@@ -165,7 +165,7 @@ jQuery(document).ready(function($) {
 	/* **************************************************** */
 	/* Liens externes -> dans une nouvelle fenêtre
 	/* **************************************************** */
-	$(".URLext").on("click", function(event) {
+	$("body").on("click", ".URLext", function(event) {
 		URL = $(this).attr("href");
 		if(URL == undefined) URL = $(">a", this).first().attr("href");
 		// alert(URL);
@@ -226,6 +226,15 @@ jQuery(document).ready(function($) {
 			}
 		});
 	}
+
+	$('.list-toogle').each(function() {
+		$($(this).attr('data-toogle-target')).hide(1);
+	});
+
+	$('body').on('click', '.list-toogle', function(event) {
+		// alert($(this).attr('data-toogle-target'));
+		$($(this).attr('data-toogle-target')).slideToggle(300);
+	});
 
 });
 

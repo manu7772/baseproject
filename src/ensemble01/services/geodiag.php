@@ -45,13 +45,26 @@ class geodiag extends filemakerservice2 {
 	/**
 	 * Renvoie le nom de fichier d'un rapport
 	 * @param mixed $rapport - id ou objet rapport
-	 * @return array
+	 * @return string
 	 */
 	public function getRapportFileName($rapport) { // rapport_nom
 		if(!is_object($rapport)) $rapport = $this->getOneRapportLight($rapport);
 		// echo("Rapport ".$rapport->getField('id')." = ".get_class($rapport)."<br>");
 		// return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('id')."-".$rapport->getField('num_porte')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
 		return $rapport->getField('rapport_nom');
+	}
+
+	/**
+	 * Renvoie le nom du fichier de template d'un rapport
+	 * @param mixed $rapport - id ou objet rapport
+	 * @param string $ext - extension twig ('html.twig' par défaut)
+	 * @return string
+	 */
+	public function getRapportTwigTemplate($rapport, $ext = 'html.twig') { // rapport_nom
+		if(!is_object($rapport)) $rapport = $this->getOneRapportLight($rapport);
+		// echo("Rapport ".$rapport->getField('id')." = ".get_class($rapport)."<br>");
+		// return $rapport->getField('Fk_Id_Lieu')."-".$rapport->getField('id')."-".$rapport->getField('num_porte')."-".$rapport->getField('local_adresse')."-".$rapport->getField('local_ville')."-".$rapport->getField('local_cp')."-".$rapport->getField('type_rapport')."-v".$rapport->getField('version');
+		return $rapport->getField('rapport_twig_template').$ext;
 	}
 
 	/**
@@ -84,12 +97,10 @@ class geodiag extends filemakerservice2 {
 	 * @return boolean
 	 */
 	public function verifRapportFile($rapport, $ext = 'pdf') {
-		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
 		// dossiers etc.
-		if(is_object($rapport)) {
-			$dossier = $rapport->getField('type_rapport');
-			$this->verifAndGoDossier($dossier);
-			if(@file_exists($this->aetools->getCurrentPath().$this->getRapportFileName($rapport).'.'.$ext)) {
+		$pathrapport = $this->getRapportFilePath($rapport);
+		if($pathrapport !== false) {
+			if(@file_exists($pathrapport['pathfile'])) {
 				$r = true;
 			} else {
 				$r = false;
@@ -99,7 +110,7 @@ class geodiag extends filemakerservice2 {
 	}
 
 	/**
-	 * Renvoie le nom du fichier et son chemin (SI le fichier existe bien / sinon renvoie false)
+	 * Renvoie le nom du fichier et son chemin
 	 * @param mixed $rapport - id ou objet rapport
 	 * @param string $ext - (optionnel - 'pdf' par défaut) extension du nom du fichier
 	 * @return array / false
@@ -109,15 +120,15 @@ class geodiag extends filemakerservice2 {
 		// dossiers etc.
 		if(is_object($rapport)) {
 			$r = array();
-			$dossier = $rapport->getField('type_rapport');
-			$this->verifAndGoDossier($dossier);
+			$this->verifAndGoDossier($rapport->getField('type_rapport'));
 			$r['file'] = $this->getRapportFileName($rapport).'.'.$ext;
 			$r['paht'] = $this->aetools->getCurrentPath();
 			$r['pathfile'] = $r['paht'].$r['file'];
-			if(!@file_exists($r['pathfile'])) {
-				unset($r);
-				$r = false;
-			}
+			// if(!@file_exists($r['pathfile'])) {
+			// 	unset($r);
+			// 	$r = false;
+			// }
+			// echo('File : '.$r['pathfile'].'<br>');
 		} else $r = false;
 		return $r;
 	}
@@ -129,7 +140,7 @@ class geodiag extends filemakerservice2 {
 	 * @return boolean
 	 */
 	public function effaceRapportFile($rapport, $ext = 'pdf') {
-		if(!is_object($rapport)) $rapport = $this->getOneRapportLight(strval($rapport));
+		if(!is_object($rapport)) $rapport = $this->getOneRapport($rapport);
 		// dossiers etc.
 		if(is_object($rapport)) {
 			$dossier = $rapport->getField('type_rapport');

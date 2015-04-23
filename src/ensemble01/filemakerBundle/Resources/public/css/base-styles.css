@@ -39,3 +39,9 @@ ul {
 	font-style: italic;
 }
 
+.list-closed {
+	cursor: pointer;
+}
+.list-closed > * {
+	display: none;
+}

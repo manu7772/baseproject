@@ -5,8 +5,12 @@
 {% endblock h1 %}
 {% block body %}
 	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li><a href="#">{{ pagedata.from_url.server }}</a></li>
+			<li class="active">{{ pagedata.from_url.base }}</li>
+		</ol>
 		{% if scripts.group is iterable %}
-		<h3 class="well well-xs">Liste des scripts de la base {{ fmdev['Base courante'] }} <small>({{ fmdev['Serveur courant'] }})</small><br />
+		<h3 class="well well-xs">
 			<small>
 				{{ scripts.liste|length }} résultat(s) <span class="caret"></span>
 				{% if forceload == true %}
@@ -18,7 +22,7 @@
 		</h3>
 		{% include 'ensemble01filemakerBundle:blocs:recursive-liste.html.twig' with {liste: scripts.group, titre: 'Scripts filemaker'} %}
 		{% else %}
-		<h3 class="well well-xs">Liste des scripts<br /><small>Erreur</small></h3>
+		<h3 class="well well-xs"><small>Erreur</small></h3>
 		<div class="alert alert-danger" role="alert">{{ scripts.group|raw }}</div>
 		{% endif %}
 	</div>
