@@ -20,10 +20,10 @@
 					<small>{{ rapport.getField("type_rapport")|raw }}</small>
 				</h5>
 				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
-					<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: true}) }}" role="button" title="Charger PDF">
+					<a class="btn btn-primary" href="{{ url('ensemble01site_rapportsload', {id: rapport.getField('id')}) }}" role="button" title="Charger PDF">
 						<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
 					</a>
-					<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id'), load: false}) }}" role="button" title="Visualiser PDF">
+					<a class="btn btn-primary URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" title="Visualiser PDF">
 						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 					</a>
 					<a class="btn btn-primary rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title="Regénérer PDF">

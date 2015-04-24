@@ -12,17 +12,19 @@ jQuery(document).ready(function($) {
 	/* **************************************************** */
 	/* Liens externes -> dans une nouvelle fenêtre
 	/* **************************************************** */
-	$(".URLext").on("click", function(event) {
+	$('body').on("click", ".URLext", function(event) {
 		URL = $(this).attr("href");
 		if(URL == undefined) URL = $("a", this).first().attr("href");
 		// alert(URL);
-		window.open(URL);
+		if(URL != undefined) {
+			window.open(URL);
+		}
 		event.preventDefault();
 		return false;
 	});
 
 	// Désactivation des liens sur les <a href="#">
-	$("a").each(function() {
+	$('body a').each(function() {
 		if($(this).attr('href') == "#") {
 			// $(this).css('cursor', 'default');
 			$(this).addClass('disabled');
@@ -40,21 +42,23 @@ jQuery(document).ready(function($) {
 	/* **************************************************** */
 	/* Fenêtre de visu des rapports + Export ZIP
 	/* **************************************************** */
-	$('body').on('click', '.exportZipRapports', function() {
-		// alert('URL : \n' + $(this).attr('data-href'));
-		this.texte = $(this).html();
-		$(this).html('Chargment…');
-		var objparent = this;
-		$.ajax({
-			type: "POST",
-			url: $(this).attr('data-url'),
-			statusCode: {
-				500: function() { alert('Erreur 500 - Erreur de script\nURL : '+$(objparent).attr('data-url')); },
-				404: function() { alert('Erreur 404 - Page inconnue\nURL : '+$(objparent).attr('data-url')); }
-			}
-		});
-		setTimeout(function(){ $(objparent).html(objparent.texte); }, 500);
-	});
+	// $('body').on('click', '.exportZipRapports', function(event) {
+	// 	event.preventDefault();
+	// 	// alert('URL : \n' + $(this).attr('data-href'));
+	// 	this.texte = $(this).html();
+	// 	$(this).html('Chargment…');
+	// 	var objparent = this;
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: $(this).attr('href')
+	// 		// statusCode: {
+	// 		// 	// 200: function() { alert('Fichier ZIP téléchargé.'); },
+	// 		// 	500: function() { alert('Erreur 500 - Erreur de script\nURL : '+$(objparent).attr('data-url')); },
+	// 		// 	404: function() { alert('Erreur 404 - Page inconnue\nURL : '+$(objparent).attr('data-url')); }
+	// 		// }
+	// 	});
+	// 	setTimeout(function(){ $(objparent).html(objparent.texte); }, 500);
+	// });
 
 	var freq = 1000;
 	var compteur = 0;
@@ -65,12 +69,18 @@ jQuery(document).ready(function($) {
 		$('.ajax-reload').each(function(elem) {
 			var objparent2 = this;
 			if($(this).attr('data-url') != undefined) {
-				$(this).load($(this).attr('data-url'), function( response, status, xhr ) {
-					if ( status == "error" ) {
-						var msg = "Une erreur est survenue : ";
-						$(objparent2).html( msg + xhr.status + "/" + xhr.statusText );
+				$.get($(this).attr('data-url'), function(data) {
+					if($(objparent2).html() != data) {
+						$(objparent2).html(data);
+						// alert('Changing…');
 					}
 				});
+				// $(this).load($(this).attr('data-url'), function( response, status, xhr ) {
+				// 	if ( status == "error" ) {
+				// 		var msg = "Une erreur est survenue : ";
+				// 		$(objparent2).html( msg + xhr.status + "/" + xhr.statusText );
+				// 	}
+				// });
 			}
 		});
 		ROK = $('body .rapport-ok').length;
@@ -91,7 +101,9 @@ jQuery(document).ready(function($) {
 
 	$('body').on('click', '.rapportPDFrefresh', function(event) {
 		event.preventDefault();
+		this.loadimg = false;
 		if($(this).attr('data-loader-image').length) {
+			this.loadimg = $(this).parent().html();
 			$(this).parent().html('<div style="width:100%;height:34px;text-align:center;"><img src="'+$(this).attr('data-loader-image')+'"></div>');
 		}
 		// $(this).addClass('disabled');
@@ -112,6 +124,7 @@ jQuery(document).ready(function($) {
 				alert(retour.ERRORmessages.join('\n'));
 			}
 		});
+		if(this.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
 		return false;
 	});
 

@@ -18,9 +18,13 @@ ensemble01site_rapportPDFrefresh:
     path:     /rapportpdfrefresh/{id}/{pagedata}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:generate_ajax_pdf_rapport, pagedata: null}
 
+ensemble01site_rapportsload:
+    path:     /rapport-pdf-load/{id}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:file_pdf_rapport}
+
 ensemble01site_rapportscreen:
-    path:     /rapport-screen/{id}/{load}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:visualise_rapport, load: false}
+    path:     /rapport-pdf-screen/{id}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:screen_pdf_rapport}
 
 # génération d'un rapport individuel via FM
 ## --> lancé par FM pour générer les lots de rapports

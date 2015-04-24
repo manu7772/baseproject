@@ -757,27 +757,44 @@ class filemakerController extends fmController {
 
 	// http://localhost:8888/GitHub/baseproject/web/app_dev.php/fm/rapportfm-by-lot/000000147205-02-2015-17-42
 
-	public function visualise_rapportAction($id, $load = false) {
-		if($load === true) $load = 'application/force-download';
-			else $load = 'application/pdf';
+	/**
+	 * Télécharge le PDF d'un rapport
+	 * @param string $id - id du rapport
+	 * @return Response
+	 */
+	public function file_pdf_rapportAction($id) {
 		$this->initFmData();
 		$file = $this->_fm->getRapportFilePath($id);
+		if(!file_exists($file['pathfile'])) return new Response('Fichier PDF absent.');
 		if($file !== false) {
-			$response = new Response();
-			$response->setContent(file_get_contents($file['pathfile']));
-			$response->headers->set('Content-Type', $load); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+			$response = new Response(file_get_contents($file['pathfile']));
+			$response->headers->set('Content-Type', 'application/pdf'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
 			$response->headers->set('Content-Length', filesize($file['pathfile']));
-			// $response->headers->set('Content-disposition', 'filename='.$file['file']);
-			$response->headers->set('Content-disposition', 'attachment; filename='.$file['file']);
+			$response->headers->set('Content-Disposition', 'attachment;filename=\''.$file['file'].'\'');
 			return $response;
-			// return new Response(file_get_contents($file['pathfile']), 200, array(
-			// 	'Content-Length: ' => filesize($file['pathfile']),
-			// 	// 'Content-Type' => 'application/force-download',
-			// 	'Content-Type' => 'application/pdf',
-			// 	// 'Content-Disposition' => 'attachment; filename='.$file['file']
-			// 	'Content-Disposition' => 'attachment; filename='.$file['file']
-			// 	));
-		} else return new Response('<h2>Rapport PDF '.$id.' manquant.</h2><p>Veuiller regénérer le rapport PDF pour pouvoir le visualiser.</p>');
+		}
+		return new Response('Rapport manquant.');
+	}
+
+	/**
+	 * Visualise le PDF d'un rapport
+	 * @param string $id - id du rapport
+	 * @return Response
+	 */
+	public function screen_pdf_rapportAction($id) {
+		$this->initFmData();
+		$file = $this->_fm->getRapportFilePath($id);
+		if(!file_exists($file['pathfile'])) return new Response('Fichier PDF absent.');
+		if($file !== false) {
+			$response = new Response(file_get_contents($file['pathfile']));
+			$response->headers->set('Content-Type', 'application/pdf'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+			$response->headers->set('Cache-Control', 'private, max-age=0, must-revalidate');
+			$response->headers->set('Pragma', 'public');
+			$response->headers->set('Content-Length', filesize($file['pathfile']));
+			$response->headers->set('Content-Disposition', 'inline;filename=\''.$file['file'].'\'');
+			return $response;
+		}
+		return new Response('Rapport manquant.');
 	}
 
 	/**
@@ -913,15 +930,16 @@ class filemakerController extends fmController {
 	 * @return Response
 	 */
 	public function ZIP_listeRapportsLotsAction($numlot = null) {
-		// dossier
+		// dossier 
 		$aetools = $this->get('ensemble01services.aetools');
 		$FMparams = $this->container->getParameter('fmparameters');
 		$rootpath = $FMparams['dossiers']['pathrapports'];
+		$aetools->setWebPath();
+		$aetools->verifDossierAndCreate($rootpath);
 		$nomDossierZip = $FMparams['dossiers']['zipfiles'];
 		$aetools->setWebPath($rootpath);
 		$aetools->verifDossierAndCreate($nomDossierZip);
 		// $aetools->setWebPath($rootpath.$nomDossierZip.'/');
-		// $aetools->setWebPath();
 
 		$data = array();
 		$data['error'] = null;
@@ -931,7 +949,7 @@ class filemakerController extends fmController {
 		$data["nombre"] = count($rapports);
 		$data['pdf_ok'] = array();
 		$data['pdf_no'] = array();
-		if(is_array($data["rapports"])) {
+		if(is_array($rapports)) {
 			foreach($rapports as $rapport) {
 				// fichier PDF
 				$filePath = $this->_fm->getRapportFilePath($rapport);
@@ -949,25 +967,33 @@ class filemakerController extends fmController {
 		// ZIP
 		if($data["nombrePDF"] > 0) {
 			$zip = new ZipArchive();
-			$aetools->setWebPath($rootpath.$nomDossierZip.'/');
+			$aetools->setWebPath($rootpath.$nomDossierZip);
 			// On crée l’archive.
-			if($zip->open($aetools->getCurrentPath().$data['fichierZip'], ZipArchive::CREATE) == TRUE) {
+			$pathfileZip = $aetools->getCurrentPath().$data['fichierZip'];
+			// die(filesize($pathfileZip));
+			if($zip->open($pathfileZip, ZipArchive::CREATE) == TRUE) {
 				$aetools->setWebPath();
 				foreach ($data['pdf_ok'] as $id => $fichier) {
 					# $fichier['pathfile']
 					$zip->addFile($fichier['pathfile'], '/'.$fichier['file']);
 				}
 				$zip->close();
-				$aetools->setWebPath($rootpath.$nomDossierZip.'/');
 				$response = new Response();
-				$response->setContent(file_get_contents($aetools->getCurrentPath().$data['fichierZip']));
-				$response->headers->set('Content-Type', 'application/force-download'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
-				$response->headers->set('Content-Length', filesize($aetools->getCurrentPath().$data['fichierZip']));
-				$response->headers->set('Content-disposition', 'attachment; filename='.$data['fichierZip']);
+				$response->setContent(file_get_contents($pathfileZip));
+				// $response->headers->set('Content-Type', 'application/octet-stream'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+				// $response->headers->set('Content-Type', 'application/force-download'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+				$response->headers->set('Content-Type', 'application/zip'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
+				$response->headers->set('Content-Length', filesize($pathfileZip));
+				$response->headers->set('Content-Disposition', 'attachment;filename=\''.$data['fichierZip'].'\'');
+				// return new JsonResponse(json_encode($data, true));
+				// return new Response(
+				// 	filesize($pathfileZip)."Ko<br>Fichier : ".$data['fichierZip']
+				// 	);
+				// --> http://localhost:8888/GitHub/baseproject/web/app_dev.php/zip-rapports-lot/… (num du lot)
 				return $response;
 			} else $data['error'] = 'Création archive zip impossible.';
 		} else $data['error'] = 'Il n\'y a aucun rapport à compresser.';
-		return new JsonResponse(json_encode($data, true));
+		return new Response($data['error']);
 	}
 
 	/**

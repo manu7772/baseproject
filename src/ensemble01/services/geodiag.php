@@ -122,8 +122,8 @@ class geodiag extends filemakerservice2 {
 			$r = array();
 			$this->verifAndGoDossier($rapport->getField('type_rapport'));
 			$r['file'] = $this->getRapportFileName($rapport).'.'.$ext;
-			$r['paht'] = $this->aetools->getCurrentPath();
-			$r['pathfile'] = $r['paht'].$r['file'];
+			$r['path'] = $this->aetools->getCurrentPath();
+			$r['pathfile'] = $r['path'].$r['file'];
 			// if(!@file_exists($r['pathfile'])) {
 			// 	unset($r);
 			// 	$r = false;

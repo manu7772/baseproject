@@ -38,7 +38,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li id="download-Zip-Button-1" style="display:none;">
-						<a data-numlot="{{ numlot }}" href='{{ url("ensemble01filemaker_ZIP_listeRapportsLots", {numlot: numlot}) }}' type="button" class="btn btn-sm btn-primary navbar-btn exportZipRapports">
+						<a data-numlot="{{ numlot }}" href='{{ url("ensemble01filemaker_ZIP_listeRapportsLots", {numlot: numlot}) }}' type="button" class="btn btn-sm btn-primary navbar-btn">
 							<span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;Télécharger ZIP
 						</a>
 					</li>
@@ -61,7 +61,7 @@
 				<h2 class="page-header">
 					{% if rapports is iterable and rapports|length > 0 %}
 						<span id="rapport-quantity">{% if rapports is iterable %}{{ rapports|length }}{% endif %}</span>
-						{{ rapports[0].getField('type_rapport') }}<small> - {{ rapports[0].getField('local_adresse') }} {{ rapports[0].getField('local_cp') }} {{ rapports[0].getField('local_ville') }}</small>
+						{{ rapports[0].getField('type_rapport') }}<small> - {{ rapports[0].getField('local_adresse') }} - {{ rapports[0].getField('local_cp') }} {{ rapports[0].getField('local_ville') }}</small>
 					{% elseif numlot is not null %}
 						Lot {{ numlot }} <small>Aucun rapport trouvé.</small>
 					{% endif %}
