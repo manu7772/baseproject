@@ -243,12 +243,25 @@ jQuery(document).ready(function($) {
 	var backgroundFCY = 'rgba(0, 0, 0, 0.60)';
 
 	$('.fancybox').fancybox({
-		maxWidth	: 640,
-		width		: 640,
+		openEffect	: 'fade',
+		closeEffect	: 'fade',
+        padding     : 6,
+		helpers : {
+			overlay : {
+				css : {
+					'background' : backgroundFCY
+				}
+			}
+		}
+	});
+
+	$('.fancyboxext').fancybox({
+		maxWidth	: 800,
+		width		: 800,
 		closeClick	: false,
 		openEffect	: 'fade',
 		closeEffect	: 'fade',
-		title 		: 'Rapport en html',
+		title 		: true,
         padding     : 6,
 		helpers : {
 			overlay : {

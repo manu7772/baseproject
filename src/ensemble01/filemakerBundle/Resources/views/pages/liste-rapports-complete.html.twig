@@ -16,13 +16,12 @@
 					<th>Lieu</th>
 					<th>Local</th>
 					<th>Type <small>/ Révision</small></th>
-					{# <th>Actions</th> #}
 					<!-- <th>Numéro lot</th> -->
 					<th>Description</th>
 					<th>Adresse</th>
 					<th style="text-align:center;">PDF</th>
 					{% if is_granted("ROLE_SUPER_ADMIN") %}
-					<th style="text-align:center;" class="warning">Sadmin</th>
+					<th style="text-align:center;" class="warning">S.Admin</th>
 					{% endif %}
 				</tr>
 			</thead>
@@ -35,26 +34,6 @@
 					<td>{{ local.getField("Fk_Id_Lieu")|raw }}</td>
 					<td>{{ local.getField("Fk_Id_Local")|raw }}</td>
 					<td>{{ typerapport }}<small>{{ getRev(local.getField("version")) }}</small></td>
-				{#	<td>
-						{% if local.getField('a_traiter') == "0" %}
-						<div class="btn-group">
-							<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" type="button" class="btn btn-warning btn-xs">Générer PDF</a>
-							<button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								<span class="caret"></span>
-								<span class="sr-only">Toggle Dropdown</span>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-right btn-xs" role="menu">
-								<!-- <li><a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'load', format: 'pdf'}) }}">Télécharger PDF</a></li> -->
-								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'pdf'}) }}">Prévisualiser PDF</a></li>
-								<li class="divider"></li>
-								<li><a class="URLext" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}">Prévisualiser HTML</a></li>
-							</ul>
-						</div>
-						{% endif%}
-						{% if is_granted("ROLE_SUPER_ADMIN") and local.getField('a_traiter') != "0" %}
-						<!-- <a href="{{ url('ensemble01filemaker_retablirUnRapport', {id: local.getField('id'), pagedata: {redirect: page}|json_encode() }) }}" type="button" class="btn btn-success btn-xs">Rétablir rapport</a> -->
-						{% endif%}
-					</td>	#}
 					<!-- <td title='{{ local.getField("num_lot")|raw }}'>{{ local.getField("num_lot")|raw }}</td> -->
 					<td title='{{ local.getField("Rapport::description")|raw }}'>{{ phraseCut(local.getField("Rapport::description")|raw, 12) }}</td>
 					<td title='{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}'>{{ phraseCut(local.getField("local_adresse")|raw ~ local.getField("local_cp")|raw ~ local.getField("local_ville")|raw, 20) }}</td>
@@ -71,7 +50,7 @@
 					</td>
 					{% if is_granted("ROLE_SUPER_ADMIN") %}
 					<th style="text-align:center;" class="warning">
-						<a class="fancybox fancybox.iframe" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}" title="Rapport {{ idrapport }} en HTML"><span class="glyphicon glyphicon-list-alt" style="color:orange;" aria-hidden="true"></span></a>
+						<a class="fancyboxext fancybox.iframe" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}" title="Rapport {{ idrapport }} en HTML"><span class="glyphicon glyphicon-list-alt" style="color:orange;" aria-hidden="true"></span></a>
 						&nbsp;
 					</th>
 					{% endif %}

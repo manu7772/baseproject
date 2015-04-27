@@ -1,10 +1,10 @@
-{% macro headDoc(rapport, imgpath, format, params) %}
+{% macro headDoc(rapport, media, date, imgpath, format, params) %}
 	{% import _self as bases %}
 
-	{% set defaultBacktop = '20mm' %}
+	{% set defaultBacktop = '0mm' %}
 	{% set defaultBackbottom = '16mm' %}
-	{% set defaultBackleft = '12mm' %}
-	{% set defaultBackright = '12mm' %}
+	{% set defaultBackleft = '0mm' %}
+	{% set defaultBackright = '0mm' %}
 	{% set defaultOrientation = 'P' %}
 	{% set defaultLang = 'fr' %}
 	{% set defaultHttpEquiv = 'Content-Type' %}
@@ -19,8 +19,8 @@
 	{% if format|default(defaultFormat) == 'pdf' %}
 		{{ bases.writeCSS(imgpath) }}
 		<page backtop="{{ params.backtop|default(defaultBacktop) }}" backbottom="{{ params.backbottom|default(defaultBackbottom) }}" backleft="{{ params.backleft|default(defaultBackleft) }}" backright="{{ params.backright|default(defaultBackright) }}" orientation="{{ params.orientation|default(defaultOrientation) }}">
-			{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport) }}{% endif %}
-			{% if params.footer|default(defaultFooter) == true %}{{ bases.footer() }}{% endif %}
+			{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, media, date) }}{% endif %}
+			{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, media, date) }}{% endif %}
 	{% else %}
 		<!DOCTYPE html>
 		<html lang="{{ params.lang|default(defaultLang) }}">
@@ -45,7 +45,7 @@
 
 
 
-{% macro newPage(rapport, format, params) %}
+{% macro newPage(rapport, media, date, format, params) %}
 	{% import _self as bases %}
 
 	{% set defaultBacktop = '20mm' %}
@@ -58,14 +58,11 @@
 	{% set defaultFormat = 'pdf' %}
 
 	{% if format|default(defaultFormat) == 'pdf' %}
-		{% if params is defined %}
-			{% if params is iterable %}
+		{% if params|default('old') != 'old' %}
+			{% if params is not iterable %}{% set params = [] %}{% endif %}
 			<page backtop="{{ params.backtop|default(defaultBacktop) }}" backbottom="{{ params.backbottom|default(defaultBackbottom) }}" backleft="{{ params.backleft|default(defaultBackleft) }}" backright="{{ params.backright|default(defaultBackright) }}" orientation="{{ params.orientation|default(defaultOrientation) }}">
-				{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport) }}{% endif %}
-				{% if params.footer|default(defaultFooter) == true %}{{ bases.footer() }}{% endif %}
-			{% else %}
-			<page pageset="old">
-			{% endif %}
+				{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, media, date) }}{% endif %}
+				{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, media, date) }}{% endif %}
 		{% else %}
 			<page pageset="old">
 		{% endif %}
@@ -86,13 +83,13 @@
 
 
 
-{% macro header(rapport) %}
+{% macro header(rapport, media, date) %}
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
 				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
 				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
+				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
 		<br>
@@ -100,7 +97,7 @@
 	</page_header>
 {% endmacro %}
 
-{% macro footer() %}
+{% macro footer(rapport, media, date) %}
 	<page_footer>
 		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
 		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>

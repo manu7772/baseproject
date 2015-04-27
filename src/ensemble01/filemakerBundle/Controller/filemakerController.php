@@ -477,12 +477,22 @@ class filemakerController extends fmController {
 	}
 
 	/**
+	 * Renvoie un tableau des médias du rapport (base64)
+	 * @param objet $rapport - objet rapport
+	 * @return array
+	 */
+	protected function getMediasFromRapport($rapport) {
+		return array();
+	}
+
+	/**
 	 * Génère un rapport d'id $id ou objet
 	 * @param mixed $id - id du rapport ou objet rapport
 	 * @param string $format - type de retour -> "pdf" ou "html"
 	 * @return aeReponse
 	 */
 	public function generate_un_rapport($id_rapport = null, $format = "pdf", $aeReponse = null) {
+		set_time_limit(360); // délai pour le script : 6 min
 		// renvoie un objet aeReponse
 		// data[id] => array()
 		// 		['pdf'] => objet HTML2PDF
@@ -537,6 +547,7 @@ class filemakerController extends fmController {
 					default: // PDF ou autre
 						$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
 						$html = null;
+						$RAPP['media'] = $this->getMediasFromRapport($RAPP['rapport']->getField('id'));
 						try {
 							$html = $this->renderView($RAPP["template"], $RAPP);
 						} catch (\Exception $e){
@@ -567,6 +578,7 @@ class filemakerController extends fmController {
 							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 						}
 						unset($html2pdf);
+						unset($RAPP);
 						break;
 				}
 			}

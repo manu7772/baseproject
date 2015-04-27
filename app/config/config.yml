@@ -36,8 +36,8 @@ twig:
         resources:
             - ':Form:fields.html.twig'
     globals:
-        formatDateTwig: %formatDateTwig%
-        timezoneTwig: %timezone%
+        formatDateTwig:  %formatDateTwig%
+        timezoneTwig:    %timezone%
 
 # Assetic Configuration
 assetic:
