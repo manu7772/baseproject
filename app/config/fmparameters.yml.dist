@@ -2,7 +2,7 @@ parameters:
     fmparameters:
         dossiers:
             pathrapports: Rapports/
-            zipfiles:     ZIP
+            zipfiles:     ZIP/
         servers:
             Geodem_mac_mini:
                 ip:                     http://91.90.103.107

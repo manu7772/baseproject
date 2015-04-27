@@ -236,6 +236,29 @@ jQuery(document).ready(function($) {
 		$($(this).attr('data-toogle-target')).slideToggle(300);
 	});
 
+	/* **************************************************** */
+	/* FANCYBOX
+	/* **************************************************** */
+
+	var backgroundFCY = 'rgba(0, 0, 0, 0.60)';
+
+	$('.fancybox').fancybox({
+		maxWidth	: 640,
+		width		: 640,
+		closeClick	: false,
+		openEffect	: 'fade',
+		closeEffect	: 'fade',
+		title 		: 'Rapport en html',
+        padding     : 6,
+		helpers : {
+			overlay : {
+				css : {
+					'background' : backgroundFCY
+				}
+			}
+		}
+	});
+
 });
 
 

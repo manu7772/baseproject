@@ -4,7 +4,7 @@
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
 
-{{ base.headDoc(rapport, imgpath, format) }}
+{{ base.headDoc(format, 'styles_001_pdf') }}
 
 	<div class="bloc1">
 		<h1 class='center'>ANNEXE N°5.1</h1>
@@ -96,7 +96,7 @@
 					<span class="underline">Opérateur de repérage amiante et Signataire</span>&nbsp;:
 					<br>
 					<span class="bold">
-						{{ rapport.getField('tech_signataire_prenom') }}&nbsp;{{ rapport.getField('tech_signataire_nom') }}
+						{{ rapport.getField('tech_prenom') }}&nbsp;{{ rapport.getField('tech_nom') }}
 					</span>
 					<br>
 					<span class="underline">Laboratoire d’analyses agréé</span>&nbsp;: 
@@ -132,14 +132,16 @@
 
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 
 
+		{# !!! SOMMAIRE !!! #}
+		{# !!! SOMMAIRE !!! #}
 		{# !!! SOMMAIRE !!! #}
 
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<a name="page3"></a>
@@ -182,7 +184,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 			<h5>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h5>
@@ -230,13 +232,13 @@
 			L’opérateur de repérage<br>
 			<br>
 			Diagnostiqueur<br>
-			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
-			{{ image_base64(rapport.getField("tech_signataire_signature"), null, null, '70mm')|raw }}
+			{{ rapport.getField('tech_prenom') }} {{ rapport.getField('tech_nom') }}<br>
+			{{ image_base64(rapport.getField("tech_signature"), null, null, '70mm')|raw }}
 		</p>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
@@ -278,7 +280,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<bookmark title="4. REPÉRAGE" level="0" ></bookmark>
@@ -333,7 +335,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
@@ -395,7 +397,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
@@ -484,7 +486,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
@@ -538,7 +540,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<bookmark title="8. ANNEXES" level="0" ></bookmark>
@@ -557,7 +559,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
@@ -566,7 +568,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<h3>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h3>
@@ -585,7 +587,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
@@ -607,18 +609,18 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
-	{% if rapport.getField("tech_signataire_certificat") != "" and rapport.getField("tech_signataire_certificat") is not null %}
-	{{ image_base64(rapport.getField("tech_signataire_certificat"), null, null, '100%')|raw }}
+	{% if rapport.getField("tech_certificat") != "" and rapport.getField("tech_certificat") is not null %}
+	{{ image_base64(rapport.getField("tech_certificat"), null, null, '100%')|raw }}
 	{% else %}
 	<h3>Certificat introuvable</h3>
 	{% endif %}
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
@@ -627,7 +629,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 	
 {% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
@@ -639,14 +641,14 @@
 {% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '100%')|raw }}
 {% endif %}
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
@@ -655,7 +657,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<h5>1. Critères d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
@@ -691,7 +693,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
@@ -710,7 +712,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
@@ -719,7 +721,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
@@ -739,7 +741,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
@@ -750,7 +752,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
@@ -759,7 +761,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à la présence d’amiante dans un bâtiment. Elle doit être complétée par la définition et la mise en oeuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans le bâtiment et des personnes appelées à intervenir sur les matériaux ou produits contenant de l’amiante. Les recommandations générales de sécurité définies ci-après rappellent les règles de base destinées à prévenir les expositions. Le propriétaire (ou, à défaut, l’exploitant) de l’immeuble concerné adapte ces recommandations aux particularités de chaque bâtiment et de ses conditions d’occupation ainsi qu’aux situations particulières rencontrées.</p>
@@ -775,7 +777,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 	<h3>2.&nbsp;Intervention de professionnels soumis aux dispositions du code du travail</h3>
@@ -799,7 +801,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 		<p class='underline'>a)&nbsp;Conditionnement des déchets</p>
@@ -827,7 +829,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 		<div style="height:80mm;width:100%;"></div>
@@ -840,7 +842,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, format) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
 
 		<div style="height:80mm;width:100%;"></div>
@@ -849,3 +851,4 @@
 
 </div>
 {{ base.endDoc(format) }}
+

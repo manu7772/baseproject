@@ -1,29 +1,10 @@
+{# utilisation des macros => http://twig.sensiolabs.org/doc/tags/macro.html #}
+{% import "ensemble01filemakerBundle:pdf:base_RDM-DAPP_001.html.twig" as base %}
+
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
 
-{% if format == "pdf" %}
-	{% set sautMemePage = '</div></page><page pageset="old"><div class="text-content">' %}
-{% else %}
-	{% set sautMemePage = '</div><hr><div class="text-content">' %}
-{% endif %}
-
-{% if format == 'pdf' %}
-{% include('ensemble01filemakerBundle:pdf:styles_001_' ~ format ~ '.html.twig') %}
-<page backtop="0mm" backbottom="16mm" backleft="0mm" backright="0mm" orientation="P">
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
-	</page_footer>
-{% else %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	{% include('ensemble01filemakerBundle:pdf:styles_001_pdf.html.twig') %}
-</head>
-<body>
-{% endif %}
+{{ base.headDoc(rapport, imgpath, format) }}
 
 	<div class="bloc1">
 		<h1 class='center'>ANNEXE N°5.1</h1>
@@ -71,12 +52,12 @@
 					{{ rapport.getField('client_adresse') }}<br>
 					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
 				</td>
-				<td style='vertical-align:middle;'>
+				<td class="td-middle">
 					<span class="bold">{{ rapport.getField('soc_nom') }} - {{ rapport.getField('soc_agence') }}<br>
 					{{ rapport.getField('soc_adresse') }}<br>
 					{{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}<br>
-					Tél.&nbsp;: {{ rapport.getField('soc_tel') }}</span><br>
-					<small>{{ rapport.getField('soc_rcs') }}</small>
+					Tél.&nbsp;: {{ rapport.getField('soc_tel') }}<br>
+					{{ rapport.getField('soc_rcs') }}</span>
 				</td>
 			</tr>
 			<!-- ENTETE BIS -->
@@ -87,12 +68,16 @@
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
 				<td>
-					{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}<br>
+					{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}
+					<br>
 					{{ rapport.getField('client_representant_fonction') }}
 				</td>
 				<td>
-					<span class="bold">{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}<br>
-					{{ rapport.getField('soc_representant_fonction') }}</span>
+					<span class="bold">
+						{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}
+						<br>
+						{{ rapport.getField('soc_representant_fonction') }}
+					</span>
 				</td>
 			</tr>
 			<!-- ENTETE BIS -->
@@ -103,14 +88,39 @@
 			<!-- END&nbsp;: ENTETE BIS -->
 			<tr>
 				<td class="left">
-					Référence dossier&nbsp;: {{ rapport.getField('rapport_nom') }}<br>
-					Opérateur de repérage amiante et Signataire&nbsp;:<br>{{ rapport.getField('tech_prenom') }} {{ rapport.getField('tech_nom') }}<br>
-					Laboratoire d’analyses agréé&nbsp;: <span class="bold">{{ rapport.getField('Laboratoire') }}<br>{{ rapport.getField('Laboratoire_adresse') }} {{ rapport.getField('Laboratoire_adresse2') }}<br>{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</span>
+					<span class="underline">Référence dossier</span>&nbsp;: 
+					<span class="bold">
+						{{ rapport.getField('rapport_nom') }}
+					</span>
+					<br>
+					<span class="underline">Opérateur de repérage amiante et Signataire</span>&nbsp;:
+					<br>
+					<span class="bold">
+						{{ rapport.getField('tech_prenom') }}&nbsp;{{ rapport.getField('tech_nom') }}
+					</span>
+					<br>
+					<span class="underline">Laboratoire d’analyses agréé</span>&nbsp;: 
+					<br>
+					<span class="bold">
+						{{ rapport.getField('Laboratoire') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse2') }}&nbsp;- {{ rapport.getField('Laboratoire_cp') }}&nbsp;{{ rapport.getField('Laboratoire_ville') }}
+					</span>
 				</td>
-				<td class="left">
-					Date de commande&nbsp;: {{ transFMdate(rapport.getField('date_commande')) }}<br>
-					Dates de visites&nbsp;: {{ lastdate(rapport.getField('local_dates_visites'))|raw }}{# separdates(rapport.getField('local_dates_visites'), true)|raw #}<br>
-					Accompagnateur&nbsp;: {{ neant }}
+				<td class="left td-middle">
+					<span class="underline">Date de commande</span>&nbsp;: 
+					<span class="bold">
+						{{ transFMdate(rapport.getField('date_commande')) }}
+					</span>
+					<br>
+					<span class="underline">Dates de visites</span>&nbsp;: 
+					<span class="bold">
+						{{ lastdate(rapport.getField('local_dates_visites'))|raw }}
+						{# separdates(rapport.getField('local_dates_visites'), true)|raw #}
+					</span>
+					<br>
+					<span class="underline">Accompagnateur</span>&nbsp;: 
+					<span class="bold">
+						{{ neant }}
+					</span>
 				</td>
 			</tr>
 		</tbody>
@@ -120,57 +130,17 @@
 		Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré des produits et matériaux contenant de l'amiante.<br>Les conclusions sont en <a href="#page3">page 3.</a>
 	</div>
 
-{% if format == "pdf" %}
-</page>
-<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="P">
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
-	</page_footer>
-{% else %}
-<hr>
-{% endif %}
 
-{# !!! SOMMAIRE !!! #}
-{# !!! SOMMAIRE !!! #}
-{# !!! SOMMAIRE !!! #}
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
 
-{% if format == "pdf" %}
-</page>
-<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="P">
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
-	</page_footer>
+
+		{# !!! SOMMAIRE !!! #}
+
+
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
 <div class='text-content'>
-{% else %}
-<hr>
-<div class='text-content'>
-{% endif %}
 
 	<a name="page3"></a>
 	<bookmark title="1. CONCLUSIONS DU RAPPORT" level="0" ></bookmark>
@@ -210,7 +180,10 @@
 				</tbody>
 			</table>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 			<h5>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h5>
 			<table class="type2">
@@ -261,7 +234,10 @@
 			{{ image_base64(rapport.getField("tech_signature"), null, null, '70mm')|raw }}
 		</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
 	{{ CSSclass('<h2>3. DOCUMENTS ANTERIEURS</h2>', 'greyline', 'div')|raw }}
@@ -300,7 +276,10 @@
 			</tbody>
 		</table>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<bookmark title="4. REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>4. REPÉRAGE</h2>', 'greyline', 'div')|raw }}
@@ -352,7 +331,10 @@
 		<p><span class='underline bold'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
 		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
@@ -411,7 +393,10 @@
 			<p class="center strong">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
 			<br>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
 	{{ CSSclass('<h2>6. MÉTHODOLOGIE DU DIAGNOSTIC</h2>', 'greyline', 'div')|raw }}
@@ -426,32 +411,10 @@
 		<P>L'opérateur conclut définitivement à l'absence ou à la présence d'amiante pour chaque matériau ou produit repéré. Dans sa conclusion, l'opérateur de repérage précise le critère (matériau ou produit qui par nature ne contient pas d'amiante, marquage du matériau, document consulté, résultat d'analyse de matériau ou produit) qui lui a permis de conclure quant à la présence ou l'absence d'amiante. Pour chacun des matériaux et produits repérés, en fonction de sa connaissance des matériaux et produits utilisés, il atteste, le cas échéant, de la présence d'amiante. Dans ce cas, il précise dans sa conclusion que le critère qui lui a permis de conclure est son jugement personnel.</P>
 
 
-{% if format == "pdf" %}
 </div>
-</page>
-<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="L">
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
-	</page_footer>
+{{ base.endPage(format, {orientation: 'L'}) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
-{% else %}
-</div>
-<hr>
-<div class='text-content'>
-{% endif %}
 
 
 	<bookmark title="7. RESULTATS DETAILLÉS DU REPERAGE" level="0" ></bookmark>
@@ -519,7 +482,10 @@
 			</table>
 			<br>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
 			<h4>7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
@@ -570,32 +536,10 @@
 			</table>
 			<br>
 
-{% if format == "pdf" %}
 </div>
-</page>
-<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="P">
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
-	</page_footer>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
 <div class='text-content'>
-{% else %}
-</div>
-<hr>
-<div class='text-content'>
-{% endif %}
 
 	<bookmark title="8. ANNEXES" level="0" ></bookmark>
 	{{ CSSclass('<h2>8. ANNEXES</h2>', 'greyline', 'div')|raw }}
@@ -611,13 +555,19 @@
 		<tr><td class="strong">8.8&nbsp;&nbsp;Procès-verbaux d’analyses</td></tr>
 	</table>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.1 Informations réglementaires" level="1" ></bookmark>
 	<h3 class="stronger center">8.1 Informations réglementaires</h3>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<h3>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h3>
 	<p>Les maladies liées à l’amiante sont provoquées par l’inhalation des fibres. Toutes les variétés d’amiante sont classées comme substances cancérogènes avérées pour l’homme. L’inhalation de fibres d’amiante est à l’origine de cancers (mésothéliomes, cancers broncho-pulmonaires) et d’autres pathologies non cancéreuses (épanchements pleuraux, plaques pleurales).</p>
@@ -633,7 +583,10 @@
 	<h3>Informations conformes à l’article 6.9° de l’arrêté du 12 décembre 2012</h3>
 	<p>Dans tous les cas, le propriétaire avertira de la présence d’amiante toute personne pouvant intervenir sur ou à proximité des matériaux et produits concernés ou de ceux les recouvrant ou les protégeant.</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.2 Croquis" level="1" ></bookmark>
@@ -643,38 +596,19 @@
 
 	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
 
-{% if format == "pdf" %}
 </div>
-</page>
-<page backtop="20mm" backbottom="16mm" backleft="12mm" backright="12mm" orientation="P">
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-	<page_footer>
-		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
-		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p class="pf_mention2">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
-	</page_footer>
+{{ base.endPage(format, {orientation: 'P'}) }}
+{{ base.newPage(format) }}
 <div class='text-content'>
-{% else %}
-</div>
-<hr>
-<div class='text-content'>
-{% endif %}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.3 Certification" level="1" ></bookmark>
 	<h3 class="stronger center">8.3 Certification</h3>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	{% if rapport.getField("tech_certificat") != "" and rapport.getField("tech_certificat") is not null %}
 	{{ image_base64(rapport.getField("tech_certificat"), null, null, '100%')|raw }}
@@ -682,13 +616,19 @@
 	<h3>Certificat introuvable</h3>
 	{% endif %}
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.4 Attestation d'assurance" level="1" ></bookmark>
 	<h3 class="stronger center">8.4 Attestation d'assurance</h3>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 	
 {% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
 	{{ image_base64(rapport.getField("soc_assurance1"), null, null, '100%')|raw }}
@@ -697,17 +637,26 @@
 {% endif %}
 
 {% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '100%')|raw }}
 {% endif %}
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.5 Grilles d'évaluation - État de conservation" level="1" ></bookmark>
 	<h3 class="stronger center">8.5 Grilles d'évaluation - État de conservation</h3>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<h5>1. Critères d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<table class='type8'>
@@ -740,7 +689,10 @@
 		</table>
 		<br>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<h4>• Flocages</h4>
@@ -756,13 +708,19 @@
 		<h4>• Faux plafonds</h4>
 		<p>{{ neant }}</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.6 Conséquences réglementaires et recommandations" level="1" ></bookmark>
 	<h3 class="stronger center">8.6 Conséquences réglementaires et recommandations</h3>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
 	<p><span class='bold'>Article R1334-27&nbsp;:</span> En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en oeuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
@@ -779,7 +737,10 @@
 	<br>
 	<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
 		I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
@@ -787,13 +748,19 @@
 		III)&nbsp;Lorsque des travaux de retrait ou de confinement de matériaux et produits de la liste B contenant de l’amiante sont effectués à l’intérieur de bâtiment occupés ou fréquentés, le propriétaire fait procéder, avant toute restitution des locaux traités, à l’examen visuel et à la mesure d’empoussièrement dans l’air mentionnée au premier alinéa du présent article.<br>
 	</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.7 Recommandations générales de sécurité" level="1" ></bookmark>
 	<h3 class="stronger center">8.7 Recommandations générales de sécurité</h3>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à la présence d’amiante dans un bâtiment. Elle doit être complétée par la définition et la mise en oeuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans le bâtiment et des personnes appelées à intervenir sur les matériaux ou produits contenant de l’amiante. Les recommandations générales de sécurité définies ci-après rappellent les règles de base destinées à prévenir les expositions. Le propriétaire (ou, à défaut, l’exploitant) de l’immeuble concerné adapte ces recommandations aux particularités de chaque bâtiment et de ses conditions d’occupation ainsi qu’aux situations particulières rencontrées.</p>
 	<p>Ces recommandations générales de sécurité ne se substituent en aucun cas aux obligations réglementaires existantes en matière de prévention des risques pour la santé et la sécurité des travailleurs, inscrites dans le code du travail.</p>
@@ -806,7 +773,10 @@
 		<p>Pour rappel, les matériaux et produits répertoriés aux listes A et B de l’annexe 13-9 du code de la santé publique font l’objet d’une évaluation de l’état de conservation dont les modalités sont définies par arrêté. Il convient de suivre les recommandations émises par les opérateurs de repérage dits "diagnostiqueurs" pour la gestion des matériaux ou produits repérés.</p>
 		<p>De façon générale, il est important de veiller au maintien en bon état de conservation des matériaux et produits contenant de l’amiante et de remédier au plus tôt aux situations d’usure anormale ou de dégradation de ceux-ci.</p>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 	<h3>2.&nbsp;Intervention de professionnels soumis aux dispositions du code du travail</h3>
 		<p>Il est recommandé aux particuliers d’éviter dans la mesure du possible toute intervention directe sur des matériaux et produits contenant de l’amiante et de faire appel à des professionnels compétents dans de telles situations.</p>
@@ -827,7 +797,10 @@
 		<p>Les déchets liés au fonctionnement d’un chantier (équipements de protection, matériel, filtres, bâches, etc.) sont de la responsabilité de l’entreprise qui réalise les travaux.</p>
 		<br>
 
-{{ sautMemePage|raw }}
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
 		<p class='underline'>a)&nbsp;Conditionnement des déchets</p>
 			<p>Les déchets de toute nature susceptibles de libérer des fibres d’amiante sont conditionnés et traités de manière à ne pas provoquer d’émission de poussières. Ils sont ramassés au fur et à mesure de leur production et conditionnés dans des emballages appropriés et fermés, avec apposition de l’étiquetage prévu par le décret no 88-466 du 28 avril 1988 relatif aux produits contenant de l’amiante et par le code de l’environnement notamment ses articles R. 551-1 à R. 551-13 relatifs aux dispositions générales relatives à tous les ouvrages d’infrastructures en matière de stationnement, chargement ou déchargement de matières dangereuses.</p>
@@ -852,29 +825,27 @@
 			<p>Dans tous les cas, le producteur des déchets devra avoir préalablement obtenu un certificat d’acceptation préalable lui garantissant l’effectivité d’une filière d’élimination des déchets.</p>
 			<p>Par exception, le bordereau de suivi des déchets d’amiante n’est pas imposé aux particuliers voire aux artisans qui se rendent dans une déchèterie pour y déposer des déchets d’amiante lié à des matériaux inertes ayant conservé leur intégrité. Ils ne doivent pas remplir un bordereau de suivi de déchets d’amiante, ce dernier étant élaboré par la déchèterie.</p>
 
-{{ sautMemePage|raw }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
-	<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
-
-	<br><br><br>
-
-	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
-
-{{ sautMemePage|raw }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<h2 class="stronger center">FIN ANNEXE<br><br>RAPPORT DE MISSION DE REPÉRAGE DES MATÉRIAUX ET PRODUITS DE LA LISTE A CONTENANT DE L’AMIANTE</h2>
-	<br>
-
-{% if format == 'pdf' %}
 </div>
-</page>
-{% else %}
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
+
+		<div style="height:80mm;width:100%;"></div>
+		<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
+		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
+	
+		<br><br><br>
+	
+		<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
+
 </div>
-</body>
-</html>
-{% endif %}
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, format) }}
+<div class='text-content'>
 
+		<div style="height:80mm;width:100%;"></div>
+		<h2 class="stronger center">FIN ANNEXE<br><br>RAPPORT DE MISSION DE REPÉRAGE DES MATÉRIAUX ET PRODUITS DE LA LISTE A CONTENANT DE L’AMIANTE</h2>
+		<br>
 
+</div>
+{{ base.endDoc(format) }}

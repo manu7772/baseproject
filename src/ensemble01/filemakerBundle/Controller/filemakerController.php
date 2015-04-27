@@ -662,7 +662,6 @@ class filemakerController extends fmController {
 	 */
 	public function generate_rapportAction($id = null, $mode = "file", $format = "pdf", $pagedata = null) {
 		$ctrlData = $this->initGlobalData(array(
-			// 'page'			=> $page,
 			'pagedata'		=> array("from_url" => $this->unCompileData($pagedata)),
 			'pagedata_raw'	=> $pagedata, // données $pagedata brutes
 		));
@@ -677,17 +676,24 @@ class filemakerController extends fmController {
 			$rapports = array();
 			$rapports[] = $this->_fm->getOneRapport($id);
 		}
-		// var_dump($rapports);
 		// Si erreur
 		if(is_string($rapports)) {
 			$aeReponse->addErrorMessage($rapports);
 		// sinon
 		} else foreach($rapports as $rapport) {
-			// $this->vardumpDev($aeReponse->getData(), "aeReponse avant génération :");
 			$aeReponse = $this->generate_un_rapport($rapport, $format, $aeReponse);
 		}
-		// $this->vardumpDev($aeReponse->getData(), "Data après génération");
-		// $this->vardumpDev($aeReponse->getDataKeys(), "Keys après génération");
+		// DEV TEST :
+		// $r = $aeReponse->getDataAndSupp();
+		// if($aeReponse->isValid()) {
+		// 	$oneRapport = current($r);
+		// 	return new Response($oneRapport['html']);
+		// } else {
+		// 	$messages = $aeReponse->getAllMessages();
+		// 	echo('<pre>Messages : ');
+		// 	var_dump($messages);
+		// 	die('<pre>');
+		// }
 		if($aeReponse->isValid()) {
 			foreach ($aeReponse->getDataAndSupp() as $key => $oneRapport) {
 				switch ($mode) {
