@@ -128,6 +128,42 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
+	/* **************************************************** */
+	/* FANCYBOX
+	/* **************************************************** */
+
+	var backgroundFCY = 'rgba(0, 0, 0, 0.60)';
+
+	$('.fancybox').fancybox({
+		openEffect	: 'fade',
+		closeEffect	: 'fade',
+        padding     : 6,
+		helpers : {
+			overlay : {
+				css : {
+					'background' : backgroundFCY
+				}
+			}
+		}
+	});
+
+	$('.fancyboxext').fancybox({
+		maxWidth	: 800,
+		width		: 800,
+		closeClick	: false,
+		openEffect	: 'fade',
+		closeEffect	: 'fade',
+		title 		: true,
+        padding     : 6,
+		helpers : {
+			overlay : {
+				css : {
+					'background' : backgroundFCY
+				}
+			}
+		}
+	});
+
 });
 
 

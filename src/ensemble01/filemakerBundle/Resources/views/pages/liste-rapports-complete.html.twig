@@ -39,7 +39,7 @@
 					<td title='{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}'>{{ phraseCut(local.getField("local_adresse")|raw ~ local.getField("local_cp")|raw ~ local.getField("local_ville")|raw, 20) }}</td>
 					<td title='Fichier PDF du rapport' style="text-align:center;">
 						{% if pdf_file[local.getField('id')] != false and local.getField('a_traiter') == '1' %}
-						<a class="fancybox fancybox.iframe" class="URLext" href="{{ url('ensemble01site_rapportscreen', {id: idrapport}) }}" title="Visualiser le rapport PDF"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+						<a class="fancybox fancybox.iframe" href="{{ url('ensemble01site_rapportscreen', {id: idrapport}) }}" title="Visualiser le rapport PDF"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
 						&nbsp;
 						<a href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'file', format: 'pdf'}) }}" title="Regénérer le fichier PDF"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
 						&nbsp;

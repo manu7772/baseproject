@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
+		{% block metatitles %}
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<meta name="description" content="">
     	<meta name="author" content="">
-		<title>{% block title %}Interface Web Filemaker{% endblock %}</title>
-		{% block metatitles %}
 		{% endblock metatitles %}
+		<title>{% block title %}Interface Web Filemaker{% endblock title %}</title>
 		{% stylesheets filter='cssrewrite, lessphp, ?yui_css'
 		'Bundles/ensemble01filemaker/jquery-ui/jquery-ui.css'
 		'Bundles/ensemble01filemaker/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/css/bootstrap.css'
