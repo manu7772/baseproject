@@ -794,7 +794,7 @@ class filemakerController extends fmController {
 			$response = new Response(file_get_contents($file['pathfile']));
 			$response->headers->set('Content-Type', 'application/pdf'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
 			$response->headers->set('Content-Length', filesize($file['pathfile']));
-			$response->headers->set('Content-Disposition', 'attachment;filename=\''.$file['file'].'\'');
+			$response->headers->set('Content-Disposition', 'attachment;filename='.$file['file']);
 			return $response;
 		}
 		return new Response('Rapport manquant.');
@@ -815,7 +815,7 @@ class filemakerController extends fmController {
 			$response->headers->set('Cache-Control', 'private, max-age=0, must-revalidate');
 			$response->headers->set('Pragma', 'public');
 			$response->headers->set('Content-Length', filesize($file['pathfile']));
-			$response->headers->set('Content-Disposition', 'inline;filename=\''.$file['file'].'\'');
+			$response->headers->set('Content-Disposition', 'inline;filename='.$file['file']);
 			return $response;
 		}
 		return new Response('Rapport manquant.');
@@ -1008,7 +1008,7 @@ class filemakerController extends fmController {
 				// $response->headers->set('Content-Type', 'application/force-download'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
 				$response->headers->set('Content-Type', 'application/zip'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
 				$response->headers->set('Content-Length', filesize($pathfileZip));
-				$response->headers->set('Content-Disposition', 'attachment;filename=\''.$data['fichierZip'].'\'');
+				$response->headers->set('Content-Disposition', 'attachment;filename='.$data['fichierZip']);
 				// return new JsonResponse(json_encode($data, true));
 				// return new Response(
 				// 	filesize($pathfileZip)."Ko<br>Fichier : ".$data['fichierZip']
