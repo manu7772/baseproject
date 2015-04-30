@@ -281,6 +281,16 @@ class geodiag extends filemakerservice2 {
 		return $this->getData($data2);
 	}
 
+	public function getMedia($id) {
+		$data2['server'] 					= $this->getCurrentSERVER();
+		$data2['base'] 						= 'GEODIAG_Medias';
+		$data2['modele'] 					= 'Geodiag_Images';
+		$data2['search'][1]['column'] 		= 'Fk_Id_Source';
+		$data2['search'][1]['value']		= $id;
+		return $this->getData($data2);
+	}
+
+
 	/**
 	 * Renvoie la liste des différents lots et la quatité de rapports qu'il contient
 	 * array [nom du lot] = nombre de rapports

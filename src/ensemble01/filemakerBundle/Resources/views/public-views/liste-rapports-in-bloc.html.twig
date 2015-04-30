@@ -1,3 +1,5 @@
+{% import "ensemble01filemakerBundle:public-views:live-macros.html.twig" as base %}
+
 {% set colsbtn = 'col-lg-2 col-md-3 col-sm-4 col-xs-6' %}
 {% set test = true %}
 {% set notReady = false %}
@@ -15,9 +17,7 @@
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
-					{{ rapport.getField("rapport_nom")|raw }}
-					<br>
-					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+					{{ base.blocRapport(rapport) }}
 				</h5>
 				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
 					<a class="btn btn-primary" href="{{ url('ensemble01site_rapportsload', {id: rapport.getField('id')}) }}" role="button" title="Charger PDF">
@@ -30,16 +30,6 @@
 						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 					</a>
 				</div>
-<!-- 				<div class="btn-group">
-					<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Charger PDF</button>
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<span class="caret"></span>
-						<span class="sr-only">Toggle Dropdown</span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a class="rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}">Regénérer PDF</a></li>
-					</ul>
-				</div> -->
 			</div>
 		</div>
 	</div>
@@ -49,13 +39,13 @@
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
-					{{ rapport.getField("rapport_nom")|raw }}
-					<br>
-					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+					{{ base.blocRapport(rapport) }}
 				</h5>
-				<a class="btn btn-info URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-					<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
-				</a>
+				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
+					<a class="btn btn-info URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
+						<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -65,14 +55,14 @@
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
-					{{ rapport.getField("rapport_nom")|raw }}
-					<br>
-					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+					{{ base.blocRapport(rapport) }}
 				</h5>
-				<div>
-					<button class="btn btn-danger rapportPDFrefresh" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant'>
-						<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF Absent
-					</button>
+				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
+					<div class="btn-group" role="group">
+						<button class="btn btn-danger rapportPDFrefresh" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant'>
+							<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF Absent
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -83,13 +73,13 @@
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
-					{{ rapport.getField("rapport_nom")|raw }}
-					<br>
-					<small>{{ rapport.getField("type_rapport")|raw }}</small>
+					{{ base.blocRapport(rapport) }}
 				</h5>
-				<a class="btn btn-default URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-					<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
-				</a>
+				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
+					<a class="btn btn-default URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
+						<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -115,3 +105,4 @@
 	</div>
 </div>
 {% endif %}
+

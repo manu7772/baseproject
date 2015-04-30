@@ -180,11 +180,6 @@
 				</tbody>
 			</table>
 
-</div>
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
-<div class='text-content'>
-
 			<h5>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h5>
 			<table class="type2">
 				<thead>
@@ -219,6 +214,11 @@
 			<br>
 			<p><span class='underline'>Remarque&nbsp;:</span> La liste présentée dans le point ci-dessus peut ne pas être complète. La liste exhaustive des produits et matériaux est présentée dans le tableau "Résultats détaillés du repérage".</p>
 
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, media, date, format) }}
+<div class='text-content'>
+
 	<bookmark title="2. PRÉCONISATIONS D’ORDRE GÉNÉRAL" level="0" ></bookmark>
 	{{ CSSclass('<h2>2. PRÉCONISATIONS D’ORDRE GÉNÉRAL</h2>', 'greyline', 'div')|raw }}
 		<p>De manière générale, les matériaux en contact direct avec des matériaux amiantés sont considérés comme amiantés par pollution.</p>
@@ -231,7 +231,7 @@
 			<br>
 			Diagnostiqueur<br>
 			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
-			{{ image_base64(rapport.getField("tech_signataire_signature"), null, null, '70mm')|raw }}
+			{{ image_base64(rapport.getField("tech_signataire_signature"), null, null, '60mm')|raw }}
 		</p>
 
 </div>
@@ -360,7 +360,7 @@
 			<p>•&nbsp;Fournir les habilitations nécessaires pour accéder à l’ensemble des différentes parties de l’immeuble bâti.</p>
 			<br>
 
-			<bookmark title="5.3.4 Programme de repérage de l'amiante" level="2" ></bookmark>
+		<bookmark title="5.4 Programme de repérage de l'amiante" level="1" ></bookmark>
 		<h3>5.4 Programme de repérage de l'amiante</h3>
 			<table class='type5'>
 				<thead>
@@ -385,12 +385,13 @@
 			</table>
 			<br>
 
-			<bookmark title="5.3.5 Laboratoire accrédité" level="2" ></bookmark>
+		<bookmark title="5.5 Laboratoire accrédité" level="1" ></bookmark>
 		<h3>5.5 Laboratoire accrédité</h3>
 			<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
-			<p class="center strong">{{ rapport.getField('Laboratoire') }}</p>
-			<p class="center strong">{{ rapport.getField('Laboratoire_adresse') }} - {{ rapport.getField('Laboratoire_adresse') }}</p>
-			<p class="center strong">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
+			<br>
+			<p class="strong center">{{ rapport.getField('Laboratoire') }}</p>
+			<p class="strong center">{{ rapport.getField('Laboratoire_adresse') }} - {{ rapport.getField('Laboratoire_adresse') }}</p>
+			<p class="strong center">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
 			<br>
 
 </div>

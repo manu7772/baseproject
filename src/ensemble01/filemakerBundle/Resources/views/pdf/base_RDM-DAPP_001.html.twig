@@ -88,7 +88,11 @@
 		<table class="phtable" align="center">
 			<tr>
 				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">Rapport de Mission de Repérage des MPCA de la liste A<br>{{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}</td>
+				<td id="row2">
+					Rapport de Mission de Repérage des MPCA de la liste A<br>
+					{{ rapport.getField('local_type_bat_texte')|raw }} - Logement {{ rapport.getField('num_porte')|raw }} - Étage {{ rapport.getField('local_etage')|raw }} - {{ rapport.getField('local_adresse')|raw }} - {{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
+				</td>
+					{# {{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }} #}
 				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
 			</tr>
 		</table>
@@ -428,6 +432,10 @@
 		}
 
 		/* TABLE TYPE 1 */
+
+		td {
+			/*word-wrap: break-word;*/
+		}
 
 		table td.td-middle {
 			vertical-align: middle;

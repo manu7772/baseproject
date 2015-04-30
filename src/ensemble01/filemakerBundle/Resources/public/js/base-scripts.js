@@ -245,7 +245,7 @@ jQuery(document).ready(function($) {
 	$('.fancybox').fancybox({
 		openEffect	: 'fade',
 		closeEffect	: 'fade',
-        padding     : 6,
+		padding     : 6,
 		helpers : {
 			overlay : {
 				css : {
@@ -262,12 +262,28 @@ jQuery(document).ready(function($) {
 		openEffect	: 'fade',
 		closeEffect	: 'fade',
 		title 		: true,
-        padding     : 6,
+		padding     : 6,
 		helpers : {
 			overlay : {
 				css : {
 					'background' : backgroundFCY
 				}
+			}
+		}
+	});
+
+
+	/* **************************************************** */
+	/* AFFIX SCROLLSPY
+	/* **************************************************** */
+
+	$("#myNav").affix({
+		offset: { 
+			top: function () {
+				return (this.top = $('nav.navbar').outerHeight(true))
+			},
+			bottom: function () {
+				return (this.bottom = $('.footer').outerHeight(true))
 			}
 		}
 	});

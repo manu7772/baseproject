@@ -1,0 +1,39 @@
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
+{% block h1 %}
+{% endblock h1 %}
+	
+{% block body %}
+	<div class="col-lg-12">
+		{% if is_object(rapport) %}
+		{% if listchamps is iterable %}
+		<div class='row'>
+			<div class="col-md-8">
+				<h1 class="page-header">{{ h1|raw }}{% if is_object(rapport) %} {{ rapport.getField('id') }}{% endif %}</h1>
+				{% for key,champ in listchamps %}
+				<h5 id="scrollspy-field{{ key }}" style='font-weight:bold;'>{{ champ|raw }}</h5>
+				<blockquote style='overflow:hidden;'>
+					<pre style='font-size:0.7em;'>{{ phraseCut(rapport.getField(champ), 300)|raw }}</pre>
+					<small>{{ rapport.getField(champ)|length }} caractères</small>
+				</blockquote>
+				{% endfor %}
+			</div>
+			<div id="myScrollspy" class="col-md-4 hidden-sm hidden-xs">
+				<ul id="myNav" class="nav nav-tabs nav-stacked">
+					{% for key,champ in listchamps %}
+					<li{% if loop.first %} class="active"{% endif %}>
+						<a href="#scrollspy-field{{ key }}">{{ champ }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{% else %}
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: listchamps} %}
+		{% endif %}
+		{% else %}
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: rapport} %}
+		{% endif %}
+	</div>
+{% endblock body %}

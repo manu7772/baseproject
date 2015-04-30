@@ -255,6 +255,12 @@ class filemakerController extends fmController {
 				// var_dump($ctrlData['pdf_file']);
 				// die("</pre>");
 				break;
+			case 'detail-rapport':
+				$ctrlData['h1'] = "Détail rapport";
+				// die($ctrlData['pagedata_raw']);
+				$ctrlData['listchamps'] = $this->_fm->getFields('Rapports_Local_Web', 'GEODIAG_Rapports'); // GEODIAG_Rapports Rapports_Local_Web
+				$ctrlData['rapport'] = $this->_fm->getOneRapport($ctrlData['pagedata_raw']);
+				break;
 			case 'liste-lieux':
 				$corresp = array(
 					'AGIRE'		=> 'Proj0000001',

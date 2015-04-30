@@ -45,6 +45,10 @@ class twigAetools extends \Twig_Extension {
 			'URIperform'			=> new \Twig_Function_Method($this, 'URIperform'),
 			'fillOfChars'			=> new \Twig_Function_Method($this, 'fillOfChars'),
 			'idify'					=> new \Twig_Function_Method($this, 'idify'),
+			'zerosDevant'			=> new \Twig_Function_Method($this, 'zerosDevant'),
+			// tests types
+			'is_string'				=> new \Twig_Function_Method($this, 'is_string'),
+			'is_object'				=> new \Twig_Function_Method($this, 'is_object'),
 			// spécial GEODIAG WEB 
 			'transFMdate'			=> new \Twig_Function_Method($this, 'transFMdate'),
 			'CSSclass'				=> new \Twig_Function_Method($this, 'CSSclass'),
@@ -56,6 +60,12 @@ class twigAetools extends \Twig_Extension {
 			'partie_nom_rapport'	=> new \Twig_Function_Method($this, 'partie_nom_rapport'),
 			'getDateConstruction'	=> new \Twig_Function_Method($this, 'getDateConstruction'),
 			'getRev'				=> new \Twig_Function_Method($this, 'getRev'),
+			'nomstechs'				=> new \Twig_Function_Method($this, 'nomstechs'),
+			'getTechs'				=> new \Twig_Function_Method($this, 'getTechs'),
+			'mediaIMG'				=> new \Twig_Function_Method($this, 'mediaIMG'),
+			'printIfMult'			=> new \Twig_Function_Method($this, 'printIfMult'),
+			'neant'					=> new \Twig_Function_Method($this, 'neant'),
+			'rapport_detail_liste_materiau'		=> new \Twig_Function_Method($this, 'rapport_detail_liste_materiau'),
 			);
 	}
 
@@ -667,6 +677,24 @@ class twigAetools extends \Twig_Extension {
 		return strtr($text, $trans);
 	}
 
+
+	public function zerosDevant($t, $long = 2) {
+		$l = strlen($t."");
+		while(strlen($t."") < $long) {
+			$t = "0".$t;
+		}
+		return $t;
+	}
+
+	public function is_string($elem) {
+		return is_string($elem);
+	}
+
+	public function is_object($elem) {
+		return is_object($elem);
+	}
+
+
 	/**
 	 * Transforme le texte date en provenance de FM 
 	 * mm/dd/YY -> dd/mm/YY
@@ -704,11 +732,16 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $largeur - largeur de l'image (préciser l'unité ! px, %, etc.)
 	 * @return string
 	 */
-	public function image_base64($text, $classe = null, $format = 'png', $largeur = null) {
+	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
+		if(!in_array($format, array('png', 'jpg', 'gif'))) $format = 'png';
+		if(strlen($text."") < 1) return "<p style='font-style:italic;color:#999;'>Image manquante</p>";
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";
-		if(is_string($largeur)) $largeur = " style='width:".$largeur.";'";
-		return "<img src='data:image/".$format.";base64,".$text."'".$classe.$largeur." />";
+		if(is_string($largeur)) $largeur = "width:".$largeur.";";
+		if(is_string($hauteur)) $hauteur = "height:".$hauteur.";";
+		$style = "";
+		if($hauteur !== null || $largeur !== null) $style = " style='".$largeur.$hauteur."'";
+		return "<img src='data:image/".$format.";base64,".$text."'".$classe.$style." />";
 	}
 
 	/**
@@ -795,6 +828,116 @@ class twigAetools extends \Twig_Extension {
 				else $add = $rev."";
 			return $add.$ver;
 		} else return "";
+	}
+
+
+	/**
+	 * Renvoie un tableau de l'élément fourni avec séparateurs |*| et |
+	 * @param string $text
+	 * @return array
+	 */
+	public function FMexplode01($text) {
+		$techs = explode('|*|', $text);
+		$tech = array();
+		foreach ($techs as $key => $item) {
+			$tech[$key] = explode('|', $item);
+		}
+		return $tech;
+	}
+
+	/**
+	 * renvoie le texte avec noms et prénoms des techniciens
+	 * @param string $text
+	 * @return string
+	 */
+	public function getTechs($text, $id_exclude = array()) {
+		if(is_string($id_exclude)) $id_exclude = array($id_exclude);
+		$tech = $this->FMexplode01($text);
+		// suppression des doublons et de $id_exclude
+		$finalTech = array();
+		foreach ($tech as $key => $item) {
+			if(!in_array($item[0], $id_exclude)) {
+				$finalTech[$item[0]] = $item;
+			}
+		}
+		return $finalTech;
+	}
+
+	/**
+	 * renvoie le texte avec noms et prénoms des techniciens
+	 * @param string $text
+	 * @return string
+	 */
+	public function nomstechs($text) {
+		$tech = $this->getTechs($text);
+		$finalTech = array();
+		foreach ($tech as $key => $item) {
+			$espace = " ";
+			if(strlen(trim($item[2])) < 1) $espace = "";
+			$finalTech[$key] = $item[2].$espace.$item[1];
+		}
+		return implode(" - ", $finalTech);
+	}
+
+	/**
+	 * renvoie l'image <img> d'un technicien (selon réf. "mult_")
+	 * @param string $mult
+	 * @return string
+	 */
+	public function mediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
+		if($hi === true) $tailleReso = 'conteneur_base64';
+			else $tailleReso = 'conteneur_miniature_base64';
+		$no = "Image non trouvée";
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		$_fm = $this->container->get('ensemble01services.geodiag');
+		$_fm->log_user($user, null, true);
+		$media = $_fm->getMedia($mult);
+		if(is_string($media)) return $no." (".$media.")";
+		if(count($media) > 0) {
+			reset($media);
+			$media = current($media);
+			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur);
+			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
+		} else {
+			return $no;
+		}
+	}
+
+	/**
+	 * Renvoie une image si $tx commence par "Mult" / sinon renvoie le même texte $tx
+	 * @param string $tx
+	 * @return string
+	 */
+	public function printIfMult($tx, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
+		if(preg_match('#^(Mult-)#', $tx)) {
+			return $this->mediaIMG($tx, $hi, $classe, $format, $largeur, $hauteur);
+		} else return $this->shortwordsforTables($tx);
+	}
+
+	private function shortwordsforTables($text) {
+		$trans = array(
+			" - " => '<br>',
+			"PRESENCE D'AMIANTE" => "PRESENCE<br>D'AMIANTE",
+			"." => '.<br>',
+			"," => ',<br>',
+			":" => ':<br>',
+			";" => ';<br>',
+			);
+		return strtr($text, $trans);
+	}
+
+	/**
+	 * renvoie "Néant" si $tx est une chaîne vide
+	 * @param string $tx
+	 * @return string
+	 */
+	public function neant($tx, $neant = 'Néant') {
+		if(strlen(trim($tx)) < 1) return $neant;
+			else return trim($tx);
+	}
+
+	public function rapport_detail_liste_materiau($rapport) {
+		return $this->FMexplode01($rapport);
 	}
 
 }

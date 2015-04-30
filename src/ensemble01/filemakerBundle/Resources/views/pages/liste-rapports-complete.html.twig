@@ -32,7 +32,7 @@
 				{% if local.getField('a_traiter') == "0" %}{% set statut = '' %}{% else %}{% set statut = ' class="success"' %}{% endif %}
 				<tr{{ statut|raw }}>
 					<td>{{ local.getField("Fk_Id_Lieu")|raw }}</td>
-					<td>{{ local.getField("Fk_Id_Local")|raw }}</td>
+					<td><a href="{{ url('ensemble01filemaker_pageweb', {page: 'detail-rapport', pagedata: local.getField('id')}) }}">{{ local.getField("Fk_Id_Local")|raw }}</a></td>
 					<td>{{ typerapport }}<small>{{ getRev(local.getField("version")) }}</small></td>
 					<!-- <td title='{{ local.getField("num_lot")|raw }}'>{{ local.getField("num_lot")|raw }}</td> -->
 					<td title='{{ local.getField("Rapport::description")|raw }}'>{{ phraseCut(local.getField("Rapport::description")|raw, 12) }}</td>
