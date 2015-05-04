@@ -717,7 +717,8 @@ class filemakerController extends fmController {
 				switch ($mode) {
 					case 'screen':
 						if($format === "html") {
-							return $oneRapport['html'];
+							return new Response($oneRapport['html']);
+							// http://localhost:8888/GitHub/baseproject/web/app_dev.php/rapportfm/0000012583/screen.html
 						} else if ($format === "pdf") {
 							try {
 								$oneRapport['pdf']->Output($oneRapport['rapport']["ref_rapport"].'.'.$format);

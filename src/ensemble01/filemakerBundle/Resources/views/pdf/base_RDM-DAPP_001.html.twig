@@ -2,7 +2,7 @@
 	{% import _self as bases %}
 
 	{% set defaultBacktop = '0mm' %}
-	{% set defaultBackbottom = '16mm' %}
+	{% set defaultBackbottom = '14mm' %}
 	{% set defaultBackleft = '0mm' %}
 	{% set defaultBackright = '0mm' %}
 	{% set defaultOrientation = 'P' %}
@@ -49,7 +49,7 @@
 	{% import _self as bases %}
 
 	{% set defaultBacktop = '20mm' %}
-	{% set defaultBackbottom = '16mm' %}
+	{% set defaultBackbottom = '14mm' %}
 	{% set defaultBackleft = '12mm' %}
 	{% set defaultBackright = '12mm' %}
 	{% set defaultOrientation = 'P' %}
@@ -655,37 +655,41 @@
 
 		/* TABLE TYPE 6 */
 
+		{% set larg = '160' %}
 		table.type6 {
-			/*width: 150mm;*/
-			width: 100%;
+			/*width: 100%;*/
 			margin: 6mm auto 4mm;
 			border-collapse: collapse;
-		}
-		table.type6 tr {
+			/*word-wrap: break-word;*/
 			width: 100%;
 		}
+		table.type6 tr {
+			/*width: 100%;*/
+			/*word-wrap: break-word;*/
+		}
 		table.type6 td {
-			color: {{ darkgris }};
 			font-size: 7pt;
 			vertical-align: middle;
 			padding: 1mm;
+			/*word-wrap: break-word;*/
+			color: {{ darkgris }};
 		}
-		table.type6 th.col01, table.type6 td.col01 { width: 7% }
-		table.type6 th.col02, table.type6 td.col02 { width: 6% }
-		table.type6 th.col03, table.type6 td.col03 { width: 6% }
-		table.type6 th.col04, table.type6 td.col04 { width: 6% }
-		table.type6 th.col05, table.type6 td.col05 { width: 6% }
-		table.type6 th.col06, table.type6 td.col06 { width: 6% }
-		table.type6 th.col07, table.type6 td.col07 { width: 6% }
-		table.type6 th.col08, table.type6 td.col08 { width: 6% }
-		table.type6 th.col09, table.type6 td.col09 { width: 6% }
-		table.type6 th.col10, table.type6 td.col10 { width: 6% }
-		table.type6 th.col11, table.type6 td.col11 { width: 6% }
-		table.type6 th.col12, table.type6 td.col12 { width: 7% }
-		table.type6 th.col13, table.type6 td.col13 { width: 6% }
-		table.type6 th.col14, table.type6 td.col14 { width: 7% }
-		table.type6 th.col15, table.type6 td.col15 { width: 7% }
-		table.type6 th.col16, table.type6 td.col16 { width: 6% } 
+/*		table.type6 th.col01, table.type6 td.col01 { width: {{ 7 * larg // 100 }}mm }
+		table.type6 th.col02, table.type6 td.col02 { width: {{ 4 * larg // 100 }}mm }
+		table.type6 th.col03, table.type6 td.col03 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col04, table.type6 td.col04 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col05, table.type6 td.col05 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col06, table.type6 td.col06 { width: {{ 3 * larg // 100 }}mm }
+		table.type6 th.col07, table.type6 td.col07 { width: {{ 3 * larg // 100 }}mm }
+		table.type6 th.col08, table.type6 td.col08 { width: {{ 3 * larg // 100 }}mm }
+		table.type6 th.col09, table.type6 td.col09 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col10, table.type6 td.col10 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col11, table.type6 td.col11 { width: {{ 6 * larg // 100 }}mm }
+		table.type6 th.col12, table.type6 td.col12 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col13, table.type6 td.col13 { width: {{ 4 * larg // 100 }}mm }
+		table.type6 th.col14, table.type6 td.col14 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col15, table.type6 td.col15 { width: {{ 5 * larg // 100 }}mm }
+		table.type6 th.col16, table.type6 td.col16 { width: {{ 30 * larg // 100 }}mm } */
 
 		table.type6 th, table.type6 td {
 			border: {{ lines }};

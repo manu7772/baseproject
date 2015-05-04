@@ -19,6 +19,9 @@ class twigAetools extends \Twig_Extension {
 	public function getFunctions() {
 		return array(
 			'phraseCut'				=> new \Twig_Function_Method($this, 'phraseCut'),
+			'colonizeWords'			=> new \Twig_Function_Method($this, 'colonizeWords'),
+			'colonizeWordsWithP'	=> new \Twig_Function_Method($this, 'colonizeWordsWithP'),
+			'cleanSpaces'			=> new \Twig_Function_Method($this, 'cleanSpaces'),
 			'adminDataType'			=> new \Twig_Function_Method($this, 'adminDataType'),
 			'intervalDateFR'		=> new \Twig_Function_Method($this, 'intervalDateFR'),
 			'dateFR'				=> new \Twig_Function_Method($this, 'dateFR'),
@@ -65,6 +68,8 @@ class twigAetools extends \Twig_Extension {
 			'mediaIMG'				=> new \Twig_Function_Method($this, 'mediaIMG'),
 			'printIfMult'			=> new \Twig_Function_Method($this, 'printIfMult'),
 			'neant'					=> new \Twig_Function_Method($this, 'neant'),
+			'testBegin'				=> new \Twig_Function_Method($this, 'testBegin'),
+			'testEnd'				=> new \Twig_Function_Method($this, 'testEnd'),
 			'rapport_detail_liste_materiau'		=> new \Twig_Function_Method($this, 'rapport_detail_liste_materiau'),
 			);
 	}
@@ -74,8 +79,6 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	/**
-	 * phraseCut
-	 * 
 	 * Renvoie le texte $t réduit à $n lettres / Sans couper les mots
 	 * si $tre = true (par défaut), ajoute "..." à la suite du texte
 	 * Pour autoriser le coupage de mots, mettre $_Wordcut à "true"
@@ -99,8 +102,73 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	/**
-	 * adminDataType
-	 * 
+	 * Renvoie à la ligne pour optimiser un texte sur une colonne. 
+	 * Pratique dans les tableaux
+	 * @param string $t - texte
+	 * @param intger $n - nombre de lettres maxi avant retour à la ligne
+	 * @return string
+	 */
+	public function colonizeWords($t, $n, $separ = "br") {
+		if($n > 5) $n = $n - 4;
+		$t = $this->cleanSpaces($t);
+		$changes = array(" ", "-");
+		$cpt = 1;
+		$line = 0;
+		$txr = array();
+		$txr[$line] = "";
+		// Génération des lignes de texte en tableau
+		for ($i=0; $i < strlen($t); $i++) {
+			$char = substr($t, $i, 1);
+			if($cpt > $n && in_array($char, $changes)) {
+				if($char == " ") $char = "";
+				$cpt = 1;
+				$txr[$line] .= $char;
+				$line++;
+				$txr[$line] = "";
+			} else {
+				$cpt++;
+				$txr[$line] .= $char;
+			}
+		}
+		// ajout des séparateurs
+		switch (strtolower($separ)) {
+			case 'p':
+			case 'span':
+			case 'div':
+			case 'li':
+				$balise = strtolower($separ);
+				$result = '<'.$balise.'>'.implode('</'.$balise.'><'.$balise.'>', $txr).'</'.$balise.'>';
+				break;
+			default: // <br> par défaut
+				$result = implode('<br>', $txr);
+				break;
+		}
+		return $result;
+	}
+
+	/**
+	 * Crée des lignes <p> pour optimiser un texte sur une colonne. 
+	 * Pratique dans les tableaux
+	 * @param string $t - texte
+	 * @param intger $n - nombre de lettres maxi avant retour à la ligne
+	 * @return string
+	 */
+	public function colonizeWordsWithP($t, $n) {
+		return $this->colonizeWords($t, $n, 'p');
+	}
+
+	/**
+	 * Supprime les espaces doubles (ou plus) d'une phrase
+	 * @param string $t - texte
+	 * @param intger $n - nombre d'espaces à supprimer (à partir de 2, par défaut)
+	 * @return string
+	 */
+	public function cleanSpaces($t, $n = 2) {
+		return preg_replace('#\s{'.$n.',}#', " ", $t);
+	}
+
+
+	/**
 	 * Renvoie la donnée sous forme de données admin
 	 * "true" ou "false" pour un booléen, par exemple
 	 * @param data
@@ -258,13 +326,13 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	/**
-	 * magnifyText
-	 * 
 	 * Remplace les espaces après les mots courts par des espaces insécables pour une meilleure gestion des retours à la ligne
 	 * @param string
 	 * @return string
 	 */
 	public function magnifyText($t) {
+		// supprime les espaces inutiles
+		$t = $this->cleanSpaces($t);
 		$search = array(
 			" et ",
 			" ou ",
@@ -370,8 +438,6 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	/**
-	 * dureeHM
-	 * 
 	 * Renvoie un texte en heures pour une durée $duree en minutes
 	 * @param int
 	 * @return string
@@ -892,7 +958,7 @@ class twigAetools extends \Twig_Extension {
 		$_fm = $this->container->get('ensemble01services.geodiag');
 		$_fm->log_user($user, null, true);
 		$media = $_fm->getMedia($mult);
-		if(is_string($media)) return $no." (".$media.")";
+		if(is_string($media)) return $no."<br>(".$media.")";
 		if(count($media) > 0) {
 			reset($media);
 			$media = current($media);
@@ -908,22 +974,10 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $tx
 	 * @return string
 	 */
-	public function printIfMult($tx, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
+	public function printIfMult($tx, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $coupe = 6, $separ = "br") {
 		if(preg_match('#^(Mult-)#', $tx)) {
 			return $this->mediaIMG($tx, $hi, $classe, $format, $largeur, $hauteur);
-		} else return $this->shortwordsforTables($tx);
-	}
-
-	private function shortwordsforTables($text) {
-		$trans = array(
-			" - " => '<br>',
-			"PRESENCE D'AMIANTE" => "PRESENCE<br>D'AMIANTE",
-			"." => '.<br>',
-			"," => ',<br>',
-			":" => ':<br>',
-			";" => ';<br>',
-			);
-		return strtr($text, $trans);
+		} else return $this->colonizeWords($tx, $coupe, $separ);
 	}
 
 	/**
@@ -934,6 +988,18 @@ class twigAetools extends \Twig_Extension {
 	public function neant($tx, $neant = 'Néant') {
 		if(strlen(trim($tx)) < 1) return $neant;
 			else return trim($tx);
+	}
+
+	public function testBegin($t, $begin, $caseSens = true) {
+		if($caseSens === true) $i = "";else $i = "i";
+		$a = preg_match('#^('.$begin.')#'.$i, $t);
+		return ($a === 1 ? true : false);
+	}
+
+	public function testEnd($t, $end, $caseSens = true) {
+		if($caseSens === true) $i = "";else $i = "i";
+		$a = preg_match('#('.$end.')$#'.$i, $t);
+		return ($a === 1 ? true : false);
 	}
 
 	public function rapport_detail_liste_materiau($rapport) {

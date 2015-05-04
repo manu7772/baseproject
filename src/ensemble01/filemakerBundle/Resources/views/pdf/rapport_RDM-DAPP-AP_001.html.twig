@@ -427,37 +427,37 @@
 		{{ CSSclass('ROUGE&nbsp;:', 'red')|raw }} présence d'amiante</p>
 
 		<bookmark title="7.1 Indicateurs visuels de dégradation" level="1" ></bookmark>
-		<h3>7.1 Indicateurs visuels de dégradation</h3>
+		<h3 style="width:100%;">7.1 Indicateurs visuels de dégradation</h3>
 			<p>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères détaillés dans l’arrêté du 12 décembre 2012.</p>
 
 		<bookmark title="7.2 Diagnostic par unité de bâtiment" level="1" ></bookmark>
-		<h3>7.2 Diagnostic par unité de bâtiment</h3>
+		<h3 style="width:100%;">7.2 Diagnostic par unité de bâtiment</h3>
 			<p>Immeuble&nbsp;: {{ rapport.getField('local_adresse')|raw }} -&nbsp;{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</p>
 
 			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
-			<h4>7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			<table class='type6'>
+			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
+			<table class='type6' style='margin: 6mm auto 4mm; border-collapse: collapse; width: 100%;'>
 				<thead>
 					<tr>
-						<th class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
-						<th class='center col02' rowspan='2'>Niveau</th>
-						<th class='center col03' rowspan='2'>N°<br>pièce</th>
-						<th class='center col04' rowspan='2'>Pièce/<br>Local</th>
-						<th class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th class='center col06 rotate' rowspan='2'>Sol</th>
-						<th class='center col07 rotate' rowspan='2'>Mur</th>
-						<th class='center col08 rotate' rowspan='2'>Plafond</th>
-						<th class='center' colspan='2'>Matériaux</th>
-						<th class='center col11' rowspan='2'>Observa<br>tions</th>
-						<th class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th class='center col13' rowspan='2'>Résultat</th>
-						<th class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
-						<th class='center col15' rowspan='2'>Mesures à<br>prendre</th>
-						<th class='center col16' rowspan='2'>Photos</th>
+						<th style='7%' class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
+						<th style='4%' class='center col02' rowspan='2'>Niveau</th>
+						<th style='5%' class='center col03' rowspan='2'>N°<br>pièce</th>
+						<th style='5%' class='center col04' rowspan='2'>Pièce/<br>Local</th>
+						<th style='5%' class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+						<th style='3%' class='center col06' rowspan='2'>Sol</th>
+						<th style='3%' class='center col07' rowspan='2'>Mur</th>
+						<th style='3%' class='center col08' rowspan='2'>Plaf.</th>
+						<th style='10%' class='center' colspan='2'>Matériaux</th>
+						<th style='6%' class='center col11' rowspan='2'>Observa<br>tions</th>
+						<th style='5%' class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
+						<th style='4%' class='center col13' rowspan='2'>Résultat</th>
+						<th style='5%' class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
+						<th style='5%' class='center col15' rowspan='2'>Mesures à<br>prendre</th>
+						<th style='30%' class='center col16' rowspan='2'>Photos</th>
 					</tr>
 					<tr>
-						<th class='center col09'>Type</th>
-						<th class='center col10'>Détails</th>
+						<th style='5%' class='center col09'>Type</th>
+						<th style='5%' class='center col10'>Détails</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -465,8 +465,9 @@
 					{% if data|length > 0 %}
 					{% for ligne in data %}
 					<tr>
-						{% for colonne in ligne %}
-						<td class='center'>{{ printIfMult(colonne, RESO, null, null, '100%')|raw }}</td>
+						{% if ligne[12] matches '/^(PRESEN)/' %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
+						{% for key,colonne in ligne %}
+						<td class='center'{{ amiante }}>{{ printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw }}</td>
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -501,31 +502,42 @@
 
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
 			<h4>7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
-			<table class='type6'>
+			<table class='type6' style='margin: 6mm auto 4mm; border-collapse: collapse; width: 100%;'>
 				<thead>
 					<tr>
-						<th class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
-						<th class='center col02' rowspan='2'>Niveau</th>
-						<th class='center col03' rowspan='2'>N°<br>pièce</th>
-						<th class='center col04' rowspan='2'>Pièce/<br>Local</th>
-						<th class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th class='center col06 rotate' rowspan='2'>Sol</th>
-						<th class='center col07 rotate' rowspan='2'>Mur</th>
-						<th class='center col08 rotate' rowspan='2'>Plafond</th>
-						<th class='center' colspan='2'>Matériaux</th>
-						<th class='center col11' rowspan='2'>Observa<br>tions</th>
-						<th class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th class='center col13' rowspan='2'>Résultat</th>
-						<th class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
-						<th class='center col15' rowspan='2'>Mesures à<br>prendre</th>
-						<th class='center col16' rowspan='2'>Photos</th>
+						<th style='7%' class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
+						<th style='4%' class='center col02' rowspan='2'>Niveau</th>
+						<th style='5%' class='center col03' rowspan='2'>N°<br>pièce</th>
+						<th style='5%' class='center col04' rowspan='2'>Pièce/<br>Local</th>
+						<th style='5%' class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+						<th style='3%' class='center col06' rowspan='2'>Sol</th>
+						<th style='3%' class='center col07' rowspan='2'>Mur</th>
+						<th style='3%' class='center col08' rowspan='2'>Plaf.</th>
+						<th style='10%' class='center' colspan='2'>Matériaux</th>
+						<th style='6%' class='center col11' rowspan='2'>Observa<br>tions</th>
+						<th style='5%' class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
+						<th style='4%' class='center col13' rowspan='2'>Résultat</th>
+						<th style='5%' class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
+						<th style='5%' class='center col15' rowspan='2'>Mesures à<br>prendre</th>
+						<th style='30%' class='center col16' rowspan='2'>Photos</th>
 					</tr>
 					<tr>
-						<th class='center col09'>Type</th>
-						<th class='center col10'>Détails</th>
+						<th style='5%' class='center col09'>Type</th>
+						<th style='5%' class='center col10'>Détails</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
+					{% if data|length > 0 %}
+					{% for ligne in data %}
+					<tr>
+						{% if ligne[12] matches '/^(PRESEN)/' %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
+						{% for key,colonne in ligne %}
+						<td class='center'{{ amiante }}>{{ printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw }}</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+					{% else %}
 					<tr>
 						<td class='center col01'>{{ neant }}</td>
 						<td class='center col02'>{{ neant }}</td>
@@ -544,6 +556,7 @@
 						<td class='center col15'>{{ neant }}</td>
 						<td class='center col16'>{{ neant }}</td>
 					</tr>
+					{% endif %}
 				</tbody>
 			</table>
 			<br>
