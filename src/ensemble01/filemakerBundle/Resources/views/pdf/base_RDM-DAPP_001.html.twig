@@ -119,7 +119,8 @@
 	{% set gris3 = '#333333' %}
 	{% set grisA = '#aaaaaa' %}
 	{% set grisC = '#cccccc' %}
-	{% set darkgris = '#333' %}
+	{% set darkgris = '#333333' %}
+	{% set alinks = '#000066' %}
 	{% set lines = '0.8pt solid ' ~ darkgris %}
 	{% set tch1 = grisC %}
 
@@ -143,8 +144,9 @@
 		}
 
 		a {
-			color: blue;
-			text-decoration: underline;
+			color: {{ alinks }};
+			text-decoration: none;
+			/*text-decoration: underline;*/
 		}
 
 		h1.sommaire {

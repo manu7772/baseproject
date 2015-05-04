@@ -143,7 +143,6 @@
 {{ base.newPage(rapport, media, date, format, 'default') }}
 <div class='text-content'>
 
-	<a name="page3"></a>
 	<bookmark title="1. CONCLUSIONS DU RAPPORT" level="0" ></bookmark>
 	{{ CSSclass('<h2>1. CONCLUSIONS DU RAPPORT</h2>', 'greyline', 'div')|raw }}
 
@@ -570,14 +569,14 @@
 	{{ CSSclass('<h2>8. ANNEXES</h2>', 'greyline', 'div')|raw }}
 	<br>
 	<table class='type7'>
-		<tr><td class="strong">8.1&nbsp;&nbsp;Informations réglementaires</td></tr>
-		<tr><td class="strong">8.2&nbsp;&nbsp;Croquis</td></tr>
-		<tr><td class="strong">8.3&nbsp;&nbsp;Certification</td></tr>
-		<tr><td class="strong">8.4&nbsp;&nbsp;Attestation d’assurance</td></tr>
-		<tr><td class="strong">8.5&nbsp;&nbsp;Grilles d’évaluation et état de conservation</td></tr>
-		<tr><td class="strong">8.6&nbsp;&nbsp;Conséquences règlementaires et recommandations</td></tr>
-		<tr><td class="strong">8.7&nbsp;&nbsp;Recommandations générales de sécurité</td></tr>
-		<tr><td class="strong">8.8&nbsp;&nbsp;Procès-verbaux d’analyses</td></tr>
+		<tr><td class="strong"><a href='#anchor81'>8.1&nbsp;&nbsp;Informations réglementaires</a></td></tr>
+		<tr><td class="strong"><a href='#anchor82'>8.2&nbsp;&nbsp;Croquis</a></td></tr>
+		<tr><td class="strong"><a href='#anchor83'>8.3&nbsp;&nbsp;Certification</a></td></tr>
+		<tr><td class="strong"><a href='#anchor84'>8.4&nbsp;&nbsp;Attestation d’assurance</a></td></tr>
+		<tr><td class="strong"><a href='#anchor85'>8.5&nbsp;&nbsp;Grilles d’évaluation et état de conservation</a></td></tr>
+		<tr><td class="strong"><a href='#anchor86'>8.6&nbsp;&nbsp;Conséquences règlementaires et recommandations</a></td></tr>
+		<tr><td class="strong"><a href='#anchor87'>8.7&nbsp;&nbsp;Recommandations générales de sécurité</a></td></tr>
+		<tr><td class="strong"><a href='#anchor88'>8.8&nbsp;&nbsp;Procès-verbaux d’analyses</a></td></tr>
 	</table>
 
 </div>
@@ -587,6 +586,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.1 Informations réglementaires" level="1" ></bookmark>
+	<a name="anchor81"></a>
 	<h3 class="stronger center">8.1 Informations réglementaires</h3>
 
 </div>
@@ -615,6 +615,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.2 Croquis" level="1" ></bookmark>
+	<a name="anchor82"></a>
 	<h3 class="stronger center">8.2 Croquis</h3>
 
 	{% if rapport.getField('lien_croquis_multimedia')|length < 1 %}
@@ -640,6 +641,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.3 Certification" level="1" ></bookmark>
+	<a name="anchor83"></a>
 	<h3 class="stronger center">8.3 Certification</h3>
 
 </div>
@@ -671,6 +673,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.4 Attestation d'assurance" level="1" ></bookmark>
+	<a name="anchor84"></a>
 	<h3 class="stronger center">8.4 Attestation d'assurance</h3>
 
 </div>
@@ -699,6 +702,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.5 Grilles d'évaluation - État de conservation" level="1" ></bookmark>
+	<a name="anchor85"></a>
 	<h3 class="stronger center">8.5 Grilles d'évaluation - État de conservation</h3>
 
 </div>
@@ -763,6 +767,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.6 Conséquences réglementaires et recommandations" level="1" ></bookmark>
+	<a name="anchor86"></a>
 	<h3 class="stronger center">8.6 Conséquences réglementaires et recommandations</h3>
 
 </div>
@@ -803,6 +808,7 @@
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.7 Recommandations générales de sécurité" level="1" ></bookmark>
+	<a name="anchor87"></a>
 	<h3 class="stronger center">8.7 Recommandations générales de sécurité</h3>
 
 </div>
@@ -880,6 +886,7 @@
 
 		<div style="height:80mm;width:100%;"></div>
 		<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
+		<a name="anchor88"></a>
 		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
 	
 	{% if rapport.getField('rapport_pv_analyse')|length < 1 %}
