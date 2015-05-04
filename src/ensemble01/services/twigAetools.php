@@ -800,7 +800,7 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
 		if(!in_array($format, array('png', 'jpg', 'gif'))) $format = 'png';
-		if(strlen($text."") < 1) return "<p style='font-style:italic;color:#999;'>Image manquante</p>";
+		if(strlen($text."") < 1) return ""; // "<p style='font-style:italic;color:#999;'>Image manquante</p>";
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";
 		if(is_string($largeur)) $largeur = "width:".$largeur.";";
@@ -898,7 +898,16 @@ class twigAetools extends \Twig_Extension {
 
 
 	/**
-	 * Renvoie un tableau de l'élément fourni avec séparateurs |*| et |
+	 * Renvoie un tableau de l'élément fourni avec séparateur | (1 niveau)
+	 * @param string $text
+	 * @return array
+	 */
+	public function FMexplode00($text) {
+		return explode('|', $text);
+	}
+
+	/**
+	 * Renvoie un tableau de l'élément fourni avec séparateurs |*| et | (2 niveaux)
 	 * @param string $text
 	 * @return array
 	 */
@@ -906,7 +915,7 @@ class twigAetools extends \Twig_Extension {
 		$techs = explode('|*|', $text);
 		$tech = array();
 		foreach ($techs as $key => $item) {
-			$tech[$key] = explode('|', $item);
+			$tech[$key] = $this->FMexplode00($item);
 		}
 		return $tech;
 	}

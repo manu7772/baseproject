@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             // html2pdf
             new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
+            // tcpdf
        );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
