@@ -53,7 +53,7 @@
 					{{ rapport.getField('client_adresse') }}<br>
 					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
 				</td>
-				<td class="td-middle" style="vertical-align:middle;">
+				<td class="td-middle">
 					<span class="bold">{{ rapport.getField('soc_nom') }} - {{ rapport.getField('soc_agence') }}<br>
 					{{ rapport.getField('soc_adresse') }}<br>
 					{{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}<br>
@@ -106,7 +106,7 @@
 						{{ rapport.getField('Laboratoire') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse2') }}&nbsp;- {{ rapport.getField('Laboratoire_cp') }}&nbsp;{{ rapport.getField('Laboratoire_ville') }}
 					</span>
 				</td>
-				<td class="left td-middle" style="vertical-align:middle;">
+				<td class="left td-middle">
 					<span class="underline">Date de commande</span>&nbsp;: 
 					<span class="bold">
 						{{ transFMdate(rapport.getField('date_commande')) }}
@@ -226,8 +226,7 @@
 
 		<p class="signature">
 			<!-- À Bourgtheroulde-Infreville, le {{ date|date(formatDateTwig, timezoneTwig) }},<br> -->
-			<!-- À Bourgtheroulde-Infreville, le {{ lastdate(rapport.getField('local_dates_visites'))|raw }},<br> -->
-			À Bourgtheroulde-Infreville, le {{ rapport.getField('rapport_date_signature')|raw }},<br>
+			À Bourgtheroulde-Infreville, le {{ lastdate(rapport.getField('local_dates_visites'))|raw }},<br>
 			L’opérateur de repérage<br>
 			<br>
 			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
@@ -301,11 +300,11 @@
 			</thead>
 			<tbody>
 				<tr>
-					{# set item = FMexplode00(rapport.getField('XXXXXXXXXXXXXXXXXXXXX')) #}
-					{% set item = FMexplode00('néant1|néant2|néant3|néant4|néant5') %}
-					{% for key,cla in ['one', 'two', 'three', 'four', 'five'] %}
-					<td class='{{ cla }} center'>{{ neant }}</td>
-					{% endfor %}
+					<td class='one center'>{{ neant }}</td>
+					<td class='two center'>{{ neant }}</td>
+					<td class='three center'>{{ neant }}</td>
+					<td class='four center'>{{ neant }}</td>
+					<td class='five center'>{{ neant }}</td>
 				</tr>
 			</tbody>
 		</table>
