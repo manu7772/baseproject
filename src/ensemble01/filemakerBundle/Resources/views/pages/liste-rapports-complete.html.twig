@@ -49,6 +49,8 @@
 					<th style="text-align:center;" class="warning">
 						<a class="fancyboxext fancybox.iframe" href="{{ url('ensemble01site_rapportfm', {id: idrapport, mode: 'screen', format: 'html'}) }}" title="Rapport {{ idrapport }} en HTML"><span class="glyphicon glyphicon-list-alt" style="color:orange;" aria-hidden="true"></span></a>
 						&nbsp;
+						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'detail-rapport-sadmin', pagedata: local.getField('id')}) }}" title="Détails du rapport {{ idrapport }} en Super Admin"><span class="glyphicon glyphicon-list-alt" style="color:blue;" aria-hidden="true"></span></a>
+						&nbsp;
 					</th>
 					{% endif %}
 				</tr>

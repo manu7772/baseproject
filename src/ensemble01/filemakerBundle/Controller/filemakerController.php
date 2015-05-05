@@ -255,6 +255,7 @@ class filemakerController extends fmController {
 				// var_dump($ctrlData['pdf_file']);
 				// die("</pre>");
 				break;
+			case 'detail-rapport-sadmin':
 			case 'detail-rapport':
 				$ctrlData['h1'] = "Détail rapport";
 				// die($ctrlData['pagedata_raw']);
@@ -497,7 +498,7 @@ class filemakerController extends fmController {
 	 * @param string $format - type de retour -> "pdf" ou "html"
 	 * @return aeReponse
 	 */
-	public function generate_un_rapport($id_rapport = null, $format = "pdf", $aeReponse = null) {
+	public function prepare_un_rapport($id_rapport = null, $format = "pdf", $aeReponse = null) {
 		set_time_limit(360); // délai pour le script : 6 min
 		// renvoie un objet aeReponse
 		// data[id] => array()
@@ -553,7 +554,6 @@ class filemakerController extends fmController {
 					default: // PDF ou autre
 						$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
 						$html = null;
-						$RAPP['media'] = $this->getMediasFromRapport($RAPP['rapport']->getField('id'));
 						try {
 							$html = $this->renderView($RAPP["template"], $RAPP);
 						} catch (\Exception $e){
@@ -597,7 +597,7 @@ class filemakerController extends fmController {
 	public function generate_rapport_fmAction($rapport_id) {
 		$format = 'pdf';
 		// $rapport = $this->_fm->getOneRapport($id);
-		$aeReponse = $this->generate_un_rapport($rapport_id);
+		$aeReponse = $this->prepare_un_rapport($rapport_id);
 		if($aeReponse->isValid()) {
 			$datassup = $aeReponse->getDataAndSupp();
 			// echo('Nombre de retours de rapports ('.key($datassup).') : '.count($datassup)."<br>");
@@ -648,7 +648,7 @@ class filemakerController extends fmController {
 		$rapport = $this->_fm->getOneRapport($id);
 		if(is_object($rapport)) {
 			$this->_fm->effaceRapportFile($rapport);
-			$aeReponse = $this->generate_un_rapport($rapport, 'pdf', $aeReponse);
+			$aeReponse = $this->prepare_un_rapport($rapport, 'pdf', $aeReponse);
 			if($aeReponse->isValid()) {
 				$datassup = $aeReponse->getDataAndSupp();
 				$oneRapport = current($datassup);
@@ -699,19 +699,8 @@ class filemakerController extends fmController {
 			$aeReponse->addErrorMessage($rapports);
 		// sinon
 		} else foreach($rapports as $rapport) {
-			$aeReponse = $this->generate_un_rapport($rapport, $format, $aeReponse);
+			$aeReponse = $this->prepare_un_rapport($rapport, $format, $aeReponse);
 		}
-		// DEV TEST :
-		// $r = $aeReponse->getDataAndSupp();
-		// if($aeReponse->isValid()) {
-		// 	$oneRapport = current($r);
-		// 	return new Response($oneRapport['html']);
-		// } else {
-		// 	$messages = $aeReponse->getAllMessages();
-		// 	echo('<pre>Messages : ');
-		// 	var_dump($messages);
-		// 	die('<pre>');
-		// }
 		if($aeReponse->isValid()) {
 			foreach ($aeReponse->getDataAndSupp() as $key => $oneRapport) {
 				switch ($mode) {
@@ -769,8 +758,8 @@ class filemakerController extends fmController {
 			}
 		} else {
 			$aeReponse->addErrorMessage('Opération de génération de rapports échouée');
-			$aeReponse->putErrorMessagesInFlashbag();
 		}
+		$aeReponse->putErrorMessagesInFlashbag();
 		// echo('<pre>');
 		// var_dump($aeReponse->getAllMessages());
 		// die('</pre>');
@@ -863,7 +852,7 @@ class filemakerController extends fmController {
 		if($aeReponse->isValid()) {
 			foreach ($resltRapports as $id_rapport => $oneRapport) {
 				$format = 'pdf';
-				$aeReponse = $this->generate_un_rapport($oneRapport, $format, $aeReponse);
+				$aeReponse = $this->prepare_un_rapport($oneRapport, $format, $aeReponse);
 				$one2Rapport = $aeReponse->getDataAndSupp($id_rapport);
 				// $one2Rapport = $one2Rapport["rapport"];
 				if(is_array($one2Rapport)) {

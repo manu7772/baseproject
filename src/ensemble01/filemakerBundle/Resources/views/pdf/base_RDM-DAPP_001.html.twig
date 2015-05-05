@@ -1,4 +1,4 @@
-{% macro headDoc(rapport, media, date, imgpath, format, params) %}
+{% macro headDoc(rapport, date, imgpath, format, params) %}
 	{% import _self as bases %}
 
 	{% set defaultBacktop = '0mm' %}
@@ -19,8 +19,8 @@
 	{% if format|default(defaultFormat) == 'pdf' %}
 		{{ bases.writeCSS(imgpath) }}
 		<page backtop="{{ params.backtop|default(defaultBacktop) }}" backbottom="{{ params.backbottom|default(defaultBackbottom) }}" backleft="{{ params.backleft|default(defaultBackleft) }}" backright="{{ params.backright|default(defaultBackright) }}" orientation="{{ params.orientation|default(defaultOrientation) }}">
-			{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, media, date) }}{% endif %}
-			{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, media, date) }}{% endif %}
+			{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, date) }}{% endif %}
+			{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, date) }}{% endif %}
 	{% else %}
 		<!DOCTYPE html>
 		<html lang="{{ params.lang|default(defaultLang) }}">
@@ -45,7 +45,7 @@
 
 
 
-{% macro newPage(rapport, media, date, format, params) %}
+{% macro newPage(rapport, date, format, params) %}
 	{% import _self as bases %}
 
 	{% set defaultBacktop = '20mm' %}
@@ -61,8 +61,8 @@
 		{% if params|default('old') != 'old' %}
 			{% if params is not iterable %}{% set params = [] %}{% endif %}
 			<page backtop="{{ params.backtop|default(defaultBacktop) }}" backbottom="{{ params.backbottom|default(defaultBackbottom) }}" backleft="{{ params.backleft|default(defaultBackleft) }}" backright="{{ params.backright|default(defaultBackright) }}" orientation="{{ params.orientation|default(defaultOrientation) }}">
-				{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, media, date) }}{% endif %}
-				{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, media, date) }}{% endif %}
+				{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, date) }}{% endif %}
+				{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, date) }}{% endif %}
 		{% else %}
 			<page pageset="old">
 		{% endif %}
@@ -83,7 +83,7 @@
 
 
 
-{% macro header(rapport, media, date) %}
+{% macro header(rapport, date) %}
 	<page_header>
 		<table class="phtable" align="center">
 			<tr>
@@ -93,7 +93,7 @@
 					{{ rapport.getField('local_type_bat_texte')|raw }} - Logement {{ rapport.getField('num_porte')|raw }} - Étage {{ rapport.getField('local_etage')|raw }} - {{ rapport.getField('local_adresse')|raw }} - {{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
 				</td>
 					{# {{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }} #}
-				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date|date(formatDateTwig, timezoneTwig) }}</td>
+				<td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date }}</td>
 			</tr>
 		</table>
 		<br>
@@ -101,7 +101,7 @@
 	</page_header>
 {% endmacro %}
 
-{% macro footer(rapport, media, date) %}
+{% macro footer(rapport, date) %}
 	<page_footer>
 		<p class="pf_page">[[page_cu]]/[[page_nb]]</p>
 		<p class="pf_mention1">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
@@ -354,7 +354,7 @@
 			font-style: italic;
 			font-size: 12pt;
 			padding: 3pt 3pt 2pt 3pt;
-			margin: 12pt 0pt 6pt 0pt;
+			margin: 10pt 0pt 6pt 0pt;
 		}
 		div.text-content h4 {
 			/*display: block;*/
@@ -362,8 +362,8 @@
 			background-color: transparent;
 			font-weight: bold;
 			font-size: 11pt;
-			padding: 6pt 0pt 3pt 16pt;
-			margin: 8pt 0pt 3pt 16pt;
+			padding: 5pt 0pt 2pt 16pt;
+			margin: 6pt 0pt 2pt 16pt;
 		}
 		div.text-content h5 {
 			/*display: block;*/
@@ -372,8 +372,8 @@
 			font-weight: bold;
 			text-decoration: underline;
 			font-size: 10pt;
-			padding: 6pt 0pt 3pt 36pt;
-			margin: 8pt 0pt 3pt 36pt;
+			padding: 4pt 0pt 2pt 36pt;
+			margin: 5pt 0pt 2pt 36pt;
 		}
 
 		div.text-content p {
@@ -791,14 +791,14 @@
 		/* CONCLUSION */
 		div.conclusion {
 			width: 100%;
-			border: 2mm solid {{ grisbleu }};
 			font-size: 15pt;
 			font-weight: bold;
 			text-align: center;
-			color: {{ darkgris }};
 			padding: 3mm 5mm;
 			margin: 5mm auto;
 			background-color: #ddd;
+			border: 2mm solid {{ grisbleu }};
+			color: {{ darkgris }};
 		}
 
 	-->

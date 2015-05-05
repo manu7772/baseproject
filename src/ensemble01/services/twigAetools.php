@@ -4,6 +4,7 @@
 namespace ensemble01\services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use \Datetime;
 
 class twigAetools extends \Twig_Extension {
 
@@ -63,13 +64,16 @@ class twigAetools extends \Twig_Extension {
 			'partie_nom_rapport'	=> new \Twig_Function_Method($this, 'partie_nom_rapport'),
 			'getDateConstruction'	=> new \Twig_Function_Method($this, 'getDateConstruction'),
 			'getRev'				=> new \Twig_Function_Method($this, 'getRev'),
-			'nomstechs'				=> new \Twig_Function_Method($this, 'nomstechs'),
-			'getTechs'				=> new \Twig_Function_Method($this, 'getTechs'),
+			'getTechniciens'		=> new \Twig_Function_Method($this, 'getTechniciens'),
+			'nomsTechniciens'		=> new \Twig_Function_Method($this, 'nomsTechniciens'),
 			'mediaIMG'				=> new \Twig_Function_Method($this, 'mediaIMG'),
 			'printIfMult'			=> new \Twig_Function_Method($this, 'printIfMult'),
 			'neant'					=> new \Twig_Function_Method($this, 'neant'),
-			'testBegin'				=> new \Twig_Function_Method($this, 'testBegin'),
+			'FMexplode00'			=> new \Twig_Function_Method($this, 'FMexplode00'),
+			'FMexplode01'			=> new \Twig_Function_Method($this, 'FMexplode01'),
+			'non_visites'			=> new \Twig_Function_Method($this, 'non_visites'),
 			'testEnd'				=> new \Twig_Function_Method($this, 'testEnd'),
+			'datalacon'				=> new \Twig_Function_Method($this, 'datalacon'),
 			'rapport_detail_liste_materiau'		=> new \Twig_Function_Method($this, 'rapport_detail_liste_materiau'),
 			);
 	}
@@ -231,7 +235,27 @@ class twigAetools extends \Twig_Extension {
 		return print_r($data);
 	}
 
+
+	/**
+	 * Transforme une date au format jj/mm/aa en aaaa-mm-jj pour utilisation Datetime
+	 * @param string $date
+	 * @return string
+	 */
+	protected function reform($date) {
+		$date2 = explode('/', $date);
+		if(is_array($date2)) {
+			if(count($date2) == 3) {
+				$date2 = $date2[2]."-".$date2[1]."-".$date2[0];
+			} else $date2 = $date;
+		} else $date2 = $date;
+		return $date2;
+	}
+
 	public function intervalDateFR($datedebut, $datefin = null, $short = false) {
+		// dates en string
+		if(is_string($datedebut)) $datedebut = new Datetime($this->reform($datedebut));
+		if(is_string($datefin)) $datefin = new Datetime($this->reform($datefin));
+
 		if(($datefin === null) && (is_object($datedebut))) {
 			$txt = "le ".$this->dateFR($datedebut, $short);
 		} else if((is_object($datedebut)) && (is_object($datefin))) {
@@ -245,6 +269,7 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	public function dateFR($date, $short = false) {
+		if(is_string($date)) $date = new Datetime($this->reform($date));
 		$sup = array(1);
 		if($short === false) {
 			$jours = array(
@@ -679,7 +704,7 @@ class twigAetools extends \Twig_Extension {
 	 * @return string
 	 */
 	public function annee() {
-		$date = new \Datetime();
+		$date = new Datetime();
 		return $date->format("Y");
 	}
 
@@ -799,8 +824,8 @@ class twigAetools extends \Twig_Extension {
 	 * @return string
 	 */
 	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
-		if(!in_array($format, array('png', 'jpg', 'gif'))) $format = 'png';
-		if(strlen($text."") < 1) return "<p style='font-style:italic;color:#999;'>Image manquante</p>";
+		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif'))) $format = 'png';
+		if(strlen($text."") < 1) return "*";// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";
 		if(is_string($largeur)) $largeur = "width:".$largeur.";";
@@ -897,52 +922,37 @@ class twigAetools extends \Twig_Extension {
 	}
 
 
-	/**
-	 * Renvoie un tableau de l'élément fourni avec séparateurs |*| et |
-	 * @param string $text
-	 * @return array
-	 */
-	public function FMexplode01($text) {
-		$techs = explode('|*|', $text);
-		$tech = array();
-		foreach ($techs as $key => $item) {
-			$tech[$key] = explode('|', $item);
-		}
-		return $tech;
+
+
+
+
+	public function non_visites($text, $neant = '-') {
+		$text = $this->FMexplode00($text);
+		$text = $this->fillWith($text, 5, $neant, true);
+		return $text;
 	}
+
 
 	/**
 	 * renvoie le texte avec noms et prénoms des techniciens
-	 * @param string $text
+	 * @param string $rapport
 	 * @return string
 	 */
-	public function getTechs($text, $id_exclude = array()) {
-		if(is_string($id_exclude)) $id_exclude = array($id_exclude);
-		$tech = $this->FMexplode01($text);
-		// suppression des doublons et de $id_exclude
+	public function nomsTechniciens($rapport, $glue = ' - ', $excludeSign = false) {
+		// if(is_object($rapport)) $text = $rapport->getField('rapport_techniciens');
+		$techniciens = $this->getTechniciens($rapport, $excludeSign);
 		$finalTech = array();
-		foreach ($tech as $key => $item) {
-			if(!in_array($item[0], $id_exclude)) {
-				$finalTech[$item[0]] = $item;
-			}
+		foreach ($techniciens as $key => $item) {
+			if(isset($item[1])) {
+				$espace = "&nbsp;";
+				if(isset($item[2])) {
+					if(strlen(trim($item[2])) < 1) $prenom = "";
+						else $prenom = $item[2].$espace;
+				} else $prenom = "";
+				$finalTech[$key] = $prenom.$item[1];
+			} else $finalTech[$key] = "(inconnu)";
 		}
-		return $finalTech;
-	}
-
-	/**
-	 * renvoie le texte avec noms et prénoms des techniciens
-	 * @param string $text
-	 * @return string
-	 */
-	public function nomstechs($text) {
-		$tech = $this->getTechs($text);
-		$finalTech = array();
-		foreach ($tech as $key => $item) {
-			$espace = " ";
-			if(strlen(trim($item[2])) < 1) $espace = "";
-			$finalTech[$key] = $item[2].$espace.$item[1];
-		}
-		return implode(" - ", $finalTech);
+		return implode($glue, $finalTech);
 	}
 
 	/**
@@ -958,7 +968,7 @@ class twigAetools extends \Twig_Extension {
 		$_fm = $this->container->get('ensemble01services.geodiag');
 		$_fm->log_user($user, null, true);
 		$media = $_fm->getMedia($mult);
-		if(is_string($media)) return $no."<br>(".$media.")";
+		if(is_string($media)) return "*"; // $no."<br>(".$media.")";
 		if(count($media) > 0) {
 			reset($media);
 			$media = current($media);
@@ -990,21 +1000,154 @@ class twigAetools extends \Twig_Extension {
 			else return trim($tx);
 	}
 
-	public function testBegin($t, $begin, $caseSens = true) {
-		if($caseSens === true) $i = "";else $i = "i";
-		$a = preg_match('#^('.$begin.')#'.$i, $t);
-		return ($a === 1 ? true : false);
+	public function rapport_detail_liste_materiau($rapport, $neant = '-') {
+		$nbl = 16;
+		$r = $this->FMexplode01($rapport);
+		if($r !== false) foreach ($r as $key => $value) {
+			if(count($value) < $nbl) {
+				// $max = count($value);
+				$max = 0;
+				for ($i = $max ; $i < $nbl ; $i++) { 
+					if(!isset($r[$key][$i])) $r[$key][$i] = $neant;
+				}
+			}
+		} else {
+			$idx = 0;
+			$r = array($idx => array());
+			for ($i = 0 ; $i < $nbl ; $i++) { 
+				$r[$idx][$i] = $neant;
+			}
+		}
+		return $r;
 	}
 
-	public function testEnd($t, $end, $caseSens = true) {
-		if($caseSens === true) $i = "";else $i = "i";
-		$a = preg_match('#('.$end.')$#'.$i, $t);
-		return ($a === 1 ? true : false);
+
+
+
+	//************************************//
+	//** MÉTHODES GÉNÉRIQUES            **//
+	//************************************//
+
+	/**
+	 * renvoie un tableau des techniciens
+	 * @param mixed $rapport - objet rapport
+	 * @param mixed $excludeSign - supprime le technicien signataire de la liste (true/false) ou son id (ex. "T000012")
+	 * @return string
+	 */
+	public function getTechniciens($rapport, $excludeSign = false) {
+		$exclude = array();
+		if(is_object($rapport)) {
+			$text = $rapport->getField('rapport_techniciens');
+			if($excludeSign === true) {
+				$exclude = $this->FMexplode00($rapport->getField('Fk_IdTechSignataire'));
+			} elseif(is_string($excludeSign)) {
+				$exclude = $this->FMexplode00($excludeSign);
+			}
+		} else {
+			$text = $rapport;
+			if(is_string($excludeSign)) {
+				$exclude = $this->FMexplode00($excludeSign);
+			}
+		}
+		$techniciens = $this->FMexplode01($text);
+		// suppression des doublons et de $excludeSign
+		$finalTech = array();
+		if(is_array($techniciens)) {
+			foreach ($techniciens as $key => $item) {
+				if(!in_array($item[0], $exclude)) {
+					$finalTech[$item[0]] = $item;
+				}
+			}
+		}
+		return $finalTech;
 	}
 
-	public function rapport_detail_liste_materiau($rapport) {
-		return $this->FMexplode01($rapport);
+	/**
+	 * Transforme une date au format mm/jj/aa en aaaa-mm-jj pour utilisation Datetime
+	 * @param string $date
+	 * @return string
+	 */
+	public function datalacon($date) {
+		$date2 = explode('/', $date);
+		if(is_array($date2)) {
+			if(count($date2) == 3) {
+				$date2 = $date2[2]."-".$date2[0]."-".$date2[1];
+			} else $date2 = $date;
+		} else $date2 = $date;
+		return $date2;
 	}
+
+
+
+	//************************************//
+	//** AUTRES MÉTHODES UTILES         **//
+	//************************************//
+
+	/**
+	 * Renvoie un tableau de l'élément texte fourni avec séparateur | ( 1 niveau )
+	 * @param string $text
+	 * @return array
+	 */
+	public function FMexplode00($text) {
+		$text = trim($text);
+		if(strlen($text) < 1) return false;
+		return explode('|', $text);
+	}
+
+	/**
+	 * Renvoie un tableau de l'élément texte fourni avec séparateurs |*| et | ( 2 niveaux )
+	 * @param string $text
+	 * @return array
+	 */
+	public function FMexplode01($text) {
+		$text = trim($text);
+		if(strlen($text) < 1) return false;
+		$niv1 = explode('|*|', $text);
+		$niv2 = array();
+		foreach ($niv1 as $key => $item) {
+			$r = $this->FMexplode00($item);
+			if($r !== false) $niv2[$key] = $r;
+		}
+		if(count($niv2) < 1) return false;
+		return $niv2;
+	}
+
+	public function fillWith($data, $lenght, $neant = '-', $cut = false, $forceArray = true) {
+		if(!is_array($data) && $forceArray === true) $data = array();
+		if(is_array($data)) {
+			// ajoute si trop court…
+			if(count($data) < $lenght) {
+				for ($i = 0 ; $i < $lenght ; $i++) { 
+					if(!isset($data[$i])) {
+						$data[$i] = $neant;
+					} elseif(!is_array($data[$i])) {
+						if(strlen(trim($data[$i])) < 1 ) $data[$i] = $neant;
+					}
+				}
+			}
+			// coupe si trop long…
+			if(count($data) > $lenght && $cut === true) {
+				$data = array_slice($data, 0, $lenght);
+			}
+			ksort($data);
+		}
+		return $data;
+	}
+
+	public function fillChildsWith($data, $lenght, $neant = '-', $cut = false, $forceArray = true) {
+		if(!is_array($data) && $forceArray === true) $data = array(0 => array());
+		$dataR = array();
+		if(is_array($data)) {
+			if(count($data) > 0) {
+				foreach ($data as $key => $value) {
+					$dataR[$key] = $this->fillWith($value, $lenght, $neant, $cut, $forceArray);
+				}
+			}
+		}
+		unset($data);
+		return $dataR;
+	}
+
 
 }
 
