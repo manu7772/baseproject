@@ -4,7 +4,7 @@
 {% set RESO = false %}
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
-{% set date = datalacon(rapport.getField('rapport_date_signature_recup')) %}
+{% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
 {% set cherchepresence = '/^(presence|présence)/i' %}
 
 {{ base.headDoc(rapport, date, imgpath, format) }}
@@ -116,7 +116,7 @@
 					<br>
 					<span class="underline">Date de visite</span>&nbsp;: 
 					<span class="bold">
-						{{ datalacon(rapport.getField('date_visite'))|raw }}
+						{{ FMtoSimpleDate(rapport.getField('date_visite'))|raw }}
 						{# lastdate(rapport.getField('local_dates_visites'))|raw #}
 						{# separdates(rapport.getField('local_dates_visites'), true)|raw #}
 					</span>
@@ -303,7 +303,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					{% set item = non_visites(rapport.getField('XXXXXXXXXXXXXXXXXXXXX'), neant) %}
+					{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
 					{% for it in item %}
 					<td class='center'>{{ it|raw }}</td>
 					{% endfor %}

@@ -73,7 +73,8 @@ class twigAetools extends \Twig_Extension {
 			'FMexplode01'			=> new \Twig_Function_Method($this, 'FMexplode01'),
 			'non_visites'			=> new \Twig_Function_Method($this, 'non_visites'),
 			'testEnd'				=> new \Twig_Function_Method($this, 'testEnd'),
-			'datalacon'				=> new \Twig_Function_Method($this, 'datalacon'),
+			'FMformatDatetime'		=> new \Twig_Function_Method($this, 'FMformatDatetime'),
+			'FMtoSimpleDate'		=> new \Twig_Function_Method($this, 'FMtoSimpleDate'),
 			'rapport_detail_liste_materiau'		=> new \Twig_Function_Method($this, 'rapport_detail_liste_materiau'),
 			);
 	}
@@ -824,7 +825,7 @@ class twigAetools extends \Twig_Extension {
 	 * @return string
 	 */
 	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
-		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif'))) $format = 'png';
+		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif', 'bmp'))) $format = 'png';
 		if(strlen($text."") < 1) return "*";// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";
@@ -1067,7 +1068,7 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $date
 	 * @return string
 	 */
-	public function datalacon($date) {
+	public function FMformatDatetime($date) {
 		$date2 = explode('/', $date);
 		if(is_array($date2)) {
 			if(count($date2) == 3) {
@@ -1077,6 +1078,15 @@ class twigAetools extends \Twig_Extension {
 		return $date2;
 	}
 
+	public function FMtoSimpleDate($date, $separ = "/") {
+		$date2 = explode('/', $date);
+		if(is_array($date2)) {
+			if(count($date2) == 3) {
+				$date2 = $date2[1].$separ.$date2[0].$separ.$date2[2];
+			} else $date2 = $date;
+		} else $date2 = $date;
+		return $date2;
+	}
 
 
 	//************************************//
