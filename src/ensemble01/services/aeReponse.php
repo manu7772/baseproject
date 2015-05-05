@@ -11,7 +11,6 @@ class aeReponse {
 	const NOM_NOTICES = 'notice';
 	const NOM_ERRORMESSAGES = 'error';
 
-
 	protected $container;		// container
 	protected $flashBag;		// session
 	protected $data = array();	// data
@@ -69,7 +68,7 @@ class aeReponse {
 	public function getAllMessages($mix = false) {
 		if($mix === false) return array(
 			"messages" => $this->data["messages"], 
-			"notices" => $this->data["notices"], 
+			"messages" => $this->data["notices"], 
 			"ERRORmessages" => $this->data["ERRORmessages"]
 			);
 		return array_merge(
@@ -231,7 +230,6 @@ class aeReponse {
 		if(is_array($notices)) foreach($notices as $notice) {
 			$this->addNoticeMessage($notice);
 		}
-		$this->computeData();
 		return $this;
 	}
 
