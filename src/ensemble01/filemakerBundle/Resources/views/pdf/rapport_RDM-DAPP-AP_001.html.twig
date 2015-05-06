@@ -472,7 +472,7 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ base.image(colonne, "40mm") }}
+							{{ base.image(colonne, "width:40mm;") }}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br') }}
 							{% endif %}
@@ -547,7 +547,7 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ base.image(colonne, "40mm") }}
+							{{ base.image(colonne, "width:40mm;") }}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br') }}
 							{% endif %}
@@ -650,7 +650,7 @@
 	{{ base.newPage(rapport, date, format) }}
 	<div class='text-content'>
 
-		{{ base.image(rapport.getField('lien_croquis_multimedia'), "100%") }}
+		{{ base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") }}
 
 	{% endif %}
 
@@ -769,7 +769,7 @@
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<h4>• Flocages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "80%") }}
+		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -778,7 +778,7 @@
 
 		<h4>• Calorifugeages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "80%") }}
+		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -787,10 +787,12 @@
 
 		<h4>• Faux plafonds</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "80%") }}
+		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
+
+		{# <p>{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '90%')|raw }}</p> #}
 
 </div>
 {{ base.endPage(format) }}
@@ -934,7 +936,7 @@
 	<div class='text-content'>
 
 		{# mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw #}
-		{{ base.image(rapport.getField('rapport_pv_analyse'), "100%") }}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") }}
 
 	{% endif %}
 

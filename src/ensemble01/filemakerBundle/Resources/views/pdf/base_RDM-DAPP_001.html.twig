@@ -43,7 +43,7 @@
 {% endmacro %}
 
 
-{% macro image(id, classe, style) %}
+{% macro image(id, style, classe) %}
 	<img src="{{ url('ensemble01filemaker_media', {id: id, nom: id, ext: 'png'}) }}" class="{{ classe|default('') }}" style="{{ style|default('width:100%;') }}" />
 {% endmacro %}
 
