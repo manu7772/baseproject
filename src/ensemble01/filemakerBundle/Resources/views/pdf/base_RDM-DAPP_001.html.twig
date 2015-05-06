@@ -43,7 +43,9 @@
 {% endmacro %}
 
 
-
+{% macro image(id, classe, style) %}
+	<img src="{{ url('ensemble01filemaker_media', {id: id, nom: id, ext: 'png'}) }}" class="{{ classe|default('') }}" style="{{ style|default('width:100%;') }}" />
+{% endmacro %}
 
 {% macro newPage(rapport, date, format, params) %}
 	{% import _self as bases %}
@@ -144,7 +146,7 @@
 		}
 
 		a {
-			color: {{ alinks }};
+			/*color: {{ alinks }};*/
 			text-decoration: none;
 			/*text-decoration: underline;*/
 		}

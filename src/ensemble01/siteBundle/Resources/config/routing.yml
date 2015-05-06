@@ -65,6 +65,10 @@ datatables_statesave:
     path:     /datatables/statesave
     defaults: { _controller: ensemble01filemakerBundle:filemaker:datatables_statesave }
 
+ensemble01filemaker_media:
+    path:     /media/{id}/{nom}.{ext}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:media }
+
 ### TEST FM
 ensemble01filemaker_test_refresh:
     path:     /test/refresh

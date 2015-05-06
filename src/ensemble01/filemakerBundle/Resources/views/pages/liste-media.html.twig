@@ -1,0 +1,31 @@
+{% extends('ensemble01filemakerBundle::BSpageBaseFilemaker.html.twig') %}
+{% set fmdev = app.session.get('filemaker_DEV') %}
+{% block h1 %}
+	<h1 class="page-header">{{ h1|raw }}</h1>
+{% endblock h1 %}
+{% block body %}
+	<div class="col-lg-12">
+		{% if medias is iterable %}
+<!-- 		<h3 class="well well-xs">
+			<small>
+				{{ medias|length }} résultat(s) <span class="caret"></span>
+			</small>
+		</h3> -->
+		<table id='datatable01' class="table table-bordered table-hover table-condensed">
+			<tr class="active">
+				<th>Liste des média : <small>{{ medias|length }} résultat(s)</small></th>
+			</tr>
+			{% for key,media in medias if medias != null %}
+			<tr>
+				<td>
+					<a class="fancybox fancybox.iframe" href="{{ url('ensemble01filemaker_media', {id: media.getField('Fk_Id_Source'), nom: media.getField('Fk_Id_Source'), ext: 'png'}) }}" title="{{ media.getField('Fk_Id_Source') }}"><i class="fa fa-image fa-fw"></i></a>
+					{{ media.getField('Fk_Id_Source')|raw }} <small>({{ media.getField('creation_date')|raw }})</small></td>
+			</tr>
+			{%- endfor %}
+		</table>
+		{% else %}
+		<!-- Message d'erreur -->
+		{% include 'ensemble01filemakerBundle:errors:erreur-message.html.twig' with {message: medias} %}
+		{% endif %}
+	</div>
+{% endblock body %}

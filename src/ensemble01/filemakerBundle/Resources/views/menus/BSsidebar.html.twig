@@ -65,7 +65,7 @@
 			</li>
 			{% endif %}
 			<li>
-				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-file fa-fw"></i> Rapports lots<span class="fa arrow"></span></a>
+				<a href="{{ url('ensemble01filemaker_homepage') }}"><i class="fa fa-folder-open fa-fw"></i> Rapports lots<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
 						<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-rapports-lots', pagedata: '0'}) }}">Lots en attente</a>
@@ -96,6 +96,9 @@
 					</li>
 				</ul>
 				<!-- /.nav-second-level -->
+			</li>
+			<li>
+				<a href="{{ url('ensemble01filemaker_pageweb', {page: 'liste-media'}) }}"><i class="fa fa-image fa-fw"></i> Médias</a>
 			</li>
 		</ul>
 		<!-- /#side-menu -->

@@ -825,7 +825,7 @@ class twigAetools extends \Twig_Extension {
 	 * @return string
 	 */
 	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
-		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif', 'bmp'))) $format = 'png';
+		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif'))) $format = 'png';
 		if(strlen($text."") < 1) return "*";// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";

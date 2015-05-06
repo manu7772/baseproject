@@ -470,7 +470,14 @@
 						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
 						{% else %}{% set amiante = '' %}{% endif %}
 						{% for key,colonne in ligne %}
-						<td class='center'{{ amiante }}>{{ printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw }}</td>
+						<td class='center'{{ amiante }}>
+							{% if colonne matches '/^(Mult-)/' %}
+							{{ base.image(colonne, "40mm") }}
+							{% else %}
+							{{ colonizeWords(colonne, 9, 'br') }}
+							{% endif %}
+							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+						</td>
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -538,7 +545,14 @@
 						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
 						{% else %}{% set amiante = '' %}{% endif %}
 						{% for key,colonne in ligne %}
-						<td class='center'{{ amiante }}>{{ printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw }}</td>
+						<td class='center'{{ amiante }}>
+							{% if colonne matches '/^(Mult-)/' %}
+							{{ base.image(colonne, "40mm") }}
+							{% else %}
+							{{ colonizeWords(colonne, 9, 'br') }}
+							{% endif %}
+							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+						</td>
 						{% endfor %}
 					</tr>
 					{% endfor %}
@@ -636,7 +650,7 @@
 	{{ base.newPage(rapport, date, format) }}
 	<div class='text-content'>
 
-		<p>{{ mediaIMG(rapport.getField('lien_croquis_multimedia'), RESO, null, null, '100%')|raw }}</p>
+		{{ base.image(rapport.getField('lien_croquis_multimedia'), "100%") }}
 
 	{% endif %}
 
@@ -754,17 +768,29 @@
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<h4>• Flocages</h4>
-		<p>{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '90%')|raw }}</p>
+		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
+		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "80%") }}
+		{% else %}
+		<p>{{ neant }}</p>
+		{% endif %}
 
-		<br><br><br>
+		<br><br>
 
 		<h4>• Calorifugeages</h4>
-		<p>{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '90%')|raw }}</p>
+		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
+		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "80%") }}
+		{% else %}
+		<p>{{ neant }}</p>
+		{% endif %}
 
-		<br><br><br>
+		<br><br>
 
 		<h4>• Faux plafonds</h4>
-		<p>{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '90%')|raw }}</p>
+		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
+		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "80%") }}
+		{% else %}
+		<p>{{ neant }}</p>
+		{% endif %}
 
 </div>
 {{ base.endPage(format) }}
@@ -907,7 +933,8 @@
 	{{ base.newPage(rapport, date, format) }}
 	<div class='text-content'>
 
-		{{ mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw }}
+		{# mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw #}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "100%") }}
 
 	{% endif %}
 

@@ -282,12 +282,21 @@ class geodiag extends filemakerservice2 {
 	}
 
 	public function getMedia($id) {
-		$data2['server'] 					= $this->getCurrentSERVER();
-		$data2['base'] 						= 'GEODIAG_Medias';
-		$data2['modele'] 					= 'Geodiag_Images';
-		$data2['search'][1]['column'] 		= 'Fk_Id_Source';
-		$data2['search'][1]['value']		= $id;
-		return $this->getData($data2);
+		$data['server'] 					= $this->getCurrentSERVER();
+		$data['base'] 						= 'GEODIAG_Medias';
+		$data['modele'] 					= 'Geodiag_Images_mini64';
+		$data['search'][1]['column'] 		= 'Fk_Id_Source';
+		$data['search'][1]['value']			= $id;
+		return $this->getData($data);
+	}
+
+	public function getListMedia() {
+		$data['server'] 					= $this->getCurrentSERVER();
+		$data['base'] 						= 'GEODIAG_Medias';
+		$data['modele'] 					= 'Geodiag_Images_light';
+		// $data['search'][1]['column'] 	= 'Fk_Id_Source';
+		// $data['search'][1]['value']		= $id;
+		return $this->getData($data);
 	}
 
 

@@ -373,6 +373,11 @@ class filemakerController extends fmController {
 				$ctrlData['titre'] = "Liste des tiers \"Client\"";
 				$ctrlData['tiers'] = $this->_fm->getTiers($pagedata['recherche']);
 				break;
+			case 'liste-media':
+				// liste des médias
+				$ctrlData['h1'] = "Liste des média";
+				$ctrlData['medias'] = $this->_fm->getListMedia();
+				break;
 			case 'liste-scripts':
 				// liste des scripts - regroupés par dossiers
 				$newserv = $ctrlData['pagedata']["from_url"]['server'];
@@ -1456,5 +1461,324 @@ class filemakerController extends fmController {
 		return new JsonResponse(json_encode($data, true));
 	}
 
+
+
+
+
+	/****************************************/
+	/*** TESTS IMAGES
+	/****************************************/
+
+	public function mediaAction($id, $nom, $ext) {
+		$dossier = 'images/tmp/';
+		$nomfichier = $dossier.$nom.'.'.$ext;
+		$nomfichierBMP = $dossier.$nom.'.bmp';
+
+		$this->initFmData();
+		$data = $this->_fm->getMedia($id);
+
+		if(!is_string($data)) {
+			if(count($data) > 0) {
+				reset($data);
+				$data = current($data)->getField('conteneur_miniature_base64');
+				$data = base64_decode($data);
+				$formatBMP = $this->isBMPformat($data);
+				if($formatBMP === true) {
+					// format BMP
+					$file = fopen($nomfichierBMP, 'w+');
+					fwrite($file, $data);
+					fclose($file);
+					unset($file);
+					$im = $this->imagecreatefrombmp($nomfichierBMP);
+				} else {
+					// autres formats
+					$im = imagecreatefromstring($data);
+				}
+				if ($im !== false) {
+					if(file_exists($nomfichierBMP)) unlink($nomfichierBMP);
+					$response = new Response();
+					header('Content-Type: image/png');
+					// header('Content-Disposition: attachment;filename='.$nom.'.png');
+					imagepng($im);
+					imagedestroy($im);
+				}
+			}
+		}
+		return new Response("aucune image…");
+	}
+
+	protected function isBMPformat($data) {
+		$header = unpack("vtype/Vsize/v2reserved/Voffset", substr($data, 0, 14));
+		extract($header);
+		// if($type != 0x4D42) echo("<h4>Format non BMP</h4>"); else echo("<h4>Format BMP !!!</h4>");
+		return ($type != 0x4D42) ? false : true ;
+	}
+
+	/**
+	 * Credit goes to mgutt 
+	 * http://www.programmierer-forum.de/function-imagecreatefrombmp-welche-variante-laeuft-t143137.htm
+	 * Modified by Fabien Menager to support RGB555 BMP format
+	 */
+	protected function imagecreatefrombmp($filename) {
+		// version 1.1
+		if (!($fh = fopen($filename, 'rb'))) {
+			trigger_error('imagecreatefrombmp: Can not open ' . $filename, E_USER_WARNING);
+			return false;
+		}
+		
+		// read file header
+		$meta = unpack('vtype/Vfilesize/Vreserved/Voffset', fread($fh, 14));
+		
+		// check for bitmap
+		if ($meta['type'] != 19778) {
+			trigger_error('imagecreatefrombmp: ' . $filename . ' is not a bitmap!', E_USER_WARNING);
+			return false;
+		}
+		
+		// read image header
+		$meta += unpack('Vheadersize/Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vcolors/Vimportant', fread($fh, 40));
+		$bytes_read = 40;
+		
+		// read additional bitfield header
+		if ($meta['compression'] == 3) {
+			$meta += unpack('VrMask/VgMask/VbMask', fread($fh, 12));
+			$bytes_read += 12;
+		}
+		
+		// set bytes and padding
+		$meta['bytes'] = $meta['bits'] / 8;
+		$meta['decal'] = 4 - (4 * (($meta['width'] * $meta['bytes'] / 4)- floor($meta['width'] * $meta['bytes'] / 4)));
+		if ($meta['decal'] == 4) {
+			$meta['decal'] = 0;
+		}
+		
+		// obtain imagesize
+		if ($meta['imagesize'] < 1) {
+			$meta['imagesize'] = $meta['filesize'] - $meta['offset'];
+			// in rare cases filesize is equal to offset so we need to read physical size
+			if ($meta['imagesize'] < 1) {
+				$meta['imagesize'] = @filesize($filename) - $meta['offset'];
+				if ($meta['imagesize'] < 1) {
+					trigger_error('imagecreatefrombmp: Can not obtain filesize of ' . $filename . '!', E_USER_WARNING);
+					return false;
+				}
+			}
+		}
+		
+		// calculate colors
+		$meta['colors'] = !$meta['colors'] ? pow(2, $meta['bits']) : $meta['colors'];
+		
+		// read color palette
+		$palette = array();
+		if ($meta['bits'] < 16) {
+			$palette = unpack('l' . $meta['colors'], fread($fh, $meta['colors'] * 4));
+			// in rare cases the color value is signed
+			if ($palette[1] < 0) {
+				foreach ($palette as $i => $color) {
+					$palette[$i] = $color + 16777216;
+				}
+			}
+		}
+		
+		// ignore extra bitmap headers
+		if ($meta['headersize'] > $bytes_read) {
+			fread($fh, $meta['headersize'] - $bytes_read);
+		}
+		
+		// create gd image
+		$im = imagecreatetruecolor($meta['width'], $meta['height']);
+		$data = fread($fh, $meta['imagesize']);
+		
+		// uncompress data
+		switch ($meta['compression']) {
+			case 1: $data = rle8_decode($data, $meta['width']); break;
+			case 2: $data = rle4_decode($data, $meta['width']); break;
+		}
+
+		$p = 0;
+		$vide = chr(0);
+		$y = $meta['height'] - 1;
+		$error = 'imagecreatefrombmp: ' . $filename . ' has not enough data!';
+
+		// loop through the image data beginning with the lower left corner
+		while ($y >= 0) {
+			$x = 0;
+			while ($x < $meta['width']) {
+				switch ($meta['bits']) {
+					case 32:
+					case 24:
+						if (!($part = substr($data, $p, 3 /*$meta['bytes']*/))) {
+							trigger_error($error, E_USER_WARNING);
+							return $im;
+						}
+						$color = unpack('V', $part . $vide);
+						break;
+					case 16:
+						if (!($part = substr($data, $p, 2 /*$meta['bytes']*/))) {
+							trigger_error($error, E_USER_WARNING);
+							return $im;
+						}
+						$color = unpack('v', $part);
+
+						if (empty($meta['rMask']) || $meta['rMask'] != 0xf800) {
+							$color[1] = (($color[1] & 0x7c00) >> 7) * 65536 + (($color[1] & 0x03e0) >> 2) * 256 + (($color[1] & 0x001f) << 3); // 555
+						}
+						else { 
+							$color[1] = (($color[1] & 0xf800) >> 8) * 65536 + (($color[1] & 0x07e0) >> 3) * 256 + (($color[1] & 0x001f) << 3); // 565
+						}
+						break;
+					case 8:
+						$color = unpack('n', $vide . substr($data, $p, 1));
+						$color[1] = $palette[ $color[1] + 1 ];
+						break;
+					case 4:
+						$color = unpack('n', $vide . substr($data, floor($p), 1));
+						$color[1] = ($p * 2) % 2 == 0 ? $color[1] >> 4 : $color[1] & 0x0F;
+						$color[1] = $palette[ $color[1] + 1 ];
+						break;
+					case 1:
+						$color = unpack('n', $vide . substr($data, floor($p), 1));
+						switch (($p * 8) % 8) {
+							case 0: $color[1] =  $color[1] >> 7; break;
+							case 1: $color[1] = ($color[1] & 0x40) >> 6; break;
+							case 2: $color[1] = ($color[1] & 0x20) >> 5; break;
+							case 3: $color[1] = ($color[1] & 0x10) >> 4; break;
+							case 4: $color[1] = ($color[1] & 0x8 ) >> 3; break;
+							case 5: $color[1] = ($color[1] & 0x4 ) >> 2; break;
+							case 6: $color[1] = ($color[1] & 0x2 ) >> 1; break;
+							case 7: $color[1] = ($color[1] & 0x1 );      break;
+						}
+						$color[1] = $palette[ $color[1] + 1 ];
+						break;
+					default:
+						trigger_error('imagecreatefrombmp: ' . $filename . ' has ' . $meta['bits'] . ' bits and this is not supported!', E_USER_WARNING);
+						return false;
+				}
+				imagesetpixel($im, $x, $y, $color[1]);
+				$x++;
+				$p += $meta['bytes'];
+			}
+			$y--;
+			$p += $meta['decal'];
+		}
+		fclose($fh);
+		return $im;
+	}
+
+	protected function convertBMPtoGD($file) {
+		$image = "";
+		// $code = base64_decode($code64);
+		// $header = unpack("vtype/Vsize/v2reserved/Voffset", substr($code, 0, 14));
+		$header = unpack("vtype/Vsize/v2reserved/Voffset", fread($file, 14));
+		// $info = unpack("Vsize/Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vncolor/Vimportant", substr($code, 15, 40));
+		$info = unpack("Vsize/Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vncolor/Vimportant", fread($file, 40));
+		extract($info);
+		extract($header);
+		$palette_size = $offset - 54;
+		$ncolor = $palette_size / 4;
+		$gd_header = "";
+
+		$gd_header .= ($palette_size == 0) ? "\xFF\xFE" : "\xFF\xFF";
+		$gd_header .= pack("n2", $width, $height);
+		$gd_header .= ($palette_size == 0) ? "\x01" : "\x00";
+		if($palette_size) {
+			$gd_header .= pack("n", $ncolor);
+		}
+		// no transparency
+		$gd_header .= "\xFF\xFF\xFF\xFF";
+
+		if($palette_size) {
+			$palette = fread($file, $palette_size);
+			$gd_palette = "";
+			$j = 0;
+			while($j < $palette_size) {
+				$b = $palette{$j++};
+				$g = $palette{$j++};
+				$r = $palette{$j++};
+				$a = $palette{$j++};
+				$gd_palette .= "$r$g$b$a";
+			}
+			$gd_palette .= str_repeat("\x00\x00\x00\x00", 256 - $ncolor);
+			$image .= $gd_palette;
+		}
+
+		$scan_line_size = (($bits * $width) + 7) >> 3;
+		$scan_line_align = ($scan_line_size & 0x03) ? 4 - ($scan_line_size &0x03) : 0;
+
+		for($i = 0, $l = $height - 1; $i < $height; $i++, $l--) {
+			// BMP stores scan lines starting from bottom
+			fseek($file, $offset + (($scan_line_size + $scan_line_align) * $l));
+			$scan_line = fread($file, $scan_line_size);
+			if($bits == 32) {
+				$gd_scan_line = "";
+			} else if($bits == 24) {
+				$gd_scan_line = "";
+				$j = 0;
+				while($j < $scan_line_size) {
+					$b = $scan_line{$j++};
+					$g = $scan_line{$j++};
+					$r = $scan_line{$j++};
+					$gd_scan_line .= "\x00$r$g$b";
+				}
+			} else if($bits == 16) {
+				// À REVOIR…
+				$gd_scan_line = "";
+				$j = 0;
+				while($j < $scan_line_size) {
+					$b = ($scan_line{$j} & 0x001f) << 3;
+					$g = ($scan_line{$j} & 0x07e0) >> 3;
+					$r = ($scan_line{$j} & 0xf800) >> 8;
+					$gd_scan_line .= $r * 65536 + $g * 256 + $b;
+				}
+			} else if($bits == 8) {
+				$gd_scan_line = $scan_line;
+			} else if($bits == 4) {
+				$gd_scan_line = "";
+				$j = 0;
+				while($j < $scan_line_size) {
+					$byte = ord($scan_line{$j++});
+					$p1 = chr($byte >> 4);
+					$p2 = chr($byte & 0x0F);
+					$gd_scan_line .= "$p1$p2";
+				}
+				$gd_scan_line = substr($gd_scan_line, 0, $width);
+			} else if($bits == 1) {
+				$gd_scan_line = "";
+				$j = 0;
+				while($j < $scan_line_size) {
+					$byte = ord($scan_line{$j++});
+					$p1 = chr((int) (($byte & 0x80) != 0));
+					$p2 = chr((int) (($byte & 0x40) != 0));
+					$p3 = chr((int) (($byte & 0x20) != 0));
+					$p4 = chr((int) (($byte & 0x10) != 0));
+					$p5 = chr((int) (($byte & 0x08) != 0));
+					$p6 = chr((int) (($byte & 0x04) != 0));
+					$p7 = chr((int) (($byte & 0x02) != 0));
+					$p8 = chr((int) (($byte & 0x01) != 0));
+					$gd_scan_line .= "$p1$p2$p3$p4$p5$p6$p7$p8";
+				}
+				$gd_scan_line = substr($gd_scan_line, 0, $width);
+			}
+			
+			// $image .= $gd_scan_line;
+		}
+
+		// écrit l'image
+		// $fileDest = fopen("images_result.jpg", 'w+');
+		// fwrite($fileDest, $image);
+		// fclose($fileDest);
+
+		echo('<pre>');
+		if($type != 0x4D42) echo("<h4>Format non BMP</h4>"); else echo("<h4>Format BMP !!!</h4>");
+		echo("<h4>Palette size : ".$palette_size."</h4>");
+		echo("<h4>Ncolor : ".$ncolor."</h4>");
+		echo("<h4>Bits : ".$bits."</h4>");
+		echo("<h4>GDheader : ".$gd_header."</h4>");
+		echo('<h3>INFO</h3>');
+		var_dump($info);
+		echo('<h3>HEADER</h3>');
+		var_dump($header);
+		die('</pre>');
+	}
 
 }
