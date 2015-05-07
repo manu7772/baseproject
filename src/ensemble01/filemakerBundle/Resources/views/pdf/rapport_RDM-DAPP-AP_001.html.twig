@@ -760,30 +760,36 @@
 <div class='text-content'>
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
+		<nobreak>
 		<h4>• Flocages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
 		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
+		</nobreak>
 
 		<br><br>
 
+		<nobreak>
 		<h4>• Calorifugeages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
 		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
+		</nobreak>
 
 		<br><br>
 
+		<nobreak>
 		<h4>• Faux plafonds</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
 		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
+		</nobreak>
 
 		{# <p>{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '90%')|raw }}</p> #}
 
