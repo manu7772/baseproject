@@ -824,9 +824,11 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $largeur - largeur de l'image (préciser l'unité ! px, %, etc.)
 	 * @return string
 	 */
-	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
+	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null) {
+		if($neant === null) $neant = $this->neant();
 		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif'))) $format = 'png';
-		if(strlen($text."") < 1) return "*";// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
+		if(strlen($text."") < 1) return $neant;// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
+		if($this->isBMPformat($text) === true) return "Mauvais format d'image (BMP).";
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";
 		if(is_string($largeur)) $largeur = "width:".$largeur.";";
@@ -835,6 +837,14 @@ class twigAetools extends \Twig_Extension {
 		if($hauteur !== null || $largeur !== null) $style = " style='".$largeur.$hauteur."'";
 		return "<img src='data:image/".$format.";base64,".$text."'".$classe.$style." />";
 	}
+
+	protected function isBMPformat($data) {
+		$header = unpack("vtype/Vsize/v2reserved/Voffset", substr($data, 0, 14));
+		extract($header);
+		// if($type != 0x4D42) echo("<h4>Format non BMP</h4>"); else echo("<h4>Format BMP !!!</h4>");
+		return ($type != 0x4D42) ? false : true ;
+	}
+
 
 	/**
 	 * Transforme le texte dates en provenance de FM (séparées par des pipe)
@@ -965,19 +975,18 @@ class twigAetools extends \Twig_Extension {
 		if($neant === null) $neant = $this->neant();
 		if($hi === true) $tailleReso = 'conteneur_base64';
 			else $tailleReso = 'conteneur_miniature_base64';
-		$no = "Image non trouvée";
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		$_fm = $this->container->get('ensemble01services.geodiag');
 		$_fm->log_user($user, null, true);
 		$media = $_fm->getMedia($mult);
-		if(is_string($media)) return $neant; // $no."<br>(".$media.")";
+		if(is_string($media)) return $neant;
 		if(count($media) > 0) {
 			reset($media);
 			$media = current($media);
-			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur);
+			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
 		} else {
-			return $no;
+			return $neant;
 		}
 	}
 
