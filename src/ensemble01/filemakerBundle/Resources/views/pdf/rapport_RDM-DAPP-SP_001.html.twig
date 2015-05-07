@@ -1,10 +1,13 @@
 {# utilisation des macros => http://twig.sensiolabs.org/doc/tags/macro.html #}
 {% import "ensemble01filemakerBundle:pdf:base_RDM-DAPP_001.html.twig" as base %}
 
+{% set RESO = false %}
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
+{% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
+{% set cherchepresence = '/^(presence|présence)/i' %}
 
-{{ base.headDoc(rapport, media, date, imgpath, format) }}
+{{ base.headDoc(rapport, date, imgpath, format) }}
 
 	<div class="bloc1">
 		<h1 class='center'>ANNEXE N°5.1</h1>
@@ -52,7 +55,7 @@
 					{{ rapport.getField('client_adresse') }}<br>
 					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
 				</td>
-				<td class="td-middle">
+				<td style='vertical-align:middle;'>
 					<span class="bold">{{ rapport.getField('soc_nom') }} - {{ rapport.getField('soc_agence') }}<br>
 					{{ rapport.getField('soc_adresse') }}<br>
 					{{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}<br>
@@ -96,7 +99,7 @@
 					<span class="underline">Opérateur de repérage amiante et Signataire</span>&nbsp;:
 					<br>
 					<span class="bold">
-						{{ rapport.getField('tech_signataire_prenom') }}&nbsp;{{ rapport.getField('tech_signataire_nom') }}
+						{{ nomsTechniciens(rapport)|raw }}
 					</span>
 					<br>
 					<span class="underline">Laboratoire d’analyses agréé</span>&nbsp;: 
@@ -105,15 +108,16 @@
 						{{ rapport.getField('Laboratoire') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse2') }}&nbsp;- {{ rapport.getField('Laboratoire_cp') }}&nbsp;{{ rapport.getField('Laboratoire_ville') }}
 					</span>
 				</td>
-				<td class="left td-middle">
+				<td class="left" style='vertical-align:middle;'>
 					<span class="underline">Date de commande</span>&nbsp;: 
 					<span class="bold">
 						{{ transFMdate(rapport.getField('date_commande')) }}
 					</span>
 					<br>
-					<span class="underline">Dates de visites</span>&nbsp;: 
+					<span class="underline">Date de visite</span>&nbsp;: 
 					<span class="bold">
-						{{ lastdate(rapport.getField('local_dates_visites'))|raw }}
+						{{ FMtoSimpleDate(rapport.getField('date_visite'))|raw }}
+						{# lastdate(rapport.getField('local_dates_visites'))|raw #}
 						{# separdates(rapport.getField('local_dates_visites'), true)|raw #}
 					</span>
 					<br>
@@ -127,30 +131,29 @@
 	</table>
 
 	<div class="conclusion">
-		Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré des produits et matériaux contenant de l'amiante.<br>Les conclusions sont en <a href="#page3">page 3.</a>
+		<p>Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3</p>
 	</div>
 
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format, {header: true}) }}
+{{ base.newPage(rapport, date, format, {header: true}) }}
 
 
 		{# !!! SOMMAIRE !!! #}
 
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format, 'default') }}
+{{ base.newPage(rapport, date, format, 'default') }}
 <div class='text-content'>
 
-	<a name="page3"></a>
 	<bookmark title="1. CONCLUSIONS DU RAPPORT" level="0" ></bookmark>
 	{{ CSSclass('<h2>1. CONCLUSIONS DU RAPPORT</h2>', 'greyline', 'div')|raw }}
 
-		<bookmark title="1.1 Conclusions des données existantes" level="1" ></bookmark>
+		{# <bookmark title="1.1 Conclusions des données existantes" level="1" ></bookmark> #}
 		<h3>1.1 Conclusions des données existantes</h3>
 			<p>{{ neant }}</p>
 
-		<bookmark title="1.2 Conclusions du répérage" level="1" ></bookmark>
+		{# <bookmark title="1.2 Conclusions du répérage" level="1" ></bookmark> #}
 		<h3>1.2 Conclusions du répérage</h3>
 			<h5>•&nbsp;Liste des matériaux et produits contenant de l’amiante (voir résultats détaillés du repérage)</h5>
 			<table class="type2">
@@ -167,15 +170,15 @@
 				<tbody>
 					<tr>
 						<td class='grisC one'>Marquage du matériau</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_avec_amiante_item1'), neant) }}</td>
 					</tr>
 					<tr>
 						<td class='grisC one'>Document consulté</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_avec_amiante_item2'), neant) }}</td>
 					</tr>
 					<tr>
 						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_avec_amiante_item3'), neant) }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -195,19 +198,19 @@
 				<tbody>
 					<tr>
 						<td class='grisC one'>Matériau ou produit qui par nature ne contient pas d’amiante</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item1'), neant) }}</td>
 					</tr>
 					<tr>
 						<td class='grisC one'>Marquage du matériau</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item2'), neant) }}</td>
 					</tr>
 					<tr>
 						<td class='grisC one'>Document consulté</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item3'), neant) }}</td>
 					</tr>
 					<tr>
 						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
-						<td class='two'>{{ neant }}</td>
+						<td class='two'>{{ neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item4'), neant) }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -216,7 +219,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<bookmark title="2. PRÉCONISATIONS D’ORDRE GÉNÉRAL" level="0" ></bookmark>
@@ -225,18 +228,17 @@
 		<p>Tout autre matériau découvert pendant les opérations qui serait susceptible de contenir de l’amiante devra faire l’objet d’un complément de diagnostic par la société GEODEM. Cette dernière reste à la disposition de la maîtrise d’ouvrage pour intervenir afin de lever les doutes existants.</p>
 
 		<p class="signature">
-			<!-- À Bourgtheroulde-Infreville, le {{ date|date(formatDateTwig, timezoneTwig) }},<br> -->
-			À Bourgtheroulde-Infreville, le {{ lastdate(rapport.getField('local_dates_visites'))|raw }},<br>
+			<!-- À Bourgtheroulde-Infreville, le {# date|date(formatDateTwig, timezoneTwig) #},<br> -->
+			À Bourgtheroulde-Infreville, le {{ date }},<br>
 			L’opérateur de repérage<br>
 			<br>
-			Diagnostiqueur<br>
 			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
 			{{ image_base64(rapport.getField("tech_signataire_signature"), null, null, '60mm')|raw }}
 		</p>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
@@ -276,11 +278,6 @@
 			</tbody>
 		</table>
 
-</div>
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
-<div class='text-content'>
-
 	<bookmark title="4. REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>4. REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 		<bookmark title="4.1 Croquis de repérage" level="1" ></bookmark>
@@ -301,11 +298,10 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td class='one center'>{{ neant }}</td>
-					<td class='two center'>{{ neant }}</td>
-					<td class='three center'>{{ neant }}</td>
-					<td class='four center'>{{ neant }}</td>
-					<td class='five center'>{{ neant }}</td>
+					{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
+					{% for it in item %}
+					<td class='center'>{{ it|raw }}</td>
+					{% endfor %}
 				</tr>
 			</tbody>
 		</table>
@@ -315,6 +311,11 @@
 			<p>En présence de locaux non visités ci-dessus répertoriés, les obligations réglementaires pesant sur le propriétaire ne sont pas remplies conformément aux articles R.1334-15 à R.1334-18 du Code de la santé publique. Des investigations complémentaires devront être accomplies au sein des locaux ou parties de locaux susmentionnés avant l’élaboration d’un rapport exhaustif.</p>
 		</div>
 		<br>
+
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+<div class='text-content'>
 
 	<bookmark title="5. CONDITIONS DE RÉALISATION DU REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>5. CONDITIONS DE RÉALISATION DU REPÉRAGE</h2>', 'greyline', 'div')|raw }}
@@ -331,24 +332,17 @@
 		<p><span class='underline bold'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
 		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 
-</div>
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
-<div class='text-content'>
-
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
 
 			<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
 			<h4>5.3.1 Intitulé de la mission</h4>
-			<!-- <p>{{ rapport.getField('Rapport::description') }}</p> -->
 			<p>Repérages et diagnostics amiante sur le patrimoine {{ rapport.getField('client_nom') }}</p>
-			<br>
 
 			<bookmark title="5.3.2 Cadre réglementaire de la mission" level="2" ></bookmark>
 			<h4>5.3.2 Cadre réglementaire de la mission</h4>
 			<p>En vertu de l’article R.1334-29-4 du code de la santé publique&nbsp;:</p>
-			<p>I. -&nbsp;Les propriétaires des parties privatives d'immeubles collectifs d'habitation constituent, conservent et actualisent un dossier intitulé " dossier amiante - parties privatives ” comprenant les informations et documents suivants&nbsp;:</p>
+			<p>" I. -&nbsp;Les propriétaires des parties privatives d'immeubles collectifs d'habitation constituent, conservent et actualisent un dossier intitulé " dossier amiante - parties privatives ” comprenant les informations et documents suivants&nbsp;:</p>
 			<p>1° Le rapport de repérage des matériaux et produits de la liste A contenant de l'amiante&nbsp;;</p>
 			<p>2° Le cas échéant, la date, la nature, la localisation et les résultats des évaluations périodiques de l'état de conservation, des mesures d'empoussièrement, des travaux de retrait ou de confinement de matériaux et produits de la liste A contenant de l'amiante ou des mesures conservatoires mises en œuvre."</p>
 			<br>
@@ -396,7 +390,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
@@ -414,7 +408,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format, {orientation: 'L'}) }}
+{{ base.newPage(rapport, date, format, {orientation: 'L'}) }}
 <div class='text-content'>
 
 
@@ -427,40 +421,60 @@
 		{{ CSSclass('ROUGE&nbsp;:', 'red')|raw }} présence d'amiante</p>
 
 		<bookmark title="7.1 Indicateurs visuels de dégradation" level="1" ></bookmark>
-		<h3>7.1 Indicateurs visuels de dégradation</h3>
+		<h3 style="width:100%;">7.1 Indicateurs visuels de dégradation</h3>
 			<p>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères détaillés dans l’arrêté du 12 décembre 2012.</p>
 
 		<bookmark title="7.2 Diagnostic par unité de bâtiment" level="1" ></bookmark>
-		<h3>7.2 Diagnostic par unité de bâtiment</h3>
+		<h3 style="width:100%;">7.2 Diagnostic par unité de bâtiment</h3>
 			<p>Immeuble&nbsp;: {{ rapport.getField('local_adresse')|raw }} -&nbsp;{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</p>
 
 			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
-			<h4>7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			<table class='type6'>
+			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
+			<table class='type6' style='margin: 6mm auto 4mm; border-collapse: collapse; width: 100%;'>
 				<thead>
 					<tr>
-						<th class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
-						<th class='center col02' rowspan='2'>Niveau</th>
-						<th class='center col03' rowspan='2'>N°<br>pièce</th>
-						<th class='center col04' rowspan='2'>Pièce/<br>Local</th>
-						<th class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th class='center col06 rotate' rowspan='2'>Sol</th>
-						<th class='center col07 rotate' rowspan='2'>Mur</th>
-						<th class='center col08 rotate' rowspan='2'>Plafond</th>
-						<th class='center' colspan='2'>Matériaux</th>
-						<th class='center col11' rowspan='2'>Observa<br>tions</th>
-						<th class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th class='center col13' rowspan='2'>Résultat</th>
-						<th class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
-						<th class='center col15' rowspan='2'>Mesures à<br>prendre</th>
-						<th class='center col16' rowspan='2'>Photos</th>
+						<th style='7%' class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
+						<th style='4%' class='center col02' rowspan='2'>Niveau</th>
+						<th style='5%' class='center col03' rowspan='2'>N°<br>pièce</th>
+						<th style='5%' class='center col04' rowspan='2'>Pièce/<br>Local</th>
+						<th style='5%' class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+						<th style='3%' class='center col06' rowspan='2'>Sol</th>
+						<th style='3%' class='center col07' rowspan='2'>Mur</th>
+						<th style='3%' class='center col08' rowspan='2'>Plaf.</th>
+						<th style='10%' class='center' colspan='2'>Matériaux</th>
+						<th style='6%' class='center col11' rowspan='2'>Observa<br>tions</th>
+						<th style='5%' class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
+						<th style='4%' class='center col13' rowspan='2'>Résultat</th>
+						<th style='5%' class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
+						<th style='5%' class='center col15' rowspan='2'>Mesures à<br>prendre</th>
+						<th style='30%' class='center col16' rowspan='2'>Photos</th>
 					</tr>
 					<tr>
-						<th class='center col09'>Type</th>
-						<th class='center col10'>Détails</th>
+						<th style='5%' class='center col09'>Type</th>
+						<th style='5%' class='center col10'>Détails</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_AM')) %}
+					{% if data != false %}
+					{% for ligne in data %}
+					<tr>
+						{% if ligne[12] is defined %}
+						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
+						{% else %}{% set amiante = '' %}{% endif %}
+						{% for key,colonne in ligne %}
+						<td class='center'{{ amiante }}>
+							{% if colonne matches '/^(Mult-)/' %}
+							{{ base.image(colonne, "width:40mm;") }}
+							{% else %}
+							{{ colonizeWords(colonne, 9, 'br')|raw }}
+							{% endif %}
+							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+						</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+					{% else %}
 					<tr>
 						<td class='center col01'>{{ neant }}</td>
 						<td class='center col02'>{{ neant }}</td>
@@ -479,42 +493,63 @@
 						<td class='center col15'>{{ neant }}</td>
 						<td class='center col16'>{{ neant }}</td>
 					</tr>
+					{% endif %}
 				</tbody>
 			</table>
 			<br>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
 			<h4>7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
-			<table class='type6'>
+			<table class='type6' style='margin: 6mm auto 4mm; border-collapse: collapse; width: 100%;'>
 				<thead>
 					<tr>
-						<th class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
-						<th class='center col02' rowspan='2'>Niveau</th>
-						<th class='center col03' rowspan='2'>N°<br>pièce</th>
-						<th class='center col04' rowspan='2'>Pièce/<br>Local</th>
-						<th class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th class='center col06 rotate' rowspan='2'>Sol</th>
-						<th class='center col07 rotate' rowspan='2'>Mur</th>
-						<th class='center col08 rotate' rowspan='2'>Plafond</th>
-						<th class='center' colspan='2'>Matériaux</th>
-						<th class='center col11' rowspan='2'>Observa<br>tions</th>
-						<th class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th class='center col13' rowspan='2'>Résultat</th>
-						<th class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
-						<th class='center col15' rowspan='2'>Mesures à<br>prendre</th>
-						<th class='center col16' rowspan='2'>Photos</th>
+						<th style='7%' class='center col01' rowspan='2'>N° de<br>prélè<br>vement<br><small>(ou critère ayant<br>permis de conclure)</small></th>
+						<th style='4%' class='center col02' rowspan='2'>Niveau</th>
+						<th style='5%' class='center col03' rowspan='2'>N°<br>pièce</th>
+						<th style='5%' class='center col04' rowspan='2'>Pièce/<br>Local</th>
+						<th style='5%' class='center col05' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+						<th style='3%' class='center col06' rowspan='2'>Sol</th>
+						<th style='3%' class='center col07' rowspan='2'>Mur</th>
+						<th style='3%' class='center col08' rowspan='2'>Plaf.</th>
+						<th style='10%' class='center' colspan='2'>Matériaux</th>
+						<th style='6%' class='center col11' rowspan='2'>Observa<br>tions</th>
+						<th style='5%' class='center col12' rowspan='2'>Zone<br>homo<br>gène</th>
+						<th style='4%' class='center col13' rowspan='2'>Résultat</th>
+						<th style='5%' class='center col14' rowspan='2'>État de<br>conser<br>vation</th>
+						<th style='5%' class='center col15' rowspan='2'>Mesures à<br>prendre</th>
+						<th style='30%' class='center col16' rowspan='2'>Photos</th>
 					</tr>
 					<tr>
-						<th class='center col09'>Type</th>
-						<th class='center col10'>Détails</th>
+						<th style='5%' class='center col09'>Type</th>
+						<th style='5%' class='center col10'>Détails</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
+					{% if data != false %}
+					{% for ligne in data %}
+					<tr>
+						{% if ligne[12] is defined %}
+						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
+						{% else %}{% set amiante = '' %}{% endif %}
+						{% for key,colonne in ligne %}
+						<td class='center'{{ amiante }}>
+							{% if colonne matches '/^(Mult-)/' %}
+							{{ base.image(colonne, "width:40mm;") }}
+							{% else %}
+							{{ colonizeWords(colonne, 9, 'br')|raw }}
+							{% endif %}
+							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+						</td>
+						{% endfor %}
+					</tr>
+					{% endfor %}
+					{% else %}
 					<tr>
 						<td class='center col01'>{{ neant }}</td>
 						<td class='center col02'>{{ neant }}</td>
@@ -533,41 +568,43 @@
 						<td class='center col15'>{{ neant }}</td>
 						<td class='center col16'>{{ neant }}</td>
 					</tr>
+					{% endif %}
 				</tbody>
 			</table>
 			<br>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format, {orientation: 'P'}) }}
+{{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
 <div class='text-content'>
 
 	<bookmark title="8. ANNEXES" level="0" ></bookmark>
 	{{ CSSclass('<h2>8. ANNEXES</h2>', 'greyline', 'div')|raw }}
 	<br>
 	<table class='type7'>
-		<tr><td class="strong">8.1&nbsp;&nbsp;Informations réglementaires</td></tr>
-		<tr><td class="strong">8.2&nbsp;&nbsp;Croquis</td></tr>
-		<tr><td class="strong">8.3&nbsp;&nbsp;Certification</td></tr>
-		<tr><td class="strong">8.4&nbsp;&nbsp;Attestation d’assurance</td></tr>
-		<tr><td class="strong">8.5&nbsp;&nbsp;Grilles d’évaluation et état de conservation</td></tr>
-		<tr><td class="strong">8.6&nbsp;&nbsp;Conséquences règlementaires et recommandations</td></tr>
-		<tr><td class="strong">8.7&nbsp;&nbsp;Recommandations générales de sécurité</td></tr>
-		<tr><td class="strong">8.8&nbsp;&nbsp;Procès-verbaux d’analyses</td></tr>
+		<tr><td class="strong"><a href='#anchor81'>8.1&nbsp;&nbsp;Informations réglementaires</a></td></tr>
+		<tr><td class="strong"><a href='#anchor82'>8.2&nbsp;&nbsp;Croquis</a></td></tr>
+		<tr><td class="strong"><a href='#anchor83'>8.3&nbsp;&nbsp;Certification</a></td></tr>
+		<tr><td class="strong"><a href='#anchor84'>8.4&nbsp;&nbsp;Attestation d’assurance</a></td></tr>
+		<tr><td class="strong"><a href='#anchor85'>8.5&nbsp;&nbsp;Grilles d’évaluation et état de conservation</a></td></tr>
+		<tr><td class="strong"><a href='#anchor86'>8.6&nbsp;&nbsp;Conséquences règlementaires et recommandations</a></td></tr>
+		<tr><td class="strong"><a href='#anchor87'>8.7&nbsp;&nbsp;Recommandations générales de sécurité</a></td></tr>
+		<tr><td class="strong"><a href='#anchor88'>8.8&nbsp;&nbsp;Procès-verbaux d’analyses</a></td></tr>
 	</table>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.1 Informations réglementaires" level="1" ></bookmark>
+	<a name="anchor81"></a>
 	<h3 class="stronger center">8.1 Informations réglementaires</h3>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<h3>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h3>
@@ -586,49 +623,75 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.2 Croquis" level="1" ></bookmark>
+	<a name="anchor82"></a>
 	<h3 class="stronger center">8.2 Croquis</h3>
 
+	{% if rapport.getField('lien_croquis_multimedia')|length < 1 %}
 	<br><br><br>
 
 	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
 
+	{% else %}
+
+	</div>
+	{{ base.endPage(format) }}
+	{{ base.newPage(rapport, date, format) }}
+	<div class='text-content'>
+
+		{{ base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") }}
+
+	{% endif %}
+
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.3 Certification" level="1" ></bookmark>
+	<a name="anchor83"></a>
 	<h3 class="stronger center">8.3 Certification</h3>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	{% if rapport.getField("tech_signataire_certificat") != "" and rapport.getField("tech_signataire_certificat") is not null %}
 	{{ image_base64(rapport.getField("tech_signataire_certificat"), null, null, '100%')|raw }}
 	{% else %}
-	<h3>Certificat introuvable</h3>
+	<h3>Certificat absent</h3>
 	{% endif %}
+
+	{% for id,tech in getTechniciens(rapport, true) %}
+
+	</div>
+	{{ base.endPage(format) }}
+	{{ base.newPage(rapport, date, format) }}
+	<div class='text-content'>
+
+		{{ mediaIMG(tech[3], RESO, null, null, '100%')|raw }}
+
+	{% endfor %}
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.4 Attestation d'assurance" level="1" ></bookmark>
+	<a name="anchor84"></a>
 	<h3 class="stronger center">8.4 Attestation d'assurance</h3>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 	
 {% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
@@ -640,23 +703,24 @@
 {% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '100%')|raw }}
 {% endif %}
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.5 Grilles d'évaluation - État de conservation" level="1" ></bookmark>
+	<a name="anchor85"></a>
 	<h3 class="stronger center">8.5 Grilles d'évaluation - État de conservation</h3>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<h5>1. Critères d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
@@ -692,35 +756,56 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
+		<nobreak>
 		<h4>• Flocages</h4>
+		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
+		{% else %}
 		<p>{{ neant }}</p>
+		{% endif %}
 
-		<br><br><br>
+		<br><br>
+		</nobreak>
 
+		<nobreak>
 		<h4>• Calorifugeages</h4>
+		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
+		{% else %}
 		<p>{{ neant }}</p>
+		{% endif %}
 
-		<br><br><br>
+		<br><br>
+		</nobreak>
 
+		<nobreak>
 		<h4>• Faux plafonds</h4>
+		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
+		{% else %}
 		<p>{{ neant }}</p>
+		{% endif %}
+		</nobreak>
+
+		{# <p>{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '90%')|raw }}</p> #}
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
-	<div style="height:80mm;width:100%;"></div>
+	<div style="height:60mm;width:100%;"></div>
 	<bookmark title="8.6 Conséquences réglementaires et recommandations" level="1" ></bookmark>
+	<a name="anchor86"></a>
 	<h3 class="stronger center">8.6 Conséquences réglementaires et recommandations</h3>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
@@ -737,12 +822,7 @@
 	<p>Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est supérieur à cinq fibres par litre, le propriétaire fait procéder à des travaux de confinement ou de retrait de l'amiante, selon les modalités prévues à l’article R1334-29.</p>
 	<br>
 	<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
-
-</div>
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
-<div class='text-content'>
-
+	<br>
 	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
 		I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
 		II)&nbsp;Si les travaux ne conduisent pas au retrait total des matériaux et produits de la liste A contenant de l’amiante, il est procédé à une évaluation périodique de l’état de conservation de ces matériaux et produits résiduels dans les conditions prévues par l’arrêté mentionné à l’article R.1334-20, dans un délai maximal de trois ans à compter de la date à laquelle sont remis les résultats du contrôle ou à l’occasion de toute modification substantielle de l’ouvrage ou de son usage.<br>
@@ -751,16 +831,17 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.7 Recommandations générales de sécurité" level="1" ></bookmark>
+	<a name="anchor87"></a>
 	<h3 class="stronger center">8.7 Recommandations générales de sécurité</h3>
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à la présence d’amiante dans un bâtiment. Elle doit être complétée par la définition et la mise en oeuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans le bâtiment et des personnes appelées à intervenir sur les matériaux ou produits contenant de l’amiante. Les recommandations générales de sécurité définies ci-après rappellent les règles de base destinées à prévenir les expositions. Le propriétaire (ou, à défaut, l’exploitant) de l’immeuble concerné adapte ces recommandations aux particularités de chaque bâtiment et de ses conditions d’occupation ainsi qu’aux situations particulières rencontrées.</p>
@@ -776,7 +857,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 	<h3>2.&nbsp;Intervention de professionnels soumis aux dispositions du code du travail</h3>
@@ -800,7 +881,7 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 		<p class='underline'>a)&nbsp;Conditionnement des déchets</p>
@@ -828,20 +909,34 @@
 
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 		<div style="height:80mm;width:100%;"></div>
 		<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
+		<a name="anchor88"></a>
 		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
 	
+	{% if rapport.getField('rapport_pv_analyse')|length < 1 %}
 		<br><br><br>
 	
 		<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
 
+	{% else %}
+
+	</div>
+	{{ base.endPage(format) }}
+	{{ base.newPage(rapport, date, format) }}
+	<div class='text-content'>
+
+		{# mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw #}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") }}
+
+	{% endif %}
+
 </div>
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, media, date, format) }}
+{{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
 		<div style="height:80mm;width:100%;"></div>

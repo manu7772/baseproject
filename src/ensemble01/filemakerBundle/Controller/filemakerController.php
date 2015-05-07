@@ -481,7 +481,7 @@ class filemakerController extends fmController {
 	protected function getRapportTemplate($type) {
 		$templates = array(
 			"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP_001.html.twig",
-			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP_001.html.twig",
+			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-SP_001.html.twig",
 			"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
 			);
 		if(isset($templates[$type])) return $templates[$type];
