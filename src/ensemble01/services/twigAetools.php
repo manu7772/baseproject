@@ -961,7 +961,8 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $mult
 	 * @return string
 	 */
-	public function mediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null) {
+	public function mediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null) {
+		if($neant === null) $neant = $this->neant();
 		if($hi === true) $tailleReso = 'conteneur_base64';
 			else $tailleReso = 'conteneur_miniature_base64';
 		$no = "Image non trouvée";
@@ -969,7 +970,7 @@ class twigAetools extends \Twig_Extension {
 		$_fm = $this->container->get('ensemble01services.geodiag');
 		$_fm->log_user($user, null, true);
 		$media = $_fm->getMedia($mult);
-		if(is_string($media)) return "*"; // $no."<br>(".$media.")";
+		if(is_string($media)) return $neant; // $no."<br>(".$media.")";
 		if(count($media) > 0) {
 			reset($media);
 			$media = current($media);
@@ -996,7 +997,7 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $tx
 	 * @return string
 	 */
-	public function neant($tx, $neant = 'Néant') {
+	public function neant($tx = "", $neant = 'Néant') {
 		if(strlen(trim($tx)) < 1) return $neant;
 			else return trim($tx);
 	}
