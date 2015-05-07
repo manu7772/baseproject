@@ -480,8 +480,8 @@ class filemakerController extends fmController {
 	 */
 	protected function getRapportTemplate($type) {
 		$templates = array(
-			"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP_001.html.twig",
-			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-SP_001.html.twig",
+			"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
 			"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
 			);
 		if(isset($templates[$type])) return $templates[$type];
@@ -566,6 +566,7 @@ class filemakerController extends fmController {
 						}
 						if(is_string($html)) try {
 							$html2pdf = $this->get('html2pdf_factory')->create();
+							$html2pdf->pdf->SetDisplayMode('fullpage');
 							$html2pdf->pdf->setFont('helvetica', '', 10, '', 'false');
 							$html2pdf->pdf->addFont('helvetica', 'B', 10, '', 'false');
 							$html2pdf->pdf->addFont('helvetica', 'I', 10, '', 'false');
@@ -577,11 +578,12 @@ class filemakerController extends fmController {
 							// foreach ($fonts as $font) {
 							// 	$html2pdf->pdf->addTTFfont(__DIR__.'../../../../../web/bundles/ensemble01filemaker/images/'.$font, 'TrueTypeUnicode', '', 32);
 							// }
-							$html2pdf->setTestIsImage(true);
+							$html2pdf->setTestIsImage(false);
 							$html2pdf->setTestTdInOnePage(true);
 							// $html2pdf->pdf->SetProtection(array('modify'), $this->container->getParameter('pdf_protect_passwrd'));
 							$html2pdf->pdf->SetAuthor('Société GÉODEM - Agence Normandie');
 							$html2pdf->pdf->SetTitle('Rapport réf.'.$RAPP['rapport']->getField('type_rapport').' '.$RAPP['rapport']->getField('id').' du '.$RAPP["date"]->format($this->container->getParameter('formatDateTwig')));
+							$html2pdf->getHtmlFromPage($html);
 							$html2pdf->writeHTML($html, false);
 							$html2pdf->createIndex("Sommaire", 25, 12, false, true, 2);
 							$aeReponse->addData(array('pdf' => $html2pdf, 'html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
