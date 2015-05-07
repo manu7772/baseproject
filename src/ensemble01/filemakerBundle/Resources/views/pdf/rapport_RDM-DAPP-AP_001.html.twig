@@ -434,6 +434,7 @@
 			<p>Immeuble&nbsp;: {{ rapport.getField('local_adresse')|raw }} -&nbsp;{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</p>
 
 			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
+			<nobreak>
 			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
 			<table class='type6' style='margin: 6mm auto 4mm; border-collapse: collapse; width: 100%;'>
 				<thead>
@@ -502,6 +503,7 @@
 					{% endif %}
 				</tbody>
 			</table>
+			</nobreak>
 
 </div>
 {{ base.endPage(format) }}
@@ -509,6 +511,7 @@
 <div class='text-content'>
 
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
+			<nobreak>
 			<h4>7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
 			<table class='type6' style='margin: 6mm auto 4mm; border-collapse: collapse; width: 100%;'>
 				<thead>
@@ -577,6 +580,7 @@
 					{% endif %}
 				</tbody>
 			</table>
+			</nobreak>
 
 </div>
 {{ base.endPage(format) }}
@@ -769,8 +773,8 @@
 		<nobreak>
 		<h4>• Flocages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '70%')|raw }}
-		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:70%;") #}
+		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}
+		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -780,8 +784,8 @@
 		<nobreak>
 		<h4>• Calorifugeages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '70%')|raw }}
-		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:70%;") #}
+		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}
+		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -791,8 +795,8 @@
 		<nobreak>
 		<h4>• Faux plafonds</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '70%')|raw }}
-		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:70%;") #}
+		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}
+		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
