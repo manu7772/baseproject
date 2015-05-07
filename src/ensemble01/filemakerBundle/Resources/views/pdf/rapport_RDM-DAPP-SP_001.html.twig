@@ -354,6 +354,11 @@
 			<p>•&nbsp;Fournir les habilitations nécessaires pour accéder à l’ensemble des différentes parties de l’immeuble bâti.</p>
 			<br>
 
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+<div class='text-content'>
+
 		<bookmark title="5.4 Programme de repérage de l'amiante" level="1" ></bookmark>
 		<h3>5.4 Programme de repérage de l'amiante</h3>
 			<table class='type5'>
@@ -465,7 +470,7 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '40%')|raw }}
+							{{ mediaIMG(colonne, RESO, null, null, '40mm')|raw }}
 								{# base.image(colonne, "width:40mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br')|raw }}
@@ -497,7 +502,6 @@
 					{% endif %}
 				</tbody>
 			</table>
-			<br>
 
 </div>
 {{ base.endPage(format) }}
@@ -541,7 +545,7 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '40%')|raw }}
+							{{ mediaIMG(colonne, RESO, null, null, '40mm')|raw }}
 								{# base.image(colonne, "width:40mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br')|raw }}
@@ -573,7 +577,6 @@
 					{% endif %}
 				</tbody>
 			</table>
-			<br>
 
 </div>
 {{ base.endPage(format) }}
@@ -827,6 +830,12 @@
 	<br>
 	<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
 	<br>
+
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+<div class='text-content'>
+
 	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
 		I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
 		II)&nbsp;Si les travaux ne conduisent pas au retrait total des matériaux et produits de la liste A contenant de l’amiante, il est procédé à une évaluation périodique de l’état de conservation de ces matériaux et produits résiduels dans les conditions prévues par l’arrêté mentionné à l’article R.1334-20, dans un délai maximal de trois ans à compter de la date à laquelle sont remis les résultats du contrôle ou à l’occasion de toute modification substantielle de l’ouvrage ou de son usage.<br>
