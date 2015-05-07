@@ -278,11 +278,6 @@
 			</tbody>
 		</table>
 
-</div>
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-<div class='text-content'>
-
 	<bookmark title="4. REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>4. REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 		<bookmark title="4.1 Croquis de repérage" level="1" ></bookmark>
@@ -317,6 +312,11 @@
 		</div>
 		<br>
 
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+<div class='text-content'>
+
 	<bookmark title="5. CONDITIONS DE RÉALISATION DU REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>5. CONDITIONS DE RÉALISATION DU REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 		<bookmark title="5.1 Textes de références" level="1" ></bookmark>
@@ -332,19 +332,17 @@
 		<p><span class='underline bold'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
 		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 
-</div>
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-<div class='text-content'>
-
 		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
 		<h3>5.3 Cadre de la mission</h3>
 
 			<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
 			<h4>5.3.1 Intitulé de la mission</h4>
-			<!-- <p>{{ rapport.getField('Rapport::description') }}</p> -->
 			<p>Repérages et diagnostics amiante sur le patrimoine {{ rapport.getField('client_nom') }}</p>
-			<br>
+
+</div>
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+<div class='text-content'>
 
 			<bookmark title="5.3.2 Cadre réglementaire de la mission" level="2" ></bookmark>
 			<h4>5.3.2 Cadre réglementaire de la mission</h4>
@@ -474,7 +472,7 @@
 							{% if colonne matches '/^(Mult-)/' %}
 							{{ base.image(colonne, "width:40mm;") }}
 							{% else %}
-							{{ colonizeWords(colonne, 9, 'br') }}
+							{{ colonizeWords(colonne, 9, 'br')|raw }}
 							{% endif %}
 							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
 						</td>
@@ -549,7 +547,7 @@
 							{% if colonne matches '/^(Mult-)/' %}
 							{{ base.image(colonne, "width:40mm;") }}
 							{% else %}
-							{{ colonizeWords(colonne, 9, 'br') }}
+							{{ colonizeWords(colonne, 9, 'br')|raw }}
 							{% endif %}
 							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
 						</td>
