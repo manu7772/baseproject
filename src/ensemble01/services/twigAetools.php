@@ -1063,6 +1063,10 @@ class twigAetools extends \Twig_Extension {
 		$techniciens = $this->FMexplode01($text);
 		// suppression des doublons et de $excludeSign
 		$finalTech = array();
+		if($excludeSign === false) {
+			$sign = $this->getSignataire($rapport);
+			$finalTech[$sign[0]] = $sign;
+		}
 		if(is_array($techniciens)) {
 			foreach ($techniciens as $key => $item) {
 				if(!in_array($item[0], $exclude)) {
@@ -1071,6 +1075,16 @@ class twigAetools extends \Twig_Extension {
 			}
 		}
 		return $finalTech;
+	}
+
+	public function getSignataire($rapport) {
+		$r = array();
+		$r[0] = $rapport->getField('Fk_IdTechSignataire');
+		$r[1] = $rapport->getField('tech_signataire_nom');
+		$r[2] = $rapport->getField('tech_signataire_prenom');
+		$r[3] = $rapport->getField('tech_signataire_certificat');
+		$r[4] = $rapport->getField('tech_signataire_signature');
+		return ksort($r);
 	}
 
 	/**

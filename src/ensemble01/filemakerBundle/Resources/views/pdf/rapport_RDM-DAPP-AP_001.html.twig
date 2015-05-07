@@ -470,7 +470,7 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '40%')|raw }}
+							{{ mediaIMG(colonne, RESO, null, null, '40mm')|raw }}
 								{# base.image(colonne, "width:40mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br')|raw }}
@@ -545,7 +545,7 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '40%')|raw }}
+							{{ mediaIMG(colonne, RESO, null, null, '40mm')|raw }}
 								{# base.image(colonne, "width:40mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br')|raw }}
