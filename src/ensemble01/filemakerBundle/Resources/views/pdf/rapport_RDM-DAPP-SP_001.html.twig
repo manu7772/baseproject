@@ -131,7 +131,7 @@
 	</table>
 
 	<div class="conclusion">
-		<p>Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3</p>
+		{{ rapport.getField('rapport_conclusion_DAPP')|default('Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3') }}
 	</div>
 
 
@@ -465,11 +465,12 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ base.image(colonne, "width:40mm;") }}
+							{{ mediaIMG(colonne, RESO, null, null, '40%')|raw }}
+								{# base.image(colonne, "width:40mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br')|raw }}
 							{% endif %}
-							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+								{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
 						</td>
 						{% endfor %}
 					</tr>
@@ -540,11 +541,12 @@
 						{% for key,colonne in ligne %}
 						<td class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ base.image(colonne, "width:40mm;") }}
+							{{ mediaIMG(colonne, RESO, null, null, '40%')|raw }}
+								{# base.image(colonne, "width:40mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 9, 'br')|raw }}
 							{% endif %}
-							{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+								{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
 						</td>
 						{% endfor %}
 					</tr>
@@ -643,7 +645,8 @@
 	{{ base.newPage(rapport, date, format) }}
 	<div class='text-content'>
 
-		{{ base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") }}
+		{{ mediaIMG(rapport.getField('lien_croquis_multimedia'), RESO, null, null, '100%')|raw }}
+		{# base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") #}
 
 	{% endif %}
 
@@ -762,30 +765,31 @@
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<nobreak>
 		<h4>• Flocages</h4>
-		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
-		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
+		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
+		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '70%')|raw }}
+		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:70%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
-
 		<br><br>
 		</nobreak>
 
 		<nobreak>
 		<h4>• Calorifugeages</h4>
-		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
-		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
+		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
+		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '70%')|raw }}
+		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:70%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
-
 		<br><br>
 		</nobreak>
 
 		<nobreak>
 		<h4>• Faux plafonds</h4>
-		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
-		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
+		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
+		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '70%')|raw }}
+		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:70%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -929,8 +933,8 @@
 	{{ base.newPage(rapport, date, format) }}
 	<div class='text-content'>
 
-		{# mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw #}
-		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") }}
+		{{ mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw }}
+		{# base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") #}
 
 	{% endif %}
 
