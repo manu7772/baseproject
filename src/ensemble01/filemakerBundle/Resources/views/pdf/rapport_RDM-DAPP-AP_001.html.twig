@@ -440,7 +440,7 @@
 			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
 			<nobreak>
 			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			{% set larg = 180 %}
+			{% set larg = 185 %}
 			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
 				<thead>
 					<tr>
@@ -479,7 +479,7 @@
 							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
 								{# base.image(colonne, "width:48mm;") #}
 							{% else %}
-							{{ colonizeWords(colonne, 11, 'br')|raw }}
+							{{ colonizeWords(colonne, 9, 'br')|raw }}
 							{% endif %}
 								{# printIfMult(colonne, RESO, null, null, '48mm', 6, 'br')|raw #}
 						</td>
@@ -505,7 +505,7 @@
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
 			<nobreak>
 			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			{% set larg = 180 %}
+			{% set larg = 185 %}
 			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
 				<thead>
 					<tr>
@@ -544,7 +544,7 @@
 							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
 								{# base.image(colonne, "width:48mm;") #}
 							{% else %}
-							{{ colonizeWords(colonne, 11, 'br')|raw }}
+							{{ colonizeWords(colonne, 9, 'br')|raw }}
 							{% endif %}
 								{# printIfMult(colonne, RESO, null, null, '48mm', 6, 'br')|raw #}
 						</td>
@@ -753,7 +753,7 @@
 		<nobreak>
 		<h4>• Flocages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}
+		<p style="width:100%;text-align:center;">{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}</p>
 		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
@@ -764,7 +764,7 @@
 		<nobreak>
 		<h4>• Calorifugeages</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}
+		<p style="width:100%;text-align:center;">{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}</p>
 		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
@@ -775,7 +775,7 @@
 		<nobreak>
 		<h4>• Faux plafonds</h4>
 		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}
+		<p style="width:100%;text-align:center;">{{ mediaIMG(rapport.getField('lien_grille_eval_multimedia'), RESO, null, null, '80%')|raw }}</p>
 		{# base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") #}
 		{% else %}
 		<p>{{ neant }}</p>
