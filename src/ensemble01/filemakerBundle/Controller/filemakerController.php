@@ -577,8 +577,8 @@ class filemakerController extends fmController {
 							// foreach ($fonts as $font) {
 							// 	$html2pdf->pdf->addTTFfont(__DIR__.'../../../../../web/bundles/ensemble01filemaker/images/'.$font, 'TrueTypeUnicode', '', 32);
 							// }
-							$html2pdf->setTestIsImage(false);
-							$html2pdf->setTestTdInOnePage(false);
+							$html2pdf->setTestIsImage(true);
+							$html2pdf->setTestTdInOnePage(true);
 							// $html2pdf->pdf->SetProtection(array('modify'), $this->container->getParameter('pdf_protect_passwrd'));
 							$html2pdf->pdf->SetAuthor('Société GÉODEM - Agence Normandie');
 							$html2pdf->pdf->SetTitle('Rapport réf.'.$RAPP['rapport']->getField('type_rapport').' '.$RAPP['rapport']->getField('id').' du '.$RAPP["date"]->format($this->container->getParameter('formatDateTwig')));

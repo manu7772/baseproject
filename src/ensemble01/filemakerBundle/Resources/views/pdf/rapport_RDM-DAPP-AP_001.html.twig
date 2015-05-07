@@ -762,8 +762,8 @@
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<nobreak>
 		<h4>• Flocages</h4>
-		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
+		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -773,8 +773,8 @@
 
 		<nobreak>
 		<h4>• Calorifugeages</h4>
-		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
+		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -784,8 +784,8 @@
 
 		<nobreak>
 		<h4>• Faux plafonds</h4>
-		{% if rapport.getField('lien_grille_eval_multimedia')|length > 0 %}
-		{{ base.image(rapport.getField('lien_grille_eval_multimedia'), "width:80%;") }}
+		{% if rapport.getField('rapport_pv_analyse')|length > 0 %}
+		{{ base.image(rapport.getField('rapport_pv_analyse'), "width:60%;") }}
 		{% else %}
 		<p>{{ neant }}</p>
 		{% endif %}
@@ -798,7 +798,7 @@
 {{ base.newPage(rapport, date, format) }}
 <div class='text-content'>
 
-	<div style="height:80mm;width:100%;"></div>
+	<div style="height:60mm;width:100%;"></div>
 	<bookmark title="8.6 Conséquences réglementaires et recommandations" level="1" ></bookmark>
 	<a name="anchor86"></a>
 	<h3 class="stronger center">8.6 Conséquences réglementaires et recommandations</h3>
