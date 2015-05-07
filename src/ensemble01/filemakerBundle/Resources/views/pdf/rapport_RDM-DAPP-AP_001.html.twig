@@ -440,28 +440,29 @@
 			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
 			<nobreak>
 			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: 100%;'>
+			{% set larg = 270 %}
+			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
 				<thead>
 					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:8%;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:4%;' class='center' rowspan='2'>Niveau</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>N°<br>pièce</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Pièce/<br>Local</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:3%;' class='center' rowspan='2'>Sol</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:3%;' class='center' rowspan='2'>Mur</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:3%;' class='center' rowspan='2'>Plaf.</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:11%;' class='center' colspan='2'>Matériaux</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:7%;' class='center' rowspan='2'>Observa<br>tions</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:5%;' class='center' rowspan='2'>Résultat</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Mesures à<br>prendre</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:20%;' class='center' rowspan='2'>Photos</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 8 * larg // 100 }}mm;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 4 * larg // 100 }}mm;' class='center' rowspan='2'>Niveau</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>N°<br>pièce</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Pièce/<br>Local</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 3 * larg // 100 }}mm;' class='center' rowspan='2'>Sol</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 3 * larg // 100 }}mm;' class='center' rowspan='2'>Mur</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 3 * larg // 100 }}mm;' class='center' rowspan='2'>Plaf.</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 11 * larg // 100 }}mm;' class='center' colspan='2'>Matériaux</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 7 * larg // 100 }}mm;' class='center' rowspan='2'>Observa<br>tions</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center' rowspan='2'>Résultat</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Mesures à<br>prendre</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 20 * larg // 100 }}mm;' class='center' rowspan='2'>Photos</th>
 					</tr>
 					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:5%;' class='center'>Type</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center'>Détails</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center'>Type</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center'>Détails</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -475,12 +476,12 @@
 						{% for key,colonne in ligne %}
 						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '40mm')|raw }}
-								{# base.image(colonne, "width:40mm;") #}
+							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
+								{# base.image(colonne, "width:48mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 11, 'br')|raw }}
 							{% endif %}
-								{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+								{# printIfMult(colonne, RESO, null, null, '48mm', 6, 'br')|raw #}
 						</td>
 						{% endfor %}
 					</tr>
@@ -504,28 +505,29 @@
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
 			<nobreak>
 			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: 100%;'>
+			{% set larg = 270 %}
+			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
 				<thead>
 					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:8%;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:4%;' class='center' rowspan='2'>Niveau</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>N°<br>pièce</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Pièce/<br>Local</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:3%;' class='center' rowspan='2'>Sol</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:3%;' class='center' rowspan='2'>Mur</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:3%;' class='center' rowspan='2'>Plaf.</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:11%;' class='center' colspan='2'>Matériaux</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:7%;' class='center' rowspan='2'>Observa<br>tions</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:5%;' class='center' rowspan='2'>Résultat</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center' rowspan='2'>Mesures à<br>prendre</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:20%;' class='center' rowspan='2'>Photos</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 8 * larg // 100 }}mm;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 4 * larg // 100 }}mm;' class='center' rowspan='2'>Niveau</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>N°<br>pièce</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Pièce/<br>Local</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 3 * larg // 100 }}mm;' class='center' rowspan='2'>Sol</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 3 * larg // 100 }}mm;' class='center' rowspan='2'>Mur</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 3 * larg // 100 }}mm;' class='center' rowspan='2'>Plaf.</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 11 * larg // 100 }}mm;' class='center' colspan='2'>Matériaux</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 7 * larg // 100 }}mm;' class='center' rowspan='2'>Observa<br>tions</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center' rowspan='2'>Résultat</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Mesures à<br>prendre</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 20 * larg // 100 }}mm;' class='center' rowspan='2'>Photos</th>
 					</tr>
 					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:5%;' class='center'>Type</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 8pt; vertical-align: middle; padding: 1mm; width:6%;' class='center'>Détails</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center'>Type</th>
+						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center'>Détails</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -539,12 +541,12 @@
 						{% for key,colonne in ligne %}
 						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante }}>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '40mm')|raw }}
-								{# base.image(colonne, "width:40mm;") #}
+							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
+								{# base.image(colonne, "width:48mm;") #}
 							{% else %}
 							{{ colonizeWords(colonne, 11, 'br')|raw }}
 							{% endif %}
-								{# printIfMult(colonne, RESO, null, null, '40mm', 6, 'br')|raw #}
+								{# printIfMult(colonne, RESO, null, null, '48mm', 6, 'br')|raw #}
 						</td>
 						{% endfor %}
 					</tr>
