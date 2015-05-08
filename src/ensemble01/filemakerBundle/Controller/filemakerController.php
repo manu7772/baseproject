@@ -652,6 +652,7 @@ class filemakerController extends fmController {
 		$format = 'pdf';
 		$aeReponse = $this->get('ensemble01services.aeReponse');
 		$this->initFmData();
+		$this->_fm->addRapportGeneration($id);
 		$rapport = $this->_fm->getOneRapport($id);
 		if(is_object($rapport)) {
 			$this->_fm->effaceRapportFile($rapport);
@@ -675,6 +676,7 @@ class filemakerController extends fmController {
 		} else {
 			$aeReponse->setUnvalid($rapport);
 		}
+		$this->_fm->suppRapportGeneration($id);
 		return new JsonResponse($aeReponse->getJSONreponse());
 	}
 
@@ -1018,29 +1020,47 @@ class filemakerController extends fmController {
 	}
 
 	/**
-	 * CHECKE les rapports d'un lot
+	 * CHECKE les rapports d'un lot (LIVE Ajax)
 	 * 
 	 * @param string $numlot - référence du lot
 	 * @return Response
 	 */
 	public function check_listeRapportsLotsAction($numlot = null) {
-		$data = array();
-		$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
-		if(is_array($data["rapports"])) {
-			foreach($data["rapports"] as $rapport) {
-				// fichier PDF
-				if($this->_fm->verifRapportFile($rapport) === true) {
-					$data['pdf'][$rapport->getField('id')] = $this->_fm->getRapportFileName($rapport);
-				} else {
-					$data['pdf'][$rapport->getField('id')] = false;
-				}
+		$add = '';
+		if($numlot !== null) {
+			$data = array();
+			$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
+			$generations = $this->_fm->getGenerations();
+			$add .= "<p>Nombre de rapports en génération : ".count($generations)." - ".rand(10000, 99999)."</p>";
+			foreach ($generations as $key => $value) {
+				$add .= "<p>- ".$key." : ".$value['text']['date'].' -> '.$value['text']['limite']."</p>";
 			}
+			if(is_array($data["rapports"])) {
+				foreach($data["rapports"] as $rapport) {
+					$id = $rapport->getField('id');
+					// $data['pdf'][$id]['fichier'] = $this->_fm->getRapportFileName($rapport);
+					if($this->_fm->verifRapportFile($rapport) === true) {
+						// fichier PDF présent
+						$data['pdf'][$id]['statut'] = 1;
+					} else {
+						// fichier PDF absent
+						$data['pdf'][$id]['statut'] = 2;
+					}
+					// en cours de génération…
+					if(isset($generations[$id])) {
+						$data['pdf'][$id]['statut'] = 3;
+						$data['pdf'][$id]['data'] = $generations[$id];
+					}
+				}
+			} else {
+				// $html = '<p>'.$data["rapports"].'</p>';
+			}
+			$data["numlot"] = $numlot;
+			$html = $this->renderView($this->verifVersionPage("liste-rapports-in-bloc", "public-views"), $data);
 		} else {
-			//
+			$html = '<p>Numéro de lot absent… impossible de recevoir les données sur les rapports.</p>';
 		}
-		$data["numlot"] = $numlot;
-		$html = $this->renderView($this->verifVersionPage("liste-rapports-in-bloc", "public-views"), $data);
-		return new Response($html);
+		return new Response($html.$add);
 	}
 
 	public function retablir_un_rapportAction($id, $pagedata = null) {

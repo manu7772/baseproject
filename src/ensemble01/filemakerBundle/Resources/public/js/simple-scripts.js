@@ -60,7 +60,7 @@ jQuery(document).ready(function($) {
 	// 	setTimeout(function(){ $(objparent).html(objparent.texte); }, 500);
 	// });
 
-	var freq = 1000;
+	var freq = 2000;
 	var compteur = 0;
 	verifLoad = function() {
 		this.texte = $('#visu').html();
@@ -104,7 +104,7 @@ jQuery(document).ready(function($) {
 		this.loadimg = false;
 		if($(this).attr('data-loader-image').length) {
 			this.loadimg = $(this).parent().html();
-			$(this).parent().html('<div style="width:100%;height:34px;text-align:center;"><img src="'+$(this).attr('data-loader-image')+'"></div>');
+			$(this).parent().html('<div style="width:100%;margin-top:6px;height:28px;text-align:center;"><img src="'+$(this).attr('data-loader-image')+'" /></div>');
 		}
 		// $(this).addClass('disabled');
 		this.URL = $(this).attr('data-href');

@@ -5,13 +5,22 @@ namespace ensemble01\services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use filemakerBundle\services\filemakerservice2;
+use \DateTime;
 
 class geodiag extends filemakerservice2 {
 
-	const STATUT_COMPLET = 'complet';
-	const STATUT_TRAITER = 'à traiter';
-	const STATUT_PARTIEL = 'partiel';
-	const STATUT_INCONNU = 'inconnu';
+	const STATUT_COMPLET				= 'complet';
+	const STATUT_TRAITER				= 'à traiter';
+	const STATUT_PARTIEL				= 'partiel';
+	const STATUT_INCONNU				= 'inconnu';
+
+	const FILE_GENERATION 				= 'generations.txt';
+	const DOSSIER_GENERATION			= "generations";
+	const DELAI_GENERATION_SECONDES 	= 1200; // 20 minutes
+	const DT_DATE_FORMAT				= "Y-m-d H:i:s";
+
+	const FILE_HISTORIQUE 				= 'historique.txt';
+	const DOSSIER_HISTORIQUE			= "historique";
 
 	protected $aetools;
 	protected $rootpath;
@@ -155,6 +164,118 @@ class geodiag extends filemakerservice2 {
 		} else $r = false;
 		return $r;
 	}
+
+
+	/********************************/
+	/** Gestion des PDF en cours   **/
+	/********************************/
+
+	public function getNomFichier_generations() {
+		return self::FILE_GENERATION;
+	}
+
+	public function getGenerations() {
+		$this->verifAndGoDossier(self::DOSSIER_GENERATION);
+		if(@file_exists($this->aetools->getCurrentPath().self::FILE_GENERATION)) {
+			$data = $this->addDatetimes(unserialize(file_get_contents($this->aetools->getCurrentPath().self::FILE_GENERATION)));
+		} else {
+			$data = array();
+		}
+		return $data;
+	}
+
+	protected function addDatetimes($rapports) {
+		// foreach ($rapports as $keyrapport => $rapport) {
+		// 	$rapports[$keyrapport]['datetime'] = new DateTime($rapport['text']['date']);
+		// }
+		return $rapports;
+	}
+
+	protected function suppDatetimes($rapports) {
+		// foreach ($rapports as $keyrapport => $rapport) {
+		// 	unset($rapports[$keyrapport]['datetime']);
+		// }
+		return $rapports;
+	}
+
+	public function addRapportGeneration($id) {
+		$rapports = $this->getGenerations();
+		// format timestamp UNIX
+		$date['time']['date'] = time();
+		$date['time']['limite'] = time() + self::DELAI_GENERATION_SECONDES;
+		// format lisible
+		$date['text']['date'] = date(self::DT_DATE_FORMAT, $date['time']['date']);
+		$date['text']['limite'] = date(self::DT_DATE_FORMAT, $date['time']['limite']);
+
+		if(is_string($id)) $id = array($id);
+		foreach ($id as $one) {
+			$rapports[$one] = $date;
+		}
+		$this->checkGeneration($rapports);
+		$this->saveGeneration($rapports);
+	}
+
+	public function suppRapportGeneration($id, $historique = true) {
+		$rapports = $this->getGenerations();
+		if(is_string($id)) $id = array($id);
+		$hist = array();
+		foreach ($id as $one) {
+			if(isset($rapports[$one])) {
+				$hist[$one] = $rapports[$one];
+				unset($rapports[$one]);
+			}
+			$this->addHistorique($hist);
+			$this->saveGeneration($rapports);
+		}
+	}
+
+	protected function checkGeneration($rapports = null, $save = true) {
+		if($rapports === null) {
+			$rapports = $this->getGenerations();
+			$save = true;
+		}
+		// trouve les délais dépassés
+		$supp = array();
+		foreach ($rapports as $keyrapport => $rapport) {
+			if(time() > $rapport['time']['limite']) $supp[] = $keyrapport;
+		}
+		// suppression des délais dépassés
+		foreach ($supp as $key => $keyrapport) {
+			unset($rapports[$keyrapport]);
+		}
+		if($save === true) $this->saveGeneration($rapports);
+		return $rapports;
+	}
+
+	protected function saveGeneration($rapports) {
+		$this->verifAndGoDossier(self::DOSSIER_GENERATION);
+		$file = fopen($this->aetools->getCurrentPath().self::FILE_GENERATION, 'w');
+		fwrite($file, serialize($this->suppDatetimes($rapports)));
+	}
+
+
+
+	/********************************/
+	/** Gestion de l'historique    **/
+	/********************************/
+
+	protected function addHistorique($rapports) {
+		if(!is_array($rapports)) $rapports = array($rapports);
+		// verif dossier
+		$this->verifAndGoDossier(self::DOSSIER_HISTORIQUE);
+		$file = fopen($this->aetools->getCurrentPath().self::FILE_HISTORIQUE, 'a');
+		$data = array();
+		foreach ($rapports as $id => $value) {
+			$data['id'] = $id;
+			$data['debut'] = $value['time']['date'];
+			$data['fin'] = time();
+			$data['temps'] = $data['fin'] - $data['debut'];
+			fwrite($file, implode('|', $data)."\r");
+		}
+		fclose($file);
+	}
+
+
 
 	/**
 	 * Renvoie la liste des lieux

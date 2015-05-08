@@ -1,19 +1,14 @@
 {% import "ensemble01filemakerBundle:public-views:live-macros.html.twig" as base %}
 
 {% set colsbtn = 'col-lg-2 col-md-3 col-sm-4 col-xs-6' %}
-{% set test = true %}
-{% set notReady = false %}
-{% set brokens = false %}
-{% set download = false %}
-{% set affNotCreated = true %}
-{% set affNotRelated = true %}
 
 {% if rapports is iterable %}
 {% if rapports|length > 0 %}
 <div class='row'>
 {% for rapport in rapports %}
-	{% if pdf[rapport.getField("id")] != false and rapport.getField('a_traiter') == "1" %}
-	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-ok' style='text-align:center;'>
+	{% set id = rapport.getField("id") %}
+	{% if pdf[id]['statut'] == 1 %}
+	<div id='local-{{ id|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-ok' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
@@ -33,25 +28,8 @@
 			</div>
 		</div>
 	</div>
-	{% set download = true %}
-	{% elseif affNotCreated == true and pdf[rapport.getField("id")] != false %}
-	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-onair' style='text-align:center;'>
-		<div class="thumbnail">
-			<div class="caption">
-				<h5>
-					{{ base.blocRapport(rapport) }}
-				</h5>
-				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
-					<a class="btn btn-info URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-						<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Ecriture…
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% set notReady = true %}
-	{% elseif affNotRelated == true and (pdf[rapport.getField("id")] == false and rapport.getField('a_traiter') == "1" ) %}
-	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-missing' style='text-align:center;'>
+	{% elseif pdf[id]['statut'] == 2 %}
+	<div id='local-{{ id|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-missing' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
@@ -67,23 +45,21 @@
 			</div>
 		</div>
 	</div>
-	{% set brokens = true %}
-	{% elseif affNotRelated == true and (pdf[rapport.getField("id")] == false and rapport.getField('a_traiter') == "1" ) %}
-	<div id='local-{{ rapport.getField("id")|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-standby' style='text-align:center;'>
+	{% elseif pdf[id]['statut'] == 3 %}
+	<div id='local-{{ id|raw }}' class='{{ colsbtn|raw }} bloc-rapport rapport-onair' style='text-align:center;'>
 		<div class="thumbnail">
 			<div class="caption">
 				<h5>
-					{{ base.blocRapport(rapport) }}
+					{{ base.blocRapport(rapport, null, "PDF en cours…") }}
 				</h5>
 				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
-					<a class="btn btn-default URLext" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" disabled="disabled">
-						<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;Attente…
-					</a>
+					<div style="width:100%;margin-top:6px;height:28px;text-align:center;">
+						<img src="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" />
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	{% set notReady = true %}
 	{% endif %}
 {% endfor %}
 </div>

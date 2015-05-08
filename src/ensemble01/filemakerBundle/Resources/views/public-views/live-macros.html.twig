@@ -1,9 +1,9 @@
-{% macro blocRapport(rapport) %}
+{% macro blocRapport(rapport, ligne1, ligne2) %}
 	<div style="height:64px;width:100%;overflow:hidden">
-		{{ rapport.getField("rapport_nom")|raw }}
+		{{ ligne1|default(rapport.getField("rapport_nom"))|raw }}
 	</div>
 	<div style="height:24px;width:100%;overflow:hidden">
-		<small>{{ rapport.getField("type_rapport")|raw }}</small>
+		<small>{{ ligne2|default(rapport.getField("type_rapport"))|raw }}</small>
 	</div>
 {% endmacro %}
 
