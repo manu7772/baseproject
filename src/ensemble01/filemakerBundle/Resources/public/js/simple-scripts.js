@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 			} else {
 				alert(retour.ERRORmessages.join('\n'));
 			}
-			if(this.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
+			if(objparent.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
 		});
 		return false;
 	});
