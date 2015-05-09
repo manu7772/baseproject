@@ -753,7 +753,7 @@
 		<nobreak>
 		<h4>• Flocages</h4>
 		{% if rapport.getField('lien_grille_eval_flocage_multimedia')|length > 0 %}
-		<p style="width:100%;text-align:center;">{{ mediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%')|raw }}</p>
+		<p style="width:100%;text-align:center;">{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%')|raw }}</p>
 		{# base.image(rapport.getField('lien_grille_eval_flocage_multimedia'), "width:80%;") #}
 		{% else %}
 		<p style="width:100%;text-align:center;">{{ neant }}</p>
@@ -764,7 +764,7 @@
 		<nobreak>
 		<h4>• Calorifugeages</h4>
 		{% if rapport.getField('lien_grille_eval_calo_multimedia')|length > 0 %}
-		<p style="width:100%;text-align:center;">{{ mediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%')|raw }}</p>
+		<p style="width:100%;text-align:center;">{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%')|raw }}</p>
 		{# base.image(rapport.getField('lien_grille_eval_calo_multimedia'), "width:80%;") #}
 		{% else %}
 		<p style="width:100%;text-align:center;">{{ neant }}</p>
@@ -775,7 +775,7 @@
 		<nobreak>
 		<h4>• Faux plafonds</h4>
 		{% if rapport.getField('lien_grille_eval_fauxplaf_multimedia')|length > 0 %}
-		<p style="width:100%;text-align:center;">{{ mediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%')|raw }}</p>
+		<p style="width:100%;text-align:center;">{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%')|raw }}</p>
 		{# base.image(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), "width:80%;") #}
 		{% else %}
 		<p style="width:100%;text-align:center;">{{ neant }}</p>
@@ -924,7 +924,7 @@
 	{{ base.newPage(rapport, date, format) }}
 	<div class='text-content'>
 
-		{{ mediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw }}
+		{{ multiMediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw }}
 		{# base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") #}
 
 	{% endif %}

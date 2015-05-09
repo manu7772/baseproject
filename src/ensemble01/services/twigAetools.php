@@ -67,6 +67,7 @@ class twigAetools extends \Twig_Extension {
 			'getTechniciens'		=> new \Twig_Function_Method($this, 'getTechniciens'),
 			'nomsTechniciens'		=> new \Twig_Function_Method($this, 'nomsTechniciens'),
 			'mediaIMG'				=> new \Twig_Function_Method($this, 'mediaIMG'),
+			'multiMediaIMG'			=> new \Twig_Function_Method($this, 'multiMediaIMG'),
 			'printIfMult'			=> new \Twig_Function_Method($this, 'printIfMult'),
 			'neant'					=> new \Twig_Function_Method($this, 'neant'),
 			'FMexplode00'			=> new \Twig_Function_Method($this, 'FMexplode00'),
@@ -967,7 +968,7 @@ class twigAetools extends \Twig_Extension {
 	}
 
 	/**
-	 * renvoie l'image <img> d'un technicien (selon réf. "mult_")
+	 * renvoie l'image <img> (selon réf. "mult_")
 	 * @param string $mult
 	 * @return string
 	 */
@@ -984,6 +985,33 @@ class twigAetools extends \Twig_Extension {
 			reset($media);
 			$media = current($media);
 			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
+			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
+		} else {
+			return $neant;
+		}
+	}
+
+	/**
+	 * renvoie x images <img> (selon réf. "mult_")
+	 * @param string $mult
+	 * @return string
+	 */
+	public function multiMediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null) {
+		if($neant === null) $neant = $this->neant();
+		if($hi === true) $tailleReso = 'conteneur_base64';
+			else $tailleReso = 'conteneur_miniature_base64';
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		$_fm = $this->container->get('ensemble01services.geodiag');
+		$_fm->log_user($user, null, true);
+		$media = $_fm->getMedia($mult);
+		if(is_string($media)) return $neant;
+		$concat = "";
+		if(count($media) > 0) {
+			reset($media);
+			foreach ($media as $key => $image) {
+				$concat .= $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
+			}
+			return $concat;
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
 		} else {
 			return $neant;
