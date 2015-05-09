@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use \ZipArchive;
 use \DateTime;
+use \Exception;
 
 class filemakerController extends fmController {
 
@@ -504,7 +505,7 @@ class filemakerController extends fmController {
 	 * @return aeReponse
 	 */
 	public function prepare_un_rapport($id_rapport = null, $format = "pdf", $aeReponse = null) {
-		set_time_limit(360); // délai pour le script : 6 min
+		set_time_limit(600); // délai pour le script : 10 min
 		// renvoie un objet aeReponse
 		// data[id] => array()
 		// 		['pdf'] => objet HTML2PDF
@@ -516,6 +517,8 @@ class filemakerController extends fmController {
 		// 			['template'] => nom du template
 
 		$this->initFmData();
+		$this->_fm->effaceRapportFile($id_rapport);
+		// $this->_fm->addRapportGeneration($id);
 		if($aeReponse === null) $aeReponse = $this->get('ensemble01services.aeReponse');
 		if($aeReponse->isValid()) {
 			// transforme l'ID en objet
@@ -552,16 +555,40 @@ class filemakerController extends fmController {
 							$html = $this->render($RAPP["template"], $RAPP);
 							$aeReponse->addMessage('Le rapport '.$RAPP["format"].' '.$RAPP["rapport"]->getField('id').' a été généré.');
 							$aeReponse->addData(array('html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
-						} catch (\Exception $e) {
+						} catch (Exception $e) {
 							$aeReponse->addErrorMessage('Erreur génération html : '.$e->getMessage());
 						}
+						break;
+					case 'tcpdf':
+						$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
+						$html = null;
+						$pdf = $this->get('tcpdf');
+						$pdf->SetCreator(PDF_CREATOR);
+						$pdf->setPrintHeader(false);
+						$pdf->setPrintFooter(false);
+						$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+						$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+						// $pdf->SetFont('times', '', 12);
+						$pdf->setFont('helvetica', '', 10, '', 'false');
+						// $pdf->addFont('helvetica', 'B', 10, '', 'false');
+						// $pdf->addFont('helvetica', 'I', 10, '', 'false');
+						// $pdf->addFont('helvetica', 'BI', 10, '', 'false');
+						// $pdf->addFont('zapfdingbats', '', 12, '', 'false');
+						$pdf->addFont('symbol', '', 12, '', 'false');
+						$pdf->AddPage();
+						$aeReponse->addData(array('pdf' => $pdf, 'html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
+						$txt = "TCPDF Example 002\nDefault page header and footer are disabled using setPrintHeader() and setPrintFooter() methods.";
+						$pdf->Write(0, $txt, '', 0, '', true, 0, false, false, 0);
+						// $pdf->Output('example_001.pdf', 'I');
+						unset($tcpdf);
+						unset($RAPP);
 						break;
 					default: // PDF ou autre
 						$RAPP['imgpath'] = __DIR__.'../../../../../web/bundles/ensemble01filemaker/images/';
 						$html = null;
 						try {
 							$html = $this->renderView($RAPP["template"], $RAPP);
-						} catch (\Exception $e){
+						} catch (Exception $e){
 							$aeReponse->addErrorMessage('Erreur génération template : '.$e->getMessage());
 						}
 						if(is_string($html)) try {
@@ -604,6 +631,8 @@ class filemakerController extends fmController {
 	public function generate_rapport_fmAction($rapport_id) {
 		$format = 'pdf';
 		// $rapport = $this->_fm->getOneRapport($id);
+		$this->initFmData();
+		$this->_fm->addRapportGeneration($rapport_id); // x 1 !
 		$aeReponse = $this->prepare_un_rapport($rapport_id);
 		if($aeReponse->isValid()) {
 			$datassup = $aeReponse->getDataAndSupp();
@@ -636,6 +665,7 @@ class filemakerController extends fmController {
 			$repss = implode('<br>', $aeReponse->getAllMessages(true));
 			// $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id, $repss);
 		}
+		$this->_fm->suppRapportGeneration($rapport_id);
 		return new Response($repss);
 	}
 
@@ -652,11 +682,13 @@ class filemakerController extends fmController {
 		$format = 'pdf';
 		$aeReponse = $this->get('ensemble01services.aeReponse');
 		$this->initFmData();
-		$this->_fm->addRapportGeneration($id);
+		$this->_fm->addRapportGeneration($id); // x 1 !
 		$rapport = $this->_fm->getOneRapport($id);
 		if(is_object($rapport)) {
-			$this->_fm->effaceRapportFile($rapport);
-			$aeReponse = $this->prepare_un_rapport($rapport, 'pdf', $aeReponse);
+			$this->_fm->addRapportGeneration($id); // x 2 !!
+			$aeReponse = $this->prepare_un_rapport($rapport, 'pdf', $aeReponse); // HTML2PDF
+			// $aeReponse = $this->prepare_un_rapport($rapport, 'tcpdf', $aeReponse); // TCPDF
+			$this->_fm->addRapportGeneration($id); // x 3 !!!
 			if($aeReponse->isValid()) {
 				$datassup = $aeReponse->getDataAndSupp();
 				$oneRapport = current($datassup);
@@ -666,6 +698,7 @@ class filemakerController extends fmController {
 					$aeReponse->addMessage("Rapport généré :");
 					$aeReponse->addMessage("Le rapport ".$oneRapport["rapport"]["type"]." réf.".$oneRapport["rapport"]["ref_rapport"]);
 				} catch (HTML2PDF_exception $e) {
+					$this->_fm->effaceRapportFile($rapport);
 					$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
 				}
 				$repss = implode('<br>', $aeReponse->getAllMessages(true));
