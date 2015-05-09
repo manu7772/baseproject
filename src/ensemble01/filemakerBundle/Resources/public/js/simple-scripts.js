@@ -62,7 +62,7 @@ jQuery(document).ready(function($) {
 
 	var freq = 2000;
 	var compteur = 0;
-	verifLoad = function() {
+	var verifLoad = function() {
 		this.texte = $('#visu').html();
 		var objparent1 = this;
 		$('#visu').html('<span class="glyphicon glyphicon-time" aria-hidden="true" style="color:#62a6e1;"></span>');
@@ -83,6 +83,13 @@ jQuery(document).ready(function($) {
 				// });
 			}
 		});
+		compteur++;
+		setTimeout(function(){ $('#visu').html(objparent1.texte); }, 200);
+		var STOVL = setTimeout(function(){ verifLoad(); }, freq);
+	}
+	if($('.ajax-reload').length) { verifLoad(); }
+
+	var verifZIP = function() {
 		ROK = $('body .rapport-ok').length;
 		RQ = parseInt($('body #rapport-quantity').text());
 		// $('#zonzon').html('<p>'+ROK+' / '+RQ+'</p>');
@@ -93,16 +100,16 @@ jQuery(document).ready(function($) {
 			hideDownloadZipButton(1);
 			setTimeout('showDownloadZipButton(2)', 2);
 		}
-		compteur++;
-		setTimeout(function(){ $('#visu').html(objparent1.texte); }, 200);
-		setTimeout(function(){ verifLoad(); }, freq);
+		setTimeout(function(){ verifZIP(); }, 100);
 	}
-	if($('.ajax-reload').length) { verifLoad(); }
+	verifZIP();
 
 	$('body').on('click', '.rapportPDFrefresh', function(event) {
 		event.preventDefault();
 		// Désactive bouton de téléchargement ZIP…
 		this.loadimg = false;
+		// stop verifLoad
+		clearTimeout(STOVL);
 		hideDownloadZipButton(1);
 		setTimeout('showDownloadZipButton(2)', 2);
 		if($(this).attr('data-loader-image').length) {
@@ -130,6 +137,8 @@ jQuery(document).ready(function($) {
 				alert(retour.ERRORmessages.join('\n'));
 			}
 			if(objparent.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
+			// relance vérifLoad
+			var STOVL = setTimeout(function(){ verifLoad(); }, freq);
 		});
 		return false;
 	});
