@@ -62,6 +62,7 @@ jQuery(document).ready(function($) {
 
 	var freq = 2000;
 	var compteur = 0;
+	var STOVL;
 	var verifLoad = function() {
 		this.texte = $('#visu').html();
 		var objparent1 = this;
@@ -85,7 +86,7 @@ jQuery(document).ready(function($) {
 		});
 		compteur++;
 		setTimeout(function(){ $('#visu').html(objparent1.texte); }, 200);
-		var STOVL = setTimeout(function(){ verifLoad(); }, freq);
+		STOVL = setTimeout(function(){ verifLoad(); }, freq);
 	}
 	if($('.ajax-reload').length) { verifLoad(); }
 
@@ -138,7 +139,7 @@ jQuery(document).ready(function($) {
 			}
 			if(objparent.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
 			// relance vérifLoad
-			var STOVL = setTimeout(function(){ verifLoad(); }, freq);
+			verifLoad();
 		});
 		return false;
 	});
