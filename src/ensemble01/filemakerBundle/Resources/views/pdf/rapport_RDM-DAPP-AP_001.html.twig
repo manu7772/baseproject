@@ -151,7 +151,7 @@
 
 		{# <bookmark title="1.2 Conclusions du répérage" level="1" ></bookmark> #}
 		<h3>1.2 Conclusions du répérage</h3>
-		<nobreak>
+		
 			<h5>•&nbsp;Liste des matériaux et produits contenant de l’amiante (voir résultats détaillés du repérage)</h5>
 			<table class="type2">
 				<thead>
@@ -179,9 +179,7 @@
 					</tr>
 				</tbody>
 			</table>
-		</nobreak>
 
-		<nobreak>
 			<h5>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h5>
 			<table class="type2">
 				<thead>
@@ -215,7 +213,6 @@
 			</table>
 			<br>
 			<p><span class='underline'>Remarque&nbsp;:</span> La liste présentée dans le point ci-dessus peut ne pas être complète. La liste exhaustive des produits et matériaux est présentée dans le tableau "Résultats détaillés du repérage".</p>
-		</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -422,7 +419,6 @@
 			<p>Immeuble&nbsp;: {{ rapport.getField('local_adresse')|raw }} -&nbsp;{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</p>
 
 			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
-			<nobreak>
 			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
 			{% set larg = 185 %}
 			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
@@ -479,13 +475,11 @@
 					{% endif %}
 				</tbody>
 			</table>
-			</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
 			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
-			<nobreak>
 			<h4 style="width:100%;">7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
 			{% set larg = 185 %}
 			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
@@ -542,7 +536,6 @@
 					{% endif %}
 				</tbody>
 			</table>
-			</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
@@ -707,37 +700,32 @@
 {{ base.newPage(rapport, date, format) }}
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
-		<nobreak>
+
 		<h4>• Flocages</h4>
 		{% if rapport.getField('lien_grille_eval_flocage_multimedia')|length > 0 %}
-		<p style="width:100%;text-align:center;">{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%')|raw }}</p>
+		{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%')|raw }}
 		{# base.image(rapport.getField('lien_grille_eval_flocage_multimedia'), "width:80%;") #}
 		{% else %}
-		<p style="width:100%;text-align:center;">{{ neant }}</p>
+		{{ neant }}
 		{% endif %}
-		<br><br>
-		</nobreak>
+		<br><br><br>
 
-		<nobreak>
 		<h4>• Calorifugeages</h4>
 		{% if rapport.getField('lien_grille_eval_calo_multimedia')|length > 0 %}
-		<p style="width:100%;text-align:center;">{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%')|raw }}</p>
+		{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%')|raw }}
 		{# base.image(rapport.getField('lien_grille_eval_calo_multimedia'), "width:80%;") #}
 		{% else %}
-		<p style="width:100%;text-align:center;">{{ neant }}</p>
+		{{ neant }}
 		{% endif %}
-		<br><br>
-		</nobreak>
+		<br><br><br>
 
-		<nobreak>
 		<h4>• Faux plafonds</h4>
 		{% if rapport.getField('lien_grille_eval_fauxplaf_multimedia')|length > 0 %}
-		<p style="width:100%;text-align:center;">{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%')|raw }}</p>
+		{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%')|raw }}
 		{# base.image(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), "width:80%;") #}
 		{% else %}
-		<p style="width:100%;text-align:center;">{{ neant }}</p>
+		{{ neant }}
 		{% endif %}
-		</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
