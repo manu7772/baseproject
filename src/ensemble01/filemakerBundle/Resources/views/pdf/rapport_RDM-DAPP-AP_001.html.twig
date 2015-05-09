@@ -474,7 +474,7 @@
 						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
 						{% else %}{% set amiante = '' %}{% endif %}
 						{% for key,colonne in ligne %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante }}>
+						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante|raw }}>
 							{% if colonne matches '/^(Mult-)/' %}
 							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
 								{# base.image(colonne, "width:48mm;") #}
@@ -539,7 +539,7 @@
 						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% else %}{% set amiante = '' %}{% endif %}
 						{% else %}{% set amiante = '' %}{% endif %}
 						{% for key,colonne in ligne %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante }}>
+						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante|raw }}>
 							{% if colonne matches '/^(Mult-)/' %}
 							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
 								{# base.image(colonne, "width:48mm;") #}

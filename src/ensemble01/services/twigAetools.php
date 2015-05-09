@@ -1005,13 +1005,13 @@ class twigAetools extends \Twig_Extension {
 		$_fm->log_user($user, null, true);
 		$media = $_fm->getMedia($mult);
 		if(is_string($media)) return $neant;
-		$concat = "";
+		$concat = array();
 		if(count($media) > 0) {
 			reset($media);
 			foreach ($media as $key => $image) {
-				$concat .= $this->image_base64($image->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
+				$concat[] = $this->image_base64($image->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
 			}
-			return $concat;
+			return implode("<br>", $concat);
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
 		} else {
 			return $neant;
