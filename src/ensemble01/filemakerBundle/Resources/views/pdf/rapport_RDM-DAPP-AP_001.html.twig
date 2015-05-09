@@ -134,13 +134,12 @@
 		{{ rapport.getField('rapport_conclusion_DAPP')|default("Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3") }}
 	</div>
 
-
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, {header: true}) }}
 
+		{# !!! SOMMAIRE !!! #}
 
-		{# !!! SOMMAIRE !
-		{{ base.endPage(format) }}
+{{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, 'default') }}
 
 	<bookmark title="1. CONCLUSIONS DU RAPPORT" level="0" ></bookmark>
@@ -403,10 +402,8 @@
 		<br>
 		<P>L'opérateur conclut définitivement à l'absence ou à la présence d'amiante pour chaque matériau ou produit repéré. Dans sa conclusion, l'opérateur de repérage précise le critère (matériau ou produit qui par nature ne contient pas d'amiante, marquage du matériau, document consulté, résultat d'analyse de matériau ou produit) qui lui a permis de conclure quant à la présence ou l'absence d'amiante. Pour chacun des matériaux et produits repérés, en fonction de sa connaissance des matériaux et produits utilisés, il atteste, le cas échéant, de la présence d'amiante. Dans ce cas, il précise dans sa conclusion que le critère qui lui a permis de conclure est son jugement personnel.</P>
 
-
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, {orientation: 'L'}) }}
-
 
 	<bookmark title="7. RESULTATS DETAILLÉS DU REPERAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>7. RESULTATS DETAILLÉS DU REPERAGE</h2>', 'greyline', 'div')|raw }}
@@ -603,11 +600,10 @@
 	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
 
 	{% else %}
-
 	
 	{{ base.endPage(format) }}
 	{{ base.newPage(rapport, date, format) }}
-	
+
 		{{ mediaIMG(rapport.getField('lien_croquis_multimedia'), RESO, null, null, '100%')|raw }}
 		{# base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") #}
 
@@ -636,6 +632,7 @@
 	{{ base.endPage(format) }}
 	{{ base.newPage(rapport, date, format) }}
 	
+
 		{{ mediaIMG(tech[3], RESO, null, null, '100%')|raw }}
 
 	{% endfor %}
@@ -660,6 +657,7 @@
 {% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
+
 	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '100%')|raw }}
 {% endif %}
 
@@ -862,10 +860,9 @@
 
 	{% else %}
 
-	
 	{{ base.endPage(format) }}
 	{{ base.newPage(rapport, date, format) }}
-	
+
 		{{ multiMediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw }}
 		{# base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") #}
 
@@ -874,9 +871,9 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
+
 		<div style="height:80mm;width:100%;"></div>
 		<h2 class="stronger center">FIN ANNEXE<br><br>RAPPORT DE MISSION DE REPÉRAGE<br>DES MATÉRIAUX ET PRODUITS DE LA LISTE A<br>CONTENANT DE L’AMIANTE</h2>
 		<br>
 
-</div>
 {{ base.endDoc(format) }}

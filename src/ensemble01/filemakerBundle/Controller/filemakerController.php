@@ -628,6 +628,11 @@ class filemakerController extends fmController {
 		return $aeReponse;
 	}
 
+	/**
+	 * Génération d'un rapport depuis requête FM server
+	 * @param string $rapport_id - id du rapport
+	 * @return string
+	 */
 	public function generate_rapport_fmAction($rapport_id) {
 		$format = 'pdf';
 		// $rapport = $this->_fm->getOneRapport($id);
