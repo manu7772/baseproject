@@ -101,14 +101,14 @@ jQuery(document).ready(function($) {
 
 	$('body').on('click', '.rapportPDFrefresh', function(event) {
 		event.preventDefault();
+		// Désactive bouton de téléchargement ZIP…
+		hideDownloadZipButton(1);
+		setTimeout('showDownloadZipButton(2)', 2);
 		this.loadimg = false;
 		if($(this).attr('data-loader-image').length) {
 			this.loadimg = $(this).parent().html();
 			$(this).parent().html('<div style="width:100%;margin-top:6px;height:28px;text-align:center;"><img src="'+$(this).attr('data-loader-image')+'" /></div>');
 		}
-		// Désactive bouton de téléchargement ZIP…
-		hideDownloadZipButton(1);
-		setTimeout('showDownloadZipButton(2)', 2);
 		// $(this).addClass('disabled');
 		this.URL = $(this).attr('data-href');
 		var objparent = this;
@@ -126,8 +126,8 @@ jQuery(document).ready(function($) {
 			} else {
 				alert(retour.ERRORmessages.join('\n'));
 			}
+			if(this.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
 		});
-		if(this.loadimg != false) setTimeout(function(){ $(objparent).html(objparent.loadimg); }, 500);
 		return false;
 	});
 
