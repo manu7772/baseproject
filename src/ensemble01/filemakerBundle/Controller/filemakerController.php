@@ -1031,10 +1031,6 @@ class filemakerController extends fmController {
 			$data = array();
 			$data["rapports"] = $this->initFmData()->Recherche_Rapport_Serveur($numlot);
 			$generations = $this->_fm->getGenerations();
-			$add .= "<p>Nombre de rapports en génération : ".count($generations)." - ".rand(10000, 99999)."</p>";
-			foreach ($generations as $key => $value) {
-				$add .= "<p>- ".$key." : ".$value['text']['date'].' -> '.$value['text']['limite']."</p>";
-			}
 			if(is_array($data["rapports"])) {
 				foreach($data["rapports"] as $rapport) {
 					$id = $rapport->getField('id');
@@ -1049,7 +1045,7 @@ class filemakerController extends fmController {
 					// en cours de génération…
 					if(isset($generations[$id])) {
 						$data['pdf'][$id]['statut'] = 3;
-						$data['pdf'][$id]['data'] = $generations[$id];
+						// $data['pdf'][$id]['data'] = $generations[$id];
 					}
 				}
 			} else {
@@ -1060,7 +1056,7 @@ class filemakerController extends fmController {
 		} else {
 			$html = '<p>Numéro de lot absent… impossible de recevoir les données sur les rapports.</p>';
 		}
-		return new Response($html.$add);
+		return new Response($html);
 	}
 
 	public function retablir_un_rapportAction($id, $pagedata = null) {
