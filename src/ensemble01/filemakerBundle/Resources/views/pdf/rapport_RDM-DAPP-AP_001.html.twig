@@ -301,12 +301,14 @@
 				</tr>
 			</thead>
 			<tbody>
+				{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
+				{% for it in item %}
 				<tr>
-					{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
-					{% for it in item %}
-					<td class='center'>{{ it|raw }}</td>
+					{% for it2 in it %}
+					<td class='center'>{{ it2|raw }}</td>
 					{% endfor %}
 				</tr>
+				{% endfor %}
 			</tbody>
 		</table>
 		<br>
