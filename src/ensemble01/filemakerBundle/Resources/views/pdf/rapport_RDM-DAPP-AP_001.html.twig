@@ -450,12 +450,9 @@
 					{% if data != false %}
 					{% for ligne in data %}
 					<tr>
-						{% set amiante = '' %}
-						{% if ligne[12] is defined %}
-						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% endif %}
-						{% endif %}
+						{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
 						{% for key,colonne in ligne %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante|raw }}>
+						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 							{% if colonne matches '/^(Mult-)/' %}
 							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
 								{# base.image(colonne, "width:48mm;") #}
@@ -512,12 +509,9 @@
 					{% if data != false %}
 					{% for ligne in data %}
 					<tr>
-						{% set amiante = '' %}
-						{% if ligne[12] is defined %}
-						{% if ligne[12] matches cherchepresence %}{% set amiante = ' style="color:red;"' %}{% endif %}
-						{% endif %}
+						{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
 						{% for key,colonne in ligne %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'{{ amiante|raw }}>
+						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 							{% if colonne matches '/^(Mult-)/' %}
 							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
 								{# base.image(colonne, "width:48mm;") #}
