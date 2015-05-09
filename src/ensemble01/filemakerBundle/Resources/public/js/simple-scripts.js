@@ -102,12 +102,15 @@ jQuery(document).ready(function($) {
 	$('body').on('click', '.rapportPDFrefresh', function(event) {
 		event.preventDefault();
 		// Désactive bouton de téléchargement ZIP…
+		this.loadimg = false;
 		hideDownloadZipButton(1);
 		setTimeout('showDownloadZipButton(2)', 2);
-		this.loadimg = false;
 		if($(this).attr('data-loader-image').length) {
 			this.loadimg = $(this).parent().html();
 			$(this).parent().html('<div style="width:100%;margin-top:6px;height:28px;text-align:center;"><img src="'+$(this).attr('data-loader-image')+'" /></div>');
+		}
+		if($(this).attr('data-rapport-id').length) {
+			$("#local-" + $(this).attr('data-rapport-id')).removeClass('rapport-ok').addClass('rapport-onair');
 		}
 		// $(this).addClass('disabled');
 		this.URL = $(this).attr('data-href');

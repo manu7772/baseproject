@@ -21,7 +21,7 @@
 					<a class="btn btn-primary fancybox fancybox.iframe" href="{{ url('ensemble01site_rapportscreen', {id: rapport.getField('id')}) }}" role="button" title="Visualiser PDF">
 						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 					</a>
-					<a class="btn btn-primary rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title="Regénérer PDF">
+					<a class="btn btn-primary rapportPDFrefresh" href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" data-rapport-id="{{ rapport.getField('id') }}" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title="Regénérer PDF">
 						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 					</a>
 				</div>
@@ -37,7 +37,7 @@
 				</h5>
 				<div class="btn-group btn-group-justified" role="group" aria-label="{{ rapport.getField('id')|raw }}">
 					<div class="btn-group" role="group">
-						<button class="btn btn-danger rapportPDFrefresh" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant'>
+						<button class="btn btn-danger rapportPDFrefresh" data-rapport-id="{{ rapport.getField('id') }}" data-loader-image="{{ asset('bundles/ensemble01filemaker/images/ajax-loader.gif') }}" data-href="{{ url('ensemble01site_rapportPDFrefresh', {id: rapport.getField('id')}) }}" role="button" title='Générer le PDF manquant'>
 							<span class="glyphicon glyphicon-alert" aria-hidden="true"></span>&nbsp;PDF Absent
 						</button>
 					</div>
