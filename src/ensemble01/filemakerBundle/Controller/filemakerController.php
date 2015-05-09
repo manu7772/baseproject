@@ -653,6 +653,7 @@ class filemakerController extends fmController {
 			if($aeReponse->isValid()) {
 				// génération ok
 				$add = "Génération OK";
+				$this->_fm->suppRapportGeneration($rapport_id);
 				$messtest = $this->_fm->Cloture_UN_Rapport_Apres_Serveur($rapport_id); // ????? demander à SEB si c'est toujours utile
 				// $aeReponse->addErrorMessage($messtest);
 				// $repss = implode('<br>', $aeReponse->getAllMessages(true));

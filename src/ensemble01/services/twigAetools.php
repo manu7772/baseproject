@@ -939,8 +939,8 @@ class twigAetools extends \Twig_Extension {
 
 
 	public function non_visites($text, $neant = '-') {
-		$text = $this->FMexplode00($text);
-		$text = $this->fillWith($text, 5, $neant, true);
+		$text = $this->FMexplode01($text);
+		$text = $this->fillChildsWith($text, 5, $neant, true);
 		return $text;
 	}
 
