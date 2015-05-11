@@ -115,10 +115,16 @@ class twigAetools extends \Twig_Extension {
 	 * @param intger $n - nombre de lettres maxi avant retour à la ligne
 	 * @return string
 	 */
-	public function colonizeWords($t, $n, $separ = "br") {
+	public function colonizeWords($t, $n, $separ = "br", $cutmot = true) {
+		if($cutmot !== true) $cutmot = false;
+		$voyelles = ["a", "e", "i", "o", "u", "y"];
+		$consonnes = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
+		// réduction pour faire une moyenne
 		if($n > 5) $n = $n - 4;
-		$t = $this->cleanSpaces($t);
+		// supprime espaces en trop
+		$t = $this->cleanSpaces(trim($t));
 		$changes = array(" ", "-");
+		$glueword = "-";
 		$cpt = 1;
 		$line = 0;
 		$txr = array();
@@ -126,8 +132,19 @@ class twigAetools extends \Twig_Extension {
 		// Génération des lignes de texte en tableau
 		for ($i=0; $i < strlen($t); $i++) {
 			$char = substr($t, $i, 1);
-			if($cpt > $n && in_array($char, $changes)) {
+			$cutm = false;
+			if($cutmot === true && $i > ($n - 1)) {
+				// voyelle suivie d'une consonne… ou deux mêmes lettres
+				if((in_array(strtolower($char), $voyelles) && in_array(strtolower(substr($t, $i + 1, 1)), $consonnes)) || (strtolower($char) == strtolower(substr($t, $i + 1, 1)))) {
+					// au moins deux lettres avant de couper…
+					if(strtolower(substr($t, $i -1, 1)) != " " && strtolower(substr($t, $i -2, 1)) != " ") {
+						$cutm = true;
+					}
+				}
+			}
+			if($cpt > $n && (in_array($char, $changes) || $cutm === true)) {
 				if($char == " ") $char = "";
+				if($cutm === true) $char = $char.$glueword;
 				$cpt = 1;
 				$txr[$line] .= $char;
 				$line++;
