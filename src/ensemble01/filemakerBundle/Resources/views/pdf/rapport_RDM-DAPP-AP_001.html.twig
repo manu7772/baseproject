@@ -591,7 +591,9 @@
 	<a name="anchor82"></a>
 	<h3 class="stronger center">8.2 Croquis</h3>
 
-	{% if rapport.getField('lien_croquis_multimedia')|length < 1 %}
+	{% set champcroquis = rapport.getField('lien_croquis_multimedia') %}
+	{% set croquis = multiMediaIMG(champcroquis, RESO, null, null, '100%', null, neant, 'div|width:100%;text-align:center;') %}
+	{% if (champcroquis|length < 1) or (croquis == neant) %}
 	<br><br><br>
 
 	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
@@ -601,8 +603,7 @@
 	{{ base.endPage(format) }}
 	{{ base.newPage(rapport, date, format) }}
 
-		{{ multiMediaIMG(rapport.getField('lien_croquis_multimedia'), RESO, null, null, '100%', null, '', 'div|width:100%;text-align:center;')|raw }}
-		{# base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") #}
+		{{ coquis|raw }}
 
 	{% endif %}
 
