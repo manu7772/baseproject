@@ -92,8 +92,8 @@
 			<tr>
 				<td class="left">
 					<span class="underline">Référence dossier</span>&nbsp;: 
-					<span class="bold">
-						{{ rapport.getField('rapport_nom') }}
+					<span class="bold" style="text-align:left;">
+						{{ rapport.getField('rapport_nom')|raw }}
 					</span>
 					<br>
 					<span class="underline">Opérateur de repérage amiante et Signataire</span>&nbsp;:
@@ -105,13 +105,13 @@
 					<span class="underline">Laboratoire d’analyses agréé</span>&nbsp;: 
 					<br>
 					<span class="bold">
-						{{ rapport.getField('Laboratoire') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse') }}&nbsp;- {{ rapport.getField('Laboratoire_adresse2') }}&nbsp;- {{ rapport.getField('Laboratoire_cp') }}&nbsp;{{ rapport.getField('Laboratoire_ville') }}
+						{{ rapport.getField('Laboratoire')|raw }}&nbsp;- {{ rapport.getField('Laboratoire_adresse')|raw }}&nbsp;- {{ rapport.getField('Laboratoire_adresse2')|raw }}&nbsp;- {{ rapport.getField('Laboratoire_cp')|raw }}&nbsp;{{ rapport.getField('Laboratoire_ville')|raw }}
 					</span>
 				</td>
 				<td class="left" style='vertical-align:middle;'>
 					<span class="underline">Date de commande</span>&nbsp;: 
 					<span class="bold">
-						{{ transFMdate(rapport.getField('date_commande')) }}
+						{{ transFMdate(rapport.getField('date_commande'))|raw }}
 					</span>
 					<br>
 					<span class="underline">Date de visite</span>&nbsp;: 
