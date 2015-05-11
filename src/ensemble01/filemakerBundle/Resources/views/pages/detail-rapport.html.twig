@@ -17,14 +17,14 @@
 
 				<h5 id="scrollspy-field-001-1" style='font-weight:bold;'>Date de signature</h5>
 				<blockquote style='overflow:hidden;'>
-					<pre style='font-size:0.7em;'>{% for date in FMexplode00(rapport.getField('rapport_date_signature')) %}{{ datalacon(date) }} ({{ date }})<small>{{ intervalDateFR(datalacon(date)) }}</small>{% endfor %}</pre>
+					<pre style='font-size:0.7em;'>{% for date in FMexplode00(rapport.getField('rapport_date_signature')) %}{{ FMtoSimpleDate(date) }} ({{ date }})<small>{{ intervalDateFR(FMtoSimpleDate(date)) }}</small>{% endfor %}</pre>
 				</blockquote>
 
 				<h5 id="scrollspy-field-001-2" style='font-weight:bold;'>Dates de visites</h5>
 				<blockquote style='overflow:hidden;'>
 					<pre style='font-size:0.7em;'>{% for date in FMexplode00(rapport.getField('local_dates_visites')) %}{{ date }}<small>{{ intervalDateFR(date) }}</small>{% endfor %}</pre>
 					{% for date in FMexplode00(rapport.getField('date_visite')) %}
-					<small>Date de visite : {{ datalacon(date) }} ({{ date }}) - {{ intervalDateFR(datalacon(date)) }}</small>
+					<small>Date de visite : {{ FMtoSimpleDate(date) }} ({{ date }}) - {{ intervalDateFR(FMtoSimpleDate(date)) }}</small>
 					{% endfor %}
 				</blockquote>
 
