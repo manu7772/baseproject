@@ -463,12 +463,12 @@
 							{% for key,colonne in ligne %}
 							<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 								{% if colonne matches '/^(Mult-)/' %}
-								{{ mediaIMG(colonne, RESO, null, null, '37mm')|raw }}
-									{# base.image(colonne, "width:37mm;") #}
+								{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
+									{# base.image(colonne, "width:38mm;") #}
 								{% else %}
 								{{ colonizeWords(colonne, 8, 'br')|raw }}
 								{% endif %}
-									{# printIfMult(colonne, RESO, null, null, '37mm', 6, 'br')|raw #}
+									{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 							</td>
 							{% endfor %}
 						</tr>
@@ -522,12 +522,12 @@
 							{% for key,colonne in ligne %}
 							<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 								{% if colonne matches '/^(Mult-)/' %}
-								{{ mediaIMG(colonne, RESO, null, null, '37mm')|raw }}
-									{# base.image(colonne, "width:37mm;") #}
+								{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
+									{# base.image(colonne, "width:38mm;") #}
 								{% else %}
 								{{ colonizeWords(colonne, 8, 'br')|raw }}
 								{% endif %}
-									{# printIfMult(colonne, RESO, null, null, '37mm', 6, 'br')|raw #}
+									{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 							</td>
 							{% endfor %}
 						</tr>
