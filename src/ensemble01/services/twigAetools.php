@@ -117,8 +117,8 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function colonizeWords($t, $n, $separ = "br", $cutmot = true) {
 		if($cutmot !== true) $cutmot = false;
-		$voyelles = ["a", "e", "i", "o", "u", "y"];
-		$consonnes = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z"]
+		$voyelles = array("a", "e", "i", "o", "u", "y");
+		$consonnes = array("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z");
 		// réduction pour faire une moyenne
 		if($n > 5) $n = $n - 4;
 		// supprime espaces en trop
