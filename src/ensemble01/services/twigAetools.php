@@ -830,7 +830,17 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $largeur - largeur de l'image (préciser l'unité ! px, %, etc.)
 	 * @return string
 	 */
-	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null) {
+	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null, $wrap = null) {
+		if(is_string($wrap)) {
+			$ww = explode("|", $wrap);
+			if(count($ww) > 1) $style = ' style = "'.$ww[1].'"';
+				else $style = '';
+			$baldebut = '<'.$ww[0].$style.'>';
+			$balfin = '</'.$ww[0].'>';
+		} else {
+			$baldebut = '';
+			$balfin = '';
+		}
 		if($neant === null) $neant = $this->neant();
 		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif'))) $format = 'png';
 		if(strlen($text."") < 1) return $neant;// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
@@ -841,7 +851,7 @@ class twigAetools extends \Twig_Extension {
 		if(is_string($hauteur)) $hauteur = "height:".$hauteur.";";
 		$style = "";
 		if($hauteur !== null || $largeur !== null) $style = " style='".$largeur.$hauteur."'";
-		return "<img src='data:image/".$format.";base64,".$text."'".$classe.$style." />";
+		return $baldebut."<img src='data:image/".$format.";base64,".$text."'".$classe.$style." />".$balfin;
 	}
 
 	protected function isBMPformat($data) {
@@ -977,7 +987,7 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $mult
 	 * @return string
 	 */
-	public function mediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null) {
+	public function mediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null, $wrap = null) {
 		if($neant === null) $neant = $this->neant();
 		if($hi === true) $tailleReso = 'conteneur_base64';
 			else $tailleReso = 'conteneur_miniature_base64';
@@ -989,7 +999,7 @@ class twigAetools extends \Twig_Extension {
 		if(count($media) > 0) {
 			reset($media);
 			$media = current($media);
-			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
+			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant, $wrap);
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
 		} else {
 			return $neant;
@@ -1001,7 +1011,7 @@ class twigAetools extends \Twig_Extension {
 	 * @param string $mult
 	 * @return string
 	 */
-	public function multiMediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null) {
+	public function multiMediaIMG($mult, $hi = true, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null, $wrap = null) {
 		if($neant === null) $neant = $this->neant();
 		if($hi === true) $tailleReso = 'conteneur_base64';
 			else $tailleReso = 'conteneur_miniature_base64';
@@ -1014,7 +1024,7 @@ class twigAetools extends \Twig_Extension {
 		if(count($media) > 0) {
 			reset($media);
 			foreach ($media as $key => $image) {
-				$concat[] = $this->image_base64($image->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant);
+				$concat[] = $this->image_base64($image->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant, $wrap);
 			}
 			return implode("<br>", $concat);
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
