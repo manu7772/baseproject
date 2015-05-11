@@ -136,8 +136,8 @@ class twigAetools extends \Twig_Extension {
 			if($cutmot === true && $i > ($n - 1)) {
 				// voyelle suivie d'une consonne… ou deux mêmes lettres
 				if((in_array(strtolower($char), $voyelles) && in_array(strtolower(substr($t, $i + 1, 1)), $consonnes)) || (strtolower($char) == strtolower(substr($t, $i + 1, 1)))) {
-					// au moins deux lettres avant de couper…
-					if(strtolower(substr($t, $i -1, 1)) != " " && strtolower(substr($t, $i -2, 1)) != " ") {
+					// au moins deux lettres avant de couper… et moins d'une lettre avant la fin du mot
+					if(strtolower(substr($t, $i -1, 1)) != " " && strtolower(substr($t, $i -2, 1)) != " " && strtolower(substr($t, $i +1, 1)) != " ") {
 						$cutm = true;
 					}
 				}
