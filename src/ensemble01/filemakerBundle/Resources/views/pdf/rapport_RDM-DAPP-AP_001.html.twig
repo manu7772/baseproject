@@ -233,42 +233,44 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
-	{{ CSSclass('<h2>3. DOCUMENTS ANTERIEURS</h2>', 'greyline', 'div')|raw }}
-		<table class='type3'>
-			<thead>
-				<tr>
-					<th class='one center'>Documents</th>
-					<th class='two center'>Disponible</th>
-					<th class='three center'>Date</th>
-					<th class='four center'>Observations</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% set data = docsAnterieurs(rapport.getField('documents_anterieurs')) %}
-				{% for line in data if data|length > 0 %}
-				{% if line|length == 4 %}
-				<tr>
-					<td class='one'>{{ doNl2br(line[0])|raw }}</td>
-					<td class='two center'>{{ doNl2br(line[1])|raw }}</td>
-					<td class='three center'>{{ doNl2br(line[2])|raw }}</td>
-					<td class='four center'>{{ doNl2br(line[3])|raw }}</td>
-				</tr>
-				{% else %}
-				<tr>
-					<td colspan='4'>(format d'informations non conforme)</td>
-				</tr>
-				{% endif %}
-				{% else %}
-				<tr>
-					<td class='one'>{{ neant }}</td>
-					<td class='two center'>{{ neant }}</td>
-					<td class='three center'>{{ neant }}</td>
-					<td class='four center'>{{ neant }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+	<nobreak>
+		<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
+		{{ CSSclass('<h2>3. DOCUMENTS ANTERIEURS</h2>', 'greyline', 'div')|raw }}
+			<table class='type3'>
+				<thead>
+					<tr>
+						<th class='one center'>Documents</th>
+						<th class='two center'>Disponible</th>
+						<th class='three center'>Date</th>
+						<th class='four center'>Observations</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% set data = docsAnterieurs(rapport.getField('documents_anterieurs')) %}
+					{% for line in data if data|length > 0 %}
+					{% if line|length == 4 %}
+					<tr>
+						<td class='one'>{{ doNl2br(line[0])|raw }}</td>
+						<td class='two center'>{{ doNl2br(line[1])|raw }}</td>
+						<td class='three center'>{{ doNl2br(line[2])|raw }}</td>
+						<td class='four center'>{{ doNl2br(line[3])|raw }}</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td colspan='4'>(format d'informations non conforme)</td>
+					</tr>
+					{% endif %}
+					{% else %}
+					<tr>
+						<td class='one'>{{ neant }}</td>
+						<td class='two center'>{{ neant }}</td>
+						<td class='three center'>{{ neant }}</td>
+						<td class='four center'>{{ neant }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	</nobreak>
 
 	<bookmark title="4. REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>4. REPÉRAGE</h2>', 'greyline', 'div')|raw }}
@@ -276,29 +278,31 @@
 		<h3>4.1 Croquis de repérage</h3>
 		<p>L’emplacement, des matériaux et des produits contenant de l’amiante, est localisé à l’aide des croquis joints en annexe du présent Dossier Amiante – Parties Privatives.</p>
 
-		<bookmark title="4.2 Liste des locaux ou parties de locaux non visités" level="1" ></bookmark>
-		<h3>4.2 Liste des locaux ou parties de locaux non visités</h3>
-		<table class='type4'>
-			<thead>
-				<tr>
-					<th class='one center'>Désignation</th>
-					<th class='two center'>Niveau</th>
-					<th class='three center'>Motif d’absence<br>de visite</th>
-					<th class='four center'>Action menée</th>
-					<th class='five center'>Remarque à destination<br>du donneur d’ordre</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
-				{% for it in item %}
-				<tr>
-					{% for it2 in it %}
-					<td class='center'>{{ it2|raw }}</td>
+		<nobreak>
+			<bookmark title="4.2 Liste des locaux ou parties de locaux non visités" level="1" ></bookmark>
+			<h3>4.2 Liste des locaux ou parties de locaux non visités</h3>
+			<table class='type4'>
+				<thead>
+					<tr>
+						<th class='one center'>Désignation</th>
+						<th class='two center'>Niveau</th>
+						<th class='three center'>Motif d’absence<br>de visite</th>
+						<th class='four center'>Action menée</th>
+						<th class='five center'>Remarque à destination<br>du donneur d’ordre</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
+					{% for it in item %}
+					<tr>
+						{% for it2 in it %}
+						<td class='center'>{{ it2|raw }}</td>
+						{% endfor %}
+					</tr>
 					{% endfor %}
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</nobreak>
 		<br>
 		<div class='important'>
 			<p class='titre'>IMPORTANT</p>
@@ -349,39 +353,43 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-		<bookmark title="5.4 Programme de repérage de l'amiante" level="1" ></bookmark>
-		<h3>5.4 Programme de repérage de l'amiante</h3>
-			<table class='type5'>
-				<thead>
-					<tr>
-						<th class='one center'>Liste A de l’annexe 13-9 du Code de la santé publique</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class='two center'>COMPOSANT À VÉRIFIER OU À SONDER</td>
-					</tr>
-					<tr>
-						<td class='center'>Flocages</td>
-					</tr>
-					<tr>
-						<td class='center'>Calorifugeages</td>
-					</tr>
-					<tr>
-						<td class='center'>Faux plafonds</td>
-					</tr>
-				</tbody>
-			</table>
-			<br>
+		<nobreak>
+			<bookmark title="5.4 Programme de repérage de l'amiante" level="1" ></bookmark>
+			<h3>5.4 Programme de repérage de l'amiante</h3>
+				<table class='type5'>
+					<thead>
+						<tr>
+							<th class='one center'>Liste A de l’annexe 13-9 du Code de la santé publique</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class='two center'>COMPOSANT À VÉRIFIER OU À SONDER</td>
+						</tr>
+						<tr>
+							<td class='center'>Flocages</td>
+						</tr>
+						<tr>
+							<td class='center'>Calorifugeages</td>
+						</tr>
+						<tr>
+							<td class='center'>Faux plafonds</td>
+						</tr>
+					</tbody>
+				</table>
+				<br>
+		</nobreak>
 
-		<bookmark title="5.5 Laboratoire accrédité" level="1" ></bookmark>
-		<h3>5.5 Laboratoire accrédité</h3>
-			<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
-			<br>
-			<p class="strong center">{{ rapport.getField('Laboratoire') }}</p>
-			<p class="strong center">{{ rapport.getField('Laboratoire_adresse') }} - {{ rapport.getField('Laboratoire_adresse') }}</p>
-			<p class="strong center">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
-			<br>
+		<nobreak>
+			<bookmark title="5.5 Laboratoire accrédité" level="1" ></bookmark>
+			<h3>5.5 Laboratoire accrédité</h3>
+				<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
+				<br>
+				<p class="strong center">{{ rapport.getField('Laboratoire') }}</p>
+				<p class="strong center">{{ rapport.getField('Laboratoire_adresse') }} - {{ rapport.getField('Laboratoire_adresse') }}</p>
+				<p class="strong center">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
+				<br>
+		</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -417,120 +425,121 @@
 		<h3 style="width:100%;">7.2 Diagnostic par unité de bâtiment</h3>
 			<p>Immeuble&nbsp;: {{ rapport.getField('local_adresse')|raw }} -&nbsp;{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</p>
 
-			<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
-			<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-			{% set larg = 185 %}
-			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
-				<thead>
-					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 8 * larg // 100 }}mm;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 4 * larg // 100 }}mm;' class='center' rowspan='2'>Niveau</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>N°<br>pièce</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Pièce/<br>Local</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Sol</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Mur</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Plaf.</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 11 * larg // 100 }}mm;' class='center' colspan='2'>Matériaux</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 7 * larg // 100 }}mm;' class='center' rowspan='2'>Observa<br>tions</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center' rowspan='2'>Résultat</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 9 * larg // 100 }}mm;' class='center' rowspan='2'>Mesures à<br>prendre</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 20 * larg // 100 }}mm;' class='center' rowspan='2'>Photos</th>
-					</tr>
-					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center'>Type</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center'>Détails</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_AM')) %}
-					{% if data != false %}
-					{% for ligne in data %}
-					<tr>
-						{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
-						{% for key,colonne in ligne %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
-							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '45mm')|raw }}
-								{# base.image(colonne, "width:45mm;") #}
-							{% else %}
-							{{ colonizeWords(colonne, 8, 'br')|raw }}
-							{% endif %}
-								{# printIfMult(colonne, RESO, null, null, '45mm', 6, 'br')|raw #}
-						</td>
+			<nobreak>
+				<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
+				<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
+				{% set larg = 185 %}
+				<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
+					<thead>
+						<tr>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 8 * larg // 100 }}mm;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 4 * larg // 100 }}mm;' class='center' rowspan='2'>Niveau</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>N°<br>pièce</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Pièce/<br>Local</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Sol</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Mur</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Plaf.</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 11 * larg // 100 }}mm;' class='center' colspan='2'>Matériaux</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 7 * larg // 100 }}mm;' class='center' rowspan='2'>Observa<br>tions</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center' rowspan='2'>Résultat</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 9 * larg // 100 }}mm;' class='center' rowspan='2'>Mesures à<br>prendre</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 20 * larg // 100 }}mm;' class='center' rowspan='2'>Photos</th>
+						</tr>
+						<tr>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center'>Type</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center'>Détails</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_AM')) %}
+						{% if data != false %}
+						{% for ligne in data %}
+						<tr>
+							{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
+							{% for key,colonne in ligne %}
+							<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
+								{% if colonne matches '/^(Mult-)/' %}
+								{{ mediaIMG(colonne, RESO, null, null, '45mm')|raw }}
+									{# base.image(colonne, "width:45mm;") #}
+								{% else %}
+								{{ colonizeWords(colonne, 8, 'br')|raw }}
+								{% endif %}
+									{# printIfMult(colonne, RESO, null, null, '45mm', 6, 'br')|raw #}
+							</td>
+							{% endfor %}
+						</tr>
 						{% endfor %}
-					</tr>
-					{% endfor %}
-					{% else %}
-					<tr>
-						{% for n in 1..16 %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
-						{% endfor %}
-					</tr>
-					{% endif %}
-				</tbody>
-			</table>
+						{% else %}
+						<tr>
+							{% for n in 1..16 %}
+							<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
+							{% endfor %}
+						</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</nobreak>
 
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-			<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
-			<h4 style="width:100%;">7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
-			{% set larg = 185 %}
-			<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
-				<thead>
-					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 8 * larg // 100 }}mm;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 4 * larg // 100 }}mm;' class='center' rowspan='2'>Niveau</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>N°<br>pièce</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Pièce/<br>Local</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Sol</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Mur</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Plaf.</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 11 * larg // 100 }}mm;' class='center' colspan='2'>Matériaux</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 7 * larg // 100 }}mm;' class='center' rowspan='2'>Observa<br>tions</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center' rowspan='2'>Résultat</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 9 * larg // 100 }}mm;' class='center' rowspan='2'>Mesures à<br>prendre</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 20 * larg // 100 }}mm;' class='center' rowspan='2'>Photos</th>
-					</tr>
-					<tr>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center'>Type</th>
-						<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center'>Détails</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
-					{% if data != false %}
-					{% for ligne in data %}
-					<tr>
-						{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
-						{% for key,colonne in ligne %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
-							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '45mm')|raw }}
-								{# base.image(colonne, "width:45mm;") #}
-							{% else %}
-							{{ colonizeWords(colonne, 8, 'br')|raw }}
-							{% endif %}
-								{# printIfMult(colonne, RESO, null, null, '45mm', 6, 'br')|raw #}
-						</td>
+			<nobreak>
+				<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
+				<h4 style="width:100%;">7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
+				{% set larg = 185 %}
+				<table style='margin: 6mm 0mm 4mm; border-collapse: collapse; width: {{ larg }}mm;'>
+					<thead>
+						<tr>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 8 * larg // 100 }}mm;' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 4 * larg // 100 }}mm;' class='center' rowspan='2'>Niveau</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>N°<br>pièce</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Pièce/<br>Local</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Sol</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Mur</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 2 * larg // 100 }}mm;' class='center' rowspan='2'>Plaf.</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 11 * larg // 100 }}mm;' class='center' colspan='2'>Matériaux</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 7 * larg // 100 }}mm;' class='center' rowspan='2'>Observa<br>tions</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center' rowspan='2'>Résultat</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center' rowspan='2'>État de<br>conser<br>vation</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 9 * larg // 100 }}mm;' class='center' rowspan='2'>Mesures à<br>prendre</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 20 * larg // 100 }}mm;' class='center' rowspan='2'>Photos</th>
+						</tr>
+						<tr>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 5 * larg // 100 }}mm;' class='center'>Type</th>
+							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1mm; width: {{ 6 * larg // 100 }}mm;' class='center'>Détails</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
+						{% if data != false %}
+						{% for ligne in data %}
+						<tr>
+							{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
+							{% for key,colonne in ligne %}
+							<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
+								{% if colonne matches '/^(Mult-)/' %}
+								{{ mediaIMG(colonne, RESO, null, null, '45mm')|raw }}
+									{# base.image(colonne, "width:45mm;") #}
+								{% else %}
+								{{ colonizeWords(colonne, 8, 'br')|raw }}
+								{% endif %}
+									{# printIfMult(colonne, RESO, null, null, '45mm', 6, 'br')|raw #}
+							</td>
+							{% endfor %}
+						</tr>
 						{% endfor %}
-					</tr>
-					{% endfor %}
-					{% else %}
-					<tr>
-						{% for n in 1..16 %}
-						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
-						{% endfor %}
-					</tr>
-					{% endif %}
-				</tbody>
-			</table>
+						{% else %}
+						<tr>
+							{% for n in 1..16 %}
+							<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
+							{% endfor %}
+						</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
