@@ -131,7 +131,7 @@
 	</table>
 
 	<div class="conclusion">
-		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP')|default("Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3")) }}
+		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP')|default("Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3"))|raw }}
 	</div>
 
 {{ base.endPage(format) }}
