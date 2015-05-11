@@ -1041,7 +1041,7 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function neant($tx = "", $neant = 'Néant') {
 		if(strlen(trim($tx)) < 1) return $neant;
-			else return trim($this->doNl2br($tx));
+			else return $this->doNl2br($tx);
 	}
 
 	public function rapport_detail_liste_materiau($rapport, $neant = '-') {
