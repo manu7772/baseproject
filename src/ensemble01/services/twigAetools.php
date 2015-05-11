@@ -362,6 +362,7 @@ class twigAetools extends \Twig_Extension {
 		// supprime les espaces inutiles
 		$t = $this->cleanSpaces($t);
 		$search = array(
+			" Les ",
 			" et ",
 			" ou ",
 			" où ",
@@ -384,6 +385,7 @@ class twigAetools extends \Twig_Extension {
 			" !",
 			);
 		$replace = array(
+			" Les&nbsp;",
 			" et&nbsp;",
 			" ou&nbsp;",
 			" où&nbsp;",
