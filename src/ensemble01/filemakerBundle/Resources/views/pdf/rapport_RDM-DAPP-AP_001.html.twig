@@ -214,9 +214,7 @@
 			<br>
 			<p><span class='underline'>Remarque&nbsp;:</span> La liste présentée dans le point ci-dessus peut ne pas être complète. La liste exhaustive des produits et matériaux est présentée dans le tableau "Résultats détaillés du repérage".</p>
 
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
+	<nobreak>
 	<bookmark title="2. PRÉCONISATIONS D’ORDRE GÉNÉRAL" level="0" ></bookmark>
 	{{ CSSclass('<h2>2. PRÉCONISATIONS D’ORDRE GÉNÉRAL</h2>', 'greyline', 'div')|raw }}
 		<p>De manière générale, les matériaux en contact direct avec des matériaux amiantés sont considérés comme amiantés par pollution.</p>
@@ -230,6 +228,7 @@
 			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
 			{{ image_base64(rapport.getField("tech_signataire_signature"), null, null, '60mm')|raw }}
 		</p>
+	</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -454,12 +453,12 @@
 						{% for key,colonne in ligne %}
 						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
-								{# base.image(colonne, "width:48mm;") #}
+							{{ mediaIMG(colonne, RESO, null, null, '45mm')|raw }}
+								{# base.image(colonne, "width:45mm;") #}
 							{% else %}
-							{{ colonizeWords(colonne, 9, 'br')|raw }}
+							{{ colonizeWords(colonne, 8, 'br')|raw }}
 							{% endif %}
-								{# printIfMult(colonne, RESO, null, null, '48mm', 6, 'br')|raw #}
+								{# printIfMult(colonne, RESO, null, null, '45mm', 6, 'br')|raw #}
 						</td>
 						{% endfor %}
 					</tr>
@@ -513,12 +512,12 @@
 						{% for key,colonne in ligne %}
 						<td style='font-size: 7pt; vertical-align: middle; padding: 1mm; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 							{% if colonne matches '/^(Mult-)/' %}
-							{{ mediaIMG(colonne, RESO, null, null, '48mm')|raw }}
-								{# base.image(colonne, "width:48mm;") #}
+							{{ mediaIMG(colonne, RESO, null, null, '45mm')|raw }}
+								{# base.image(colonne, "width:45mm;") #}
 							{% else %}
-							{{ colonizeWords(colonne, 9, 'br')|raw }}
+							{{ colonizeWords(colonne, 8, 'br')|raw }}
 							{% endif %}
-								{# printIfMult(colonne, RESO, null, null, '48mm', 6, 'br')|raw #}
+								{# printIfMult(colonne, RESO, null, null, '45mm', 6, 'br')|raw #}
 						</td>
 						{% endfor %}
 					</tr>
@@ -697,35 +696,22 @@
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 
-		{% if rapport.getField('lien_grille_eval_flocage_multimedia')|length > 0 %}
+		<nobreak>
 			<h4>• Flocages</h4>
 			{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%', null, neant, 'div|width:100%;text-align:center;')|raw }}
-			{{ base.endPage(format) }}
-			{{ base.newPage(rapport, date, format) }}
-		{% else %}
-			<h4>• Flocages</h4>
-			{{ neant }}
-		{% endif %}
-			<br><br>
+		</nobreak>
+		<br><br>
 
-		{% if rapport.getField('lien_grille_eval_calo_multimedia')|length > 0 %}
+		<nobreak>
 			<h4>• Calorifugeages</h4>
 			{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%', null, neant, 'div|width:100%;text-align:center;')|raw }}
-			{{ base.endPage(format) }}
-			{{ base.newPage(rapport, date, format) }}
-		{% else %}
-			<h4>• Calorifugeages</h4>
-			{{ neant }}
-		{% endif %}
-			<br><br>
+		</nobreak>
+		<br><br>
 
-		{% if rapport.getField('lien_grille_eval_fauxplaf_multimedia')|length > 0 %}
+		<nobreak>
 			<h4>• Faux plafonds</h4>
 			{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%', null, neant, 'div|width:100%;text-align:center;')|raw }}
-		{% else %}
-			<h4>• Faux plafonds</h4>
-			{{ neant }}
-		{% endif %}
+		</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -841,7 +827,7 @@
 		<a name="anchor88"></a>
 		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
 	
-<p>TEST</p>
+<p>TEST2</p>
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
