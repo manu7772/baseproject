@@ -774,7 +774,7 @@ class twigAetools extends \Twig_Extension {
 
 	public function zerosDevant($t, $long = 2) {
 		$l = strlen($t."");
-		while(strlen($t."") < $long) {
+		while($this->testVide($t, $long)) {
 			$t = "0".$t;
 		}
 		return $t;
@@ -833,9 +833,9 @@ class twigAetools extends \Twig_Extension {
 	public function image_base64($text, $classe = null, $format = 'png', $largeur = null, $hauteur = null, $neant = null, $wrap = null) {
 		if(is_string($wrap)) {
 			$ww = explode("|", $wrap);
-			if(count($ww) > 1) $style = ' style = "'.$ww[1].'"';
-				else $style = '';
-			$baldebut = '<'.$ww[0].$style.'>';
+			if(count($ww) > 1) $stylewrap = ' style="'.$ww[1].'"';
+				else $stylewrap = '';
+			$baldebut = '<'.$ww[0].$stylewrap.'>';
 			$balfin = '</'.$ww[0].'>';
 		} else {
 			$baldebut = '';
@@ -843,15 +843,19 @@ class twigAetools extends \Twig_Extension {
 		}
 		if($neant === null) $neant = $this->neant();
 		if(!in_array($format, array('png', 'jpeg', 'jpg', 'gif'))) $format = 'png';
-		if(strlen($text."") < 1) return $neant;// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
-		if($this->isBMPformat($text) === true) return "Mauvais format d'image (BMP).";
+		if($this->testVide($text)) return $neant;// "<p style='font-style:italic;color:#999;'>Image manquante</p>";
+		if($this->isBMPformat($text) === true) return $baldebut."Mauvais format d'image (BMP).".$balfin;
 		if(is_array($classe)) $classe = implode(" ", $classe);
 		if(is_string($classe)) $classe = " class='".$classe."'";
 		if(is_string($largeur)) $largeur = "width:".$largeur.";";
 		if(is_string($hauteur)) $hauteur = "height:".$hauteur.";";
-		$style = "";
-		if($hauteur !== null || $largeur !== null) $style = " style='".$largeur.$hauteur."'";
-		return $baldebut."<img src='data:image/".$format.";base64,".$text."'".$classe.$style." />".$balfin;
+		$styleimg = "";
+		if($hauteur !== null || $largeur !== null) $styleimg = " style='".$largeur.$hauteur."'";
+		return $baldebut."<img src='data:image/".$format.";base64,".$text."'".$classe.$styleimg." />".$balfin;
+	}
+
+	protected function testVide($tx, $long = 0) {
+		return strlen(trim($tx."")) < ($long + 1) ? true : false ;
 	}
 
 	protected function isBMPformat($data) {
@@ -901,7 +905,7 @@ class twigAetools extends \Twig_Extension {
 			$cols[$key] = explode('|', $value);
 			$cols[$key][0] = substr($cols[$key][0], 2);
 			foreach ($cols[$key] as $key2 => $value2) {
-				if(trim($cols[$key][$key2]."") == "") $cols[$key][$key2] = "-";
+				if($this->testVide($cols[$key][$key2])) $cols[$key][$key2] = "-";
 			}
 		}
 		unset($data);
@@ -997,9 +1001,8 @@ class twigAetools extends \Twig_Extension {
 		$media = $_fm->getMedia($mult);
 		if(is_string($media)) return $neant;
 		if(count($media) > 0) {
-			reset($media);
-			$media = current($media);
-			return $this->image_base64($media->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant, $wrap);
+			$media = reset($media)->getField($tailleReso);
+			return $this->image_base64($media, $classe, $format, $largeur, $hauteur, $neant, $wrap);
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
 		} else {
 			return $neant;
@@ -1022,15 +1025,27 @@ class twigAetools extends \Twig_Extension {
 		if(is_string($media)) return $neant;
 		$concat = array();
 		if(count($media) > 0) {
+			$media = $this->getAllMediaOrVide($media, $tailleReso);
+			if($media === false) return $neant;
 			reset($media);
 			foreach ($media as $key => $image) {
-				$concat[] = $this->image_base64($image->getField($tailleReso), $classe, $format, $largeur, $hauteur, $neant, $wrap);
+				$concat[] = $this->image_base64($image, $classe, $format, $largeur, $hauteur, $neant, $wrap);
 			}
+			unset($media);
 			return implode("<br>", $concat);
 			// return "<p>IMAGE CERTIF ".$media->getField('conteneur_base64')." - ".$user->getUsername()."</p>";
 		} else {
 			return $neant;
 		}
+	}
+
+	protected function getAllMediaOrVide($media, $tailleReso) {
+		$result = array();
+		foreach ($media as $key => $image) {
+			$test = $image->getField($tailleReso);
+			if(!$this->testVide($test)) $result[] = $test;
+		}
+		return count($result) > 0 ? $result : false ;
 	}
 
 	/**
