@@ -593,7 +593,7 @@
 	{{ base.endPage(format) }}
 	{{ base.newPage(rapport, date, format) }}
 
-		{{ multiMediaIMG(rapport.getField('lien_croquis_multimedia'), RESO, null, null, '100%', '', 'div|width:100%;text-align:center;')|raw }}
+		{{ multiMediaIMG(rapport.getField('lien_croquis_multimedia'), RESO, null, null, '100%', null, '', 'div|width:100%;text-align:center;')|raw }}
 		{# base.image(rapport.getField('lien_croquis_multimedia'), "width:100%;") #}
 
 	{% endif %}
@@ -699,7 +699,7 @@
 
 		{% if rapport.getField('lien_grille_eval_flocage_multimedia')|length > 0 %}
 			<h4>• Flocages</h4>
-			{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%', '', 'div|width:100%;text-align:center;')|raw }}
+			{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%', null, '', 'div|width:100%;text-align:center;')|raw }}
 			{# base.image(rapport.getField('lien_grille_eval_flocage_multimedia'), "width:80%;") #}
 			{{ base.endPage(format) }}
 			{{ base.newPage(rapport, date, format) }}
@@ -711,7 +711,7 @@
 
 		{% if rapport.getField('lien_grille_eval_calo_multimedia')|length > 0 %}
 			<h4>• Calorifugeages</h4>
-			{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%', '', 'div|width:100%;text-align:center;')|raw }}
+			{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%', null, '', 'div|width:100%;text-align:center;')|raw }}
 			{# base.image(rapport.getField('lien_grille_eval_calo_multimedia'), "width:80%;") #}
 			{{ base.endPage(format) }}
 			{{ base.newPage(rapport, date, format) }}
@@ -723,7 +723,7 @@
 
 		{% if rapport.getField('lien_grille_eval_fauxplaf_multimedia')|length > 0 %}
 			<h4>• Faux plafonds</h4>
-			{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%', '', 'div|width:100%;text-align:center;')|raw }}
+			{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%', null, '', 'div|width:100%;text-align:center;')|raw }}
 			{# base.image(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), "width:80%;") #}
 		{% else %}
 			<h4>• Faux plafonds</h4>
@@ -854,7 +854,7 @@
 	{{ base.endPage(format) }}
 	{{ base.newPage(rapport, date, format) }}
 
-		{{ multiMediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%')|raw }}
+		{{ multiMediaIMG(rapport.getField('rapport_pv_analyse'), RESO, null, null, '100%', null, '', 'div|width:100%;text-align:center;')|raw }}
 		{# base.image(rapport.getField('rapport_pv_analyse'), "width:100%;") #}
 
 	{% endif %}
