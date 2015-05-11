@@ -827,7 +827,22 @@
 		<a name="anchor88"></a>
 		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
 	
-<p>TEST2</p>
+	{% set pvanalyse = rapport.getField('rapport_pv_analyse') %}
+	{% set multipvanalyse = multiMediaIMG(pvanalyse, RESO, null, null, '100%', null, neant, 'div|width:100%;text-align:center;') %}
+	{% if (pvanalyse|length < 1) or (multipvanalyse == neant) %}
+		<br><br><br>
+	
+		<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
+
+	{% else %}
+
+	{{ base.endPage(format) }}
+	{{ base.newPage(rapport, date, format) }}
+
+		{{ multipvanalyse|raw }}
+
+	{% endif %}
+
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
