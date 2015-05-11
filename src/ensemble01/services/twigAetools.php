@@ -50,6 +50,7 @@ class twigAetools extends \Twig_Extension {
 			'fillOfChars'			=> new \Twig_Function_Method($this, 'fillOfChars'),
 			'idify'					=> new \Twig_Function_Method($this, 'idify'),
 			'zerosDevant'			=> new \Twig_Function_Method($this, 'zerosDevant'),
+			'nl2br'					=> new \Twig_Function_Method($this, 'nl2br'),
 			// tests types
 			'is_string'				=> new \Twig_Function_Method($this, 'is_string'),
 			'is_object'				=> new \Twig_Function_Method($this, 'is_object'),
@@ -779,6 +780,10 @@ class twigAetools extends \Twig_Extension {
 		return $t;
 	}
 
+	public function nl2br($t) {
+		return nl2br($t);
+	}
+
 	public function is_string($elem) {
 		return is_string($elem);
 	}
@@ -1036,7 +1041,7 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function neant($tx = "", $neant = 'Néant') {
 		if(strlen(trim($tx)) < 1) return $neant;
-			else return trim($tx);
+			else return trim($this->nl2br($tx));
 	}
 
 	public function rapport_detail_liste_materiau($rapport, $neant = '-') {
