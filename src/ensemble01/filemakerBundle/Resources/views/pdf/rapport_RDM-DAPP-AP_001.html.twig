@@ -221,8 +221,8 @@
 		<p>Tout autre matériau découvert pendant les opérations qui serait susceptible de contenir de l’amiante devra faire l’objet d’un complément de diagnostic par la société GEODEM. Cette dernière reste à la disposition de la maîtrise d’ouvrage pour intervenir afin de lever les doutes existants.</p>
 
 		<p class="signature">
-			<!-- À Bourgtheroulde-Infreville, le {# date|date(formatDateTwig, timezoneTwig) #},<br> -->
-			À Bourgtheroulde-Infreville, le {{ date }},<br>
+			<!-- À {{ firstCapOnly(rapport.getField('soc_ville')) }}, le {# date|date(formatDateTwig, timezoneTwig) #},<br> -->
+			À {{ firstCapOnly(rapport.getField('soc_ville')) }}, le {{ date }},<br>
 			L’opérateur de repérage<br>
 			<br>
 			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
@@ -792,9 +792,9 @@
 		<p>Des documents d’information et des conseils pratiques de prévention adaptés sont disponibles sur le site Travailler-mieux (&nbsp;<a href="http://www.travailler-mieux.gouv.fr" target='_blank'>http://www.travailler-mieux.gouv.fr</a>&nbsp;) et sur le site de l’Institut national de recherche et de sécurité pour la prévention des accidents du travail et des maladies professionnelles<br>(&nbsp;<a href="http://www.inrs.fr" target='_blank'>http://www.inrs.fr</a>&nbsp;).</p>
 	<h3>3.&nbsp;Recommandations générales de sécurité</h3>
 		<p>Il convient d’éviter au maximum l’émission de poussières notamment lors d’interventions ponctuelles non répétées, par exemple&nbsp;:</p>
-		<p>-&nbsp;perçage d’un mur pour accrocher un tableau&nbsp;;</p>
-		<p>-&nbsp;remplacement de joints sur des matériaux contenant de l’amiante&nbsp;;</p>
-		<p>-&nbsp;travaux réalisés à proximité d’un matériau contenant de l’amiante en bon état, par exemple des interventions légères dans des boîtiers électriques, sur des gaines ou des circuits situés sous un flocage sans action directe sur celui-ci, de remplacement d’une vanne sur une canalisation calorifugée à l’amiante.</p>
+		<p style="text-align:left;">-&nbsp;perçage d’un mur pour accrocher un tableau&nbsp;;</p>
+		<p style="text-align:left;">-&nbsp;remplacement de joints sur des matériaux contenant de l’amiante&nbsp;;</p>
+		<p style="text-align:left;">-&nbsp;travaux réalisés à proximité d’un matériau contenant de l’amiante en bon état, par exemple des interventions légères dans des boîtiers électriques, sur des gaines ou des circuits situés sous un flocage sans action directe sur celui-ci, de remplacement d’une vanne sur une canalisation calorifugée à l’amiante.</p>
 		<p>L’émission de poussières peut être limitée par humidification locale des matériaux contenant de l’amiante en prenant les mesures nécessaires pour éviter tout risque électrique et/ou en utilisant de préférence des outils manuels ou des outils à vitesse lente.</p>
 		<p>Le port d’équipements adaptés de protection respiratoire est recommandé. Le port d’une combinaison jetable permet d’éviter la propagation de fibres d’amiante en dehors de la zone de travail. Les combinaisons doivent être jetées après chaque utilisation.</p>
 		<br>
@@ -821,10 +821,10 @@
 		<br>
 		<p class='underline'>d)&nbsp;Information sur les déchèteries et les installations d’élimination des déchets d’amiante</p>
 			<p>Les informations relatives aux déchèteries acceptant des déchets d’amiante lié et aux installations d’élimination des déchets d’amiante peuvent être obtenues auprès&nbsp;:</p>
-			<p>-&nbsp;de la préfecture ou de la direction régionale de l’environnement, de l’aménagement et du logement (direction régionale et interdépartementale de l’environnement et de l’énergie en Ile-de-France) ou de la direction de l’environnement, de l’aménagement et du logement&nbsp;;</p>
-			<p>-&nbsp;du conseil général (ou conseil régional en Ile-de-France) au regard de ses compétences de planification sur les déchets dangereux&nbsp;;</p>
-			<p>-&nbsp;de la mairie&nbsp;;</p>
-			<p>-&nbsp;ou sur la base de données "déchets" gérée par l’Agence de l’environnement et de la maîtrise de l’énergie, directement accessible sur internet à l’adresse suivante&nbsp;: <a href="http://www.sinoe.org" target='_blank'>www.sinoe.org</a>.</p>
+			<p style="text-align:left;">-&nbsp;de la préfecture ou de la direction régionale de l’environnement, de l’aménagement et du logement (direction régionale et interdépartementale de l’environnement et de l’énergie en Ile-de-France) ou de la direction de l’environnement, de l’aménagement et du logement&nbsp;;</p>
+			<p style="text-align:left;">-&nbsp;du conseil général (ou conseil régional en Ile-de-France) au regard de ses compétences de planification sur les déchets dangereux&nbsp;;</p>
+			<p style="text-align:left;">-&nbsp;de la mairie&nbsp;;</p>
+			<p style="text-align:left;">-&nbsp;ou sur la base de données "déchets" gérée par l’Agence de l’environnement et de la maîtrise de l’énergie, directement accessible sur internet à l’adresse suivante&nbsp;: <a href="http://www.sinoe.org" target='_blank'>www.sinoe.org</a>.</p>
 		<br>
 		<p class='underline'>e)&nbsp;Traçabilité</p>
 			<p>Le producteur des déchets remplit un bordereau de suivi des déchets d’amiante (BSDA, CERFA no 11861). Le formulaire CERFA est téléchargeable sur le site du ministère chargé de l’environnement. Le propriétaire recevra l’original du bordereau rempli par les autres intervenants (entreprise de travaux, transporteur, exploitant de l’installation de stockage ou du site de vitrification).</p>

@@ -16,6 +16,7 @@
 				<tr class="active">
 					<th>Nom</th>
 					<th>Local</th>
+					<th>Nature</th>
 					<th>Type <small>/ Rév.</small></th>
 					<th>Adresse</th>
 					<th style="text-align:center;">PDF</th>
@@ -32,6 +33,7 @@
 				<tr{{ statut|raw }}>
 					<td title='Lieu {{ local.getField("Fk_Id_Lieu")|raw }} / Lot {{ local.getField("num_lot")|raw }}'>{{ local.getField("rapport_nom")|raw }}</td>
 					<td><a href="{{ url('ensemble01filemaker_pageweb', {page: 'detail-rapport', pagedata: local.getField('id')}) }}">{{ local.getField("Fk_Id_Local")|raw }}</a></td>
+					<td>{{ local.getField("code_nature") }}</td>
 					<td>{{ typerapport }}<small>{{ getRev(local.getField("version")) }}</small></td>
 					<td title='{{ local.getField("local_adresse")|raw }} {{ local.getField("local_cp")|raw }} {{ local.getField("local_ville")|raw }}'>{{ phraseCut(local.getField("local_adresse")|raw ~ local.getField("local_cp")|raw ~ local.getField("local_ville")|raw, 20) }}</td>
 					<td title='Fichier PDF du rapport' style="text-align:center;">

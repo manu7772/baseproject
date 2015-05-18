@@ -3,7 +3,12 @@
 		{{ ligne1|default(rapport.getField("rapport_nom"))|raw }}
 	</div>
 	<div style="height:24px;width:100%;overflow:hidden">
-		<small>{{ ligne2|default(rapport.getField("type_rapport"))|raw }}</small>
+		{% if rapport.getField("code_nature") != null and rapport.getField("code_nature") != "" %}
+		{% set defline2 = rapport.getField("type_rapport") ~ " / " ~ rapport.getField("code_nature") %}
+		{% else %}
+		{% set defline2 = rapport.getField("type_rapport") %}
+		{% endif %}
+		<small>{{ ligne2|default(defline2)|raw }}</small>
 	</div>
 {% endmacro %}
 

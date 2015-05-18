@@ -51,6 +51,7 @@ class twigAetools extends \Twig_Extension {
 			'idify'					=> new \Twig_Function_Method($this, 'idify'),
 			'zerosDevant'			=> new \Twig_Function_Method($this, 'zerosDevant'),
 			'doNl2br'				=> new \Twig_Function_Method($this, 'doNl2br'),
+			'firstCapOnly'			=> new \Twig_Function_Method($this, 'firstCapOnly'),
 			// tests types
 			'is_string'				=> new \Twig_Function_Method($this, 'is_string'),
 			'is_object'				=> new \Twig_Function_Method($this, 'is_object'),
@@ -811,6 +812,14 @@ class twigAetools extends \Twig_Extension {
 		return is_object($elem);
 	}
 
+	public function firstCapOnly($t) {
+		$sep = "-";
+		$t = explode($sep, $t);
+		foreach ($t as $key => $text) {
+			$t[$key] = ucfirst(strtolower($text));
+		}
+		return implode($sep, $t);
+	}
 
 	/**
 	 * Transforme le texte date en provenance de FM 

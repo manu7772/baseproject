@@ -4,10 +4,10 @@ imports:
     - { resource: fmparameters.yml }
 
 parameters:
-    formatDate: "dd-MM-yyyy"
-    formatDateTwig: "d/m/Y"
-    timezone: "Europe/Paris"
-    pdf_protect_passwrd: 'geodem76'
+    formatDate:           "dd-MM-yyyy"
+    formatDateTwig:       "d/m/Y"
+    timezone:             "Europe/Paris"
+    pdf_protect_passwrd:  'geodem76'
 
 framework:
     #esi:             ~
@@ -108,10 +108,16 @@ swiftmailer:
 
 # FOSUser Configuration
 fos_user:
-    db_driver:     orm  # le type de BDD à utiliser : ORM Doctrine
-    firewall_name: main # le nom du firewall derrière lequel on utilisera ces utilisateurs
-    user_class:    ensemble01\UserBundle\Entity\User # la classe de l'entité User que nous utilisons
-
+    db_driver:               orm  # le type de BDD à utiliser : ORM Doctrine
+    firewall_name:           main # le nom du firewall derrière lequel on utilisera ces utilisateurs
+    user_class:              ensemble01\UserBundle\Entity\User # la classe de l'entité User que nous utilisons
+    model_manager_name:      ~
+    use_listener:            true
+    use_flash_notifications: true
+    use_username_form_type:  true
+    from_email:
+        address:             no-reply@geodem.fr
+        sender_name:         Géodem
 
 # Stof\DoctrineExtensionBundle configuration
 stof_doctrine_extensions:
