@@ -479,21 +479,14 @@ class filemakerController extends fmController {
 	 * @param string $type
 	 * @return string
 	 */
-	protected function getRapportTemplate($type, $codenature) {
-		$pavillon = array('p', 'pavillon', 'pavillons');
-		if(in_array(strtolower($codenature), $pavillon)) {
-			$templates = array(
-				"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-Pavillon_001.html.twig",
-				"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-Pavillon_001.html.twig",
-				"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-Pavillon_001.html.twig",
-			);
-		} else {
-			$templates = array(
-				"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
-				"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
-				"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
-			);
-		}
+	protected function getRapportTemplate($type) {
+		$templates = array(
+			"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-ListeA-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-ListeA_001.html.twig",
+			"RDM-ListeA-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-ListeA_001.html.twig",
+		);
 		if(isset($templates[$type])) return $templates[$type];
 			else return false;
 	}
@@ -543,11 +536,10 @@ class filemakerController extends fmController {
 			$RAPP["date"] = new DateTime;
 			$RAPP["format"] = $format;
 			$RAPP["type"] = $RAPP["rapport"]->getField('type_rapport');
-			$RAPP["codenature"] = $RAPP["rapport"]->getField('code_nature');
 			// Template du rapport
 			// $RAPP["template"] = "ensemble01filemakerBundle:pdf:rapport_".$RAPP["type"]."_002.html.twig";
 			// $RAPP["template"] = $this->_fm->getRapportTwigTemplate($RAPP["rapport"]);
-			$RAPP["template"] = $this->getRapportTemplate($RAPP["type"], $RAPP["codenature"]);
+			$RAPP["template"] = $this->getRapportTemplate($RAPP["type"]);
 			// rapport de test
 			// $RAPP["template"] = "ensemble01filemakerBundle:pdf:testEmply.html.twig";
 			if(!$this->get('templating')->exists($RAPP["template"])) {
