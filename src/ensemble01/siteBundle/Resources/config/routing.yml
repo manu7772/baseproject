@@ -6,6 +6,10 @@ ensemble01site_pageweb:
     path:     /page-web/{page}/{dossier}
     defaults: { _controller: ensemble01siteBundle:site:pageweb, page: 'homepage', dossier: null }
 
+ensemble01site_connect:
+    path:     /connect
+    defaults: { _controller: ensemble01filemakerBundle:filemakerpublic:connect }
+
 
 # GÉNÉRATION DES RAPPORTS PAR URL PUBLIQUE
 
