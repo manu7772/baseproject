@@ -5,7 +5,7 @@
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
-{% set cherchepresence = '/^(.*)(presence|présence)(.*)$/i' %}
+{% set cherchepresence = '/^(.*)(presen|présen)(.*)$/i' %}
 
 {{ base.headDoc(rapport, date, imgpath, format) }}
 
@@ -463,7 +463,7 @@
 								{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 									{# base.image(colonne, "width:38mm;") #}
 								{% else %}
-								{{ colonizeWords(colonne, 8, 'br')|raw }}
+								{{ colonizeWords(colonne, 9, 'br')|raw }}
 								{% endif %}
 									{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 							</td>
@@ -522,7 +522,7 @@
 								{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 									{# base.image(colonne, "width:38mm;") #}
 								{% else %}
-								{{ colonizeWords(colonne, 8, 'br')|raw }}
+								{{ colonizeWords(colonne, 9, 'br')|raw }}
 								{% endif %}
 									{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 							</td>
