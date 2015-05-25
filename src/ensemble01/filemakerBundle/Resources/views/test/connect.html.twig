@@ -6,18 +6,18 @@
 		<title>TEST REFRESH</title>
 	</head>
 	<body>
-		<span id="connect">connect</span>|<span id="span-time">{{ now }}</span>
+		<span id="connect">|connect|</span><span id="span-time">{{ now }}</span>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script type="text/javascript">
 			var now = parseInt($('#span-time').text());
 			$(document).ready(function() {
 				if(isNaN(now)) {
-					$('#span-time').text('ERROR ' + now);
+					$('#span-time').text('ERROR ' + "|");
 				} else {
 					// ok
 					this.JSnow = Math.floor(new Date().getTime() / 1000);
 					newdate = this.JSnow - now;
-					$('#span-time').text(newdate);
+					$('#span-time').text(newdate + "|");
 				}
 			});
 		</script>
