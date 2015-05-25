@@ -7,7 +7,7 @@ parameters:
     formatDate:           "dd-MM-yyyy"
     formatDateTwig:       "d/m/Y"
     timezone:             "Europe/Paris"
-    pdf_protect_passwrd:  'geodem76'
+    pdf_protect_passwrd:  "geodem76"
 
 framework:
     #esi:             ~

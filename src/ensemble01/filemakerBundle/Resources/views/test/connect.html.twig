@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<!-- <meta http-equiv="refresh" content="1;refresh"> -->
+		<title>TEST REFRESH</title>
+	</head>
+	<body>
+		<span id="connect">connect</span>|<span id="span-time">{{ now }}</span>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript">
+			var now = parseInt($('#span-time').text());
+			$(document).ready(function() {
+				if(isNaN(now)) {
+					$('#span-time').text('ERROR ' + now);
+				} else {
+					// ok
+					this.JSnow = Math.floor(new Date().getTime() / 1000);
+					newdate = this.JSnow - now;
+					$('#span-time').text(newdate);
+				}
+			});
+		</script>
+	</body>
+</html>

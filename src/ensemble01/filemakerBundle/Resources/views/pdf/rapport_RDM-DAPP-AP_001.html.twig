@@ -5,7 +5,7 @@
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
-{% set cherchepresence = '/^(.*)(presence|présence)(.*)$/i' %}
+{% set cherchepresence = '/^(.*)(presence|présence|present|présent)(.*)$/i' %}
 
 {{ base.headDoc(rapport, date, imgpath, format) }}
 
