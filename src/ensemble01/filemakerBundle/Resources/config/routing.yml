@@ -22,8 +22,8 @@ ensemble01filemaker_changebase:
 ### DIAGRAMMES PROJETS ###
 
 ensemble01filemaker_diagramme:
-    path:     /diagramme/{projet}
-    defaults: { _controller: ensemble01filemakerBundle:filemaker:diagramme, projet: null }
+    path:     /diagramme/{projet}/{height}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:diagramme, projet: null, height: '600px' }
 
 
 ### GÉNÉRATION DES RAPPORTS ###

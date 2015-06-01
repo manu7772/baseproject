@@ -42,7 +42,7 @@ class filemakerController extends fmController {
 		return $this->render($this->verifVersionPage('BShomepage2'), $data);
 	}
 
-	public function diagrammeAction($projet = null) {
+	public function diagrammeAction($projet = null, $height = '600px') {
 		switch ($projet) {
 			case 'OPH93':
 				$data['h1'] = 'Diagramme marché OPH93';
@@ -53,6 +53,7 @@ class filemakerController extends fmController {
 				$data['message'] = 'Auncun projet pour cette appellation.';
 				break;
 		}
+		$data['height'] = $height;
 		return $this->render($this->verifVersionPage('BSdiagrammes'), $data);
 	}
 
