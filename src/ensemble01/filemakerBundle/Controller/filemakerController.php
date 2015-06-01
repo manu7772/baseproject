@@ -42,6 +42,20 @@ class filemakerController extends fmController {
 		return $this->render($this->verifVersionPage('BShomepage2'), $data);
 	}
 
+	public function diagrammeAction($projet = null) {
+		switch ($projet) {
+			case 'OPH93':
+				$data['code'] = '3Vddb5s8FP41uczER0PSyyZNu0nvpEm52OXkYANWDQc5TkL663sMh2IK6VKt3d7tIgg/hmP7+bDJJFzl1b1mZfYVuFCTwOPVJLydBMEi8PFqgVMD+HN/0SCplrzBvA7YyEdBD7boXnKxI6yBDIAysuyDMRSFiE0PS0D1hyhZ2pbvgE3M1BD9LrnJ2kVEHf5ZyDRrh/Gj66ZnZ05tDS4StldmWkPYZ7tz1taiiVQelab2idpT31vM2sGK3qQeAfIeoMWuY4sWLPsEFOzQG3YLmgvdg5QsHlwmwzWqqQGwkL3Lq5VQVtG+WHdnep8J1KKgqbz+wpzHXHgsCXgc+rPoaho2FQ5M7WltX7DSKpzcXKeaGQmFdRM6Aq8oedNTN9dVbL33Qg4jKpzIMjO5QsDH253R8CBWoMAyUUCBTy4TqdQLiCmZWgliXIolbXkQ2kg0yw115JJzO8zymEkjNiWL7ZhHzAFigE8nCo6IZPicwBeWtDQsIygfI3x1KmCmBOTC6JN1DBmG3qA4oV8iYuzYGdb3SNzMMWtIuWOkdvpcu5MHb0ihC9XyyeAO4YJjpKgJ2mSQQsHUukOXGvYFF7Ykut5VpqllC7zODo4He12zPTYpmpNhOhX0GovmM/86nifCW8xZOJ1fjbOshUKPHfrjvy9jJNf/ijGak8vYOKt/grFguCUMKEyRofJsvOhsYNv28efj4NLYhX5tGDd3C0Kc3EUjsWt3+F+hZNy9rzOyy1hpb+MT7vD1pj+6TTle0mCa/bVx2UWb1Rmxhjz+BpaGUaOT1KFpeYtX7745NYBLlv79B8bFGlAJYoWcHBLzjkCzsdODLPe+yb7Axx+d7KB1iXOi0ix+Qkn0IZRcnmyZ11+zrlNbw/3HtkJ9g52kPG/BGPv1OHCkAWu9utLNrmy+n20h1jYSWdlzp3mkHhQTcxcriQwbvLsXTP/wg0WFv09lQXF6s2PPHMdUgj6yHT1CqtqzKH2lv+8eMrToJtayxLX/e/vGGRUoGVeXxaJ17BtkwGb3j6Puc/5Mhusn';
+				$data['titre'] = 'Diagramme marché OPH93';
+				break;
+			default:
+				$data['titre'] = 'Diagramme';
+				$data['message'] = 'Auncun projet pour cette appellation.';
+				break;
+		}
+		return $this->render($this->verifVersionPage('BSdiagrammes'), $data);
+	}
+
 	/**
 	 * Initialise les données liées au controller
 	 * 	- $this->_fm 			= objet filemakservice (loggé avec l'utilisateur actuel)

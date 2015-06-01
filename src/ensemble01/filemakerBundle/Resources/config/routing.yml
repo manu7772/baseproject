@@ -19,6 +19,12 @@ ensemble01filemaker_changebase:
     path:     /change-fm-base/{basenom}/{page}
     defaults: { _controller: ensemble01filemakerBundle:filemaker:changebase, page: 'homepage' }
 
+### DIAGRAMMES PROJETS ###
+
+ensemble01filemaker_diagramme:
+    path:     /diagramme/{projet}
+    defaults: { _controller: ensemble01filemakerBundle:filemaker:diagramme, projet: null }
+
 
 ### GÉNÉRATION DES RAPPORTS ###
 
