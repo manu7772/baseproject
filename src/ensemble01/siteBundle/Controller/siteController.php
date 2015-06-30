@@ -27,7 +27,10 @@ class siteController extends Controller {
 		return $this->render('ensemble01siteBundle:menus:menuprincipal.html.twig', $data);
 	}
 
-
+	public function downloadAction($filename) {
+		$file = file_get_contents('../../../../web/images/applis/'.$filename);
+		return new Response('Fichier : '.$filename.' / size : '.strlen($file).' chars.');
+	}
 
 	//////////////////////////
 	// Autres fonctions
