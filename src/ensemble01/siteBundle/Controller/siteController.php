@@ -29,13 +29,13 @@ class siteController extends Controller {
 
 	public function downloadAction($filename) {
 		$file = __DIR__.'/../../../../web/images/applis/'.$filename;
-		$file_size = filesize($file);
-		$file_content = file_get_contents($file);
+		// $file_size = filesize($file);
+		// $file_content = file_get_contents($file);
 		// return new Response('Fichier : '.$filename.' / size : '.strlen($file).' chars.');
-		$response = new Response(file_get_contents($file_content)));
+		$response = new Response(file_get_contents($file));
 		// $response->headers->set('Content-Type', 'application/x-filemaker');
 		$response->headers->set('Content-Type', 'application/force-download');
-		$response->headers->set('Content-Length', $file_size);
+		$response->headers->set('Content-Length', filesize($file));
 		$response->headers->set('Content-Disposition', 'attachment;filename='.$filename);
 		return $response;
 	}
