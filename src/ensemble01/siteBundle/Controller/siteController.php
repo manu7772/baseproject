@@ -28,7 +28,7 @@ class siteController extends Controller {
 	}
 
 	public function downloadAction($filename) {
-		$file = file_get_contents('../../../../web/images/applis/'.$filename);
+		$file = file_get_contents(__DIR__.'/../../../../web/images/applis/'.$filename);
 		return new Response('Fichier : '.$filename.' / size : '.strlen($file).' chars.');
 	}
 
