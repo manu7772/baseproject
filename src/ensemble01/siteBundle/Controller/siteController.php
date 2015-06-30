@@ -28,12 +28,14 @@ class siteController extends Controller {
 	}
 
 	public function downloadAction($filename) {
-		$file = file_get_contents(__DIR__.'/../../../../web/images/applis/'.$filename);
-		// return new Response('Fichier : '.$filename.' / size : '.strlen($file).' chars.');
 		$file = __DIR__.'/../../../../web/images/applis/'.$filename;
-		$response = new Response(file_get_contents($file)));
-		$response->headers->set('Content-Type', 'application/x-filemaker'); // modification du content-type pour forcer le téléchargement (sinon le navigateur internet essaie d'afficher le document)
-		$response->headers->set('Content-Length', filesize($file));
+		$file_size = filesize($file);
+		$file_content = file_get_contents($file);
+		// return new Response('Fichier : '.$filename.' / size : '.strlen($file).' chars.');
+		$response = new Response(file_get_contents($file_content)));
+		// $response->headers->set('Content-Type', 'application/x-filemaker');
+		$response->headers->set('Content-Type', 'application/force-download');
+		$response->headers->set('Content-Length', $file_size);
 		$response->headers->set('Content-Disposition', 'attachment;filename='.$filename);
 		return $response;
 	}
