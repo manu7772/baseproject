@@ -14,7 +14,7 @@ ensemble01site_connect:
 
 ensemble01site_download_appli:
     path:     /download/{filename}
-    defaults: { _controller: ensemble01filemakerBundle:filemakerpublic:download }
+    defaults: { _controller: ensemble01filemakerBundle:site:download }
 
 # GÉNÉRATION DES RAPPORTS PAR URL PUBLIQUE
 
