@@ -124,7 +124,7 @@ class twigAetools extends \Twig_Extension {
 		if($n > 5) $n = $n - 2;
 		// supprime espaces en trop
 		$t = $this->cleanSpaces(trim($t));
-		$changes = array(" ", "-");
+		$changes = array(" ", "-", "/");
 		$glueword = "-";
 		$cpt = 1;
 		$line = 0;
