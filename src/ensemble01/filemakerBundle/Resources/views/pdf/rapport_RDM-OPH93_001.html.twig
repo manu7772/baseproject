@@ -267,8 +267,6 @@
 	{{ CSSclass('<h2>3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
 
 	<nobreak>
-		<bookmark title="4.2 Liste des locaux ou parties de locaux non visités" level="1" ></bookmark>
-		<h3>4.2 Liste des locaux ou parties de locaux non visités</h3>
 		<table class='type4'>
 			<thead>
 				<tr>
@@ -311,21 +309,21 @@
 	<h3>4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
 		{% set larg = 185 %} <!-- 185mm -->
 		{% set unit = "mm" %}
-		{% set case = [12,10,10,10,10,1,1,1,15,10,10,10] %}
+		{% set case = [10,10,10,10,10,1,1,1,17,10,10,10] %}
 		<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
 			<thead>
 				<tr>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[0] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Réf.</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[1] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Niveau</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[2] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N°<br>pièce</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[2] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N° pièce</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[3] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Pièce/<br>Local</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[4] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[4] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Date de<br>prélèvement</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homogène</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
 				</tr>
 				<tr>
@@ -338,7 +336,7 @@
 				{% if data != false %}
 				{% for ligne in data %}
 				<tr>
-					{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
+					{% set amiante = 'red' %}
 					{% for key,colonne in ligne %}
 					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 						{% if colonne matches '/^(Mult-)/' %}
@@ -395,7 +393,7 @@
 				{% if data != false %}
 				{% for ligne in data %}
 				<tr>
-					{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
+					{% set amiante = 'red' %}
 					{% for key,colonne in ligne %}
 					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 						{% if colonne matches '/^(Mult-)/' %}
