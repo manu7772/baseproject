@@ -344,10 +344,7 @@
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 							{# base.image(colonne, "width:38mm;") #}
 						{% else %}
-						{% set idx = key %}
-						{% if idx > 14 %}{% set idx = 14 %}{% endif %}
-						{% if idx < 0 %}{% set idx = 0 %}{% endif %}
-						{{ colonizeWords(colonne, (10 * case[idx] // 2), 'br')|raw }}
+						{{ colonizeWords(colonne, (10 * case[key] // 5), 'br')|raw }}
 						{% endif %}
 							{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 					</td>
@@ -401,10 +398,7 @@
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 							{# base.image(colonne, "width:38mm;") #}
 						{% else %}
-						{% set idx = key %}
-						{% if idx > 14 %}{% set idx = 14 %}{% endif %}
-						{% if idx < 0 %}{% set idx = 0 %}{% endif %}
-						{{ colonizeWords(colonne, (10 * case[idx] // 2), 'br')|raw }}
+						{{ colonizeWords(colonne, (10 * case[key] // 5), 'br')|raw }}
 						{% endif %}
 							{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 					</td>
