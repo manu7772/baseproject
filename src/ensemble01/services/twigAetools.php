@@ -1097,8 +1097,8 @@ class twigAetools extends \Twig_Extension {
 			else return trim($tx);
 	}
 
-	public function rapport_detail_liste_materiau($rapport, $neant = '-') {
-		$nbl = 16;
+	public function rapport_detail_liste_materiau($rapport, $neant = '-', $nbl = 16) {
+		// $nbl = 16;
 		$r = $this->FMexplode01($rapport);
 		if($r !== false) foreach ($r as $key => $value) {
 			if(count($value) < $nbl) {
