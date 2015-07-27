@@ -16,7 +16,7 @@ class filemakerController extends fmController {
 
 	protected $_fm;				// service filemakerservice
 	protected $selectService;	// service aeSelect
-	protected $DEV = true;		// mode DEV
+	protected $DEV = false;		// mode DEV
 	protected $DEVdata = array();
 	protected $recurs = 0;
 	protected $recursMAX = 6;
@@ -1502,7 +1502,7 @@ class filemakerController extends fmController {
 
 	protected function affAllDev() {
 		$env = $this->get('kernel')->getEnvironment();
-		if($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN') && ($env == 'dev')) {
+		if($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN') && (in_array($env, array('dev', 'test'))) && ($this->DEV === true)) {
 			if(count($this->DEVdata) > 0) {
 				echo("<h2>Données DEV : </h2>");
 				foreach ($this->DEVdata as $key => $value) {

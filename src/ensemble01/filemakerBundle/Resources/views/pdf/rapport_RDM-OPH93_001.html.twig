@@ -3,6 +3,7 @@
 
 {% set RESO = false %}
 {% set neant = 'Néant' %}
+{% set info_manquante = info_manquante|default('<span style="background-color:yellow;color:red;font-size:0.7em;">INFORMATION MANQUANTE</span>') %}
 {% set observation = 'Sans objet' %}
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
 {% set cherchepresence = '/^(.*)(presen|présen)(.*)$/i' %}
@@ -10,14 +11,12 @@
 {{ base.headDoc(rapport, date, imgpath, format) }}
 
 	<div class="bloc1">
-		<h1 class='center'>ANNEXE N°5.1</h1>
-		<h1 class='center'>REPÉRAGE DES MATÉRIAUX ET PRODUITS&nbsp;DES LISTES A ET B DE L’ANNEXE 13-9 DU CODE&nbsp;DE LA SANTÉ PUBLIQUE DES PARTIES PRIVATIVES</h1>
+		<h1 class='center'>REPÉRAGE DES MATÉRIAUX ET PRODUITS<br>DES LISTES A ET B DE L’ANNEXE 13-9 DU CODE<br>DE LA SANTÉ PUBLIQUE DES PARTIES PRIVATIVES</h1>
 		<p class="mini6 reduit center" style="width:100%; text-align:center;">Mission réalisée à la demande du commanditaire hors cadre réglementaire</p>
 		<div class="logoentete" style="width:100%; text-align:center;">
 			{{ image_base64(rapport.getField("soc_logo"))|raw }}
 		</div>
-		<p class="mini10 bolder center" style="width:100%; text-align:center;">Référence rapport&nbsp;: {{ rapport.getField('rapport_nom')|raw }}</p>
-		<!-- <p class="mini10 bolder center" style="width:100%; text-align:center;">Nature&nbsp;: {{ rapport.getField('code_nature')|raw }}</p> -->
+		<p class="mini10 bolder center" style="width:100%; text-align:center;">Référence rapport&nbsp;: {{ rapport.getField('rapport_nom')|default(info_manquante)|raw }}</p>
 	</div>
 
 	<table class="type1 allcenter col-2" align="center">
@@ -30,18 +29,18 @@
 			<tr>
 				<td>Adresse</td>
 				<td>
-					{{ rapport.getField('local_type_bat_texte')|raw }}<br>
-					{{ rapport.getField('local_adresse')|raw }}<br />
-					{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
+					{{ rapport.getField('local_type_bat_texte')|default(info_manquante)|raw }}<br>
+					{{ rapport.getField('local_adresse')|default(info_manquante)|raw }}<br />
+					{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|default(info_manquante)|raw }}
 				</td>
 			</tr>
 			<tr>
 				<td>Année de construction</td>
-				<td>{{ getDateConstruction(rapport.getField('documents_anterieurs'))|raw }}</td>
+				<td>{{ getDateConstruction(rapport.getField('documents_anterieurs'))|default(info_manquante)|raw }}</td>
 			</tr>
 			<tr>
 				<td>Type de logement</td>
-				<td>{{ rapport.getField('local_type_logement')|raw }}</td>
+				<td>{{ rapport.getField('local_type_logement')|default(info_manquante)|raw }}</td>
 			</tr>
 			<!-- ENTETE BIS -->
 			<tr>
@@ -52,16 +51,16 @@
 			<tr>
 				<td>
 					<p style='width:100%; text-align:center;'>{{ image_base64(rapport.getField("client_logo_base64"), null, null, '128px')|raw }}</p>
-					<strong>{{ rapport.getField('client_nom') }}</strong><br>
-					{{ rapport.getField('client_adresse') }}<br>
-					{{ rapport.getField('client_cp') }} {{ rapport.getField('client_ville') }}
+					<strong>{{ rapport.getField('client_nom')|default(info_manquante)|raw }}</strong><br>
+					{{ rapport.getField('client_adresse')|default(info_manquante)|raw }}<br>
+					{{ rapport.getField('client_cp')|default(info_manquante)|raw }} {{ rapport.getField('client_ville')|default(info_manquante)|raw }}
 				</td>
 				<td style='vertical-align:middle;'>
-					<span class="bold">{{ rapport.getField('soc_nom') }} - {{ rapport.getField('soc_agence') }}<br>
-					{{ rapport.getField('soc_adresse') }}<br>
-					{{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }}<br>
-					Tél.&nbsp;: {{ rapport.getField('soc_tel') }}<br>
-					{{ rapport.getField('soc_rcs') }}</span>
+					<span class="bold">{{ rapport.getField('soc_nom')|default(info_manquante)|raw }} - {{ rapport.getField('soc_agence')|default(info_manquante)|raw }}<br>
+					{{ rapport.getField('soc_adresse')|default(info_manquante)|raw }}<br>
+					{{ rapport.getField('soc_cp')|default(info_manquante)|raw }} {{ rapport.getField('soc_ville')|default(info_manquante)|raw }}<br>
+					Tél.&nbsp;: {{ rapport.getField('soc_tel')|default(info_manquante)|raw }}<br>
+					{{ rapport.getField('soc_rcs')|default(info_manquante)|raw }}</span>
 				</td>
 			</tr>
 			<!-- ENTETE BIS -->
@@ -73,16 +72,16 @@
 			<tr>
 				<td>
 					<span class="bold">
-						{{ rapport.getField('client_representant_civilite') }} {{ rapport.getField('client_representant_prenom') }} {{ rapport.getField('client_representant_nom') }}
+						{{ rapport.getField('client_representant_civilite')|default(info_manquante)|raw }} {{ rapport.getField('client_representant_prenom')|default(info_manquante)|raw }} {{ rapport.getField('client_representant_nom')|default(info_manquante)|raw }}
 						<br>
-						{{ rapport.getField('client_representant_fonction') }}
+						{{ rapport.getField('client_representant_fonction')|default(info_manquante)|raw }}
 					</span>
 				</td>
 				<td>
 					<span class="bold">
-						{{ rapport.getField('soc_representant_civilite') }} {{ rapport.getField('soc_representant_prenom') }} {{ rapport.getField('soc_representant_nom') }}
+						{{ rapport.getField('soc_representant_civilite')|default(info_manquante)|raw }} {{ rapport.getField('soc_representant_prenom')|default(info_manquante)|raw }} {{ rapport.getField('soc_representant_nom')|default(info_manquante)|raw }}
 						<br>
-						{{ rapport.getField('soc_representant_fonction') }}
+						{{ rapport.getField('soc_representant_fonction')|default(info_manquante)|raw }}
 					</span>
 				</td>
 			</tr>
@@ -96,26 +95,26 @@
 				<td class="left">
 					<span class="underline">Référence dossier</span>&nbsp;: 
 					<span class="bold" style="text-align:left;">
-						{{ rapport.getField('rapport_nom')|raw }}
+						{{ rapport.getField('rapport_nom')|default(info_manquante)|raw }}
 					</span>
 					<br>
 					<span class="underline">Opérateur de repérage et Signataire</span>&nbsp;:
 					<br>
 					<span class="bold">
-						{{ nomsTechniciens(rapport)|raw }}
+						{{ nomsTechniciens(rapport)|default(info_manquante)|raw }}
 					</span>
 				</td>
 				<td class="left" style='vertical-align:middle;'>
 					<span class="underline">Date de commande</span>&nbsp;: 
 					<span class="bold">
-						{{ transFMdate(rapport.getField('date_commande'))|raw }}
+						{{ transFMdate(rapport.getField('date_commande'))|default(info_manquante)|raw }}
 					</span>
 					<br>
 					<span class="underline">Date de visite</span>&nbsp;: 
 					<span class="bold">
-						{{ FMtoSimpleDate(rapport.getField('date_visite'))|raw }}
-						{# lastdate(rapport.getField('local_dates_visites'))|raw #}
-						{# separdates(rapport.getField('local_dates_visites'), true)|raw #}
+						{{ FMtoSimpleDate(rapport.getField('date_visite'))|default(info_manquante)|raw }}
+						{# lastdate(rapport.getField('local_dates_visites'))|default(info_manquante)|raw #}
+						{# separdates(rapport.getField('local_dates_visites'), true)|default(info_manquante)|raw #}
 					</span>
 					<br>
 					<span class="underline">Accompagnateur</span>&nbsp;: 
@@ -128,7 +127,7 @@
 	</table>
 
 	<div class="conclusion">
-		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP')|default("--- TEXTE MANQUANT ---"))|raw }}
+		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP'))|default(info_manquante)|raw }}
 	</div>
 
 {{ base.endPage(format) }}
@@ -139,750 +138,159 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, 'default') }}
 
-	<bookmark title="1. OBJET ET CADRE DE LA MISSION" level="0" ></bookmark>
+	<nobreak>
+	<bookmark title="1. OBJET ET CADRE DE LA MISSION" level="0"></bookmark>
 	{{ CSSclass('<h2>1. OBJET ET CADRE DE LA MISSION</h2>', 'greyline', 'div')|raw }}
 
-		{# <bookmark title="1.1 Conclusions des données existantes" level="1" ></bookmark> #}
-		<h3>1.1 Conclusions des données existantes</h3>
-			<p>{{ neant }}</p>
-
-		{# <bookmark title="1.2 Conclusions du répérage" level="1" ></bookmark> #}
-		<h3>1.2 Conclusions du répérage</h3>
-		
-			<h5>•&nbsp;Liste des matériaux et produits contenant de l’amiante (voir résultats détaillés du repérage)</h5>
-			<table class="type2">
-				<thead>
-					<tr>
-						<th class='grisC barre-oblique'>
-							<p style="text-align:right;padding:1mm;margin:0pt;">Résultat</p>
-							<br><br>
-							<p style="text-align:left;padding:1mm;margin:0pt;">Critère ayant<br>permis de conclure</p>
-						</th>
-						<th class='grisC'>Matériau ou produit repéré contenant de l’amiante<br><span class="mini8">(Mesure à prendre)</span></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class='grisC one'>Marquage du matériau</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_avec_amiante_item1'), neant))|raw }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Document consulté</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_avec_amiante_item2'), neant))|raw }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_avec_amiante_item3'), neant))|raw }}</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<h5>•&nbsp;Liste des matériaux et produits ne contenant pas d’amiante (voir résultats détaillés du repérage)</h5>
-			<table class="type2">
-				<thead>
-					<tr>
-						<th class='grisC barre-oblique'>
-							<p style="text-align:right;padding:1mm;margin:0pt;">Résultat</p>
-							<br><br>
-							<p style="text-align:left;padding:1mm;margin:0pt;">Critère ayant<br>permis de conclure</p>
-						</th>
-						<th class='grisC'>Matériau ou produit repéré ne contenant pas d’amiante</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class='grisC one'>Matériau ou produit qui par nature ne contient pas d’amiante</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item1'), neant))|raw }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Marquage du matériau</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item2'), neant))|raw }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Document consulté</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item3'), neant))|raw }}</td>
-					</tr>
-					<tr>
-						<td class='grisC one'>Résultat d’analyse de matériau ou produit</td>
-						<td class='two'>{{ doNl2br(neant(rapport.getField('rapport_conclusion_DAPP_1_2_sans_amiante_item4'), neant))|raw }}</td>
-					</tr>
-				</tbody>
-			</table>
-			<br>
-			<p><span class='underline'>Remarque&nbsp;:</span> La liste présentée dans le point ci-dessus peut ne pas être complète. La liste exhaustive des produits et matériaux est présentée dans le tableau "Résultats détaillés du repérage".</p>
-
-	<nobreak>
-	<bookmark title="2. PRÉCONISATIONS D’ORDRE GÉNÉRAL" level="0" ></bookmark>
-	{{ CSSclass('<h2>2. PRÉCONISATIONS D’ORDRE GÉNÉRAL</h2>', 'greyline', 'div')|raw }}
-		<p><span class="underline">NB : La mission est réalisée à la demande du commanditaire au-delà du cadre réglementaire, le repérage des parties privatives des maisons individuelles n’étant, à ce jour, pas visé par la réglementation, hors opérations spécifiques (ex. : vente, démolition)</span>. Le présent rapport est dès lors établi selon le modèle défini par l’arrêté du 12 décembre 2012 <span class="ital">relatif aux critères d’évaluation de l’état de conservation des matériaux et produits de la liste A contenant de l’amiante et au contenu du rapport de repérage</span>.</p>
-		<p>Les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport</p>
-		<br>
-		<p>De manière générale, les matériaux en contact direct avec des matériaux amiantés sont considérés comme amiantés par pollution.</p>
-		<p>Tout autre matériau découvert pendant les opérations qui serait susceptible de contenir de l’amiante devra faire l’objet d’un complément de diagnostic par la société GEODEM. Cette dernière reste à la disposition de la maîtrise d’ouvrage pour intervenir afin de lever les doutes existants.</p>
+		<p>La mission consiste, au-delà cadre réglementaire, à procéder au repérage visuel des matériaux des listes A et B de l’annexe 13-9 du CSP (Code de la Santé Publique) directement accessibles, sans démontage, ni déplacement d’objets, dans les parties privatives des locaux désignés en page de garde du présent rapport.</p>
+		<p>A la demande de la maîtrise d’ouvrage, aucuns prélèvements de MPSCA (Matériaux et Produits Susceptibles de Contenir de l’Amiante) ne seront réalisés pour analyses en laboratoire. Nous rappelons que seules les analyses de prélèvements desdits matériaux, permettent de conclure quant à la présence ou l’absence d’amiante ; le présent rapport a dès lors pour unique objet d’apporter un éclairage, quant à la présence de MPSCA au sein des locaux visités.</p>
+		<p>Le présent repérage ne permettant pas de conclure quant à la présence ou l’absence d’amiante, l’ensemble des matériaux et produits repérés sont mentionnés au sein du paragraphe 4 «Tableau de repérage » comme étant <span class="ital">« susceptibles de contenir de l’amiante »</span>.</p>
+		<p>La maîtrise d’ouvrage disposera ainsi d’une cartographie de son patrimoine, lui permettant d’estimer le coût moyen d’un repérage réalisé conformément à la réglementation, au vu du nombre de matériaux devant faire l’objet d’un prélèvement pour analyse (<span class="ital">ce nombre pouvant éventuellement être optimisé en présence de zones homogènes et de zones présentant des similitudes d’ouvrages</span>).</p>
 
 		<p class="signature">
-			<!-- À {{ firstCapOnly(rapport.getField('soc_ville')) }}, le {# date|date(formatDateTwig, timezoneTwig) #},<br> -->
-			À {{ firstCapOnly(rapport.getField('soc_ville')) }}, le {{ date }},<br>
+			À {{ firstCapOnly(rapport.getField('soc_ville'))|default(info_manquante)|raw }}, le {{ date }},<br>
 			L’opérateur de repérage<br>
 			<br>
-			{{ rapport.getField('tech_signataire_prenom') }} {{ rapport.getField('tech_signataire_nom') }}<br>
+			{{ rapport.getField('tech_signataire_prenom')|default(info_manquante)|raw }} {{ rapport.getField('tech_signataire_nom')|default(info_manquante)|raw }}<br>
 			{{ image_base64(rapport.getField("tech_signataire_signature"), null, null, '60mm')|raw }}
 		</p>
+
 	</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
 	<nobreak>
-		<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
-		{{ CSSclass('<h2>3. DOCUMENTS ANTERIEURS</h2>', 'greyline', 'div')|raw }}
-			<table class='type3'>
-				<thead>
-					<tr>
-						<th class='one center'>Documents</th>
-						<th class='two center'>Disponible</th>
-						<th class='three center'>Date</th>
-						<th class='four center'>Observations</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% set data = docsAnterieurs(rapport.getField('documents_anterieurs')) %}
-					{% for line in data if data|length > 0 %}
-					{% if line|length == 4 %}
-					<tr>
-						<td class='one'>{{ doNl2br(line[0])|raw }}</td>
-						<td class='two center'>{{ doNl2br(line[1])|raw }}</td>
-						<td class='three center'>{{ doNl2br(line[2])|raw }}</td>
-						<td class='four center'>{{ doNl2br(line[3])|raw }}</td>
-					</tr>
-					{% else %}
-					<tr>
-						<td colspan='4'>(format d'informations non conforme)</td>
-					</tr>
-					{% endif %}
-					{% else %}
-					<tr>
-						<td class='one'>{{ neant }}</td>
-						<td class='two center'>{{ neant }}</td>
-						<td class='three center'>{{ neant }}</td>
-						<td class='four center'>{{ neant }}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-	</nobreak>
+	<bookmark title="2. PROGRAMME DE REPÉRAGE" level="0"></bookmark>
+	{{ CSSclass('<h2>2. PROGRAMME DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 
-	<bookmark title="4. REPÉRAGE" level="0" ></bookmark>
-	{{ CSSclass('<h2>4. REPÉRAGE</h2>', 'greyline', 'div')|raw }}
-		<bookmark title="4.1 Croquis de repérage" level="1" ></bookmark>
-		<h3>4.1 Croquis de repérage</h3>
-		<p>L’emplacement, des matériaux et des produits contenant de l’amiante, est localisé à l’aide des croquis joints en annexe du présent Dossier Amiante – Parties Privatives.</p>
-
-		<nobreak>
-			<bookmark title="4.2 Liste des locaux ou parties de locaux non visités" level="1" ></bookmark>
-			<h3>4.2 Liste des locaux ou parties de locaux non visités</h3>
-			<table class='type4'>
-				<thead>
-					<tr>
-						<th class='one center'>Désignation</th>
-						<th class='two center'>Niveau</th>
-						<th class='three center'>Motif d’absence<br>de visite</th>
-						<th class='four center'>Action menée</th>
-						<th class='five center'>Remarque à destination<br>du donneur d’ordre</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite'), neant) %}
-					{% for it in item %}
-					<tr>
-						{% for it2 in it %}
-						<td class='center'>{{ it2|raw }}</td>
-						{% endfor %}
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</nobreak>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<bookmark title="5. CONDITIONS DE RÉALISATION DU REPÉRAGE" level="0" ></bookmark>
-	{{ CSSclass('<h2>5. CONDITIONS DE RÉALISATION DU REPÉRAGE</h2>', 'greyline', 'div')|raw }}
-		<bookmark title="5.1 Textes de références" level="1" ></bookmark>
-		<h3>5.1 Textes de références</h3>
-		<p>Le présent rapport, réalisé à la demande du commanditaire au-delà du cadre réglementaire, est établi selon le modèle défini par l’arrêté du 12 décembre 2012 <span class="ital">relatif aux critères d’évaluation de l’état de conservation des matériaux et produits de la liste A contenant de l’amiante et au contenu du rapport de repérage.</span> Les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
-
-		<bookmark title="5.2 Objet de la mission" level="1" ></bookmark>
-		<h3>5.2 Objet de la mission</h3>
-		<p class="underline" style="text-decoration:underline;">NB : La mission est réalisée, à la demande du commanditaire, au-delà du cadre réglementaire, le repérage des parties privatives des maisons individuelles n’étant, à ce jour, pas visé par la réglementation, hors opérations spécifiques (ex. : vente, démolition).</p>
-		<p>Par analogie de la mission définie à l’article R.1334-16 du Code de la santé publique, visant les parties privatives d’immeubles collectifs d’habitation, la mission consiste à procéder au repérage des matériaux et produits susceptibles de contenir de l’amiante mentionnés au sein de la liste A de l’annexe 13-9 du Code de la santé publique</p>
-		<br>
-		<p><span class='underline bold'>Important</span>&nbsp;: Le programme de repérage de la mission de base est limitatif. Il se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
-		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires.</p>
-
-		<nobreak>
-			<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
-			<h3>5.3 Cadre de la mission</h3>
-
-				<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
-				<h4>5.3.1 Intitulé de la mission</h4>
-				<p>Repérages et diagnostics amiante sur le patrimoine {{ rapport.getField('client_nom') }}</p>
-			</nobreak>
-			<nobreak>
-				<bookmark title="5.3.2 Cadre réglementaire de la mission" level="2" ></bookmark>
-				<h4>5.3.2 Cadre réglementaire de la mission</h4>
-				<p>Mission réalisée à la demande du commanditaire au-delà du cadre réglementaire (voir paragraphes 5.1 et 5.2).</p>
-				<br>
-			</nobreak>
-			<nobreak>
-				<bookmark title="5.3.3 Oblications du donneur d'ordre" level="2" ></bookmark>
-				<h4>5.3.3 Obligations du donneur d'ordre</h4>
-				<p class="bold">Afin que l’opérateur de repérage puisse mener à bien sa mission, le donneur d’ordre doit&nbsp;:</p>
-				<p>•&nbsp;Remettre à l’opérateur en charge du repérage les rapports concernant la recherche d’amiante déjà réalisés ainsi que les documents et informations dont il dispose décrivant les ouvrages (plans, croquis, date de délivrance du permis de construire), les produits matériaux et protections physiques mises en places et les éléments d’information nécessaires à l’accès aux différentes parties de l’immeuble bâti en toute sécurité.</p>
-				<p>•&nbsp;Fournir les habilitations nécessaires pour accéder à l’ensemble des différentes parties de l’immeuble bâti.</p>
-			</nobreak>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-		<nobreak>
-			<bookmark title="5.4 Programme de repérage de l'amiante" level="1" ></bookmark>
-			<h3>5.4 Programme de repérage de l'amiante</h3>
-				<table class='type5'>
-					<thead>
-						<tr>
-							<th class='one center'>Liste A de l’annexe 13-9 du Code de la santé publique</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class='two center'>COMPOSANT À VÉRIFIER OU À SONDER</td>
-						</tr>
-						<tr>
-							<td class='center'>Flocages</td>
-						</tr>
-						<tr>
-							<td class='center'>Calorifugeages</td>
-						</tr>
-						<tr>
-							<td class='center'>Faux plafonds</td>
-						</tr>
-					</tbody>
-				</table>
-				<br>
-		</nobreak>
-
-		<nobreak>
-			<bookmark title="5.5 Laboratoire accrédité" level="1" ></bookmark>
-			<h3>5.5 Laboratoire accrédité</h3>
-				<p>Conformément aux dispositions de l’article R.1334-24 du code de la santé publique, les échantillons prélevés par nos soins sont transmis pour analyse au laboratoire accrédité&nbsp;:</p>
-				<br>
-				<p class="strong center">{{ rapport.getField('Laboratoire') }}</p>
-				<p class="strong center">{{ rapport.getField('Laboratoire_adresse') }} - {{ rapport.getField('Laboratoire_adresse') }}</p>
-				<p class="strong center">{{ rapport.getField('Laboratoire_cp') }} {{ rapport.getField('Laboratoire_ville') }}</p>
-				<br>
-		</nobreak>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
-	{{ CSSclass('<h2>6. MÉTHODOLOGIE DU DIAGNOSTIC</h2>', 'greyline', 'div')|raw }}
-		<P>Le repérage des matériaux et produits contenant de l’amiante est effectué par ordre chronologique dans l’ensemble des pièces et locaux des bâtiments, suivant la procédure définie par l’arrêté du 12 décembre 2012&nbsp;:</P>
-		<br>
-		<P>Lors de la première phase, l’opérateur de repérage recherche les matériaux et produits de la liste A de l’annexe 13-9 du code de la santé publique accessibles sans travaux destructifs. À cette fin, il examine de façon exhaustive toutes les différentes parties de l'immeuble bâti qui constituent le bâtiment et détermine les zones présentant des similitudes d'ouvrage et les zones homogènes. Les zones présentant des similitudes d'ouvrage permettent d'optimiser les investigations à conduire en réduisant le nombre de prélèvements pour analyses.</P>
-		<br>
-		<P>Lors de la deuxième phase, en prenant en compte les zones présentant des similitudes d'ouvrage, l'opérateur de repérage identifie et localise parmi les matériaux et produits de la liste A de l'annexe 13-9 du code de la santé publique ceux qui contiennent de l'amiante. À cette fin, il conclut quant à la présence d'amiante dans ces matériaux et produits, pour chacun des matériaux et produits repérés à l'issue de la première phase, en fonction des informations et des moyens dont il dispose et de sa connaissance des matériaux et produits utilisés. En cas de doute, il détermine les matériaux et produits dont il convient de prélever et d'analyser un ou des échantillons pour pouvoir conclure quant à la présence d'amiante.</P>
-		<br>
-		<P>Conformément aux dispositions de l'article R. 1334-24 du code de la santé publique, les analyses des échantillons de ces matériaux et produits sont réalisées par un organisme accrédité. L'opérateur de repérage veille à la traçabilité des échantillons prélevés. Il transmet au laboratoire d'analyse une fiche d'accompagnement comportant au moins les informations énumérées en annexe II. A réception des résultats d'analyse, l'opérateur de repérage veille à la cohérence des résultats.</P>
-		<br>
-		<P>L'opérateur conclut définitivement à l'absence ou à la présence d'amiante pour chaque matériau ou produit repéré. Dans sa conclusion, l'opérateur de repérage précise le critère (matériau ou produit qui par nature ne contient pas d'amiante, marquage du matériau, document consulté, résultat d'analyse de matériau ou produit) qui lui a permis de conclure quant à la présence ou l'absence d'amiante. Pour chacun des matériaux et produits repérés, en fonction de sa connaissance des matériaux et produits utilisés, il atteste, le cas échéant, de la présence d'amiante. Dans ce cas, il précise dans sa conclusion que le critère qui lui a permis de conclure est son jugement personnel.</P>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format, {orientation: 'L'}) }}
-
-	<bookmark title="7. RESULTATS DETAILLÉS DU REPERAGE" level="0" ></bookmark>
-	{{ CSSclass('<h2>7. RESULTATS DETAILLÉS DU REPERAGE</h2>', 'greyline', 'div')|raw }}
-		<P>La localisation des prélèvements, indiquée dans le tableau, est repérée précisément sur les plans annexés à ce rapport.</P>
-		<br>
-		<p>{{ CSSclass('Légende du tableau de repérage', 'underline')|raw }}<br>
-		{{ CSSclass('NOIR&nbsp;:', 'black')|raw }} absence d'amiante<br>
-		{{ CSSclass('ROUGE&nbsp;:', 'red')|raw }} présence d'amiante</p>
-
-		<bookmark title="7.1 Indicateurs visuels de dégradation" level="1" ></bookmark>
-		<h3 style="width:100%;">7.1 Indicateurs visuels de dégradation</h3>
-			<p>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères définis dans l’arrêté du 12 décembre 2012. Toutefois, le repérage des parties privatives des maisons individuelles n’étant pas visé par la réglementation - hors opérations spécifiques (ex. : <span class="ital">vente, démolition</span>) - les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
-
-		<bookmark title="7.2 Diagnostic par unité de bâtiment" level="1" ></bookmark>
-		<h3 style="width:100%;">7.2 Diagnostic par unité de bâtiment</h3>
-			<p>Immeuble&nbsp;: {{ rapport.getField('local_adresse')|raw }} -&nbsp;{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}</p>
-
-			<nobreak>
-				<bookmark title="7.2.1 Liste des matériaux et produits contenant de l'amiante" level="2" ></bookmark>
-				<h4 style="width:100%;">7.2.1 Liste des matériaux et produits contenant de l'amiante</h4>
-				{% set larg = 185 %} <!-- 185mm -->
-				{% set unit = "mm" %}
-				{% set case = [8,4,6,6,6,1,1,1,11,5,6,5,6,14,20] %}
-				<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
-					<thead>
-						<tr>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[0] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[1] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Niveau</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[2] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N°<br>pièce</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[3] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Pièce/<br>Local</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[4] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Résultat</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[12] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État de<br>conser<br>vation</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[13] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mesures à<br>prendre</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[14] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Photos</th>
-						</tr>
-						<tr>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] // 2) * larg // 100 }}{{ unit }};' class='center'>Type</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] - (case[9] // 2)) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_AM')) %}
-						{% if data != false %}
-						{% for ligne in data %}
-						<tr>
-							{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
-							{% for key,colonne in ligne %}
-							<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
-								{% if colonne matches '/^(Mult-)/' %}
-								{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
-									{# base.image(colonne, "width:38mm;") #}
-								{% else %}
-								{% set idx = key %}
-								{% if idx > 14 %}{% set idx = 14 %}{% endif %}
-								{% if idx < 0 %}{% set idx = 0 %}{% endif %}
-								{{ colonizeWords(colonne, (10 * case[idx] // 10), 'br')|raw }}
-								{% endif %}
-									{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
-							</td>
-							{% endfor %}
-						</tr>
-						{% endfor %}
-						{% else %}
-						<tr>
-							{% for n in 1..16 %}
-							<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
-							{% endfor %}
-						</tr>
-						{% endif %}
-					</tbody>
-				</table>
-			</nobreak>
-
-			<nobreak>
-				<bookmark title="7.2.2 Liste des matériaux et produits ne contenant pas d'amiante" level="2" ></bookmark>
-				<h4 style="width:100%;">7.2.2 Liste des matériaux et produits ne contenant pas d'amiante</h4>
-				{# set larg = 600 #}
-				{# set unit = "px" #}
-				<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
-					<thead>
-						<tr>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[0] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N° de pré<br>lèvement<br><small>(ou critère<br>ayant permis<br>de conclure)</small></th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[1] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Niveau</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[2] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N°<br>pièce</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[3] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Pièce/<br>Local</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[4] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Résultat</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[12] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État de<br>conser<br>vation</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[13] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mesures à<br>prendre</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[14] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Photos</th>
-						</tr>
-						<tr>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] // 2) * larg // 100 }}{{ unit }};' class='center'>Type</th>
-							<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] - (case[9] // 2)) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
-						{% if data != false %}
-						{% for ligne in data %}
-						<tr>
-							{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
-							{% for key,colonne in ligne %}
-							<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
-								{% if colonne matches '/^(Mult-)/' %}
-								{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
-									{# base.image(colonne, "width:38mm;") #}
-								{% else %}
-								{% set idx = key %}
-								{% if idx > 14 %}{% set idx = 14 %}{% endif %}
-								{% if idx < 0 %}{% set idx = 0 %}{% endif %}
-								{{ colonizeWords(colonne, (10 * case[idx] // 10), 'br')|raw }}
-								{% endif %}
-									{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
-							</td>
-							{% endfor %}
-						</tr>
-						{% endfor %}
-						{% else %}
-						<tr>
-							{% for n in 1..16 %}
-							<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
-							{% endfor %}
-						</tr>
-						{% endif %}
-					</tbody>
-				</table>
-			</nobreak>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
-
-	<bookmark title="8. ANNEXES" level="0" ></bookmark>
-	{{ CSSclass('<h2>8. ANNEXES</h2>', 'greyline', 'div')|raw }}
-	<br>
-	<table class='type7'>
-		<tr><td class="strong"><a href='#anchor81'>8.1&nbsp;&nbsp;Informations réglementaires</a></td></tr>
-		<tr><td class="strong"><a href='#anchor82'>8.2&nbsp;&nbsp;Croquis</a></td></tr>
-		<tr><td class="strong"><a href='#anchor83'>8.3&nbsp;&nbsp;Certification</a></td></tr>
-		<tr><td class="strong"><a href='#anchor84'>8.4&nbsp;&nbsp;Attestation d’assurance</a></td></tr>
-		<tr><td class="strong"><a href='#anchor85'>8.5&nbsp;&nbsp;Grilles d’évaluation et état de conservation</a></td></tr>
-		<tr><td class="strong"><a href='#anchor86'>8.6&nbsp;&nbsp;Conséquences règlementaires et recommandations</a></td></tr>
-		<tr><td class="strong"><a href='#anchor87'>8.7&nbsp;&nbsp;Recommandations générales de sécurité</a></td></tr>
-		<tr><td class="strong"><a href='#anchor88'>8.8&nbsp;&nbsp;Procès-verbaux d’analyses</a></td></tr>
-	</table>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.1 Informations réglementaires" level="1" ></bookmark>
-	<a name="anchor81"></a>
-	<h3 class="stronger center">8.1 Informations réglementaires</h3>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<h3>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h3>
-	<p>Les maladies liées à l’amiante sont provoquées par l’inhalation des fibres. Toutes les variétés d’amiante sont classées comme substances cancérogènes avérées pour l’homme. L’inhalation de fibres d’amiante est à l’origine de cancers (mésothéliomes, cancers broncho-pulmonaires) et d’autres pathologies non cancéreuses (épanchements pleuraux, plaques pleurales).</p>
-		<br>
-	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à l’amiante. Elle doit être complétée par la définition et la mise en œuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans l’immeuble. L’information des occupants présents temporairement ou de façon permanente est un préalable essentiel à la prévention du risque d’exposition à l’amiante.</p>
-		<br>
-	<p>Il convient donc de veiller au maintien du bon état de conservation des matériaux et produits contenant de l’amiante afin de remédier au plus tôt aux situations d’usure anormale ou de dégradation.</p>
-		<br>
-	<p>Il conviendra de limiter autant que possible les interventions sur les matériaux et produits contenant de l’amiante qui ont été repérés et de faire appel aux professionnels qualifiés, notamment dans le cas de retrait ou de confinement de ce type de matériau ou produit.</p>
-		<br>
-	<p>Enfin, les déchets contenant de l’amiante doivent être éliminés dans des conditions strictes. Renseignez-vous auprès de votre mairie ou de votre préfecture. Pour connaître les centres d’élimination près de chez vous, consultez la base de données "déchets" gérée par l’ADEME, directement accessible sur le site internet <a href='http://www.sinoe.org' target='_blank'>www.sinoe.org</a>.</p>
-	<br>
-	<h3>Informations conformes à l’article 6.9° de l’arrêté du 12 décembre 2012</h3>
-	<p>Dans tous les cas, le propriétaire avertira de la présence d’amiante toute personne pouvant intervenir sur ou à proximité des matériaux et produits concernés ou de ceux les recouvrant ou les protégeant.</p>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.2 Croquis" level="1" ></bookmark>
-	<a name="anchor82"></a>
-	<h3 class="stronger center">8.2 Croquis</h3>
-
-	{% set champcroquis = rapport.getField('lien_croquis_multimedia') %}
-	{% set croquis = multiMediaIMG(champcroquis, RESO, null, null, '100%', null, neant, 'div|width:100%;text-align:center;') %}
-	{% if (champcroquis|length < 1) or (croquis == neant) %}
-	<br><br><br>
-
-	<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
-
-	{% else %}
-	
-	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
-
-		{{ croquis|raw }}
-
-	{% endif %}
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.3 Certification" level="1" ></bookmark>
-	<a name="anchor83"></a>
-	<h3 class="stronger center">8.3 Certification</h3>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	{% if rapport.getField("tech_signataire_certificat") != "" and rapport.getField("tech_signataire_certificat") is not null %}
-	{{ image_base64(rapport.getField("tech_signataire_certificat"), null, null, '100%')|raw }}
-	{% else %}
-	<h3>Certificat absent</h3>
-	{% endif %}
-
-	{% for id,tech in getTechniciens(rapport, true) %}
-
-	
-	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
-	
-
-		{{ mediaIMG(tech[3], RESO, null, null, '100%')|raw }}
-
-	{% endfor %}
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.4 Attestation d'assurance" level="1" ></bookmark>
-	<a name="anchor84"></a>
-	<h3 class="stronger center">8.4 Attestation d'assurance</h3>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-	
-{% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
-	{{ image_base64(rapport.getField("soc_assurance1"), null, null, '100%')|raw }}
-{% else %}
-	<h3>Document d'assurance introuvable</h3>
-{% endif %}
-
-{% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '100%')|raw }}
-{% endif %}
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.5 Grilles d'évaluation - État de conservation" level="1" ></bookmark>
-	<a name="anchor85"></a>
-	<h3 class="stronger center">8.5 Grilles d'évaluation - État de conservation</h3>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<p class="ital"><span class="bold underline">N.B</span>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères définis dans l’arrêté du 12 décembre 2012.</p>
-	<br>
-	<p class="ital">Toutefois, le repérage des parties privatives des maisons individuelles n’étant pas visé par la réglementation - hors opérations spécifiques (ex. : vente, démolition) - les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
-	<br>
-	<br>
-
-	<h5>1. Critères d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
-		<table class='type8'>
-			<tr>
-				<td colspan='100%' class='gris'>1.&nbsp;Classification des différents degrés d'exposition du produit<br>aux circulations d'air</td>
-			</tr>
-			<tr>
-				<td class='high'>Fort</td>
-				<td class='high'>Moyen</td>
-				<td class='high'>Faible</td>
-			</tr>
-			<tr>
-				<td class='top justify'>1° Il n'existe pas de système spécifique de ventilation, la pièce ou la zone homogène évaluée est ventilée par ouverture des fenêtres. ou<br>2° Le faux plafond se trouve dans un local qui présente une (ou plusieurs) façade(s) ouverte(s) sur l'extérieur susceptible(s) de créer des situations à forts courants d'air, ou<br>3° Il existe un système de ventilation par insufflation d'air dans le local et l'orientation du jet d'air est telle que celui-ci affecte directement le faux plafond contenant de l'amiante.</td>
-				<td class='top justify'>1° Il existe un système de ventilation par insufflation d'air dans le local et l'orientation du jet est telle que celui-ci n'affecte pas directement le faux plafond contenant de l'amiante, ou<br>2° Il existe un système de ventilation avec reprise(s) d'air au niveau du faux plafond (système de ventilation à double flux).</td>
-				<td class='top justify'>1° Il n'existe ni ouvrant ni système de ventilation spécifique dans la pièce ou la zone évaluée, ou<br>2° Il existe dans la pièce ou la zone évaluée, un système de ventilation par extraction dont la reprise d'air est éloignée du faux plafond contenant de l'amiante.</td>
-			</tr>
-			<tr>
-				<td colspan='100%' class='gris'>2.&nbsp;Classification des différents degrés d'exposition du produit<br>aux chocs et vibrations</td>
-			</tr>
-			<tr>
-				<td class='high'>Fort</td>
-				<td class='high'>Moyen</td>
-				<td class='high'>Faible</td>
-			</tr>
-			<tr>
-				<td class='top justify'>L'exposition du produit aux chocs et vibrations sera considérée comme forte dans les situations où l'activité dans le local ou à l'extérieur engendre des vibrations, ou rend possible les chocs directs avec le faux plafond contenant de l'amiante (ex&nbsp;: hall industriel, gymnase, discothèque…).</td>
-				<td class='top justify'>L'exposition du produit aux chocs et vibrations sera considérée comme moyenne dans les situations où le faux plafond contenant de l'amiante n'est pas exposé aux dommages mécaniques mais se trouve dans un lieu très fréquenté (ex&nbsp;: supermarché, piscine, théâtre…).</td>
-				<td class='top justify'>L'exposition du produit aux chocs et vibrations sera considérée comme faible dans les situations où le faux plafond contenant de l'amiante n'est pas exposé aux dommages mécaniques, n'est pas susceptible d'être dégradé par les occupants ou se trouve dans un local utilisé à des activités tertiaires passives.</td>
-			</tr>
+		<table class='type5'>
+			<thead>
+				<tr>
+					<th class='one center'>Liste A de l’annexe 13-9 du Code de la santé publique</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class='two center'>COMPOSANT À VÉRIFIER OU À SONDER</td>
+				</tr>
+				<tr>
+					<td class='center'>Flocages</td>
+				</tr>
+				<tr>
+					<td class='center'>Calorifugeages</td>
+				</tr>
+				<tr>
+					<td class='center'>Faux plafonds</td>
+				</tr>
+			</tbody>
 		</table>
 		<br>
 
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+		<table class='type5 listeB'>
+			<thead>
+				<tr>
+					<th class='one center fullwidth' colspan="100%">Liste B de l’annexe 13-9 du Code de la santé publique</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class='two center' style='font-size: 0.8em;'>COMPOSANT DE LA CONSTRUCTION</td>
+					<td class='two center' style='font-size: 0.8em;'>PARTIE DU COMPOSANT À VÉRIFIER OU À SONDER</td>
+				</tr>
+				<tr>
+					<td class='three center fullwidth' colspan="100%">1. Parois verticales intérieures</td>
+				</tr>
+				<tr>
+					<td class='center'>Murs et cloisons "en dur" et poteaux (périphériques et intérieurs).</td>
+					<td class='center'>Enduits projetés, revêtements durs (plaques menuiserie, amiante-ciment) et entourages de poteaux (carton, amiante-ciment, matériau sandwich, carton + plâtre), coffrage perdu.</td>
+				</tr>
+				<tr>
+					<td class='center'>Cloisons (légères et préfabriquées), gaines et coffres.</td>
+					<td class='center'>Enduits projetés, panneaux de cloisons.</td>
+				</tr>
+				<tr>
+					<td class='three center fullwidth' colspan="100%">2. Planchers et plafonds</td>
+				</tr>
+				<tr>
+					<td class='center'>Plafonds, poutres et charpentes, gaines et coffres.</td>
+					<td class='center'>Enduits projetés, panneaux collés ou vissés.</td>
+				</tr>
+				<tr>
+					<td class='center'>Planchers.</td>
+					<td class='center'>Dalles de sol.</td>
+				</tr>
+				<tr>
+					<td class='three center fullwidth' colspan="100%">3. Conduits, canalisations et équipements intérieures</td>
+				</tr>
+				<tr>
+					<td class='center'>Conduits de fluides (air, eau, autres fluides...).</td>
+					<td class='center'>Conduits, enveloppes de calorifuges.</td>
+				</tr>
+				<tr>
+					<td class='center'>Clapets/volets coupe-feu.</td>
+					<td class='center'>Clapets, volets, rebouchage.</td>
+				</tr>
+				<tr>
+					<td class='center'>Portes coupe-feu.</td>
+					<td class='center'>Joints (tresses, bandes).</td>
+				</tr>
+				<tr>
+					<td class='center'>Vide-ordures.</td>
+					<td class='center'>Conduits.</td>
+				</tr>
+				<tr>
+					<td class='three center fullwidth' colspan="100%">4. Éléments extérieurs</td>
+				</tr>
+				<tr>
+					<td class='center'>Toitures.</td>
+					<td class='center'>Plaques, ardoises, accessoires de couverture (composites, fibres-ciment), bardeaux bitumineux.</td>
+				</tr>
+				<tr>
+					<td class='center'>Bardages et façades légères.</td>
+					<td class='center'>Plaques, ardoises, panneaux (composites, fibres-ciment).</td>
+				</tr>
+				<tr>
+					<td class='center'>Conduits en toiture et façade.</td>
+					<td class='center'>Conduits en amiante-ciment : eaux pluviales, eaux usées, conduits de fumée.</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
 
-	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
-
-		<nobreak>
-			<h4>• Flocages</h4>
-			{{ multiMediaIMG(rapport.getField('lien_grille_eval_flocage_multimedia'), RESO, null, null, '80%', null, neant, 'div|width:100%;text-align:center;')|raw }}
-		</nobreak>
-		<br><br>
-
-		<nobreak>
-			<h4>• Calorifugeages</h4>
-			{{ multiMediaIMG(rapport.getField('lien_grille_eval_calo_multimedia'), RESO, null, null, '80%', null, neant, 'div|width:100%;text-align:center;')|raw }}
-		</nobreak>
-		<br><br>
-
-		<nobreak>
-			<h4>• Faux plafonds</h4>
-			{{ multiMediaIMG(rapport.getField('lien_grille_eval_fauxplaf_multimedia'), RESO, null, null, '80%', null, neant, 'div|width:100%;text-align:center;')|raw }}
-		</nobreak>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-	<div style="height:60mm;width:100%;"></div>
-	<bookmark title="8.6 Conséquences réglementaires et recommandations" level="1" ></bookmark>
-	<a name="anchor86"></a>
-	<h3 class="stronger center">8.6 Conséquences réglementaires et recommandations</h3>
+	</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
 	<nobreak>
-		<p class="ital"><span class="bold underline">N.B</span>&nbsp;: L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères définis dans l’arrêté du 12 décembre 2012.</p>
-		<p class="ital">Toutefois, le repérage des parties privatives des maisons individuelles n’étant pas visé par la réglementation - hors opérations spécifiques (ex. : vente, démolition) - les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
-		<br>
-		<br>
-		<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
-		<p>En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en œuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Score 1</span>&nbsp;-&nbsp;L’évaluation périodique de l'état de conservation de ces matériaux et produits de la liste A contenant de l’amiante est effectué dans un délai maximal de trois ans à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation, ou à l'occasion de toute modification substantielle de l'ouvrage et de son usage.<br>La personne ayant réalisé cette évaluation en remet les résultats au propriétaire contre accusé de réception.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Score 2</span>&nbsp;-&nbsp;La mesure d’empoussièrement dans l’air est effectuée dans les conditions définies à l’article R1334-25, dans un délai de trois mois à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation. L’organisme qui réalise les prélèvements d’air remet les résultats des mesures d’empoussièrement au propriétaire contre accusé de réception.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Score 3</span>&nbsp;-&nbsp;Les travaux de confinement ou de retrait de l'amiante sont mis en œuvre selon les modalités prévues à l'article R.1334-29.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Article R1334-28&nbsp;:</span> Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est inférieur ou égal à la valeur de cinq fibres par litre, le propriétaire fait procéder à l’évaluation périodique de l'état de conservation des matériaux et produits de la liste A contenant de l’amiante prévue à l’article R1334-20, dans un délai maximal de trois ans à compter de la date de remise des résultats des mesures d’empoussièrement ou à l'occasion de toute modification substantielle de l'ouvrage ou de son usage.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p>Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est supérieur à cinq fibres par litre, le propriétaire fait procéder à des travaux de confinement ou de retrait de l'amiante, selon les modalités prévues à l’article R1334-29.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
-			I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
-			II)&nbsp;Si les travaux ne conduisent pas au retrait total des matériaux et produits de la liste A contenant de l’amiante, il est procédé à une évaluation périodique de l’état de conservation de ces matériaux et produits résiduels dans les conditions prévues par l’arrêté mentionné à l’article R.1334-20, dans un délai maximal de trois ans à compter de la date à laquelle sont remis les résultats du contrôle ou à l’occasion de toute modification substantielle de l’ouvrage ou de son usage.<br>
-			III)&nbsp;Lorsque des travaux de retrait ou de confinement de matériaux et produits de la liste B contenant de l’amiante sont effectués à l’intérieur de bâtiment occupés ou fréquentés, le propriétaire fait procéder, avant toute restitution des locaux traités, à l’examen visuel et à la mesure d’empoussièrement dans l’air mentionnée au premier alinéa du présent article.<br>
-		</p>
+	<bookmark title="3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS" level="0"></bookmark>
+	{{ CSSclass('<h2>3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
+
 	</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<div style="height:80mm;width:100%;"></div>
-	<bookmark title="8.7 Recommandations générales de sécurité" level="1" ></bookmark>
-	<a name="anchor87"></a>
-	<h3 class="stronger center">8.7 Recommandations générales de sécurité</h3>
+	<bookmark title="4. TABLEAU DE REPÉRAGE" level="0"></bookmark>
+	{{ CSSclass('<h2>4. TABLEAU DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
+
+	<bookmark title="4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
+	<h3>4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
+
+	<bookmark title="4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
+	<h3>4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à la présence d’amiante dans un bâtiment. Elle doit être complétée par la définition et la mise en oeuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans le bâtiment et des personnes appelées à intervenir sur les matériaux ou produits contenant de l’amiante. Les recommandations générales de sécurité définies ci-après rappellent les règles de base destinées à prévenir les expositions. Le propriétaire (ou, à défaut, l’exploitant) de l’immeuble concerné adapte ces recommandations aux particularités de chaque bâtiment et de ses conditions d’occupation ainsi qu’aux situations particulières rencontrées.</p>
-	<p>Ces recommandations générales de sécurité ne se substituent en aucun cas aux obligations réglementaires existantes en matière de prévention des risques pour la santé et la sécurité des travailleurs, inscrites dans le code du travail.</p>
-	<h3>1.&nbsp;Informations générales</h3>
-		<h5>a)&nbsp;Dangerosité de l'amiante</h5>
-		<p>Les maladies liées à l’amiante sont provoquées par l’inhalation des fibres. Toutes les variétés d’amiante sont classées comme substances cancérogènes avérées pour l’homme. Elles sont à l’origine de cancers qui peuvent atteindre soit la plèvre qui entoure les poumons (mésothéliomes), soit les bronches et/ou les poumons (cancers broncho-pulmonaires). Ces lésions surviennent longtemps (souvent entre 20 à 40 ans) après le début de l’exposition à l’amiante. Le Centre international de recherche sur le cancer (CIRC) a également établi récemment un lien entre exposition à l’amiante et cancers du larynx et des ovaires. D’autres pathologies, non cancéreuses, peuvent également survenir en lien avec une exposition à l’amiante. Il s’agit exceptionnellement d’épanchements pleuraux (liquide dans la plèvre) qui peuvent être récidivants ou de plaques pleurales (qui épaississent la plèvre). Dans le cas d’empoussièrement important, habituellement d’origine professionnelle, l’amiante peut provoquer une sclérose (asbestose) qui réduira la capacité respiratoire et peut dans les cas les plus graves produire une insuffisance respiratoire parfois mortelle. Le risque de cancer du poumon peut être majoré par l’exposition à d’autres agents cancérogènes, comme la fumée du tabac.</p>
-		<h5>b)&nbsp;Présence d’amiante dans des matériaux et produits en bon état de conservation</h5>
-		<p>L’amiante a été intégré dans la composition de nombreux matériaux utilisés notamment pour la construction. En raison de son caractère cancérogène, ses usages ont été restreints progressivement à partir de 1977, pour aboutir à une interdiction totale en 1997.</p>
-		<p>En fonction de leur caractéristique, les matériaux et produits contenant de l’amiante peuvent libérer des fibres d’amiante en cas d’usure ou lors d’interventions mettant en cause l’intégrité du matériau ou produit (par exemple perçage, ponçage, découpe, friction…). Ces situations peuvent alors conduire à des expositions importantes si des mesures de protection renforcées ne sont pas prises.</p>
-		<p>Pour rappel, les matériaux et produits répertoriés aux listes A et B de l’annexe 13-9 du code de la santé publique font l’objet d’une évaluation de l’état de conservation dont les modalités sont définies par arrêté. Il convient de suivre les recommandations émises par les opérateurs de repérage dits "diagnostiqueurs" pour la gestion des matériaux ou produits repérés.</p>
-		<p>De façon générale, il est important de veiller au maintien en bon état de conservation des matériaux et produits contenant de l’amiante et de remédier au plus tôt aux situations d’usure anormale ou de dégradation de ceux-ci.</p>
+	<bookmark title="5. ATTESTATION D'ASSURANCE ET CERTIFICATION" level="0"></bookmark>
+	{{ CSSclass('<h2>5. ATTESTATION D\'ASSURANCE ET CERTIFICATION</h2>', 'greyline', 'div')|raw }}
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<h3>2.&nbsp;Intervention de professionnels soumis aux dispositions du code du travail</h3>
-		<p>Il est recommandé aux particuliers d’éviter dans la mesure du possible toute intervention directe sur des matériaux et produits contenant de l’amiante et de faire appel à des professionnels compétents dans de telles situations.</p>
-		<p>Les entreprises réalisant des opérations sur matériaux et produits contenant de l’amiante sont soumises aux dispositions des articles R. 4412-94 à R. 4412-148 du code du travail. Les entreprises qui réalisent des travaux de retrait ou de confinement de matériaux et produits contenant de l’amiante doivent en particulier être certifiées dans les conditions prévues à l’article R. 4412-129. Cette certification est obligatoire à partir du 1er juillet 2013 pour les entreprises effectuant des travaux de retrait sur l’enveloppe extérieure des immeubles bâtis et à partir du 1<sup>er</sup> juillet 2014 pour les entreprises de génie civil.</p>
-		<p>Des documents d’information et des conseils pratiques de prévention adaptés sont disponibles sur le site Travailler-mieux (&nbsp;<a href="http://www.travailler-mieux.gouv.fr" target='_blank'>http://www.travailler-mieux.gouv.fr</a>&nbsp;) et sur le site de l’Institut national de recherche et de sécurité pour la prévention des accidents du travail et des maladies professionnelles<br>(&nbsp;<a href="http://www.inrs.fr" target='_blank'>http://www.inrs.fr</a>&nbsp;).</p>
-	<h3>3.&nbsp;Recommandations générales de sécurité</h3>
-		<p>Il convient d’éviter au maximum l’émission de poussières notamment lors d’interventions ponctuelles non répétées, par exemple&nbsp;:</p>
-		<p style="text-align:left;">-&nbsp;perçage d’un mur pour accrocher un tableau&nbsp;;</p>
-		<p style="text-align:left;">-&nbsp;remplacement de joints sur des matériaux contenant de l’amiante&nbsp;;</p>
-		<p style="text-align:left;">-&nbsp;travaux réalisés à proximité d’un matériau contenant de l’amiante en bon état, par exemple des interventions légères dans des boîtiers électriques, sur des gaines ou des circuits situés sous un flocage sans action directe sur celui-ci, de remplacement d’une vanne sur une canalisation calorifugée à l’amiante.</p>
-		<p>L’émission de poussières peut être limitée par humidification locale des matériaux contenant de l’amiante en prenant les mesures nécessaires pour éviter tout risque électrique et/ou en utilisant de préférence des outils manuels ou des outils à vitesse lente.</p>
-		<p>Le port d’équipements adaptés de protection respiratoire est recommandé. Le port d’une combinaison jetable permet d’éviter la propagation de fibres d’amiante en dehors de la zone de travail. Les combinaisons doivent être jetées après chaque utilisation.</p>
-		<br>
-		<p>Des informations sur le choix des équipements de protection sont disponibles sur le site internet amiante de l’INRS à l’adresse suivante&nbsp;: www.amiante.inrs.fr. De plus, il convient de disposer d’un sac à déchets à proximité immédiate de la zone de travail et d’une éponge ou d’un chiffon humide de nettoyage.</p>
-	<h3>4.&nbsp;Gestion des déchets contenant de l’amiante</h3>
-		<p>Les déchets de toute nature contenant de l’amiante sont des déchets dangereux. À ce titre, un certain nombre de dispositions réglementaires, dont les principales sont rappelées ci-après, encadrent leur élimination.</p>
-		<p>Lors de travaux conduisant à un désamiantage de tout ou partie de l’immeuble, la personne pour laquelle les travaux sont réalisés, c’est-à-dire les maîtres d’ouvrage, en règle générale les propriétaires, ont la responsabilité de la bonne gestion des déchets produits, conformément aux dispositions de l’article L. 541-2 du code de l’environnement. Ce sont les producteurs des déchets au sens du code de l’environnement.</p>
-		<p>Les déchets liés au fonctionnement d’un chantier (équipements de protection, matériel, filtres, bâches, etc.) sont de la responsabilité de l’entreprise qui réalise les travaux.</p>
-		<br>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-		<p class='underline'>a)&nbsp;Conditionnement des déchets</p>
-			<p>Les déchets de toute nature susceptibles de libérer des fibres d’amiante sont conditionnés et traités de manière à ne pas provoquer d’émission de poussières. Ils sont ramassés au fur et à mesure de leur production et conditionnés dans des emballages appropriés et fermés, avec apposition de l’étiquetage prévu par le décret no 88-466 du 28 avril 1988 relatif aux produits contenant de l’amiante et par le code de l’environnement notamment ses articles R. 551-1 à R. 551-13 relatifs aux dispositions générales relatives à tous les ouvrages d’infrastructures en matière de stationnement, chargement ou déchargement de matières dangereuses.</p>
-			<p>Les professionnels soumis aux dispositions du code du travail doivent procéder à l’évacuation des déchets, hors du chantier, aussitôt que possible, dès que le volume le justifie après décontamination de leurs emballages.</p>
-		<br>
-		<p class='underline'>b)&nbsp;Apport en déchèterie</p>
-			<p>Environ 10&nbsp;% des déchèteries acceptent les déchets d’amiante lié à des matériaux inertes ayant conservé leur intégrité provenant de ménages, voire d’artisans. Tout autre déchet contenant de l’amiante est interdit en déchèterie. À partir du 1er janvier 2013, les exploitants de déchèterie ont l’obligation de fournir aux usagers les emballages et l’étiquetage appropriés aux déchets d’amiante.</p>
-		<br>
-		<p class='underline'>c)&nbsp;Filières d’élimination des déchets</p>
-			<p>Les matériaux contenant de l’amiante ainsi que les équipements de protection (combinaison, masque, gants…) et les déchets issus du nettoyage (chiffon…) sont des déchets dangereux. En fonction de leur nature, plusieurs filières d’élimination peuvent être envisagées.</p>
-			<p>Les déchets contenant de l’amiante lié à des matériaux inertes ayant conservé leur intégrité peuvent être éliminés dans des installations de stockage de déchets non dangereux si ces installations disposent d’un casier de stockage dédié à ce type de déchets. Tout autre déchet amianté doit être éliminé dans une installation de stockage pour déchets dangereux ou être vitrifiés. En particulier, les déchets liés au fonctionnement du chantier, lorsqu’ils sont susceptibles d’être contaminés par de l’amiante, doivent être éliminés dans une installation de stockage pour déchets dangereux ou être vitrifiés.</p>
-		<br>
-		<p class='underline'>d)&nbsp;Information sur les déchèteries et les installations d’élimination des déchets d’amiante</p>
-			<p>Les informations relatives aux déchèteries acceptant des déchets d’amiante lié et aux installations d’élimination des déchets d’amiante peuvent être obtenues auprès&nbsp;:</p>
-			<p style="text-align:left;">-&nbsp;de la préfecture ou de la direction régionale de l’environnement, de l’aménagement et du logement (direction régionale et interdépartementale de l’environnement et de l’énergie en Ile-de-France) ou de la direction de l’environnement, de l’aménagement et du logement&nbsp;;</p>
-			<p style="text-align:left;">-&nbsp;du conseil général (ou conseil régional en Ile-de-France) au regard de ses compétences de planification sur les déchets dangereux&nbsp;;</p>
-			<p style="text-align:left;">-&nbsp;de la mairie&nbsp;;</p>
-			<p style="text-align:left;">-&nbsp;ou sur la base de données "déchets" gérée par l’Agence de l’environnement et de la maîtrise de l’énergie, directement accessible sur internet à l’adresse suivante&nbsp;: <a href="http://www.sinoe.org" target='_blank'>www.sinoe.org</a>.</p>
-		<br>
-		<p class='underline'>e)&nbsp;Traçabilité</p>
-			<p>Le producteur des déchets remplit un bordereau de suivi des déchets d’amiante (BSDA, CERFA no 11861). Le formulaire CERFA est téléchargeable sur le site du ministère chargé de l’environnement. Le propriétaire recevra l’original du bordereau rempli par les autres intervenants (entreprise de travaux, transporteur, exploitant de l’installation de stockage ou du site de vitrification).</p>
-			<p>Dans tous les cas, le producteur des déchets devra avoir préalablement obtenu un certificat d’acceptation préalable lui garantissant l’effectivité d’une filière d’élimination des déchets.</p>
-			<p>Par exception, le bordereau de suivi des déchets d’amiante n’est pas imposé aux particuliers voire aux artisans qui se rendent dans une déchèterie pour y déposer des déchets d’amiante lié à des matériaux inertes ayant conservé leur intégrité. Ils ne doivent pas remplir un bordereau de suivi de déchets d’amiante, ce dernier étant élaboré par la déchèterie.</p>
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-		<div style="height:80mm;width:100%;"></div>
-		<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
-		<a name="anchor88"></a>
-		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
-	
-	{% set pvanalyse = rapport.getField('rapport_pv_analyse') %}
-	{% set multipvanalyse = multiMediaIMG(pvanalyse, RESO, null, null, '100%', null, neant, 'div|width:100%;text-align:center;') %}
-	{% if (pvanalyse|length < 1) or (multipvanalyse == neant) %}
-		<br><br><br>
-	
-		<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
-
-	{% else %}
-
-	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
-
-		{{ multipvanalyse|raw }}
-
-	{% endif %}
-
-{{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
-
-
-		<div style="height:80mm;width:100%;"></div>
-		<h2 class="stronger center">FIN ANNEXE<br><br>RAPPORT DE MISSION DE REPÉRAGE<br>DES MATÉRIAUX ET PRODUITS DE LA LISTE A<br>CONTENANT DE L’AMIANTE</h2>
-		<br>
+	<bookmark title="6. RECOMMANDATIONS GÉNÉRALES DE SÉCURITÉ" level="0"></bookmark>
+	{{ CSSclass('<h2>6. RECOMMANDATIONS GÉNÉRALES DE SÉCURITÉ</h2>', 'greyline', 'div')|raw }}
 
 {{ base.endDoc(format) }}
