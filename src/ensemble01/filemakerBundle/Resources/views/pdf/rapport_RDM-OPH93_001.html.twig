@@ -337,7 +337,8 @@
 				{% for ligne in data %}
 				<tr>
 					{% set amiante = 'red' %}
-					{% for key,colonne in ligne if (loop.index <= (case|length + 1)) %}
+					{% for key,colonne in ligne %}
+					{% if (loop.index <= (case|length + 1)) %}
 					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
@@ -352,6 +353,7 @@
 					</td>
 					{% endfor %}
 				</tr>
+				{% endif %}
 				{% endfor %}
 				{% else %}
 				<tr>
@@ -394,7 +396,8 @@
 				{% for ligne in data %}
 				<tr>
 					{% set amiante = 'red' %}
-					{% for key,colonne in ligne if (loop.index <= (case|length + 1)) %}
+					{% for key,colonne in ligne %}
+					{% if (loop.index <= (case|length + 1)) %}
 					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
@@ -409,6 +412,7 @@
 					</td>
 					{% endfor %}
 				</tr>
+				{% endif %}
 				{% endfor %}
 				{% else %}
 				<tr>
