@@ -343,7 +343,11 @@
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 						{% else %}
-						{{ colonizeWords(colonne, case[key] + 2, 'br')|raw }}
+							{% if key == 11 %}
+							{{ separateSlash(colonne, '<br>')|raw }}
+							{% else %}
+							{{ colonizeWords(colonne, case[key] + 5, 'br')|raw }}
+							{% endif %}
 						{% endif %}
 					</td>
 					{% endfor %}
@@ -395,7 +399,11 @@
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 						{% else %}
-						{{ colonizeWords(colonne, case[key] + 2, 'br')|raw }}
+							{% if key == 11 %}
+							{{ separateSlash(colonne, '<br>')|raw }}
+							{% else %}
+							{{ colonizeWords(colonne, case[key] + 5, 'br')|raw }}
+							{% endif %}
 						{% endif %}
 					</td>
 					{% endfor %}

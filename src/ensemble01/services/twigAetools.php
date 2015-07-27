@@ -20,6 +20,7 @@ class twigAetools extends \Twig_Extension {
 	public function getFunctions() {
 		return array(
 			'phraseCut'				=> new \Twig_Function_Method($this, 'phraseCut'),
+			'separateSlash'			=> new \Twig_Function_Method($this, 'separateSlash'),
 			'colonizeWords'			=> new \Twig_Function_Method($this, 'colonizeWords'),
 			'colonizeWordsWithP'	=> new \Twig_Function_Method($this, 'colonizeWordsWithP'),
 			'cleanSpaces'			=> new \Twig_Function_Method($this, 'cleanSpaces'),
@@ -107,6 +108,14 @@ class twigAetools extends \Twig_Extension {
 			if($tre) $r1=trim($r1)."…";
 		} else $r1=$t;
 		return trim($r1);
+	}
+
+	public function separateSlash($texte, $separator = '<br>') {
+		$tx = explode('/', $texte);
+		foreach ($tx as $key => $value) {
+			$tx[$key] = trim($value);
+		}
+		return implode($separator, $tx);
 	}
 
 	/**
