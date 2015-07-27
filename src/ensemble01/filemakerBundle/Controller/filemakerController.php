@@ -496,11 +496,12 @@ class filemakerController extends fmController {
 	 */
 	protected function getRapportTemplate($type) {
 		$templates = array(
-			"RDM-DAPP" 		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
-			"RDM-DAPP-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
-			"RDM-DAPP-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
-			"RDM-ListeA-SP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-ListeA_001.html.twig",
-			"RDM-ListeA-AP"	=> "ensemble01filemakerBundle:pdf:rapport_RDM-ListeA_001.html.twig",
+			"RDM-DAPP" 			=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-DAPP-SP"		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-DAPP-AP"		=> "ensemble01filemakerBundle:pdf:rapport_RDM-DAPP-AP_001.html.twig",
+			"RDM-ListeA-SP"		=> "ensemble01filemakerBundle:pdf:rapport_RDM-ListeA_001.html.twig",
+			"RDM-ListeA-AP"		=> "ensemble01filemakerBundle:pdf:rapport_RDM-ListeA_001.html.twig",
+			"RDM-OPH93-SP"		=> "ensemble01filemakerBundle:pdf:rapport_RDM-OPH93_001.html.twig",
 		);
 		if(isset($templates[$type])) return $templates[$type];
 			else return false;
