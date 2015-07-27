@@ -309,8 +309,8 @@
 	<h3>4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
 		{% set larg = 185 %} <!-- 185mm -->
 		{% set unit = "mm" %}
-		{% set case = [10,10,10,10,10,1,1,1,17,10,10,10] %}
-		{% set nbcols = case|length + 1 %}
+		{% set case = [10,10,10,10,10,1,1,1,8,9,10,10,10] %}
+		{% set nbcols = case|length %}
 		<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
 			<thead>
 				<tr>
@@ -322,14 +322,14 @@
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homogène</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] + case[9]) * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homogène</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[12] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
 				</tr>
 				<tr>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] // 2) * larg // 100 }}{{ unit }};' class='center'>Type</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] - (case[9] // 2)) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[9] // 2) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -343,7 +343,7 @@
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 						{% else %}
-						{{ colonizeWords(colonne, case[key] + 3, 'br')|raw }}
+						{{ colonizeWords(colonne, case[key], 'br')|raw }}
 						{% endif %}
 					</td>
 					{% endfor %}
@@ -374,14 +374,14 @@
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homogène</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] + case[9]) * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homogène</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[12] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
 				</tr>
 				<tr>
 					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] // 2) * larg // 100 }}{{ unit }};' class='center'>Type</th>
-					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] - (case[9] // 2)) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[9] // 2) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -395,7 +395,7 @@
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 						{% else %}
-						{{ colonizeWords(colonne, case[key] + 3, 'br')|raw }}
+						{{ colonizeWords(colonne, case[key], 'br')|raw }}
 						{% endif %}
 					</td>
 					{% endfor %}
