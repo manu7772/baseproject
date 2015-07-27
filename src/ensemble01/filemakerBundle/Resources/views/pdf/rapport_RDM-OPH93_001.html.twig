@@ -333,7 +333,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_A_materiau'), '-', (case|length + 1)) %}
+				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_A_materiau'), '-', nbcols) %}
 				{% if data != false %}
 				{% for ligne in data %}
 				<tr>
@@ -343,7 +343,7 @@
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 						{% else %}
-						{{ colonizeWords(colonne, case[key], 'br')|raw }}
+						{{ colonizeWords(colonne, case[key] + 2, 'br')|raw }}
 						{% endif %}
 					</td>
 					{% endfor %}
@@ -385,7 +385,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau'), '-', (case|length + 1)) %}
+				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau'), '-', nbcols) %}
 				{% if data != false %}
 				{% for ligne in data %}
 				<tr>
@@ -395,7 +395,7 @@
 						{% if colonne matches '/^(Mult-)/' %}
 						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
 						{% else %}
-						{{ colonizeWords(colonne, case[key], 'br')|raw }}
+						{{ colonizeWords(colonne, case[key] + 2, 'br')|raw }}
 						{% endif %}
 					</td>
 					{% endfor %}
