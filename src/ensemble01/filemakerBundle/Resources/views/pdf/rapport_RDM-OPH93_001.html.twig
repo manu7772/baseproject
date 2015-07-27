@@ -310,6 +310,7 @@
 		{% set larg = 185 %} <!-- 185mm -->
 		{% set unit = "mm" %}
 		{% set case = [10,10,10,10,10,1,1,1,17,10,10,10] %}
+		{% set nbcols = case|length + 1 %}
 		<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
 			<thead>
 				<tr>
@@ -346,7 +347,7 @@
 						{% set idx = key %}
 						{% if idx > 14 %}{% set idx = 14 %}{% endif %}
 						{% if idx < 0 %}{% set idx = 0 %}{% endif %}
-						{{ colonizeWords(colonne, (10 * case[idx] // 10), 'br')|raw }}
+						{{ colonizeWords(colonne, (10 * case[idx] // 2), 'br')|raw }}
 						{% endif %}
 							{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 					</td>
@@ -355,7 +356,7 @@
 				{% endfor %}
 				{% else %}
 				<tr>
-					{% for n in 1..16 %}
+					{% for n in 1..nbcols %}
 					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
 					{% endfor %}
 				</tr>
@@ -403,7 +404,7 @@
 						{% set idx = key %}
 						{% if idx > 14 %}{% set idx = 14 %}{% endif %}
 						{% if idx < 0 %}{% set idx = 0 %}{% endif %}
-						{{ colonizeWords(colonne, (10 * case[idx] // 10), 'br')|raw }}
+						{{ colonizeWords(colonne, (10 * case[idx] // 2), 'br')|raw }}
 						{% endif %}
 							{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
 					</td>
@@ -412,7 +413,7 @@
 				{% endfor %}
 				{% else %}
 				<tr>
-					{% for n in 1..16 %}
+					{% for n in 1..nbcols %}
 					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
 					{% endfor %}
 				</tr>
