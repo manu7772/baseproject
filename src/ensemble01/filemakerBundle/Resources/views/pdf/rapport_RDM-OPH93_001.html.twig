@@ -263,26 +263,168 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<nobreak>
 	<bookmark title="3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS" level="0"></bookmark>
 	{{ CSSclass('<h2>3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
 
+	<nobreak>
+		<bookmark title="4.2 Liste des locaux ou parties de locaux non visités" level="1" ></bookmark>
+		<h3>4.2 Liste des locaux ou parties de locaux non visités</h3>
+		<table class='type4'>
+			<thead>
+				<tr>
+					<th class='one center'>Désignation</th>
+					<th class='two center'>Niveau</th>
+					<th class='three center'>Motif d’absence<br>de visite</th>
+					<th class='four center'>Action menée</th>
+					<th class='five center'>Remarque à destination<br>du donneur d’ordre</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set item = non_visites(rapport.getField('rapport_detail_liste_locaux_non_visite_par_local'), neant) %}
+				{% for it in item %}
+				<tr>
+					{% for it2 in it %}
+					<td class='center'>{{ it2|raw }}</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</nobreak>
+	<br>
+	<div class='important'>
+		<p class='titre'>IMPORTANT</p>
+		<p>En présence de locaux non visités ci-dessus répertoriés, les obligations réglementaires pesant sur le propriétaire ne sont pas remplies conformément aux articles R.1334-15 à R.1334-18 du Code de la santé publique. Des investigations complémentaires devront être accomplies au sein des locaux ou parties de locaux susmentionnés avant l’élaboration d’un rapport exhaustif.</p>
+	</div>
+	<br>
+
+
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, {orientation: 'L'}) }}
 
 	<bookmark title="4. TABLEAU DE REPÉRAGE" level="0"></bookmark>
 	{{ CSSclass('<h2>4. TABLEAU DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 
+	<nobreak>
 	<bookmark title="4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
 	<h3>4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
+		{% set larg = 185 %} <!-- 185mm -->
+		{% set unit = "mm" %}
+		{% set case = [12,10,10,10,10,1,1,1,15,10,10,10] %}
+		<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
+			<thead>
+				<tr>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[0] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Réf.</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[1] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Niveau</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[2] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N°<br>pièce</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[3] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Pièce/<br>Local</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[4] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
+				</tr>
+				<tr>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] // 2) * larg // 100 }}{{ unit }};' class='center'>Type</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] - (case[9] // 2)) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_A_materiau')) %}
+				{% if data != false %}
+				{% for ligne in data %}
+				<tr>
+					{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
+					{% for key,colonne in ligne %}
+					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
+						{% if colonne matches '/^(Mult-)/' %}
+						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
+							{# base.image(colonne, "width:38mm;") #}
+						{% else %}
+						{% set idx = key %}
+						{% if idx > 14 %}{% set idx = 14 %}{% endif %}
+						{% if idx < 0 %}{% set idx = 0 %}{% endif %}
+						{{ colonizeWords(colonne, (10 * case[idx] // 10), 'br')|raw }}
+						{% endif %}
+							{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
+					</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr>
+					{% for n in 1..16 %}
+					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
+					{% endfor %}
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</nobreak>
 
+	<nobreak>
 	<bookmark title="4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
 	<h3>4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
+		<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
+			<thead>
+				<tr>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[0] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Réf.</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[1] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Niveau</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[2] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>N°<br>pièce</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[3] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Pièce/<br>Local</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[4] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Date<br>de<br>prélè<br>vement</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[5] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Sol</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[6] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Mur</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[7] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Plaf.</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[8] * larg // 100 }}{{ unit }};' class='center' colspan='2'>Matériaux</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[9] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Observa<br>tions</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[10] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>Zone<br>homo<br>gène</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ case[11] * larg // 100 }}{{ unit }};' class='center' rowspan='2'>État<br>estimatif<br>du matériau</th>
+				</tr>
+				<tr>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] // 2) * larg // 100 }}{{ unit }};' class='center'>Type</th>
+					<th style='border: 0.8pt solid #333333; background-color: #aaaaaa; color: #333333; font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; width: {{ (case[8] - (case[9] // 2)) * larg // 100 }}{{ unit }};' class='center'>Détails</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau')) %}
+				{% if data != false %}
+				{% for ligne in data %}
+				<tr>
+					{% set amiante = '#333333' %}{% if ligne[12] is defined %}{% if ligne[12] matches cherchepresence %}{% set amiante = 'red' %}{% endif %}{% endif %}
+					{% for key,colonne in ligne %}
+					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: {{ amiante|raw }}; border: 0.8pt solid #333333;' class='center'>
+						{% if colonne matches '/^(Mult-)/' %}
+						{{ mediaIMG(colonne, RESO, null, null, '38mm')|raw }}
+							{# base.image(colonne, "width:38mm;") #}
+						{% else %}
+						{% set idx = key %}
+						{% if idx > 14 %}{% set idx = 14 %}{% endif %}
+						{% if idx < 0 %}{% set idx = 0 %}{% endif %}
+						{{ colonizeWords(colonne, (10 * case[idx] // 10), 'br')|raw }}
+						{% endif %}
+							{# printIfMult(colonne, RESO, null, null, '38mm', 6, 'br')|raw #}
+					</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr>
+					{% for n in 1..16 %}
+					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
+					{% endfor %}
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</nobreak>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
 
 	<bookmark title="5. ATTESTATION D'ASSURANCE ET CERTIFICATION" level="0"></bookmark>
 	{{ CSSclass('<h2>5. ATTESTATION D\'ASSURANCE ET CERTIFICATION</h2>', 'greyline', 'div')|raw }}
