@@ -332,7 +332,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_A_materiau')) %}
+				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_A_materiau'), '-', (case|length + 1)) %}
 				{% if data != false %}
 				{% for ligne in data %}
 				<tr>
@@ -389,7 +389,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau')) %}
+				{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau'), '-', (case|length + 1)) %}
 				{% if data != false %}
 				{% for ligne in data %}
 				<tr>
