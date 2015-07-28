@@ -130,7 +130,7 @@ class twigAetools extends \Twig_Extension {
 		$voyelles = array("a", "e", "i", "o", "u", "y");
 		$consonnes = array("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z");
 		// réduction pour faire une moyenne
-		if($n > 5) $n = $n - 2;
+		// if($n > 5) $n = $n - 2;
 		// supprime espaces en trop
 		$t = $this->cleanSpaces(trim($t));
 		$changes = array(" ", "-", "/");
