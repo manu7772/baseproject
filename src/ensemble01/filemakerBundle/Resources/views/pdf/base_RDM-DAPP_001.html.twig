@@ -225,6 +225,21 @@
 			color: red;
 		}
 
+		.rotate {
+			/* FF3.5+ */
+			-moz-transform: rotate(-90.0deg);
+			/* Opera 10.5 */
+			-o-transform: rotate(-90.0deg);
+			/* Saf3.1+, Chrome */
+			-webkit-transform: rotate(-90.0deg);
+			/* IE6,IE7 */
+			filter: progid: DXImageTransform.Microsoft.BasicImage(rotation=0.083);
+			/* IE8 */
+			-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)";
+			/* Standard */
+			transform: rotate(-90.0deg);
+		}
+
 		.barre-oblique {
 			background-size: 100% 100%;
 			background-repeat: no-repeat;
@@ -263,9 +278,10 @@
 			margin: 0mm auto;
 		}
 		table.phtable * {
-			font-size: 6pt;
-			line-height: 7pt;
+			font-size: 10pt;
+			line-height: 10pt;
 			font-weight: normal;
+			letter-spacing: -1pt;
 			color: {{ gris6 }};
 		}
 
@@ -277,15 +293,15 @@
 			vertical-align: top;
 		}
 		table.phtable td#row1 {
-			width: 29%;
+			width: 25%;
 			text-align: left;
 		}
 		table.phtable td#row2 {
-			width: 42%;
+			width: 50%;
 			text-align: center;
 		}
 		table.phtable td#row3 {
-			width: 29%;
+			width: 25%;
 			text-align: right;
 		}
 
