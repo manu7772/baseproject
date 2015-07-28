@@ -98,7 +98,8 @@
 					{{ rapport.getField('local_adresse')|raw }} - {{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
 				</td>
 					{# {{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }} #}
-				<td id="row3">Réf.&nbsp;:<br>{{ rapport.getField('rapport_nom') }}<br>Emis le {{ date }}</td>
+				{# <td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date }}</td> #}
+				<td id="row3">{{ colonizeWords('Réf.&nbsp;: ' ~ rapport.getField('rapport_nom'), 40, 'br')|raw }}<br>Emis le {{ date }}</td>
 			</tr>
 		</table>
 		<br>
