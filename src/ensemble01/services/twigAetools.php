@@ -384,10 +384,10 @@ class twigAetools extends \Twig_Extension {
 	public function performLinks($t, $magnifyText = true) {
 		if($magnifyText) $t = $this->magnifyText($t);
 		$t = preg_replace_callback(
-			"#(\[\[)(.)+(\]\])#",
+			"#(\[\[)(.+)(\]\])#",
 			function ($matches) {
 				$impl = explode('|', $matches[2]);
-				if(count($impl) > 1) return '<a href="#'.$impl[1].'">'.$impl[0].'</a>';
+				if(count($impl) > 1) return '<a href="#'.trim($impl[1]).'">'.$impl[0].'</a>';
 				return $impl[0];
 			},
 			$t);
