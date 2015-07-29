@@ -127,7 +127,7 @@
 	</table>
 
 	<div class="conclusion">
-		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP'))|default(info_manquante)|raw }}
+		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP'))|default(info_manquante)|nl2br|raw }}
 	</div>
 
 {{ base.endPage(format) }}
