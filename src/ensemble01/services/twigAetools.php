@@ -386,7 +386,7 @@ class twigAetools extends \Twig_Extension {
 		$t = preg_replace_callback(
 			"#(\[\[)(.)+(\]\])#",
 			function ($matches) {
-				$impl = explode('|', $matches[1])
+				$impl = explode('|', $matches[1]);
 				if(count($impl) > 1) return '<a href="#'.$impl[1].'">'.$impl[0].'</a>';
 				return $impl[0];
 			},
