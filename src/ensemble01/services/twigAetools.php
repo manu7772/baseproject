@@ -30,6 +30,7 @@ class twigAetools extends \Twig_Extension {
 			'minUCfirst'			=> new \Twig_Function_Method($this, 'minUCfirst'),
 			'UCfirst'				=> new \Twig_Function_Method($this, 'UCfirst'),
 			'magnifyText'			=> new \Twig_Function_Method($this, 'magnifyText'),
+			'performLinks'			=> new \Twig_Function_Method($this, 'performLinks'),
 			'addZeros'				=> new \Twig_Function_Method($this, 'addZeros'),
 			'dureeHM'				=> new \Twig_Function_Method($this, 'dureeHM'),
 			'arrayprint'			=> new \Twig_Function_Method($this, 'arrayprint'),
@@ -378,6 +379,19 @@ class twigAetools extends \Twig_Extension {
 	 */
 	public function UCfirst($t) {
 		return ucfirst($t);
+	}
+
+	public function performLinks($t, $magnifyText = true) {
+		if($magnifyText) $t = $this->magnifyText($t);
+		$t = preg_replace_callback(
+			"#(\[\[)(.)+(\]\])#",
+			function ($matches) {
+				$impl = explode('|', $matches[1])
+				if(count($impl) > 1) return '<a href="#'.$impl[1].'">'.$impl[0].'</a>';
+				return $impl[0];
+			},
+			$t);
+		return $t;
 	}
 
 	/**

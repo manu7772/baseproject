@@ -119,7 +119,7 @@
 					<br>
 					<span class="underline">Accompagnateur</span>&nbsp;: 
 					<span class="bold">
-						{{ neant }}
+						{{ neant|raw }}
 					</span>
 				</td>
 			</tr>
@@ -127,7 +127,7 @@
 	</table>
 
 	<div class="conclusion">
-		{{ magnifyText(rapport.getField('rapport_conclusion_DAPP'))|default(info_manquante)|raw|nl2br }}
+		{{ performLinks(rapport.getField('rapport_conclusion_DAPP'))|default(info_manquante)|raw|nl2br }}
 	</div>
 
 {{ base.endPage(format) }}
@@ -140,7 +140,7 @@
 
 	<nobreak>
 	<bookmark title="1. OBJET ET CADRE DE LA MISSION" level="0"></bookmark>
-	{{ CSSclass('<h2>1. OBJET ET CADRE DE LA MISSION</h2>', 'greyline', 'div')|raw }}
+	{{ CSSclass('<h2 id="para1">1. OBJET ET CADRE DE LA MISSION</h2>', 'greyline', 'div')|raw }}
 
 		<p>La mission consiste, au-delà cadre réglementaire, à procéder au repérage visuel des matériaux des listes A et B de l’annexe 13-9 du CSP (Code de la Santé Publique) directement accessibles, sans démontage, ni déplacement d’objets, dans les parties privatives des locaux désignés en page de garde du présent rapport.</p>
 		<p>A la demande de la maîtrise d’ouvrage, aucuns prélèvements de MPSCA (Matériaux et Produits Susceptibles de Contenir de l’Amiante) ne seront réalisés pour analyses en laboratoire. Nous rappelons que seules les analyses de prélèvements desdits matériaux, permettent de conclure quant à la présence ou l’absence d’amiante ; le présent rapport a dès lors pour unique objet d’apporter un éclairage, quant à la présence de MPSCA au sein des locaux visités.</p>
@@ -162,7 +162,7 @@
 
 	<nobreak>
 	<bookmark title="2. PROGRAMME DE REPÉRAGE" level="0"></bookmark>
-	{{ CSSclass('<h2>2. PROGRAMME DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
+	{{ CSSclass('<h2 id="para2">2. PROGRAMME DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 
 		<table class='type5'>
 			<thead>
@@ -264,7 +264,7 @@
 {{ base.newPage(rapport, date, format) }}
 
 	<bookmark title="3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS" level="0"></bookmark>
-	{{ CSSclass('<h2>3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
+	{{ CSSclass('<h2 id="para3">3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
 
 	<nobreak>
 		<table class='type4'>
@@ -302,10 +302,11 @@
 {{ base.newPage(rapport, date, format, {orientation: 'L'}) }}
 
 	<bookmark title="4. TABLEAU DE REPÉRAGE" level="0"></bookmark>
-	{{ CSSclass('<h2>4. TABLEAU DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
+	{{ CSSclass('<h2 id="para4">4. TABLEAU DE REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 
 	<nobreak>
 	<bookmark title="4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
+	<a id="para4.1"></a>
 	<h3>4.1. Liste des matériaux et produits de la liste A de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
 		{% set larg = 210 %} <!-- 185mm -->
 		{% set unit = "mm" %}
@@ -356,7 +357,7 @@
 				{% else %}
 				<tr>
 					{% for n in 1..nbcols %}
-					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
+					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant|raw }}</td>
 					{% endfor %}
 				</tr>
 				{% endif %}
@@ -366,7 +367,7 @@
 
 	<nobreak>
 	<bookmark title="4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
-	<h3>4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
+	<h3 id="para4.2">4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante</h3>
 		<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
 			<thead>
 				<tr>
@@ -412,7 +413,7 @@
 				{% else %}
 				<tr>
 					{% for n in 1..nbcols %}
-					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant }}</td>
+					<td style='font-size: 7pt; vertical-align: middle; padding: 1{{ unit }}; color: #333333; border: 0.8pt solid #333333;' class='center'>{{ neant|raw }}</td>
 					{% endfor %}
 				</tr>
 				{% endif %}
@@ -424,7 +425,7 @@
 {{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
 
 	<bookmark title="5. ATTESTATION D'ASSURANCE ET CERTIFICATION" level="0"></bookmark>
-	{{ CSSclass('<h2>5. ATTESTATION D\'ASSURANCE ET CERTIFICATION</h2>', 'greyline', 'div')|raw }}
+	{{ CSSclass('<h2 id="para5">5. ATTESTATION D\'ASSURANCE ET CERTIFICATION</h2>', 'greyline', 'div')|raw }}
 
 
 	{###  ASSURANCE  ###}
@@ -465,7 +466,7 @@
 {{ base.newPage(rapport, date, format) }}
 
 	<bookmark title="6. RECOMMANDATIONS GÉNÉRALES DE SÉCURITÉ" level="0"></bookmark>
-	{{ CSSclass('<h2>6. RECOMMANDATIONS GÉNÉRALES DE SÉCURITÉ</h2>', 'greyline', 'div')|raw }}
+	{{ CSSclass('<h2 id="para6">6. RECOMMANDATIONS GÉNÉRALES DE SÉCURITÉ</h2>', 'greyline', 'div')|raw }}
 
 	<nobreak>
 	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à la présence d’amiante dans un bâtiment. Elle doit être complétée par la définition et la mise en oeuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans le bâtiment et des personnes appelées à intervenir sur les matériaux ou produits contenant de l’amiante. Les recommandations générales de sécurité définies ci-après rappellent les règles de base destinées à prévenir les expositions. Le propriétaire (ou, à défaut, l’exploitant) de l’immeuble concerné adapte ces recommandations aux particularités de chaque bâtiment et de ses conditions d’occupation ainsi qu’aux situations particulières rencontrées.</p>
