@@ -90,7 +90,7 @@
 		<table class="phtable" align="center">
 			<tr>
 				<td id="row1" rowspan="2">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row4" colspan="2"></td>
+				<td id="row4" colspan="2">Réf.&nbsp;: {{ rapport.getField('rapport_nom')|raw }}</td>
 			</tr>
 			<tr>
 				<td id="row2">
@@ -120,7 +120,7 @@
 					{% endif %}
 					{{ rapport.getField('local_adresse')|raw }} - {{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
 				</td>
-					{# {{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }} #}
+				{# {{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }} #}
 				{# <td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date }}</td> #}
 				<td id="row3">{{ colonizeWords('Réf.&nbsp;: ' ~ rapport.getField('rapport_nom'), 40, 'br')|raw }}<br>Emis le {{ date }}</td>
 			</tr>
@@ -132,10 +132,11 @@
 
 {% macro footer(rapport, date) %}
 	{% set gris6 = '#666666' %}
+	{% set gris9 = '#999999' %}
 	<page_footer>
-		<p style="width: 100%; font-size: 9pt; margin: 0mm; padding: 0mm; text-align: center; font-style: bold; color: {{ gris6 }};">[[page_cu]]/[[page_nb]]</p>
+		<p style="width: 100%; font-size: 9pt; margin: 0mm; padding: 0mm; text-align: center; color: {{ gris6 }};">[[page_cu]]/[[page_nb]]</p>
 		<p style="width: 100%; font-size: 9pt; margin: 0mm; padding: 0mm; text-align: center; font-style: italic; color: {{ gris6 }};">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p style="width: 100%; font-size: 9pt; margin: 0mm; padding: 0mm; text-align: center; color: #999; font-style: italic;">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
+		<p style="width: 100%; font-size: 8pt; margin: 0mm; padding: 0mm; text-align: center; color: {{ gris9 }}; font-style: italic;">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
 	</page_footer>
 {% endmacro %}
 
@@ -143,6 +144,7 @@
 {% macro writeCSS(imgpath) %}
 
 	{% set grisbleu = '#666699' %}
+	{% set gris9 = '#999999' %}
 	{% set gris6 = '#666666' %}
 	{% set gris5 = '#555555' %}
 	{% set gris4 = '#444444' %}
@@ -355,6 +357,12 @@
 			width: 72%;
 			text-align: right;
 		}
+/*		table.phtable tr#col1 {
+			height: 8pt;
+		}
+		table.phtable tr#col2 {
+			height: 8pt;
+		}*/
 
 
 		/* IMAGES */
