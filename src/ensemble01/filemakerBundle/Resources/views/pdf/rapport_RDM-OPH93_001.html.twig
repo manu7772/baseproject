@@ -3,7 +3,8 @@
 
 {% set RESO = false %}
 {% set neant = 'Néant' %}
-{% set info_manquante = info_manquante|default('<span style="background-color:yellow;color:red;font-size:0.7em;">INFORMATION MANQUANTE</span>') %}
+{% set errorstyle = ' style="background-color:yellow;color:red;font-size:0.7em;"' %}
+{% set info_manquante = '<p' ~ errorstyle|raw ~ '>' ~ info_manquante|default('INFORMATION MANQUANTE') ~ '</p>' %}
 {% set observation = 'Sans objet' %}
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
 {% set cherchepresence = '/^(.*)(presen|présen)(.*)$/i' %}
@@ -435,7 +436,7 @@
 	{% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
 		{{ image_base64(rapport.getField("soc_assurance1"), null, null, '93%')|raw }}
 	{% else %}
-		<h3>Document d'assurance introuvable</h3>
+		<h3><span {{ errorstyle|raw }}>Document d'assurance introuvable</span></h3>
 	{% endif %}
 
 	{% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
@@ -450,7 +451,7 @@
 	{% if rapport.getField("tech_signataire_certificat") != "" and rapport.getField("tech_signataire_certificat") is not null %}
 	{{ image_base64(rapport.getField("tech_signataire_certificat"), null, null, '100%')|raw }}
 	{% else %}
-	<h3>Certificat absent</h3>
+	<h3><span {{ errorstyle|raw }}>Certificat absent</span></h3>
 	{% endif %}
 
 	{% for id,tech in getTechniciens(rapport, true) %}
