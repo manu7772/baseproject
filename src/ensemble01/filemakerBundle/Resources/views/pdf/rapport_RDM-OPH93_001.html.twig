@@ -51,7 +51,7 @@
 			<tr>
 				<td>
 					<p style='width:100%; text-align:center;'>{{ image_base64(rapport.getField("client_logo_base64"), null, null, '128px')|raw }}</p>
-					<span class="bold">{ rapport.getField('client_nom')|default(info_manquante)|raw }}<br>
+					<span class="bold">{{ rapport.getField('client_nom')|default(info_manquante)|raw }}<br>
 					{{ rapport.getField('client_adresse')|default(info_manquante)|raw }}<br>
 					{{ rapport.getField('client_cp')|default(info_manquante)|raw }} {{ rapport.getField('client_ville')|default(info_manquante)|raw }}<br>
 					Tél.&nbsp;: {{ rapport.getField('client_tel')|default(info_manquante)|raw }}
