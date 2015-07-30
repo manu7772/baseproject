@@ -1,7 +1,8 @@
 parameters:
-    ensemble01.aetools.class: ensemble01\services\aetools
-    ensemble01.success_handler.class: ensemble01\services\SuccessHandler
-    ensemble01.textutilities.class: ensemble01\services\twigAetools
+    ensemble01services: ensemble01\services\
+    ensemble01.aetools.class: %ensemble01services%aetools
+    ensemble01.success_handler.class: %ensemble01services%SuccessHandler
+    ensemble01.textutilities.class: %ensemble01services%twigAetools
 
 services:
 #    ensemble01filemaker.example:
@@ -14,16 +15,20 @@ services:
         arguments: [@service_container]
 
     ensemble01services.geodiag:
-        class: ensemble01\services\geodiag
+        class: %ensemble01services%geodiag
         arguments: [@service_container]
 
     ensemble01services.aeReponse:
-        class: ensemble01\services\aeReponse
+        class: %ensemble01services%aeReponse
         arguments: [@service_container]
 
     ensemble01services.selection:
-        class: ensemble01\services\aeSelect
+        class: %ensemble01services%aeSelect
         arguments: [@service_container]
+
+    ensemble01services.Html2pdfFactory:
+        class: Ensepar\Html2pdfBundle\Factory\Html2pdfFactory
+        arguments: [%html2pdf.orientation%, %html2pdf.format%, %html2pdf.lang%, %html2pdf.unicode%, %html2pdf.encoding%, %html2pdf.margin%]
 
     # Fonctions textes utiles et pratiques pour utilisation dans TWIG
     ensemble01services.textutilities:
@@ -40,7 +45,7 @@ services:
 
     # EventListerner sur paramètres généraux du site
     ensemble01.site_listener:
-        class: ensemble01\services\geodiag
+        class: %ensemble01services%geodiag
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: load_fmservice }

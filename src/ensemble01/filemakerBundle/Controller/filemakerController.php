@@ -630,7 +630,7 @@ class filemakerController extends fmController {
 							$html2pdf->pdf->SetTitle('Rapport réf.'.$RAPP['rapport']->getField('type_rapport').' '.$RAPP['rapport']->getField('id').' du '.$RAPP["date"]->format($this->container->getParameter('formatDateTwig')));
 							$html2pdf->getHtmlFromPage($html);
 							$html2pdf->writeHTML($html, false);
-							$html2pdf->createIndex("Sommaire", 25, 12, false, true, 2);
+							$html2pdf->createIndex("Sommaire", 25, 10, false, true, 2, 'helvetica');
 							$aeReponse->addData(array('pdf' => $html2pdf, 'html' => $html, "rapport" => $RAPP), $RAPP["rapport"]->getField('id'));
 						} catch (HTML2PDF_exception $e){
 							$aeReponse->addErrorMessage('Erreur génération PDF : '.$e->getMessage());
