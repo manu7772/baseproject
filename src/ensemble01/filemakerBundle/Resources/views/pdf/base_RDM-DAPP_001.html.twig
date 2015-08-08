@@ -155,7 +155,7 @@
 		{% for key,ligne in table %}
 		<tr>
 			{% for key2,col in ligne %}
-			<td class='{{ classes[key2]|default("left")|raw }}'>{{ colonizeWords(col, sizes[key2])|default(stdwidth)|raw }}</td>
+			<td class='{{ classes[key2]|default("left")|raw }}'>{{ colonizeWords(col, sizes[key2])|default(stdwidth) - 8 }}</td>
 			{% endfor %}
 		</tr>
 		{% endfor %}

@@ -272,7 +272,7 @@
 	<nobreak>
 		{% set head = ['Désignation', 'Niveau', 'Motif d’absence<br>de visite', 'Action menée', 'Remarque à destination<br>du donneur d’ordre'] %}
 		{% set table = non_visites(rapport.getField('rapport_locaux_non_visite'), neant) %}
-		{% set sizes = [15, 12, 23, 20, 30] %}
+		{% set sizes = [15, 12, 23, 25, 25] %}
 		{% set classes = ['center', 'center', 'center', 'center', 'center'] %}
 		{{ base.tableExtended(head, table, sizes, classes) }}
 	</nobreak>
