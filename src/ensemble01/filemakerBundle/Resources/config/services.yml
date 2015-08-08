@@ -27,7 +27,7 @@ services:
         arguments: [@service_container]
 
     ensemble01services.Html2pdfFactory:
-        class: Ensepar\Html2pdfBundle\Factory\Html2pdfFactory
+        class: %ensemble01services%Html2pdfFactory
         arguments: [%html2pdf.orientation%, %html2pdf.format%, %html2pdf.lang%, %html2pdf.unicode%, %html2pdf.encoding%, %html2pdf.margin%]
 
     # Fonctions textes utiles et pratiques pour utilisation dans TWIG

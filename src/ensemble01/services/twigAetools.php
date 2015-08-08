@@ -1011,6 +1011,10 @@ class twigAetools extends \Twig_Extension {
 	public function non_visites($text, $neant = '-') {
 		$text = $this->FMexplode01($text);
 		$text = $this->fillChildsWith($text, 5, $neant, true);
+		// traitements colonnes
+		// foreach ($text as $key => $ligne) {
+		// 	$text[$key][3] = $this->colonizeWords($text[$key][3], 30);
+		// }
 		return $text;
 	}
 

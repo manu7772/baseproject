@@ -140,6 +140,29 @@
 	</page_footer>
 {% endmacro %}
 
+{% macro tableExtended(table, sizes, classes) %}
+{% set nbcols = table['head']|length %}
+{% set stdwidth = 100 / nbcols %}
+<table class="ext1" style='width: 100%; margin: 6mm auto 4mm; border-collapse: collapse;'>
+	<thead>
+		<tr>
+			{% for key,name in table['head'] %}
+			<th style='width:{{ sizes[key]|default(stdwidth)|raw }}%;' class='{{ classes[key]|default("left")|raw }}'>{{ name|raw }}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for key,ligne in table if key != 'head' %}
+		<tr>
+			{% for key2,col in ligne %}
+			<td class='{{ classes[key2]|default("left")|raw }}'>{{ colonizeWords(col, sizes[key2])|default(stdwidth)|raw }}</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endmacro %}
+
 
 {% macro writeCSS(imgpath) %}
 
@@ -488,6 +511,37 @@
 		table.fullwidth th,
 		table.fullwidth td {
 			width: 100%;
+		}
+
+		/* TABLE TYPE EXT1 */
+
+		table.ext1 {
+			/*width: 150mm;*/
+			width: 100%;
+			margin: 6mm auto 4mm;
+			border-collapse: collapse;
+		}
+		table.ext1 tr {
+			width: 100%;
+		}
+		table.ext1 td {
+			color: {{ darkgris }};
+			font-size: 9pt;
+			/*text-align: left;*/
+			vertical-align: middle;
+			padding: 1mm;
+		}
+		table.ext1 th, table.ext1 td {
+			border: {{ lines }};
+		}
+		table.ext1 th {
+			background-color: {{ grisC }};
+			color: {{ darkgris }};
+			text-align: center;
+			vertical-align: middle;
+			padding: 1mm;
+			font-size: 11pt;
+			font-weight: bold;
 		}
 
 		/* TABLE TYPE 1 */

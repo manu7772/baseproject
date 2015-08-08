@@ -270,27 +270,11 @@
 	{{ CSSclass('<h2 id="para3">3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
 
 	<nobreak>
-		<table class='type4'>
-			<thead>
-				<tr>
-					<th class='one center'>Désignation</th>
-					<th class='two center'>Niveau</th>
-					<th class='three center'>Motif d’absence<br>de visite</th>
-					<th class='four center'>Action menée</th>
-					<th class='five center'>Remarque à destination<br>du donneur d’ordre</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% set item = non_visites(rapport.getField('rapport_locaux_non_visite'), neant) %}
-				{% for it in item %}
-				<tr>
-					{% for it2 in it %}
-					<td class='center'>{{ it2|raw }}</td>
-					{% endfor %}
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+		{% set table = non_visites(rapport.getField('rapport_locaux_non_visite'), neant) %}
+		{% set table['head'] = ['Désignation', 'Niveau', 'Motif d’absence<br>de visite', 'Action menée', 'Remarque à destination<br>du donneur d’ordre'] %}
+		{% set sizes = [15, 12, 23, 20, 30] %}
+		{% set classes = ['center', 'center', 'center', 'center', 'center'] %}
+		{{ base.tableExtended(table, sizes, classes)|raw }}
 	</nobreak>
 	<br>
 	<div class='important'>

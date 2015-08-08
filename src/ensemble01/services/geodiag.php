@@ -170,34 +170,36 @@ class geodiag extends filemakerservice2 {
 	/** Gestion des PDF en cours   **/
 	/********************************/
 
+	/**
+	 * Renvoie le nom du fichier de gestion des générations
+	 * @return string
+	 */
 	public function getNomFichier_generations() {
 		return self::FILE_GENERATION;
 	}
 
+	/**
+	 * Renvoie les fichiers en cours de génération
+	 * @return array
+	 */
 	public function getGenerations() {
 		$this->verifAndGoDossier(self::DOSSIER_GENERATION);
-		if(@file_exists($this->aetools->getCurrentPath().self::FILE_GENERATION)) {
-			$data = $this->addDatetimes(unserialize(file_get_contents($this->aetools->getCurrentPath().self::FILE_GENERATION)));
+		if(@file_exists($this->aetools->getCurrentPath().$this->getNomFichier_generations())) {
+			$data = unserialize(file_get_contents($this->aetools->getCurrentPath().$this->getNomFichier_generations()));
+			if(!is_array($data)) $data = array();
+			foreach($data as $keyrapport => $rapport) {
+				$data[$keyrapport]['datetime'] = new DateTime($rapport['text']['date']);
+			}
 		} else {
 			$data = array();
 		}
 		return $data;
 	}
 
-	protected function addDatetimes($rapports) {
-		// foreach ($rapports as $keyrapport => $rapport) {
-		// 	$rapports[$keyrapport]['datetime'] = new DateTime($rapport['text']['date']);
-		// }
-		return $rapports;
-	}
-
-	protected function suppDatetimes($rapports) {
-		// foreach ($rapports as $keyrapport => $rapport) {
-		// 	unset($rapports[$keyrapport]['datetime']);
-		// }
-		return $rapports;
-	}
-
+	/**
+	 * 
+	 * 
+	 */
 	public function addRapportGeneration($id) {
 		$rapports = $this->getGenerations();
 		// format timestamp UNIX
@@ -215,6 +217,9 @@ class geodiag extends filemakerservice2 {
 		$this->saveGeneration($rapports);
 	}
 
+	/**
+	 * 
+	 */
 	public function suppRapportGeneration($id, $historique = true) {
 		$rapports = $this->getGenerations();
 		if(is_string($id)) $id = array($id);
@@ -229,6 +234,9 @@ class geodiag extends filemakerservice2 {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	protected function checkGeneration($rapports = null, $save = true) {
 		if($rapports === null) {
 			$rapports = $this->getGenerations();
@@ -247,10 +255,16 @@ class geodiag extends filemakerservice2 {
 		return $rapports;
 	}
 
+	/**
+	 * 
+	 */
 	protected function saveGeneration($rapports) {
 		$this->verifAndGoDossier(self::DOSSIER_GENERATION);
-		$file = fopen($this->aetools->getCurrentPath().self::FILE_GENERATION, 'w');
-		fwrite($file, serialize($this->suppDatetimes($rapports)));
+		$file = fopen($this->aetools->getCurrentPath().$this->getNomFichier_generations(), 'w');
+		foreach ($rapports as $keyrapport => $rapport) {
+			unset($rapports[$keyrapport]['datetime']);
+		}
+		fwrite($file, serialize($rapports));
 	}
 
 
