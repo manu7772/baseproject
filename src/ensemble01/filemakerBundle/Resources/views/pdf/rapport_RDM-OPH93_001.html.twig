@@ -270,11 +270,11 @@
 	{{ CSSclass('<h2 id="para3">3. LISTE DES LOCAUX OU PARTIES DE LOCAUX NON VISITÉS</h2>', 'greyline', 'div')|raw }}
 
 	<nobreak>
+		{% set head = ['Désignation', 'Niveau', 'Motif d’absence<br>de visite', 'Action menée', 'Remarque à destination<br>du donneur d’ordre'] %}
 		{% set table = non_visites(rapport.getField('rapport_locaux_non_visite'), neant) %}
-		{% set table['head'] = ['Désignation', 'Niveau', 'Motif d’absence<br>de visite', 'Action menée', 'Remarque à destination<br>du donneur d’ordre'] %}
 		{% set sizes = [15, 12, 23, 20, 30] %}
 		{% set classes = ['center', 'center', 'center', 'center', 'center'] %}
-		{{ base.tableExtended(table, sizes, classes)|raw }}
+		{{ base.tableExtended(head, table, sizes, classes) }}
 	</nobreak>
 	<br>
 	<div class='important'>
@@ -282,8 +282,6 @@
 		<p>Des investigation complémentaires devront être accomplies au sein des locaux ou parties de locaux susmentionnés avant l'élaboration d'un rapport exhaustif.</p>
 	</div>
 	<br>
-
-
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, {orientation: 'L'}) }}

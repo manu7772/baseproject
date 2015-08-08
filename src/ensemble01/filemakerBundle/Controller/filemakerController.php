@@ -23,7 +23,7 @@ class filemakerController extends fmController {
 	protected $aetools;
 
 	function __destruct() {
-		$this->affAllDev();
+		// $this->affAllDev();
 	}
 
 	public function indexAction() {
@@ -215,7 +215,7 @@ class filemakerController extends fmController {
 		// echo("UrlI : <br>".$this->getRequest()->getRequestUri()."<br><br>");
 
 		// données en fonction de la page
-		$this->vardumpDev($ctrlData, "ctrlData : ");
+		// $this->vardumpDev($ctrlData, "ctrlData : ");
 		switch ($ctrlData['template']) {
 			case 'liste-rapports-lots':
 				switch (strval($ctrlData['pagedata']["from_url"])) {

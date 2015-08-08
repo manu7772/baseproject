@@ -140,19 +140,19 @@
 	</page_footer>
 {% endmacro %}
 
-{% macro tableExtended(table, sizes, classes) %}
-{% set nbcols = table['head']|length %}
+{% macro tableExtended(head, table, sizes, classes) %}
+{% set nbcols = head|length %}
 {% set stdwidth = 100 / nbcols %}
 <table class="ext1" style='width: 100%; margin: 6mm auto 4mm; border-collapse: collapse;'>
 	<thead>
 		<tr>
-			{% for key,name in table['head'] %}
+			{% for key,name in head %}
 			<th style='width:{{ sizes[key]|default(stdwidth)|raw }}%;' class='{{ classes[key]|default("left")|raw }}'>{{ name|raw }}</th>
 			{% endfor %}
 		</tr>
 	</thead>
 	<tbody>
-		{% for key,ligne in table if key != 'head' %}
+		{% for key,ligne in table %}
 		<tr>
 			{% for key2,col in ligne %}
 			<td class='{{ classes[key2]|default("left")|raw }}'>{{ colonizeWords(col, sizes[key2])|default(stdwidth)|raw }}</td>
