@@ -94,35 +94,17 @@
 			</tr>
 			<tr>
 				<td id="row2">
+					{% if rapport.getField('type_rapport') matches '/OPH93/' %}
+					Rapport de Mission de Repérage des MPCA des listes A et B<br>
+					{% else %}
 					Rapport de Mission de Repérage des MPCA de la liste A<br>
+					{% endif %}
 					{% if rapport.getField("type_rapport") not in ['RDM-ListeA-SP', 'RDM-ListeA-AP'] %}
 					{{ rapport.getField('local_type_bat_texte')|raw }} - Logement {{ rapport.getField('num_porte')|raw }} - Étage {{ rapport.getField('local_etage')|raw }}<br>
 					{% endif %}
 					{{ rapport.getField('local_adresse')|raw }} - {{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
 				</td>
 				<td id="row3">Emis le {{ date|default('*** INFO MANQUANTE ***') }}</td>
-			</tr>
-		</table>
-		<br>
-		<br>
-	</page_header>
-{% endmacro %}
-
-{% macro header2(rapport, date) %}
-	<page_header>
-		<table class="phtable" align="center">
-			<tr>
-				<td id="row1">{{ image_base64(rapport.getField("soc_logo"), 'logoheader')|raw }}</td>
-				<td id="row2">
-					Rapport de Mission de Repérage des MPCA de la liste A<br>
-					{% if rapport.getField("type_rapport") not in ['RDM-ListeA-SP', 'RDM-ListeA-AP'] %}
-					{{ rapport.getField('local_type_bat_texte')|raw }} - Logement {{ rapport.getField('num_porte')|raw }} - Étage {{ rapport.getField('local_etage')|raw }}<br>
-					{% endif %}
-					{{ rapport.getField('local_adresse')|raw }} - {{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
-				</td>
-				{# {{ rapport.getField('soc_adresse') }} {{ rapport.getField('soc_adresse2') }} - {{ rapport.getField('soc_cp') }} {{ rapport.getField('soc_ville') }} #}
-				{# <td id="row3">Réf.&nbsp;: {{ rapport.getField('rapport_nom') }}<br>Emis le {{ date }}</td> #}
-				<td id="row3">{{ colonizeWords('Réf.&nbsp;: ' ~ rapport.getField('rapport_nom'), 40, 'br')|raw }}<br>Emis le {{ date }}</td>
 			</tr>
 		</table>
 		<br>
