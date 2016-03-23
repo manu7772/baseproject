@@ -1,6 +1,7 @@
-{% macro headDoc(rapport, date, imgpath, format, params) %}
+{% macro headDoc(rapport, date, imgpath, format, params, referencedocumentaire) %}
 	{% import _self as bases %}
 
+	{% set referencedocumentaire = referencedocumentaire|default('ST-SA-005-01') %}
 	{% set defaultBacktop = '0mm' %}
 	{% set defaultBackbottom = '10mm' %}
 	{% set defaultBackleft = '0mm' %}
@@ -20,7 +21,7 @@
 		{{ bases.writeCSS(imgpath) }}
 		<page backtop="{{ params.backtop|default(defaultBacktop) }}" backbottom="{{ params.backbottom|default(defaultBackbottom) }}" backleft="{{ params.backleft|default(defaultBackleft) }}" backright="{{ params.backright|default(defaultBackright) }}" orientation="{{ params.orientation|default(defaultOrientation) }}">
 			{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, date) }}{% endif %}
-			{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, date) }}{% endif %}
+			{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, date, referencedocumentaire) }}{% endif %}
 	{% else %}
 		<!DOCTYPE html>
 		<html lang="{{ params.lang|default(defaultLang) }}">
@@ -47,9 +48,10 @@
 	<img src="{{ url('ensemble01filemaker_media', {id: id, nom: id, ext: 'png'}) }}" class="{{ classe|default('') }}" style="{{ style|default('width:100%;') }}" />
 {% endmacro %}
 
-{% macro newPage(rapport, date, format, params) %}
+{% macro newPage(rapport, date, format, params, referencedocumentaire) %}
 	{% import _self as bases %}
 
+	{% set referencedocumentaire = referencedocumentaire|default('ST-SA-005-01') %}
 	{% set defaultBacktop = '15mm' %}
 	{% set defaultBackbottom = '10mm' %}
 	{% set defaultBackleft = '10mm' %}
@@ -64,7 +66,7 @@
 			{% if params is not iterable %}{% set params = [] %}{% endif %}
 			<page backtop="{{ params.backtop|default(defaultBacktop) }}" backbottom="{{ params.backbottom|default(defaultBackbottom) }}" backleft="{{ params.backleft|default(defaultBackleft) }}" backright="{{ params.backright|default(defaultBackright) }}" orientation="{{ params.orientation|default(defaultOrientation) }}">
 				{% if params.header|default(defaultHeader) == true %}{{ bases.header(rapport, date) }}{% endif %}
-				{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, date) }}{% endif %}
+				{% if params.footer|default(defaultFooter) == true %}{{ bases.footer(rapport, date, referencedocumentaire) }}{% endif %}
 		{% else %}
 			<page pageset="old">
 		{% endif %}
@@ -112,13 +114,14 @@
 	</page_header>
 {% endmacro %}
 
-{% macro footer(rapport, date) %}
+{% macro footer(rapport, date, referencedocumentaire) %}
+	{% set referencedocumentaire = referencedocumentaire|default('ST-SA-005-01') %}
 	{% set gris6 = '#666666' %}
 	{% set gris9 = '#999999' %}
 	<page_footer>
 		<p style="width: 100%; font-size: 9pt; margin: 0mm; padding: 0mm; text-align: center; color: {{ gris6 }};">[[page_cu]]/[[page_nb]]</p>
 		<p style="width: 100%; font-size: 9pt; margin: 0mm; padding: 0mm; text-align: center; font-style: italic; color: {{ gris6 }};">Ce rapport ne peut être utilisé ou reproduit que dans son intégralité, accompagné de ses annexes en couleur d’origine</p>
-		<p style="width: 100%; font-size: 8pt; margin: 0mm; padding: 0mm; text-align: center; color: {{ gris9 }}; font-style: italic;">Référence documentaire Géodem&nbsp;: ST-SA-005-01</p>
+		<p style="width: 100%; font-size: 8pt; margin: 0mm; padding: 0mm; text-align: center; color: {{ gris9 }}; font-style: italic;">Référence documentaire Géodem&nbsp;: {{ referencedocumentaire }}</p>
 	</page_footer>
 {% endmacro %}
 

@@ -2,12 +2,13 @@
 {% import "ensemble01filemakerBundle:pdf:base_RDM-DAPP_001.html.twig" as base %}
 
 {% set RESO = false %}
+{% set referencedocumentaire = 'ST-012-01' %}
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
 {% set cherchepresence = '/^(.*)(presence|présence|present|présent)(.*)$/i' %}
 
-{{ base.headDoc(rapport, date, imgpath, format) }}
+{{ base.headDoc(rapport, date, imgpath, format, referencedocumentaire) }}
 
 	<div class="bloc1">
 		<h1 class='center'>ANNEXE N°5.1</h1>
@@ -137,12 +138,12 @@
 	</div>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format, {header: true}) }}
+{{ base.newPage(rapport, date, format, {header: true}, referencedocumentaire) }}
 
 		{# !!! SOMMAIRE !!! #}
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format, 'default') }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<bookmark title="1. CONCLUSIONS DU RAPPORT" level="0" ></bookmark>
 	{{ CSSclass('<h2>1. CONCLUSIONS DU RAPPORT</h2>', 'greyline', 'div')|raw }}
@@ -233,7 +234,7 @@
 	</nobreak>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<nobreak>
 		<bookmark title="3. DOCUMENTS ANTERIEURS" level="0" ></bookmark>
@@ -313,7 +314,7 @@
 		<br>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<bookmark title="5. CONDITIONS DE RÉALISATION DU REPÉRAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>5. CONDITIONS DE RÉALISATION DU REPÉRAGE</h2>', 'greyline', 'div')|raw }}
@@ -353,7 +354,7 @@
 			<br>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		<nobreak>
 			<bookmark title="5.4 Programme de repérage de l'amiante" level="1" ></bookmark>
@@ -394,7 +395,7 @@
 		</nobreak>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<bookmark title="6. MÉTHODOLOGIE DU DIAGNOSTIC" level="0" ></bookmark>
 	{{ CSSclass('<h2>6. MÉTHODOLOGIE DU DIAGNOSTIC</h2>', 'greyline', 'div')|raw }}
@@ -409,7 +410,7 @@
 		<P>L'opérateur conclut définitivement à l'absence ou à la présence d'amiante pour chaque matériau ou produit repéré. Dans sa conclusion, l'opérateur de repérage précise le critère (matériau ou produit qui par nature ne contient pas d'amiante, marquage du matériau, document consulté, résultat d'analyse de matériau ou produit) qui lui a permis de conclure quant à la présence ou l'absence d'amiante. Pour chacun des matériaux et produits repérés, en fonction de sa connaissance des matériaux et produits utilisés, il atteste, le cas échéant, de la présence d'amiante. Dans ce cas, il précise dans sa conclusion que le critère qui lui a permis de conclure est son jugement personnel.</P>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format, {orientation: 'L'}) }}
+{{ base.newPage(rapport, date, format, {orientation: 'L'}, referencedocumentaire) }}
 
 	<bookmark title="7. RESULTATS DETAILLÉS DU REPERAGE" level="0" ></bookmark>
 	{{ CSSclass('<h2>7. RESULTATS DETAILLÉS DU REPERAGE</h2>', 'greyline', 'div')|raw }}
@@ -553,7 +554,7 @@
 			</nobreak>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format, {orientation: 'P'}) }}
+{{ base.newPage(rapport, date, format, {orientation: 'P'}, referencedocumentaire) }}
 
 	<bookmark title="8. ANNEXES" level="0" ></bookmark>
 	{{ CSSclass('<h2>8. ANNEXES</h2>', 'greyline', 'div')|raw }}
@@ -571,7 +572,7 @@
 	</table>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.1 Informations réglementaires" level="1" ></bookmark>
@@ -579,7 +580,7 @@
 	<h3 class="stronger center">8.1 Informations réglementaires</h3>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<h3>Informations conformes à l’annexe III de l’arrêté du 12 décembre 2012</h3>
 	<p>Les maladies liées à l’amiante sont provoquées par l’inhalation des fibres. Toutes les variétés d’amiante sont classées comme substances cancérogènes avérées pour l’homme. L’inhalation de fibres d’amiante est à l’origine de cancers (mésothéliomes, cancers broncho-pulmonaires) et d’autres pathologies non cancéreuses (épanchements pleuraux, plaques pleurales).</p>
@@ -596,7 +597,7 @@
 	<p>Dans tous les cas, le propriétaire avertira de la présence d’amiante toute personne pouvant intervenir sur ou à proximité des matériaux et produits concernés ou de ceux les recouvrant ou les protégeant.</p>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.2 Croquis" level="1" ></bookmark>
@@ -613,14 +614,14 @@
 	{% else %}
 	
 	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
+	{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		{{ croquis|raw }}
 
 	{% endif %}
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.3 Certification" level="1" ></bookmark>
@@ -628,7 +629,7 @@
 	<h3 class="stronger center">8.3 Certification</h3>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	{% if rapport.getField("tech_signataire_certificat") != "" and rapport.getField("tech_signataire_certificat") is not null %}
 	{{ image_base64(rapport.getField("tech_signataire_certificat"), null, null, '100%')|raw }}
@@ -640,7 +641,7 @@
 
 	
 	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
+	{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 	
 
 		{{ mediaIMG(tech[3], RESO, null, null, '100%')|raw }}
@@ -648,7 +649,7 @@
 	{% endfor %}
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.4 Attestation d'assurance" level="1" ></bookmark>
@@ -656,7 +657,7 @@
 	<h3 class="stronger center">8.4 Attestation d'assurance</h3>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 	
 {% if rapport.getField("soc_assurance1") != "" and rapport.getField("soc_assurance1") is not null %}
 	{{ image_base64(rapport.getField("soc_assurance1"), null, null, '97%')|raw }}
@@ -666,13 +667,13 @@
 
 {% if rapport.getField("soc_assurance2") != "" and rapport.getField("soc_assurance2") is not null %}
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	{{ image_base64(rapport.getField("soc_assurance2"), null, null, '97%')|raw }}
 {% endif %}
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.5 Grilles d'évaluation - État de conservation" level="1" ></bookmark>
@@ -680,7 +681,7 @@
 	<h3 class="stronger center">8.5 Grilles d'évaluation - État de conservation</h3>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<h5>1. Critères d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<table class='type8'>
@@ -714,7 +715,7 @@
 		<br>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<h5>2. Grilles d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 
@@ -736,7 +737,7 @@
 		</nobreak>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:60mm;width:100%;"></div>
 	<bookmark title="8.6 Conséquences réglementaires et recommandations" level="1" ></bookmark>
@@ -744,7 +745,7 @@
 	<h3 class="stronger center">8.6 Conséquences réglementaires et recommandations</h3>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
 	<p><span class='bold'>Article R1334-27&nbsp;:</span> En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en oeuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
@@ -763,7 +764,7 @@
 	<br>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
 		I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
@@ -772,7 +773,7 @@
 	</p>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<div style="height:80mm;width:100%;"></div>
 	<bookmark title="8.7 Recommandations générales de sécurité" level="1" ></bookmark>
@@ -780,7 +781,7 @@
 	<h3 class="stronger center">8.7 Recommandations générales de sécurité</h3>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<p>L’identification des matériaux et produits contenant de l’amiante est un préalable à l’évaluation et à la prévention des risques liés à la présence d’amiante dans un bâtiment. Elle doit être complétée par la définition et la mise en oeuvre de mesures de gestion adaptées et proportionnées pour limiter l’exposition des occupants présents temporairement ou de façon permanente dans le bâtiment et des personnes appelées à intervenir sur les matériaux ou produits contenant de l’amiante. Les recommandations générales de sécurité définies ci-après rappellent les règles de base destinées à prévenir les expositions. Le propriétaire (ou, à défaut, l’exploitant) de l’immeuble concerné adapte ces recommandations aux particularités de chaque bâtiment et de ses conditions d’occupation ainsi qu’aux situations particulières rencontrées.</p>
 	<p>Ces recommandations générales de sécurité ne se substituent en aucun cas aux obligations réglementaires existantes en matière de prévention des risques pour la santé et la sécurité des travailleurs, inscrites dans le code du travail.</p>
@@ -794,7 +795,7 @@
 		<p>De façon générale, il est important de veiller au maintien en bon état de conservation des matériaux et produits contenant de l’amiante et de remédier au plus tôt aux situations d’usure anormale ou de dégradation de ceux-ci.</p>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 	<h3>2.&nbsp;Intervention de professionnels soumis aux dispositions du code du travail</h3>
 		<p>Il est recommandé aux particuliers d’éviter dans la mesure du possible toute intervention directe sur des matériaux et produits contenant de l’amiante et de faire appel à des professionnels compétents dans de telles situations.</p>
@@ -816,7 +817,7 @@
 		<br>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		<p class='underline'>a)&nbsp;Conditionnement des déchets</p>
 			<p>Les déchets de toute nature susceptibles de libérer des fibres d’amiante sont conditionnés et traités de manière à ne pas provoquer d’émission de poussières. Ils sont ramassés au fur et à mesure de leur production et conditionnés dans des emballages appropriés et fermés, avec apposition de l’étiquetage prévu par le décret no 88-466 du 28 avril 1988 relatif aux produits contenant de l’amiante et par le code de l’environnement notamment ses articles R. 551-1 à R. 551-13 relatifs aux dispositions générales relatives à tous les ouvrages d’infrastructures en matière de stationnement, chargement ou déchargement de matières dangereuses.</p>
@@ -842,7 +843,7 @@
 			<p>Par exception, le bordereau de suivi des déchets d’amiante n’est pas imposé aux particuliers voire aux artisans qui se rendent dans une déchèterie pour y déposer des déchets d’amiante lié à des matériaux inertes ayant conservé leur intégrité. Ils ne doivent pas remplir un bordereau de suivi de déchets d’amiante, ce dernier étant élaboré par la déchèterie.</p>
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		<div style="height:80mm;width:100%;"></div>
 		<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
@@ -859,14 +860,14 @@
 	{% else %}
 
 	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
+	{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		{{ multipvanalyse|raw }}
 
 	{% endif %}
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		<div style="height:80mm;width:100%;"></div>
 		<bookmark title="8.9 Repérage visuel des matériaux de la liste B de l'annexe 13-9 du Code de la santé publique susceptibles de contenir de l'amiante - Repérage réalisé à la demande du maître d'ouvrage au-delà du cadre réglementaire" level="1" ></bookmark>
@@ -883,7 +884,7 @@
 	{% else %}
 
 	{{ base.endPage(format) }}
-	{{ base.newPage(rapport, date, format) }}
+	{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 		<nobreak>
 		<bookmark title="4.2. Liste des matériaux et produits de la liste B de l’annexe 13-9 du Code de la santé publique susceptibles de contenir de l’amiante" level="1"></bookmark>
@@ -944,7 +945,7 @@
 	{% endif %}
 
 {{ base.endPage(format) }}
-{{ base.newPage(rapport, date, format) }}
+{{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
 
 		<div style="height:80mm;width:100%;"></div>
