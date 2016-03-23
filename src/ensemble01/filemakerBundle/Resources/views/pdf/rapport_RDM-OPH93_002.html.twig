@@ -8,7 +8,7 @@
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
 {% set cherchepresence = '/^(.*)(presence|présence|present|présent)(.*)$/i' %}
 
-{{ base.headDoc(rapport, date, imgpath, format, referencedocumentaire) }}
+{{ base.headDoc(rapport, date, imgpath, format, null, referencedocumentaire) }}
 
 	<div class="bloc1">
 		<h1 class='center'>ANNEXE N°5.1</h1>

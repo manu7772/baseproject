@@ -97,7 +97,7 @@
 			<tr>
 				<td id="row2">
 					{% if rapport.getField('type_rapport') matches '/OPH93/' %}
-					Rapport de Mission de Repérage des MPCA des listes A et B<br>
+					Rapport de Mission de Repérage des MPCA de la liste A<br>
 					{% else %}
 					Rapport de Mission de Repérage des MPCA de la liste A<br>
 					{% endif %}
@@ -124,6 +124,9 @@
 		<p style="width: 100%; font-size: 8pt; margin: 0mm; padding: 0mm; text-align: center; color: {{ gris9 }}; font-style: italic;">Référence documentaire Géodem&nbsp;: {{ referencedocumentaire }}</p>
 	</page_footer>
 {% endmacro %}
+
+
+
 
 {% macro tableExtended(head, table, sizes, classes) %}
 {% set nbcols = head|length %}
