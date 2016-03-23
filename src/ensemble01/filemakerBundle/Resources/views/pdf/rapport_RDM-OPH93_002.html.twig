@@ -5,19 +5,18 @@
 {% set neant = 'Néant' %}
 {% set observation = 'Sans objet' %}
 {% set date = FMtoSimpleDate(rapport.getField('rapport_date_signature')) %}
-{% set cherchepresence = '/^(.*)(presen|présen)(.*)$/i' %}
+{% set cherchepresence = '/^(.*)(presence|présence|present|présent)(.*)$/i' %}
 
 {{ base.headDoc(rapport, date, imgpath, format) }}
 
 	<div class="bloc1">
 		<h1 class='center'>ANNEXE N°5.1</h1>
 		<h1 class='center'>RAPPORT DE&nbsp;REPÉRAGE DES&nbsp;MATÉRIAUX ET&nbsp;PRODUITS DE&nbsp;LA&nbsp;LISTE A CONTENANT DE&nbsp;L’AMIANTE</h1>
-		<p class="mini6 reduit center" style="width:100%; text-align:center;">Mission réalisée à la demande du commanditaire au-delà cadre réglementaire</p>
+		<p class="mini6 reduit center" style="width:100%; text-align:center;">Conformément aux dispositions du Code de la santé publique et à son annexe 13-9, aux articles L.271-4 à L.271-6 du Code de la construction et de l’habitation, aux arrêtés du 12 décembre 2012, du 21 décembre 2012 et du 26 juin 2013, et au décret n°2011-629 du 03 juin 2011</p>
 		<div class="logoentete" style="width:100%; text-align:center;">
 			{{ image_base64(rapport.getField("soc_logo"))|raw }}
 		</div>
 		<p class="mini10 bolder center" style="width:100%; text-align:center;">Référence rapport&nbsp;: {{ rapport.getField('rapport_nom')|raw }}</p>
-		<!-- <p class="mini10 bolder center" style="width:100%; text-align:center;">Nature&nbsp;: {{ rapport.getField('code_nature')|raw }}</p> -->
 	</div>
 
 	<table class="type1 allcenter col-2" align="center">
@@ -31,7 +30,7 @@
 				<td>Adresse</td>
 				<td>
 					{{ rapport.getField('local_type_bat_texte')|raw }}<br>
-					{{ rapport.getField('local_adresse')|raw }}<br />
+					Logement {{ rapport.getField('num_porte')|raw }} -&nbsp;Étage {{ rapport.getField('local_etage')|raw }} -&nbsp;{{ rapport.getField('local_adresse')|raw }}<br />
 					{{ rapport.getField('local_cp')|raw }} {{ rapport.getField('local_ville')|raw }}
 				</td>
 			</tr>
@@ -133,7 +132,6 @@
 
 	<div class="conclusion">
 		{{ performLinks(rapport.getField('rapport_conclusion_DAPP'))|default(info_manquante)|raw|nl2br }}
-		{# magnifyText(rapport.getField('rapport_conclusion_DAPP')|default("Dans le cadre de la mission décrite en tête de rapport, il n'a pas été repéré de produits et matériaux contenant de l'amiante. Les conclusions sont en page 3"))|raw #}
 	</div>
 
 {{ base.endPage(format) }}
@@ -219,9 +217,6 @@
 	<nobreak>
 	<bookmark title="2. PRÉCONISATIONS D’ORDRE GÉNÉRAL" level="0" ></bookmark>
 	{{ CSSclass('<h2>2. PRÉCONISATIONS D’ORDRE GÉNÉRAL</h2>', 'greyline', 'div')|raw }}
-		<p><span class="underline">NB : La mission est réalisée à la demande du commanditaire au-delà du cadre réglementaire, le repérage des parties privatives des maisons individuelles n’étant, à ce jour, pas visé par la réglementation, hors opérations spécifiques (ex. : vente, démolition)</span>. Le présent rapport est dès lors établi selon le modèle défini par l’arrêté du 12 décembre 2012 <span class="ital">relatif aux critères d’évaluation de l’état de conservation des matériaux et produits de la liste A contenant de l’amiante et au contenu du rapport de repérage</span>.</p>
-		<p>Les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport</p>
-		<br>
 		<p>De manière générale, les matériaux en contact direct avec des matériaux amiantés sont considérés comme amiantés par pollution.</p>
 		<p>Tout autre matériau découvert pendant les opérations qui serait susceptible de contenir de l’amiante devra faire l’objet d’un complément de diagnostic par la société GEODEM. Cette dernière reste à la disposition de la maîtrise d’ouvrage pour intervenir afin de lever les doutes existants.</p>
 
@@ -308,6 +303,12 @@
 				</tbody>
 			</table>
 		</nobreak>
+		<br>
+		<div class='important'>
+			<p class='titre'>IMPORTANT</p>
+			<p>En présence de locaux non visités ci-dessus répertoriés, les obligations réglementaires pesant sur le propriétaire ne sont pas remplies conformément aux articles R.1334-15 à R.1334-18 du Code de la santé publique. Des investigations complémentaires devront être accomplies au sein des locaux ou parties de locaux susmentionnés avant l’élaboration d’un rapport exhaustif.</p>
+		</div>
+		<br>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -316,37 +317,38 @@
 	{{ CSSclass('<h2>5. CONDITIONS DE RÉALISATION DU REPÉRAGE</h2>', 'greyline', 'div')|raw }}
 		<bookmark title="5.1 Textes de références" level="1" ></bookmark>
 		<h3>5.1 Textes de références</h3>
-		<p>Le présent rapport, réalisé à la demande du commanditaire au-delà du cadre réglementaire, est établi selon le modèle défini par l’arrêté du 12 décembre 2012 <span class="ital">relatif aux critères d’évaluation de l’état de conservation des matériaux et produits de la liste A contenant de l’amiante et au contenu du rapport de repérage.</span> Les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
+		<p>•&nbsp;Décret n°2011-629 du 03 juin 2011 relatif à la protection de la population contre les risques sanitaires liés à une exposition à l’amiante dans les immeubles bâtis.</p>
+		<p>•&nbsp;Articles R.1334-16, R.1334-29-4 et R.1337-3 du code de la santé publique.</p>
+		<p>•&nbsp;Arrêté du 12 décembre 2012 relatif aux critères d’évaluation de l’état de conservation des matériaux et produits de la liste A contenant de l’amiante et au contenu du rapport de repérage.</p>
+		<p>•&nbsp;Arrêté du 26 juin 2013 modifiant l’arrêté du 12 décembre 2012 relatif aux critères d’évaluation de l’état de conservation des matériaux et produits de la liste A contenant de l’amiante et au contenu du rapport de repérage.</p>
 
 		<bookmark title="5.2 Objet de la mission" level="1" ></bookmark>
 		<h3>5.2 Objet de la mission</h3>
-		<p class="underline" style="text-decoration:underline;">NB : La mission est réalisée, à la demande du commanditaire, au-delà du cadre réglementaire, le repérage des parties privatives des maisons individuelles n’étant, à ce jour, pas visé par la réglementation, hors opérations spécifiques (ex. : vente, démolition).</p>
-		<p>Par analogie de la mission définie à l’article R.1334-16 du Code de la santé publique, visant les parties privatives d’immeubles collectifs d’habitation, la mission consiste à procéder au repérage des matériaux et produits susceptibles de contenir de l’amiante mentionnés au sein de la liste A de l’annexe 13-9 du Code de la santé publique</p>
-		<br>
-		<p><span class='underline bold'>Important</span>&nbsp;: Le programme de repérage de la mission de base est limitatif. Il se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
-		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires.</p>
+		<p>Ce rapport est établi dans le cadre du repérage des matériaux et produits susceptibles de contenir de l’amiante pour intégration au Dossier Amiante – Parties Privatives n° {{ partie_nom_rapport(rapport.getField('rapport_nom')|raw) }}-DAPP</p>
+		<p><span class='underline bold'>Important&nbsp;:</span> Le programme de repérage de la mission de base est limitatif. Il est défini à minima par l’annexe 13-9 (liste A) du Code de la santé publique et se limite pour une mission normale à la recherche de matériaux et produits contenant de l’amiante dans les composants et parties de composant de la construction y figurant.</p>
+		<p>Le programme de repérage est plus restreint que celui élaboré pour les missions de repérage de matériaux et produits contenant de l’amiante avant-vente, avant démolition ou avant réalisation de travaux. Avant toute intervention de travaux, de vente ou de démolition, des investigations complémentaires seront nécessaires. Ce rapport ne peut être utilisé seul, mais doit impérativement être transmis avec le DAPP initial : {{ neant }}.</p>
 
-		<nobreak>
-			<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
-			<h3>5.3 Cadre de la mission</h3>
+		<bookmark title="5.3 Cadre de la mission" level="1" ></bookmark>
+		<h3>5.3 Cadre de la mission</h3>
 
-				<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
-				<h4>5.3.1 Intitulé de la mission</h4>
-				<p>Repérages et diagnostics amiante sur le patrimoine {{ rapport.getField('client_nom') }}</p>
-			</nobreak>
-			<nobreak>
-				<bookmark title="5.3.2 Cadre réglementaire de la mission" level="2" ></bookmark>
-				<h4>5.3.2 Cadre réglementaire de la mission</h4>
-				<p>Mission réalisée à la demande du commanditaire au-delà du cadre réglementaire (voir paragraphes 5.1 et 5.2).</p>
-				<br>
-			</nobreak>
-			<nobreak>
-				<bookmark title="5.3.3 Oblications du donneur d'ordre" level="2" ></bookmark>
-				<h4>5.3.3 Obligations du donneur d'ordre</h4>
-				<p class="bold">Afin que l’opérateur de repérage puisse mener à bien sa mission, le donneur d’ordre doit&nbsp;:</p>
-				<p>•&nbsp;Remettre à l’opérateur en charge du repérage les rapports concernant la recherche d’amiante déjà réalisés ainsi que les documents et informations dont il dispose décrivant les ouvrages (plans, croquis, date de délivrance du permis de construire), les produits matériaux et protections physiques mises en places et les éléments d’information nécessaires à l’accès aux différentes parties de l’immeuble bâti en toute sécurité.</p>
-				<p>•&nbsp;Fournir les habilitations nécessaires pour accéder à l’ensemble des différentes parties de l’immeuble bâti.</p>
-			</nobreak>
+			<bookmark title="5.3.1 Intitulé de la mission" level="2" ></bookmark>
+			<h4>5.3.1 Intitulé de la mission</h4>
+			<p>Repérages et diagnostics amiante sur le patrimoine {{ rapport.getField('client_nom') }}</p>
+
+			<bookmark title="5.3.2 Cadre réglementaire de la mission" level="2" ></bookmark>
+			<h4>5.3.2 Cadre réglementaire de la mission</h4>
+			<p>En vertu de l’article R.1334-29-4 du code de la santé publique&nbsp;:</p>
+			<p>" I. -&nbsp;Les propriétaires des parties privatives d'immeubles collectifs d'habitation constituent, conservent et actualisent un dossier intitulé " dossier amiante - parties privatives ” comprenant les informations et documents suivants&nbsp;:</p>
+			<p>1° Le rapport de repérage des matériaux et produits de la liste A contenant de l'amiante&nbsp;;</p>
+			<p>2° Le cas échéant, la date, la nature, la localisation et les résultats des évaluations périodiques de l'état de conservation, des mesures d'empoussièrement, des travaux de retrait ou de confinement de matériaux et produits de la liste A contenant de l'amiante ou des mesures conservatoires mises en œuvre."</p>
+			<br>
+
+			<bookmark title="5.3.3 Oblications du donneur d'ordre" level="2" ></bookmark>
+			<h4>5.3.3 Obligations du donneur d'ordre</h4>
+			<p>Rappels de l’arrêté du 12 décembre 2012&nbsp;:</p>
+			<p>•&nbsp;Remettre à l’opérateur en charge du repérage les rapports concernant la recherche d’amiante déjà réalisés ainsi que les documents et informations dont il dispose décrivant les ouvrages (plans, croquis, date de délivrance du permis de construire), les produits matériaux et protections physiques mises en places et les éléments d’information nécessaires à l’accès aux différentes parties de l’immeuble bâti en toute sécurité.</p>
+			<p>•&nbsp;Fournir les habilitations nécessaires pour accéder à l’ensemble des différentes parties de l’immeuble bâti.</p>
+			<br>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -417,7 +419,7 @@
 
 		<bookmark title="7.1 Indicateurs visuels de dégradation" level="1" ></bookmark>
 		<h3 style="width:100%;">7.1 Indicateurs visuels de dégradation</h3>
-			<p>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères définis dans l’arrêté du 12 décembre 2012. Toutefois, le repérage des parties privatives des maisons individuelles n’étant pas visé par la réglementation - hors opérations spécifiques (ex. : <span class="ital">vente, démolition</span>) - les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
+			<p>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères détaillés dans l’arrêté du 12 décembre 2012.</p>
 
 		<bookmark title="7.2 Diagnostic par unité de bâtiment" level="1" ></bookmark>
 		<h3 style="width:100%;">7.2 Diagnostic par unité de bâtiment</h3>
@@ -563,6 +565,7 @@
 		<tr><td class="strong"><a href='#anchor86'>8.6&nbsp;&nbsp;Conséquences règlementaires et recommandations</a></td></tr>
 		<tr><td class="strong"><a href='#anchor87'>8.7&nbsp;&nbsp;Recommandations générales de sécurité</a></td></tr>
 		<tr><td class="strong"><a href='#anchor88'>8.8&nbsp;&nbsp;Procès-verbaux d’analyses</a></td></tr>
+		<tr><td class="strong"><a href='#anchor89'>8.9&nbsp;&nbsp;Repérage visuel des matériaux de la liste B de l'annexe 13-9 du Code de la santé publique susceptibles de contenir de l'amiante<br><span>Repérage réalisé à la demande du maître d'ouvrage au-delà du cadre réglementaire</span></a></td></tr>
 	</table>
 
 {{ base.endPage(format) }}
@@ -677,16 +680,10 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<p class="ital"><span class="bold underline">N.B</span>L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères définis dans l’arrêté du 12 décembre 2012.</p>
-	<br>
-	<p class="ital">Toutefois, le repérage des parties privatives des maisons individuelles n’étant pas visé par la réglementation - hors opérations spécifiques (ex. : vente, démolition) - les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
-	<br>
-	<br>
-
 	<h5>1. Critères d’évaluation de l’état de conservation des matériaux ou produit de la liste A</h5>
 		<table class='type8'>
 			<tr>
-				<td colspan='100%' class='gris'>1.&nbsp;Classification des différents degrés d'exposition du produit<br>aux circulations d'air</td>
+				<td colspan='100%' class='gris'><span>1.&nbsp;Classification des différents degrés d'exposition du produit<br>aux circulations d'air</span></td>
 			</tr>
 			<tr>
 				<td class='high'>Fort</td>
@@ -699,7 +696,7 @@
 				<td class='top justify'>1° Il n'existe ni ouvrant ni système de ventilation spécifique dans la pièce ou la zone évaluée, ou<br>2° Il existe dans la pièce ou la zone évaluée, un système de ventilation par extraction dont la reprise d'air est éloignée du faux plafond contenant de l'amiante.</td>
 			</tr>
 			<tr>
-				<td colspan='100%' class='gris'>2.&nbsp;Classification des différents degrés d'exposition du produit<br>aux chocs et vibrations</td>
+				<td colspan='100%' class='gris'><span>2.&nbsp;Classification des différents degrés d'exposition du produit<br>aux chocs et vibrations</span></td>
 			</tr>
 			<tr>
 				<td class='high'>Fort</td>
@@ -747,46 +744,30 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
 
-	<nobreak>
-		<p class="ital"><span class="bold underline">N.B</span>&nbsp;: L’évaluation de l’état de conservation des matériaux et des produits se fait en tenant compte des critères définis dans l’arrêté du 12 décembre 2012.</p>
-		<p class="ital">Toutefois, le repérage des parties privatives des maisons individuelles n’étant pas visé par la réglementation - hors opérations spécifiques (ex. : vente, démolition) - les préconisations du présent rapport de repérage, et notamment celles tenant aux éventuelles mesures à prendre au vu de l’état de conservation des matériaux repérés, ne sont dès lors mentionnées qu’à titre indicatif. Elles ne présentent pas d’application obligatoire, en l’état de la réglementation au jour de la rédaction du rapport.</p>
-		<br>
-		<br>
-		<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
-		<p>En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en œuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Score 1</span>&nbsp;-&nbsp;L’évaluation périodique de l'état de conservation de ces matériaux et produits de la liste A contenant de l’amiante est effectué dans un délai maximal de trois ans à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation, ou à l'occasion de toute modification substantielle de l'ouvrage et de son usage.<br>La personne ayant réalisé cette évaluation en remet les résultats au propriétaire contre accusé de réception.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Score 2</span>&nbsp;-&nbsp;La mesure d’empoussièrement dans l’air est effectuée dans les conditions définies à l’article R1334-25, dans un délai de trois mois à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation. L’organisme qui réalise les prélèvements d’air remet les résultats des mesures d’empoussièrement au propriétaire contre accusé de réception.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Score 3</span>&nbsp;-&nbsp;Les travaux de confinement ou de retrait de l'amiante sont mis en œuvre selon les modalités prévues à l'article R.1334-29.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Article R1334-28&nbsp;:</span> Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est inférieur ou égal à la valeur de cinq fibres par litre, le propriétaire fait procéder à l’évaluation périodique de l'état de conservation des matériaux et produits de la liste A contenant de l’amiante prévue à l’article R1334-20, dans un délai maximal de trois ans à compter de la date de remise des résultats des mesures d’empoussièrement ou à l'occasion de toute modification substantielle de l'ouvrage ou de son usage.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p>Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est supérieur à cinq fibres par litre, le propriétaire fait procéder à des travaux de confinement ou de retrait de l'amiante, selon les modalités prévues à l’article R1334-29.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
-		<br>
-	</nobreak>
-	<nobreak>
-		<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
-			I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
-			II)&nbsp;Si les travaux ne conduisent pas au retrait total des matériaux et produits de la liste A contenant de l’amiante, il est procédé à une évaluation périodique de l’état de conservation de ces matériaux et produits résiduels dans les conditions prévues par l’arrêté mentionné à l’article R.1334-20, dans un délai maximal de trois ans à compter de la date à laquelle sont remis les résultats du contrôle ou à l’occasion de toute modification substantielle de l’ouvrage ou de son usage.<br>
-			III)&nbsp;Lorsque des travaux de retrait ou de confinement de matériaux et produits de la liste B contenant de l’amiante sont effectués à l’intérieur de bâtiment occupés ou fréquentés, le propriétaire fait procéder, avant toute restitution des locaux traités, à l’examen visuel et à la mesure d’empoussièrement dans l’air mentionnée au premier alinéa du présent article.<br>
-		</p>
-	</nobreak>
+	<h3>Conséquences réglementaires suivant l’état de conservation des matériaux ou produit de la liste A</h3>
+	<p><span class='bold'>Article R1334-27&nbsp;:</span> En fonction du résultat du diagnostic obtenu à partir de la grille d'évaluation de l’arrêté du 12 décembre 2012, le propriétaire met en oeuvre les préconisations mentionnées à l’article R1334-20 selon les modalités suivantes&nbsp;:</p>
+	<br>
+	<p><span class='bold'>Score 1</span>&nbsp;-&nbsp;L’évaluation périodique de l'état de conservation de ces matériaux et produits de la liste A contenant de l’amiante est effectué dans un délai maximal de trois ans à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation, ou à l'occasion de toute modification substantielle de l'ouvrage et de son usage.<br>La personne ayant réalisé cette évaluation en remet les résultats au propriétaire contre accusé de réception.</p>
+	<br>
+	<p><span class='bold'>Score 2</span>&nbsp;-&nbsp;La mesure d’empoussièrement dans l’air est effectuée dans les conditions définies à l’article R1334-25, dans un délai de trois mois à compter de la date de remise au propriétaire du rapport de repérage ou des résultats de la dernière évaluation de l’état de conservation. L’organisme qui réalise les prélèvements d’air remet les résultats des mesures d’empoussièrement au propriétaire contre accusé de réception.</p>
+	<br>
+	<p><span class='bold'>Score 3</span>&nbsp;-&nbsp;Les travaux de confinement ou de retrait de l'amiante sont mis en oeuvre selon les modalités prévues à l'article R. 1334-29.</p>
+	<br>
+	<p><span class='bold'>Article R1334-28&nbsp;:</span> Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est inférieur ou égal à la valeur de cinq fibres par litre, le propriétaire fait procéder à l’évaluation périodique de l'état de conservation des matériaux et produits de la liste A contenant de l’amiante prévue à l’article R1334-20, dans un délai maximal de trois ans à compter de la date de remise des résultats des mesures d’empoussièrement ou à l'occasion de toute modification substantielle de l'ouvrage ou de son usage.</p>
+	<br>
+	<p>Si le niveau d'empoussièrement mesuré dans l’air en application de l’article R1334-27 est supérieur à cinq fibres par litre, le propriétaire fait procéder à des travaux de confinement ou de retrait de l'amiante, selon les modalités prévues à l’article R1334-29.</p>
+	<br>
+	<p><span class='bold'>Article R1334-29&nbsp;:</span> Les travaux précités doivent être achevés dans un délai de trente-six mois à compter de la date à laquelle sont remis au propriétaire le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation.<br>Pendant la période précédant les travaux, des mesures conservatoires appropriées doivent être mises en œuvre afin de réduire l'exposition des occupants et de la maintenir au niveau le plus bas possible, et dans tous les cas à un niveau d'empoussièrement inférieur à cinq fibres par litre. Les mesures conservatoires ne doivent conduire à aucune sollicitation des matériaux et produits concernés par les travaux.<br>Le propriétaire informe le préfet du département du lieu d’implantation de l’immeuble concerné, dans un délai de deux mois à compter de la date à laquelle sont remis le rapport de repérage ou les résultats des mesures d’empoussièrement ou de la dernière évaluation de l’état de conservation, des mesures conservatoires mises en oeuvres, et, dans un délai de douze mois, des travaux à réaliser et de l’échéancier proposé.</p>
+	<br>
+
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+
+	<p><span class='bold'>Article R.1334-29-3&nbsp;:</span><br>
+		I)&nbsp;A l’issue des travaux de retrait ou de confinement de matériaux et produits de la liste A mentionnés à l’article R.1334-29, le propriétaire fait procéder par une personne mentionnée au premier alinéa de l’article R.1334-23, avant toute restitution des locaux traités, à un examen visuel de l’état des surfaces traitées. Il fait également procéder, dans les conditions définies à l’article R.1334-25, à une mesure du niveau d’empoussièrement dans l’air après démantèlement du dispositif de confinement. Ce niveau doit être inférieur ou égal à cinq fibres par litre.<br>
+		II)&nbsp;Si les travaux ne conduisent pas au retrait total des matériaux et produits de la liste A contenant de l’amiante, il est procédé à une évaluation périodique de l’état de conservation de ces matériaux et produits résiduels dans les conditions prévues par l’arrêté mentionné à l’article R.1334-20, dans un délai maximal de trois ans à compter de la date à laquelle sont remis les résultats du contrôle ou à l’occasion de toute modification substantielle de l’ouvrage ou de son usage.<br>
+		III)&nbsp;Lorsque des travaux de retrait ou de confinement de matériaux et produits de la liste B contenant de l’amiante sont effectués à l’intérieur de bâtiment occupés ou fréquentés, le propriétaire fait procéder, avant toute restitution des locaux traités, à l’examen visuel et à la mesure d’empoussièrement dans l’air mentionnée au premier alinéa du présent article.<br>
+	</p>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format) }}
@@ -865,6 +846,30 @@
 		<bookmark title="8.8 Procès-verbaux d’analyses" level="1" ></bookmark>
 		<a name="anchor88"></a>
 		<h3 class="stronger center">8.8 Procès-verbaux d’analyses</h3>
+	
+	{% set pvanalyse = rapport.getField('rapport_pv_analyse') %}
+	{% set multipvanalyse = multiMediaIMG(pvanalyse, RESO, null, null, '100%', null, neant, 'div|width:100%;text-align:center;') %}
+	{% if (pvanalyse|length < 1) or (multipvanalyse == neant) %}
+		<br><br><br>
+	
+		<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
+
+	{% else %}
+
+	{{ base.endPage(format) }}
+	{{ base.newPage(rapport, date, format) }}
+
+		{{ multipvanalyse|raw }}
+
+	{% endif %}
+
+{{ base.endPage(format) }}
+{{ base.newPage(rapport, date, format) }}
+
+		<div style="height:80mm;width:100%;"></div>
+		<bookmark title="8.9 Repérage visuel des matériaux de la liste B de l'annexe 13-9 du Code de la santé publique susceptibles de contenir de l'amiante - Repérage réalisé à la demande du maître d'ouvrage au-delà du cadre réglementaire" level="1" ></bookmark>
+		<a name="anchor89"></a>
+		<h3 class="stronger center">8.9 Repérage visuel des matériaux de la liste B de l'annexe 13-9 du Code de la santé publique susceptibles de contenir de l'amiante - Repérage réalisé à la demande du maître d'ouvrage au-delà du cadre réglementaire</h3>
 	
 	{% set pvanalyse = rapport.getField('rapport_pv_analyse') %}
 	{% set multipvanalyse = multiMediaIMG(pvanalyse, RESO, null, null, '100%', null, neant, 'div|width:100%;text-align:center;') %}
