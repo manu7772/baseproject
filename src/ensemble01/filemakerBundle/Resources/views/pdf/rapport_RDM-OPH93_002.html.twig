@@ -869,17 +869,19 @@
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
 
-	{% set detailB = rapport.getField('rapport_detail_liste_B_materiau') %}
-	{% if detailB == null or detailB == '' %}
-		<br><br><br>
-	
-		<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
-
-	{% else %}
-	
 		<nobreak>
 			<bookmark title="8.9. Repérage visuel des matériaux de la liste B de l'annexe 13-9 du Code de la santé publique susceptibles de contenir de l'amiante - Repérage réalisé à la demande du maître d'ouvrage au-delà du cadre réglementaire" level="1"></bookmark>
 			<h3 id="para8.9">8.9. Repérage visuel des matériaux de la liste B de l'annexe 13-9 du Code de la santé publique susceptibles de contenir de l'amiante - Repérage réalisé à la demande du maître d'ouvrage au-delà du cadre réglementaire</h3>
+
+	{% set detailB = rapport.getField('rapport_detail_liste_B_materiau') %}
+	{% if detailB|default("")|length == 0 %}
+
+			<br><br><br>
+		
+			<p class='center' style='text-align:center;width:100%;'>{{ neant }}</p>
+
+	{% else %}
+	
 			<table style='margin: 6{{ unit }} 0{{ unit }} 4{{ unit }}; border-collapse: collapse; width: {{ larg }}{{ unit }};'>
 				<thead>
 					<tr>
@@ -931,9 +933,10 @@
 					{% endif %}
 				</tbody>
 			</table>
-		</nobreak>
 
 	{% endif %}
+
+		</nobreak>
 
 {{ base.endPage(format) }}
 {{ base.newPage(rapport, date, format, 'default', referencedocumentaire) }}
