@@ -521,7 +521,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau')) %}
+						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
 						{% if data != false %}
 						{% for ligne in data %}
 						<tr>
