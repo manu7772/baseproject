@@ -459,7 +459,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_AM')) %}
+						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_A_materiau')) %}
 						{% if data != false %}
 						{% for ligne in data %}
 						<tr>
@@ -521,7 +521,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_materiau_SA')) %}
+						{% set data = rapport_detail_liste_materiau(rapport.getField('rapport_detail_liste_B_materiau')) %}
 						{% if data != false %}
 						{% for ligne in data %}
 						<tr>
